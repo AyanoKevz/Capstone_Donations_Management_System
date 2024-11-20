@@ -17,6 +17,11 @@ Route::get('/more-donor', function () {
     return view('homepage.more_donor');
 })->name('more_donor');
 
+// More news page route
+Route::get('/more-news', function () {
+    return view('homepage.more_news');
+})->name('more-news');
+
 // Recipient page route
 Route::get('/more-recipient', function () {
     return view('homepage.more_recipient');

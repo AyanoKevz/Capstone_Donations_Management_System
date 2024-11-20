@@ -513,7 +513,7 @@
                     <div class="blog-img mb-4">
                         <img src="{{asset('assets/img/news.jpg') }}" class="img-fluid w-100 rounded" alt="">
                     </div>
-                    <a href="#" class="h4 d-inline-block mb-3">News Title</a>
+                    <a href="{{ route ('more-news')}}" class="h4 d-inline-block mb-3">News Title</a>
                     <p class="mb-4">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolore aut aliquam
                         suscipit error corporis accusamus labore....
                     </p>
@@ -530,7 +530,7 @@
                     <div class="blog-img mb-4">
                         <img src="{{asset('assets/img/news.jpg') }}" class="img-fluid w-100 rounded" alt="">
                     </div>
-                    <a href="#" class="h4 d-inline-block mb-3">News Title</a>
+                    <a href="{{ route ('more-news')}}" class="h4 d-inline-block mb-3">News Title</a>
                     <p class="mb-4">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolore aut aliquam
                         suscipit error corporis accusamus labore....
                     </p>
@@ -547,7 +547,7 @@
                     <div class="blog-img mb-4">
                         <img src="{{asset('assets/img/news.jpg') }}" class="img-fluid w-100 rounded" alt="">
                     </div>
-                    <a href="#" class="h4 d-inline-block mb-3">News Title</a>
+                    <a href="{{ route ('more-news')}}" class="h4 d-inline-block mb-3">News Title</a>
                     <p class="mb-4">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolore aut aliquam
                         suscipit error corporis accusamus labore....
                     </p>
@@ -564,7 +564,7 @@
                     <div class="blog-img mb-4">
                         <img src="{{asset('assets/img/news.jpg') }}" class="img-fluid w-100 rounded" alt="">
                     </div>
-                    <a href="#" class="h4 d-inline-block mb-3">News Title</a>
+                    <a href="{{ route ('more-news')}}" class="h4 d-inline-block mb-3">News Title</a>
                     <p class="mb-4">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolore aut aliquam
                         suscipit error corporis accusamus labore....
                     </p>

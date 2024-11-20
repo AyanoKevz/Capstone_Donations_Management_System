@@ -72,12 +72,12 @@
             <div class="container text-center py-5">
                 <div class="row g-5 align-items-center">
                     <div class="col-lg-6">
-                        <h4 class="text-white display-4 mb-4 wow fadeInDown" data-wow-delay="0.3s">More About Donor</h4>
+                        <h4 class="text-white display-4 mb-4 wow fadeInDown" data-wow-delay="0.3s">More About Donations</h4>
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb d-flex justify-content-center mb-0 wow fadeInDown"
                                 data-wow-delay="0.3s">
                                 <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">More About Donor</li>
+                                <li class="breadcrumb-item active" aria-current="page">More About Donations</li>
                             </ol>
                         </nav>
                     </div>
@@ -99,6 +99,137 @@
         <!-- Header End -->
     </div>
     <!-- Navbar & Hero End -->
+
+    <!-- ======= More About Donation Section ======= -->
+    <section id="about" class="about p-3">
+        <div class="container">
+
+            <div class="row position-relative">
+
+                <div class="col-lg-7 about-img wow fadeInRight" style="background-image: url({{asset('assets/img/ab6.jpg') }});"></div>
+                <div class="col-lg-7 wow fadeInLeft">
+                    <h2>About UniAid Donations</h2>
+                    <div class="our-story">
+                        <h3>Donations Details</h3>
+                        <p>Inventore aliquam beatae at et id alias. Ipsa dolores amet consequuntur minima quia maxime autem.
+                            Quidem id sed ratione. Tenetur provident autem in reiciendis rerum at dolor. Aliquam consectetur
+                            laudantium temporibus dicta minus dolor.</p>
+                        <ul>
+                            <li><i class="fas fa-handshake me-2" style="color: #ff1f1f;"></i> <span>Ullamco laboris nisi ut aliquip ex ea commo</span></li>
+                            <li><i class="fas fa-handshake me-2" style="color: #ff1f1f;"></i> <span>Duis aute irure dolor in reprehenderit in</span></li>
+                            <li><i class="fas fa-handshake me-2" style="color: #ff1f1f;"></i> <span>Ullamco laboris nisi ut aliquip ex ea</span></li>
+                        </ul>
+                        <p>Vitae autem velit excepturi fugit. Animi ad non. Eligendi et non nesciunt suscipit repellendus porro in
+                            quo eveniet. Molestias in maxime doloremque.</p>
+
+                        <div class="watch-video d-flex align-items-center position-relative">
+                            <i class="fas fa-hand-point-right fa-2xl me-2" style="color: #ff1f1f;"></i>
+                            <a href="{{ route ('register')}}" class="btn btn-primary rounded-pill py-3 px-4 px-md-5 ms-2">Register and Donate Now!</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="alt-services" class="alt-services p-3 m-3">
+        <div class="container">
+
+            <div class="row justify-content-around gy-4">
+                <div class="col-lg-6 img-bg wow fadeInLeft" style="background-image: url({{asset('assets/img/ab1.jpg') }});"></div>
+
+                <div class="col-lg-5 d-flex flex-column justify-content-center wow fadeInRight">
+                    <h3>How to Donate in UniAid?</h3>
+                    <p>Esse voluptas cumque vel exercitationem. Reiciendis est hic accusamus. Non ipsam et sed minima temporibus
+                        laudantium. Soluta voluptate sed facere corporis dolores excepturi</p>
+
+                    <div class="icon-box d-flex position-relative">
+                        <i class="fa-brands fa-gratipay flex-shrink-0"></i>
+                        <div>
+                            <h4><a href="" class="stretched-link">Lorem Ipsum</a></h4>
+                            <p>Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate
+                                non provident</p>
+                        </div>
+                    </div><!-- End Icon Box -->
+
+                    <div class="icon-box d-flex position-relative">
+                        <i class="fa-brands fa-gratipay flex-shrink-0"></i>
+                        <div>
+                            <h4><a href="" class="stretched-link">Nemo Enim</a></h4>
+                            <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum
+                                deleniti atque</p>
+                        </div>
+                    </div><!-- End Icon Box -->
+
+                    <div class="icon-box d-flex position-relative">
+                        <i class="fa-brands fa-gratipay flex-shrink-0"></i>
+                        <div>
+                            <h4><a href="" class="stretched-link">Dine Pad</a></h4>
+                            <p>Explicabo est voluptatum asperiores consequatur magnam. Et veritatis odit. Sunt aut deserunt minus
+                                aut eligendi omnis</p>
+                        </div>
+                    </div><!-- End Icon Box -->
+
+                    <div class="icon-box d-flex position-relative">
+                        <i class="fa-brands fa-gratipay flex-shrink-0"></i>
+                        <div>
+                            <h4><a href="" class="stretched-link">Tride clov</a></h4>
+                            <p>Est voluptatem labore deleniti quis a delectus et. Saepe dolorem libero sit non aspernatur odit amet.
+                                Et eligendi</p>
+                        </div>
+                    </div><!-- End Icon Box -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Accepted Donation -->
+    <div class="container-fluid blog py-5 portals">
+        <div class="container py-5 wow slideInLeft" data-wow-delay="0.3s">
+            <div class="text-center mx-auto pb-5" style="max-width: 800px;">
+                <h2 class="section-header">Types of resources</h2>
+                <h1 class="display-5 mb-4">We Accept Donations of Essential Resources</h1>
+                <p class="mb-0"> UniAid welcomes various types of donations to help communities in need. From monetary
+                    contributions to essential resources, your generosity plays a crucial role in supporting those who
+                    need it most across the Philippines.
+                </p>
+            </div>
+            <div class="owl-carousel blog-carousel">
+
+                <div class="blog-item text-center">
+                    <div class="blog-img mb-2">
+                        <img src="{{asset('assets/img/resource1.jpg') }}" class="img-fluid w-100 rounded" alt="">
+                    </div>
+                    <h4 class="d-inline-block m-2">Resource Type</h4>
+                </div>
+
+                <div class="blog-item text-center">
+                    <div class="blog-img mb-2">
+                        <img src="{{asset('assets/img/resource1.jpg') }}" class="img-fluid w-100 rounded" alt="">
+                    </div>
+                    <h4 class="d-inline-block m-2">Resource Type</h4>
+                </div>
+
+                <div class="blog-item text-center">
+                    <div class="blog-img mb-2">
+                        <img src="{{asset('assets/img/resource1.jpg') }}" class="img-fluid w-100 rounded" alt="">
+                    </div>
+                    <h4 class="d-inline-block m-2">Resource Type</h4>
+                </div>
+
+                <div class="blog-item text-center">
+                    <div class="blog-img mb-2">
+                        <img src="{{asset('assets/img/resource1.jpg') }}" class="img-fluid w-100 rounded" alt="">
+                    </div>
+                    <h4 class="d-inline-block m-2">Resource Type</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Accepted Donation -->
+
+    <!-- End Section -->
 
     <!-- Footer Start -->
     <div class="container-fluid footer py-3 wow fadeIn" data-wow-delay="0.2s">

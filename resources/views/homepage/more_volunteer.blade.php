@@ -99,6 +99,124 @@
     </div>
     <!-- Navbar & Hero End -->
 
+
+    <section id="about" class="about p-3">
+        <div class="container">
+
+            <div class="row position-relative">
+
+                <div class="col-lg-7 about-img wow fadeInRight" style="background-image: url({{asset('assets/img/ab6.jpg') }});"></div>
+                <div class="col-lg-7 wow fadeInLeft">
+                    <h2>Become A Volunteer</h2>
+                    <div class="our-story">
+                        <h3>Donations Details</h3>
+                        <p>Inventore aliquam beatae at et id alias. Ipsa dolores amet consequuntur minima quia maxime autem.
+                            Quidem id sed ratione. Tenetur provident autem in reiciendis rerum at dolor. Aliquam consectetur
+                            laudantium temporibus dicta minus dolor.</p>
+                        <ul>
+                            <li><i class="fas fa-handshake me-2" style="color: #ff1f1f;"></i> <span>Ullamco laboris nisi ut aliquip ex ea commo</span></li>
+                            <li><i class="fas fa-handshake me-2" style="color: #ff1f1f;"></i> <span>Duis aute irure dolor in reprehenderit in</span></li>
+                            <li><i class="fas fa-handshake me-2" style="color: #ff1f1f;"></i> <span>Ullamco laboris nisi ut aliquip ex ea</span></li>
+                        </ul>
+                        <p>Vitae autem velit excepturi fugit. Animi ad non. Eligendi et non nesciunt suscipit repellendus porro in
+                            quo eveniet. Molestias in maxime doloremque.</p>
+
+                        <div class="watch-video d-flex align-items-center position-relative">
+                            <i class="fas fa-hand-point-right fa-2xl me-2" style="color: #ff1f1f;"></i>
+                            <a href="{{ route ('register')}}" class="btn btn-primary rounded-pill py-3 px-4 px-md-5 ms-2">Register and Donate Now!</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <div class="container-fluid offer-section py-5">
+        <div class="container py-5">
+            <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.2s" style="max-width: 800px;">
+                <h4 class="section-header"> Volunteer Service FAQs</h4>
+                <h1 class="display-5 mb-4">Become A UniAid Volunteer</h1>
+                <p class="mb-0">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tenetur adipisci facilis cupiditate recusandae aperiam temporibus corporis itaque quis facere, numquam, ad culpa deserunt sint dolorem autem obcaecati, ipsam mollitia hic.
+                </p>
+            </div>
+            <div class="row g-5 align-items-center">
+                <div class="col-xl-5 wow fadeInLeft" data-wow-delay="0.2s">
+                    <div class="nav nav-pills bg-light rounded p-5">
+                        <a class="accordion-link p-4 active mb-4" data-bs-toggle="pill" href="#collapseOne">
+                            <h5 class="mb-0">Lorem ipsum dolor sit amet consectetur adipisicing elit.</h5>
+                        </a>
+                        <a class="accordion-link p-4 mb-4" data-bs-toggle="pill" href="#collapseTwo">
+                            <h5 class="mb-0">Lorem ipsum dolor sit amet consectetur adipisicing elit.</h5>
+                        </a>
+                        <a class="accordion-link p-4 mb-4" data-bs-toggle="pill" href="#collapseThree">
+                            <h5 class="mb-0">Lorem ipsum dolor sit amet consectetur adipisicing elit.</h5>
+                        </a>
+                        <a class="accordion-link p-4 mb-0" data-bs-toggle="pill" href="#collapseFour">
+                            <h5 class="mb-0">Lorem ipsum dolor sit amet consectetur adipisicing elit.</h5>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-xl-7 wow fadeInRight" data-wow-delay="0.4s">
+                    <div class="tab-content">
+                        <div id="collapseOne" class="tab-pane fade show p-0 active">
+                            <div class="row g-4">
+                                <div class="col-md-7">
+                                    <img src="{{asset('assets/img/ab3.jpg') }}" class="img-fluid w-100 h-100 rounded" alt="">
+                                </div>
+                                <div class="col-md-5">
+                                    <h1 class="display-5 mb-4">Loren Ipsum blah blah</h1>
+                                    <p class="mb-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis amet sequi molestiae tenetur eum mollitia, blanditiis, magnam illo magni error dolore unde perspiciatis tempore et totam corrupti dignissimos aut praesentium?
+                                    </p>
+                                    <a class="btn btn-primary rounded-pill py-2 px-4" href="#">Learn More</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="collapseTwo" class="tab-pane fade show p-0">
+                            <div class="row g-4">
+                                <div class="col-md-7">
+                                    <img src="{{asset('assets/img/ab3.jpg') }}" class="img-fluid w-100 h-100 rounded" alt="">
+                                </div>
+                                <div class="col-md-5">
+                                    <h1 class="display-5 mb-4">Loren Ipsum blah blah</h1>
+                                    <p class="mb-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis amet sequi molestiae tenetur eum mollitia, blanditiis, magnam illo magni error dolore unde perspiciatis tempore et totam corrupti dignissimos aut praesentium?
+                                    </p>
+                                    <a class="btn btn-primary rounded-pill py-2 px-4" href="#">Learn More</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="collapseThree" class="tab-pane fade show p-0">
+                            <div class="row g-4">
+                                <div class="col-md-7">
+                                    <img src="{{asset('assets/img/ab3.jpg') }}" class="img-fluid w-100  h-100 rounded" alt="">
+                                </div>
+                                <div class="col-md-5">
+                                    <h1 class="display-5 mb-4">Loren Ipsum blah blah</h1>
+                                    <p class="mb-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis amet sequi molestiae tenetur eum mollitia, blanditiis, magnam illo magni error dolore unde perspiciatis tempore et totam corrupti dignissimos aut praesentium?
+                                    </p>
+                                    <a class="btn btn-primary rounded-pill py-2 px-4" href="#">Learn More</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="collapseFour" class="tab-pane fade show p-0">
+                            <div class="row g-4">
+                                <div class="col-md-7">
+                                    <img src="{{asset('assets/img/ab3.jpg') }}" class="img-fluid w-100  h-100 rounded" alt="">
+                                </div>
+                                <div class="col-md-5">
+                                    <h1 class="display-5 mb-4">Loren Ipsum blah blah</h1>
+                                    <p class="mb-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis amet sequi molestiae tenetur eum mollitia, blanditiis, magnam illo magni error dolore unde perspiciatis tempore et totam corrupti dignissimos aut praesentium?
+                                    </p>
+                                    <a class="btn btn-primary rounded-pill py-2 px-4" href="#">Learn More</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Footer Start -->
     <div class="container-fluid footer py-3 wow fadeIn" data-wow-delay="0.2s">
         <div class="container py-3 border-start-0 border-end-0"
