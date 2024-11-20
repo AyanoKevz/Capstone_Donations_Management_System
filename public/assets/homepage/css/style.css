@@ -197,6 +197,10 @@ body{
      color: #ff1f1f;
 }
 
+.breadcrumb-item.active:hover {
+    color: #fff;
+}
+
 a {
     text-decoration: none;
 }
@@ -564,6 +568,10 @@ input.is-invalid, select.is-invalid {
 
 .bg-breadcrumb .breadcrumb .breadcrumb-item a {
     color: #fff;
+}
+
+.bg-breadcrumb .breadcrumb .breadcrumb-item a:hover {
+    color: #ff1f1f;
 }
 
 /*** Single Page Hero Header End ***/
