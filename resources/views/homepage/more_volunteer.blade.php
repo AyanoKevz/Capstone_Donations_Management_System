@@ -105,7 +105,7 @@
 
             <div class="row position-relative">
 
-                <div class="col-lg-7 about-img wow fadeInRight" style="background-image: url({{asset('assets/img/ab6.jpg') }});"></div>
+                <div class="col-lg-7 about-img wow fadeInRight" style="background-image: url({{asset('assets/img/d6.jpg') }});"></div>
                 <div class="col-lg-7 wow fadeInLeft">
                     <h2>Become A Volunteer</h2>
                     <div class="our-story">
@@ -162,7 +162,7 @@
                         <div id="collapseOne" class="tab-pane fade show p-0 active">
                             <div class="row g-4">
                                 <div class="col-md-7">
-                                    <img src="{{asset('assets/img/ab3.jpg') }}" class="img-fluid w-100 h-100 rounded" alt="">
+                                    <img src="{{asset('assets/img/d5.jpg') }}" class="img-fluid w-100 h-100 rounded" alt="">
                                 </div>
                                 <div class="col-md-5">
                                     <h1 class="display-5 mb-4">Loren Ipsum blah blah</h1>

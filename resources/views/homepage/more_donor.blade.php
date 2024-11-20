@@ -106,7 +106,7 @@
 
             <div class="row position-relative">
 
-                <div class="col-lg-7 about-img wow fadeInRight" style="background-image: url({{asset('assets/img/ab6.jpg') }});"></div>
+                <div class="col-lg-7 about-img wow fadeInRight" style="background-image: url({{asset('assets/img/d1.jpg') }});"></div>
                 <div class="col-lg-7 wow fadeInLeft">
                     <h2>About UniAid Donations</h2>
                     <div class="our-story">
@@ -137,7 +137,7 @@
         <div class="container">
 
             <div class="row justify-content-around gy-4">
-                <div class="col-lg-6 img-bg wow fadeInLeft" style="background-image: url({{asset('assets/img/ab1.jpg') }});"></div>
+                <div class="col-lg-6 img-bg wow fadeInLeft" style="background-image: url({{asset('assets/img/d2.jpg') }});"></div>
 
                 <div class="col-lg-5 d-flex flex-column justify-content-center wow fadeInRight">
                     <h3>How to Donate in UniAid?</h3>
