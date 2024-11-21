@@ -11,7 +11,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Roboto:wght@400;500;700;900&display=swap"
     rel="stylesheet">
-  <link rel="icon" href="../../assets/img/systemLogo.png" type="image/png">
+    <link rel="icon" href="{{ asset ('assets/img/systemLogo.png') }}" type="image/png">
   <link rel="stylesheet" href="../lib/bootstrap/css/bootstrap.min.css">
   <link href="../assets/admin/css/dashboard.css" rel="stylesheet">
 </head>

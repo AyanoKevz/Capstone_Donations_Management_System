@@ -42,7 +42,6 @@ Route::get('/register', function () {
     return view('homepage.register');
 })->name('register');
 
-
 // Donor Registration Page
 Route::get('/register/donor', function () {
     return view('homepage.donor_r');
@@ -57,3 +56,19 @@ Route::get('/register/donee', function () {
 Route::get('/register/volunteer', function () {
     return view('homepage.volunteer_r');
 })->name('register.volunteer');
+
+// Admin Login Page
+Route::get('/admin/login', function () {
+    return view('admin.admin_login');
+})->name('admin.login');
+
+// Admin Forgot Page
+Route::get('/admin/login/forgot', function () {
+    return view('admin.admin_forgot');
+})->name('admin.forgot');
+
+
+// Admin Forgot Page
+Route::get('/admin/dashboard', function () {
+    return view('admin.dashboard');
+})->name('admin.dashboard');

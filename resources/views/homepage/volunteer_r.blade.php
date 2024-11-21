@@ -47,25 +47,24 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <div class="navbar-nav ms-auto py-0">
-                    <a href="index.html" class="nav-item nav-link ">Home</a>
-                    <a href="about.html" class="nav-item nav-link">About</a>
-                    <a href="index.html#testimonials" class="nav-item nav-link">Testimonial</a>
+                    <a href="{{ route ('home')}}" class="nav-item nav-link ">Home</a>
+                    <a href="{{ route ('about')}}" class="nav-item nav-link ">About</a>
+                    <a href="{{ route('home') }}#testimonials" class="nav-item nav-link">Testimonial</a>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link" data-bs-toggle="dropdown">
                             <span>More <i class="fa-solid fa-angle-down fa-sm dropdown-toggle"></i></span>
 
                         </a>
                         <div class="dropdown-menu m-0">
-                            <a href="feature.html" class="dropdown-item">Donation</a>
-                            <a href="team.html" class="dropdown-item">Recipient</a>
-                            <a href="index.html#testimonials" class="dropdown-item">Volunteer</a>
+                            <a href="{{ route ('more_donor')}}" class="dropdown-item">Donation</a>
+                            <a href="{{ route ('more_recipient')}}" class="dropdown-item">Recipient</a>
+                            <a href="{{ route ('more_volunteer')}}" class="dropdown-item">Volunteer</a>
                         </div>
                     </div>
-                    <a href="contact.html" class="nav-item nav-link">Contact Us</a>
-                    <a href="register.html" class="nav-item nav-link active">Register</a>
+                    <a href="{{ route ('contact')}}" class="nav-item nav-link">Contact Us</a>
+                    <a href="{{ route ('register')}}" class="nav-item nav-link active">Register</a>
                 </div>
-                <a href="index.html#portals"
-                    class="btn btn-primary rounded-pill py-2 px-4 my-3 my-lg-0 flex-shrink-0">Portals</a>
+                <a href="{{ route('home') }}#portals" class="btn btn-primary rounded-pill py-2 px-4 my-3 my-lg-0 flex-shrink-0">Portals</a>
             </div>
         </nav>
 

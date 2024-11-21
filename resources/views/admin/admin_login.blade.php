@@ -5,9 +5,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!--   Bootstrap -->
-  <link rel="stylesheet" href="../lib/bootstrap/css/bootstrap.min.css">
+  <link rel="icon" href="{{ asset ('assets/img/systemLogo.png') }}" type="image/png">
+  <link rel="stylesheet" href="{{ asset('lib/bootstrap/css/bootstrap.min.css') }}">
   <!-- StyleSheet -->
-  <link rel="stylesheet" href="../assets/admin/css/admin_login.css">
+  <link rel="stylesheet" href="{{ asset ('assets/admin/css/admin_login.css') }}">
   <title>Admin Login</title>
 </head>
 
@@ -22,7 +23,7 @@
 
               <div class="col-md-6 col-lg-5 d-none d-md-block container-fluid banner text-center">
                 <div class="logo">
-                  <img src="../assets/img/systemLogo.png" alt="">
+                  <img src="{{ asset('assets/img/systemLogo.png') }}" alt="">
                 </div>
                 <h2>UniAid</h2>
                 <p>Community Donations and Resources Distribution</p>
@@ -50,8 +51,8 @@
                     </div>
 
                     <div class="d-flex justify-content-center links">
-                      <a class="small text-muted ms-2" href="admin_forgot.html">Forgot password?</a>
-                      <a class="small text-muted ms-2" href="../php/index.html">View Page</a>
+                      <a class="small text-muted ms-2" href="{{route('admin.forgot')}}">Forgot password?</a>
+                      <a class="small text-muted ms-2" href="{{route('home')}}">View Page</a>
                     </div>
                   </form>
                 </div>
@@ -64,8 +65,8 @@
     </div>
   </section>
 
-  <script src="../lib/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="../lib/fontawesome/all.js"></script>
+  <script src="{{ asset('lib/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+  <script src="{{ asset('lib/fontawesome/all.js') }}"></script>
 </body>
 
 </html>
