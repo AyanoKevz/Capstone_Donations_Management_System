@@ -141,42 +141,39 @@
 
                 <div class="col-lg-5 d-flex flex-column justify-content-center wow fadeInRight">
                     <h3>How to Donate in UniAid?</h3>
-                    <p>Esse voluptas cumque vel exercitationem. Reiciendis est hic accusamus. Non ipsam et sed minima temporibus
-                        laudantium. Soluta voluptate sed facere corporis dolores excepturi</p>
+                    <p>Donating is simple and impactful! Choose your preferred way to contribute via Lazada donation vouchers, online banking transfers, or in-kind donations. 
+                        Every contribution, big or small, helps us bring relief and hope to those in need. Together, we can make a difference!</p>
 
                     <div class="icon-box d-flex position-relative">
-                        <i class="fa-brands fa-gratipay flex-shrink-0"></i>
+                    <i class="fa-solid fa-building-columns flex-shrink-0"></i>
                         <div>
-                            <h4><a href="" class="stretched-link">Lorem Ipsum</a></h4>
-                            <p>Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate
-                                non provident</p>
+                            <h4><a href="" class="stretched-link">Bank</a></h4>
+                            <p>Extend a helping hand to those in need—send your calamity donations securely through bank transfer and be a beacon of hope during tough times.</p>
                         </div>
                     </div><!-- End Icon Box -->
 
                     <div class="icon-box d-flex position-relative">
-                        <i class="fa-brands fa-gratipay flex-shrink-0"></i>
+                    <i class="fa-solid fa-globe flex-shrink-0"></i>
                         <div>
-                            <h4><a href="" class="stretched-link">Nemo Enim</a></h4>
-                            <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum
-                                deleniti atque</p>
+                            <h4><a href="" class="stretched-link">Online</a></h4>
+                            <p>Support calamity relief efforts conveniently—make your donations through online banking and help bring hope to those in need with just a few clicks.</p>
                         </div>
                     </div><!-- End Icon Box -->
 
                     <div class="icon-box d-flex position-relative">
-                        <i class="fa-brands fa-gratipay flex-shrink-0"></i>
+                    <i class="fa-solid fa-credit-card flex-shrink-0"></i>
                         <div>
-                            <h4><a href="" class="stretched-link">Dine Pad</a></h4>
-                            <p>Explicabo est voluptatum asperiores consequatur magnam. Et veritatis odit. Sunt aut deserunt minus
-                                aut eligendi omnis</p>
+                            <h4><a href="" class="stretched-link">Donation Voucher</a></h4>
+                            <p>Make a meaningful impact with ease, purchase our donation vouchers on Lazada and bring hope and positive change to those in need!</p>
                         </div>
                     </div><!-- End Icon Box -->
 
                     <div class="icon-box d-flex position-relative">
-                        <i class="fa-brands fa-gratipay flex-shrink-0"></i>
+                    <i class="fa-solid fa-box-open flex-shrink-0"></i>
                         <div>
-                            <h4><a href="" class="stretched-link">Tride clov</a></h4>
-                            <p>Est voluptatem labore deleniti quis a delectus et. Saepe dolorem libero sit non aspernatur odit amet.
-                                Et eligendi</p>
+                            <h4><a href="" class="stretched-link">In-Kind</a></h4>
+                            <p>Share your kindness by donating in kind, contribute essential items to bring comfort and relief to those affected by calamities. Every little bit helps
+                            </p>
                         </div>
                     </div><!-- End Icon Box -->
                 </div>
