@@ -696,6 +696,7 @@ padding: 0 .2em;
 }
 
 .blog .blog-item .blog-img img {
+    padding: 10%;
     transition: 0.5s;
 }
 
@@ -724,6 +725,7 @@ padding: 0 .2em;
 .blog-carousel .owl-stage-outer {
     margin-top: 58px;
 }
+
 
 /* owl btn */
 
