@@ -215,31 +215,60 @@
 
                 <div class="blog-item text-center">
                     <div class="blog-img mb-2">
-                        <img src="{{asset('assets/img/resource1.jpg') }}" class="img-fluid w-100 rounded" alt="">
+                        <img src="{{asset('assets/img/r1.jpg') }}" class="img-fluid w-100 rounded" alt="">
                     </div>
-                    <h4 class="d-inline-block m-2">Resource Type</h4>
+                    <h4 class="d-inline-block m-2">Canned Goods</h4>
                 </div>
 
                 <div class="blog-item text-center">
                     <div class="blog-img mb-2">
-                        <img src="{{asset('assets/img/resource1.jpg') }}" class="img-fluid w-100 rounded" alt="">
+                        <img src="{{asset('assets/img/r2.png') }}" class="img-fluid w-100 rounded" alt="">
                     </div>
-                    <h4 class="d-inline-block m-2">Resource Type</h4>
+                    <h4 class="d-inline-block m-2">Breads</h4>
                 </div>
 
                 <div class="blog-item text-center">
                     <div class="blog-img mb-2">
-                        <img src="{{asset('assets/img/resource1.jpg') }}" class="img-fluid w-100 rounded" alt="">
+                        <img src="{{asset('assets/img/r3.png') }}" class="img-fluid w-100 rounded" alt="">
                     </div>
-                    <h4 class="d-inline-block m-2">Resource Type</h4>
+                    <h4 class="d-inline-block m-2">Instant Noodles</h4>
                 </div>
 
                 <div class="blog-item text-center">
                     <div class="blog-img mb-2">
-                        <img src="{{asset('assets/img/resource1.jpg') }}" class="img-fluid w-100 rounded" alt="">
+                        <img src="{{asset('assets/img/r4.png') }}" class="img-fluid w-100 rounded" alt="">
                     </div>
-                    <h4 class="d-inline-block m-2">Resource Type</h4>
+                    <h4 class="d-inline-block m-2">Bottled Water</h4>
                 </div>
+
+                <div class="blog-item text-center">
+                    <div class="blog-img mb-2">
+                        <img src="{{asset('assets/img/r5.png') }}" class="img-fluid w-100 rounded" alt="">
+                    </div>
+                    <h4 class="d-inline-block m-2">Rice</h4>
+                </div>
+
+                <div class="blog-item text-center">
+                    <div class="blog-img mb-2">
+                        <img src="{{asset('assets/img/r6.png') }}" class="img-fluid w-100 rounded" alt="">
+                    </div>
+                    <h4 class="d-inline-block m-2">First Aid Kits</h4>
+                </div>
+
+                <div class="blog-item text-center">
+                    <div class="blog-img mb-2">
+                        <img src="{{asset('assets/img/r7.png') }}" class="img-fluid w-100 rounded" alt="">
+                    </div>
+                    <h4 class="d-inline-block m-2">Medecines</h4>
+                </div>
+
+                <div class="blog-item text-center">
+                    <div class="blog-img mb-2">
+                        <img src="{{asset('assets/img/r8.png') }}" class="img-fluid w-100 rounded" alt="">
+                    </div>
+                    <h4 class="d-inline-block m-2">Clothes</h4>
+                </div>
+
             </div>
         </div>
     </div>
