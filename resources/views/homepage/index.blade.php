@@ -267,9 +267,9 @@
 
                 <div class="blog-item text-center">
                     <div class="blog-img mb-2">
-                        <img src="{{asset('assets/img/resource1.jpg') }}" class="img-fluid w-100 rounded" alt="">
+                        <img src="{{asset('assets/img/r1.png') }}" class="img-fluid w-100 rounded" alt="">
                     </div>
-                    <h4 class="d-inline-block m-2">Resource Type</h4>
+                    <h4 class="d-inline-block m-2">Canned goods</h4>
                 </div>
 
                 <div class="blog-item text-center">

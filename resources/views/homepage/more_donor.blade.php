@@ -110,14 +110,16 @@
                 <div class="col-lg-7 wow fadeInLeft">
                     <h2>About UniAid Donations</h2>
                     <div class="our-story">
-                        <h3>Donations Details</h3>
+                        <h3>How to Donate?</h3>
                         <p>Inventore aliquam beatae at et id alias. Ipsa dolores amet consequuntur minima quia maxime autem.
                             Quidem id sed ratione. Tenetur provident autem in reiciendis rerum at dolor. Aliquam consectetur
                             laudantium temporibus dicta minus dolor.</p>
                         <ul>
-                            <li><i class="fas fa-handshake me-2" style="color: #ff1f1f;"></i> <span>Ullamco laboris nisi ut aliquip ex ea commo</span></li>
-                            <li><i class="fas fa-handshake me-2" style="color: #ff1f1f;"></i> <span>Duis aute irure dolor in reprehenderit in</span></li>
-                            <li><i class="fas fa-handshake me-2" style="color: #ff1f1f;"></i> <span>Ullamco laboris nisi ut aliquip ex ea</span></li>
+                            <li><i class="fas fa-handshake me-2" style="color: #ff1f1f;"></i> <span>Select option (Quick Donation/Donee Selection)</span></li>  
+                            <li><i class="fas fa-handshake me-2" style="color: #ff1f1f;"></i> <span>Donor Options for Delivery (Pickup, Drop-Off)</span></li>
+                            <li><i class="fas fa-handshake me-2" style="color: #ff1f1f;"></i> <span>Filters and Search (Resource Type, location, Urgency)</span></li>
+                            <li><i class="fas fa-handshake me-2" style="color: #ff1f1f;"></i> <span>Track on-going donation</span></li>
+                            <li><i class="fas fa-handshake me-2" style="color: #ff1f1f;"></i> <span>Recieve SMS notification upon completing</span></li>
                         </ul>
                         <p>Vitae autem velit excepturi fugit. Animi ad non. Eligendi et non nesciunt suscipit repellendus porro in
                             quo eveniet. Molestias in maxime doloremque.</p>
@@ -140,7 +142,7 @@
                 <div class="col-lg-6 img-bg wow fadeInLeft" style="background-image: url({{asset('assets/img/d2.jpg') }});"></div>
 
                 <div class="col-lg-5 d-flex flex-column justify-content-center wow fadeInRight">
-                    <h3>How to Donate in UniAid?</h3>
+                    <h3>Others Ways to Donate: </h3>
                     <p>Choose your preferred way to contribute via Lazada donation vouchers, online banking transfers, or in-kind donations. 
                         Every contribution, big or small, helps us bring relief and hope to those in need. Together, we can make a difference!</p>
 
@@ -148,8 +150,8 @@
                     <i class="fa-solid fa-building-columns flex-shrink-0"></i>
                         <div>
                             <h4><a href="" class="stretched-link">Bank</a></h4>
-                            <p>You can deposit your donation to any of the following bank accounts: BDO (Current Account: 00-023-111-8977),
-                            Metrobank (Current Account: 175-3-175001-468), BPI (Current Account: 4991-0001-44).
+                            <p>You can deposit your donation to any of the following bank accounts:<br> BDO (Account: 00-023-111-8977)<br>
+                            Metrobank (Account: 175-3-175001-468)<br> BPI (Account: 4991-0001-44).
                             </p>
                         </div>
                     </div><!-- End Icon Box -->
@@ -165,7 +167,7 @@
                     <div class="icon-box d-flex position-relative">
                     <i class="fa-solid fa-credit-card flex-shrink-0"></i>
                         <div>
-                            <h4><a href="" class="stretched-link">Donation Voucher</a></h4>
+                            <h4><a href="https://www.lazada.com.ph/shop/philippine-red-cross" target="_blank" class="stretched-link">Lazada Donation Voucher</a></h4>
                             <p>Make a meaningful impact with ease, purchase our donation vouchers on Lazada and bring hope and positive change to those in need!</p>
                         </div>
                     </div><!-- End Icon Box -->
@@ -174,10 +176,24 @@
                     <i class="fa-solid fa-box-open flex-shrink-0"></i>
                         <div>
                             <h4><a href="" class="stretched-link">In-Kind</a></h4>
-                            <p>ADDRESS: 114 7th Avenue East Grace Park, Barangay 105 1403 Caloocan City.
-                                <br> EMAIL: caloocan@redcross.org.ph</p>
+                            <p> &nbsp - For perishable goods, PRC only accepts goods with an expiry date of <br> &nbsp not less than six (6) months.<br>
+                            &nbsp - PRC does not accept rotten, damaged, expired, or decayed goods.<br>
+                            &nbsp   - The PRC also discourages donations of old clothes as we have more <br>&nbsp than enough to go around.<br>
+                                 <B>ADDRESS:</B> Philippine Red Cross 37 EDSA corner Boni Ave. Mandaluyong City 1550 Philippines
+                                <br> <B>EMERGENCY HOTLINE</B>: 143</p>
                         </div>
                     </div><!-- End Icon Box -->
+
+                    <div class="icon-box d-flex position-relative">
+                    <i class="fa-solid fa-capsules flex-shrink-0"></i>
+                        <div>
+                            <h4><a href="" class="stretched-link">Medecines and Food Donations:</a></h4>
+                            <p> 1. In the case of medicines & food,  a certification from the Philippines' Department of Health and the Food & Drug Administration commodities are allowed to be imported without a prior prescription.
+                                <br>2. Expiry should be at least 24 months or 2 years.
+                            </p>
+                        </div>
+                    </div><!-- End Icon Box -->
+
                 </div>
             </div>
         </div>
