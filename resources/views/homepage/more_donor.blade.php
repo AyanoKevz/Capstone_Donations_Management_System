@@ -111,9 +111,8 @@
                     <h2>About UniAid Donations</h2>
                     <div class="our-story">
                         <h3>How to Donate?</h3>
-                        <p>Inventore aliquam beatae at et id alias. Ipsa dolores amet consequuntur minima quia maxime autem.
-                            Quidem id sed ratione. Tenetur provident autem in reiciendis rerum at dolor. Aliquam consectetur
-                            laudantium temporibus dicta minus dolor.</p>
+                        <p>Here are some steps to help bridge the gap between you and others through 
+                            meaningful acts of donation and support using our platform: </p>
                         <ul>
                             <li><i class="fas fa-handshake me-2" style="color: #ff1f1f;"></i> <span>Select option (Quick Donation/Donee Selection)</span></li>  
                             <li><i class="fas fa-handshake me-2" style="color: #ff1f1f;"></i> <span>Donor Options for Delivery (Pickup, Drop-Off)</span></li>
@@ -121,8 +120,10 @@
                             <li><i class="fas fa-handshake me-2" style="color: #ff1f1f;"></i> <span>Track on-going donation</span></li>
                             <li><i class="fas fa-handshake me-2" style="color: #ff1f1f;"></i> <span>Recieve SMS notification upon completing</span></li>
                         </ul>
-                        <p>Vitae autem velit excepturi fugit. Animi ad non. Eligendi et non nesciunt suscipit repellendus porro in
-                            quo eveniet. Molestias in maxime doloremque.</p>
+                        <p>
+                        Join our mission to make a difference! Learn how your contributions can help change lives and support our cause.
+                         Every donation matters, sign up now to learn more and become a valued supporter today.
+                        </p>
 
                         <div class="watch-video d-flex align-items-center position-relative">
                             <i class="fas fa-hand-point-right fa-2xl me-2" style="color: #ff1f1f;"></i>
@@ -139,7 +140,7 @@
         <div class="container">
 
             <div class="row justify-content-around gy-4">
-                <div class="col-lg-6 img-bg wow fadeInLeft" style="background-image: url({{asset('assets/img/d2.jpg') }});"></div>
+                <div class="col-lg-6 img-bg wow fadeInLeft" style="background-image: url({{asset('assets/img/d2.jfif') }});"></div>
 
                 <div class="col-lg-5 d-flex flex-column justify-content-center wow fadeInRight">
                     <h3>Others Ways to Donate: </h3>
