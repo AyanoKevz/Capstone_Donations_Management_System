@@ -141,7 +141,7 @@
 
                 <div class="col-lg-5 d-flex flex-column justify-content-center wow fadeInRight">
                     <h3>How to Donate in UniAid?</h3>
-                    <p>Donating is simple and impactful! Choose your preferred way to contribute via Lazada donation vouchers, online banking transfers, or in-kind donations. 
+                    <p>Choose your preferred way to contribute via Lazada donation vouchers, online banking transfers, or in-kind donations. 
                         Every contribution, big or small, helps us bring relief and hope to those in need. Together, we can make a difference!</p>
 
                     <div class="icon-box d-flex position-relative">
@@ -158,7 +158,7 @@
                     <i class="fa-solid fa-globe flex-shrink-0"></i>
                         <div>
                             <h4><a href="" class="stretched-link">Online</a></h4>
-                            <p>The Philippine Red Cross accepts donations via GCash and PayMaya. Open your app, navigate to the "Pay Bills" or "Donate" section, and search for "Philippine Red Cross."</p>
+                            <p>The Philippine Red Cross accepts donations via GCash and PayMaya. Open your app, navigate to the "Pay Bills" or "Donate" section, and search for "Philippine Red Cross.</p>
                         </div>
                     </div><!-- End Icon Box -->
 
@@ -174,7 +174,7 @@
                     <i class="fa-solid fa-box-open flex-shrink-0"></i>
                         <div>
                             <h4><a href="" class="stretched-link">In-Kind</a></h4>
-                            <p>ADDRESS: 114 7th Avenue East Grace Park, Barangay 105 1403 Caloocan
+                            <p>ADDRESS: 114 7th Avenue East Grace Park, Barangay 105 1403 Caloocan City.
                                 <br> EMAIL: caloocan@redcross.org.ph</p>
                         </div>
                     </div><!-- End Icon Box -->
