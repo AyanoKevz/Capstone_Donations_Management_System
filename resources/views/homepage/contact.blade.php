@@ -105,9 +105,9 @@
         <div class="container py-5">
             <div class="row g-5">
                 <div class="col-xl-6">
-                    <div class="wow fadeInUp" data-wow-delay="0.2s">
-                        <div class="bg-light rounded p-3 mb-5">
-                            <h4 class="text-primary mb-4">Get in Touch</h4>
+                    <div>
+                        <div class="bg-light rounded p-3 mb-5 wow rotateIn">
+                            <h4 class="section-header mb-4">Get in Touch</h4>
                             <div class="row g-4">
                                 <div class="col-md-6">
                                     <div class="contact-add-item">
