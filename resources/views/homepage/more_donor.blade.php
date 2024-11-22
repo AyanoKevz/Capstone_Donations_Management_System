@@ -148,7 +148,9 @@
                     <i class="fa-solid fa-building-columns flex-shrink-0"></i>
                         <div>
                             <h4><a href="" class="stretched-link">Bank</a></h4>
-                            <p>Extend a helping hand to those in need—send your calamity donations securely through bank transfer and be a beacon of hope during tough times.</p>
+                            <p>You can deposit your donation to any of the following bank accounts: BDO (Current Account: 00-023-111-8977),
+                            Metrobank (Current Account: 175-3-175001-468), BPI (Current Account: 4991-0001-44).
+                            </p>
                         </div>
                     </div><!-- End Icon Box -->
 
@@ -156,7 +158,7 @@
                     <i class="fa-solid fa-globe flex-shrink-0"></i>
                         <div>
                             <h4><a href="" class="stretched-link">Online</a></h4>
-                            <p>Support calamity relief efforts conveniently—make your donations through online banking and help bring hope to those in need with just a few clicks.</p>
+                            <p>The Philippine Red Cross accepts donations via GCash and PayMaya. Open your app, navigate to the "Pay Bills" or "Donate" section, and search for "Philippine Red Cross."</p>
                         </div>
                     </div><!-- End Icon Box -->
 
@@ -172,8 +174,8 @@
                     <i class="fa-solid fa-box-open flex-shrink-0"></i>
                         <div>
                             <h4><a href="" class="stretched-link">In-Kind</a></h4>
-                            <p>Share your kindness by donating in kind, contribute essential items to bring comfort and relief to those affected by calamities. Every little bit helps
-                            </p>
+                            <p>ADDRESS: 114 7th Avenue East Grace Park, Barangay 105 1403 Caloocan
+                                <br> EMAIL: caloocan@redcross.org.ph</p>
                         </div>
                     </div><!-- End Icon Box -->
                 </div>
