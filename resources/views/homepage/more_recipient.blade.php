@@ -156,7 +156,7 @@
         <div class="container">
 
             <div class="row justify-content-around gy-4">
-                <div class="col-lg-6 img-bg wow fadeInLeft" style="background-image: url({{asset('assets/img/d4.jpg') }});"></div>
+                <div class="col-lg-6 img-bg wow fadeInLeft" style="background-image: url({{asset('assets/img/d4.jpg')}});"></div>
 
                 <div class="col-lg-5 d-flex flex-column justify-content-center wow fadeInRight">
                     <h3>How to Donate in UniAid?</h3>

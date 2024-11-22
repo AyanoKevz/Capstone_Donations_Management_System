@@ -197,10 +197,6 @@ body{
      color: #ff1f1f;
 }
 
-.breadcrumb-item.active:hover {
-    color: #fff;
-}
-
 a {
     text-decoration: none;
 }
@@ -547,7 +543,7 @@ input.is-invalid, select.is-invalid {
     background-size: cover;
     padding: 140px 0 60px 0;
     transition: 0.5s;
-    border-bottom: 5px solid #1B2A5F;
+    border-bottom: 8px solid #1B2A5F;
 }
 
 @media (min-width: 992px) {
