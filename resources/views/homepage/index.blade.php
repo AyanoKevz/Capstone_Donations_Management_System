@@ -290,7 +290,7 @@
                     <div class="blog-img mb-2">
                         <img src="{{asset('assets/img/r4.png') }}" class="img-fluid w-100 rounded" alt="">
                     </div>
-                    <h4 class="d-inline-block m-2">Bottled Water</h4>
+                    <h4 class="d-inline-block m-2">Bottled Drinks</h4>
                 </div>
 
                 <div class="blog-item text-center">
@@ -319,6 +319,13 @@
                         <img src="{{asset('assets/img/r8.png') }}" class="img-fluid w-100 rounded" alt="">
                     </div>
                     <h4 class="d-inline-block m-2">Clothes</h4>
+                </div>
+
+                <div class="blog-item text-center">
+                    <div class="blog-img mb-2">
+                        <img src="{{asset('assets/img/r9.png') }}" class="img-fluid w-100 rounded" alt="">
+                    </div>
+                    <h4 class="d-inline-block m-2">School Supplies</h4>
                 </div>
 
             </div>
