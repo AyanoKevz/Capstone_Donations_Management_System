@@ -84,11 +84,11 @@
                     <div class="col-lg-6 zoomIn wow" data-wow-delay="0.3s">
                         <div class="row g-3">
                             <div class="col-6">
-                                <img class="p-2 w-100 h-100 img-fluid" src="{{ asset ('assets/img/ab3.jpg') }}" alt=""
+                                <img class="p-2 w-100 h-100 img-fluid" src="{{ asset ('assets/img/rd1.png') }}" alt=""
                                     style="background:#ff1f1f;">
                             </div>
                             <div class="col-6">
-                                <img class="p-2 w-100 h-100 img-fluid" src="{{ asset ('assets/img/ab6.jpg') }}" alt=""
+                                <img class="p-2 w-100 h-100 img-fluid" src="{{ asset ('assets/img/rd2.jpeg') }}" alt=""
                                     style="background:#ff1f1f;">
                             </div>
                         </div>
