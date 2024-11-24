@@ -1,4 +1,17 @@
 document.addEventListener("DOMContentLoaded", function () {
+
+
+  
+var spinner = function () {
+    setTimeout(function () {
+        var spinnerElement = document.getElementById("spinner");
+        if (spinnerElement) {
+            spinnerElement.classList.remove("show");
+        }
+    }, 1);
+};
+spinner();
+
   // Initialize tooltips for nav links with a title attribute
   var tooltipTriggerList = [].slice.call(
     document.querySelectorAll(".sb-sidenav .nav-link[title]")
@@ -38,12 +51,79 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  function updateDateTime() {
-    const breadcrumbItem = document.querySelector(".breadcrumb-item.active");
+ function updateDateTime() {
+  const breadcrumbItem = document.querySelector(".breadcrumb-item.active");
+  if (breadcrumbItem) {
     const now = new Date();
     const timeAndDate = `Date: ${now.toLocaleDateString()} <br>Time: ${now.toLocaleTimeString()}`;
     breadcrumbItem.innerHTML = timeAndDate;
   }
+}
   updateDateTime();
   setInterval(updateDateTime, 1000);
+
+
+  $(function() {
+      $("#example1").DataTable({
+        "responsive": true,
+        "lengthChange": false,
+        "autoWidth": false,
+        "buttons": ["copy", "csv", "excel", "pdf", "print"]
+      }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+    });
+
+
+  if ($("#admin-login").length > 0) {
+        $("#admin-login").validate({
+            rules: {
+                username: {
+                    required: true,
+                    minlength: 8
+                },
+                password: {
+                    required: true,
+                    minlength: 8
+                },
+                cpassword: {
+                    required: true,
+                    equalTo: "#password"
+                },
+                email: {
+                    required: true,
+                    email: true
+                }
+            },
+            messages: {
+                username: {
+                    required: "Please enter a username",
+                    minlength: "Your username must be at least 8 characters long"
+                },
+                password: {
+                    required: "Please enter a password",
+                    minlength: "Your password must be at least 8 characters long"
+                },
+                cpassword: {
+                    required: "Please confirm your password",
+                    equalTo: "Passwords do not match"
+                },
+                email: {
+                    required: "Please enter a valid email address",
+                    email: "Please enter a valid email address"
+                }
+            },
+            highlight: function (element) {
+                $(element).addClass('is-invalid').removeClass('is-valid');
+            },
+            unhighlight: function (element) {
+                $(element).addClass('is-valid').removeClass('is-invalid');
+            },
+            errorPlacement: function (error, element) {
+                error.insertAfter(element);
+            },
+            submitHandler: function (form) {
+                form.submit();
+            }
+        });
+    }
+
 });

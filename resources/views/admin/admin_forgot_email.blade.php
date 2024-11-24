@@ -23,29 +23,29 @@
               <form id="admin-login">
                 <div class="d-flex align-items-center justify-content-center  mb-2 pb-1 flex-wrap">
                   <img src="{{ asset('assets/img/systemLogo.png') }}" alt="" class="me-3 forgotlogo-icon">
-                  <span class="h1 fw-bold mb-1">New Password</span>
+                  <span class="h1 fw-bold mb-1">Find Your Account</span>
                 </div>
-                <h5 class="fw-normal mb-3 text-center">Please enter a new password.
+                <h5 class="fw-normal mb-3 text-center">Enter your email address to search for your account.
                 </h5>
                 <div class="input-group mb-3">
-                  <input type="password" name="password" autocomplete="off" class="input" id="password" required>
-                  <label class="user-label" for="password">New Password</label>
-                </div>
-                <div class="input-group mb-3">
-                  <input type="password" name="cpassword" autocomplete="off" class="input" id="cpassword" required>
-                  <label class="user-label" for="password">Confirm Password</label>
+                  <input type="text" name="email" autocomplete="off" class="input" id="email" required>
+                  <label class="user-label" for="email">Email Address</label>
                 </div>
             </div>
+
             <div class="card-footer d-flex justify-content-end mb-2">
               <a class="btn btn-secondary ms-2" href="{{route('admin.login')}}">Cancel</a>
-              <button class="btn btn-success ms-2" type="submit">Submit</button>
+              <button class="btn btn-success ms-2" type="submit">Search</button>
             </div>
+
             </form>
           </div>
         </div>
       </div>
     </div>
   </section>
+
+
 
   <script src="{{ asset('lib/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
   <script src="{{ asset('lib/jquery/jquery.min.js') }}"></script>

@@ -189,7 +189,7 @@
                                         <div class="form-floating">
                                             <input type="text" class="form-control" id="subject" placeholder="Project"
                                                 name="subject" autocomplete="off">
-                                            <label for="subject">Subject</label>
+                                            <label for="subject">Subject (Optional)</label>
                                         </div>
                                     </div>
                                     <div class="col-12">

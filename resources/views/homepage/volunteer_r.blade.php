@@ -15,13 +15,16 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Roboto:wght@400;500;700;900&display=swap"
         rel="stylesheet">
     <!-- Libraries Stylesheet -->
-    <link rel="stylesheet" href="../lib/animate/animate.min.css" />
-    <link href="../lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link rel="icon" href="{{ asset ('assets/img/systemLogo.png') }}" type="image/png">
+    <!-- Libraries Stylesheet -->
+    <link rel="stylesheet" href="{{ asset('lib/animate/animate.min.css') }}" />
+    <link href="{{ asset('lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
     <!-- Customized Bootstrap Stylesheet -->
-    <link rel="stylesheet" href="../lib/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ asset('lib/bootstrap/css/bootstrap.min.css') }}">
     <!-- Template Stylesheet -->
-    <link href="../assets/homepage/css/style.css" rel="stylesheet">
-    <script src="../lib/face-api.js/dist/face-api.min.js"></script>
+    <link href="{{ asset('assets/homepage/css/style.css') }}" rel="stylesheet">
+    <!-- Face API JS -->
+    <script src="{{ asset('lib/face-api.js/dist/face-api.min.js') }}"></script>
 </head>
 
 <body>
@@ -386,7 +389,7 @@
                                     </ul>
                                 </div>
                                 <div class="d-flex justify-content-center">
-                                    <img src="../assets/img/Id.png" id="ins-photo" alt="" class="w-50">
+                                    <img src="{{ asset ('assets/img/Id.png') }}" id="ins-photo" alt="" class="w-50">
                                 </div>
                             </div>
                             <!-- Take a Photo Section -->
@@ -405,7 +408,7 @@
                                     <input type="file" id="imageFile" name="imageFile" class="preview-file"
                                         style="display: none;">
                                     <div id="preview" style="box-sizing: content-box;">
-                                        <img src="../assets/img/no_profile.png" style="width: 300px; height:250px;"
+                                        <img src="{{ asset ('assets/img/no_profile.png') }}" style="width: 300px; height:250px;"
                                             alt="">
                                     </div>
                                 </div>

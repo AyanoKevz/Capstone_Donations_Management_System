@@ -11,17 +11,31 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Roboto:wght@400;500;700;900&display=swap"
     rel="stylesheet">
-    <link rel="icon" href="{{ asset ('assets/img/systemLogo.png') }}" type="image/png">
-  <link rel="stylesheet" href="../lib/bootstrap/css/bootstrap.min.css">
-  <link href="../assets/admin/css/dashboard.css" rel="stylesheet">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <link rel="icon" href="{{ asset ('assets/img/systemLogo.png') }}" type="image/png">
+  <link rel="stylesheet" href="{{ asset('lib/bootstrap/css/bootstrap.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('lib/datatables/datatables.min.css') }}">
+  <link rel="stylesheet" href="{{ asset ('assets/admin/css/dashboard.css') }}">
 </head>
+
+<!-- Spinner Start -->
+<div id="spinner"
+  class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+  <div class="loading">
+    <div class="d1"></div>
+    <div class="d2"></div>
+    <span class="loading-text">Loading...</span>
+  </div>
+</div>
+<!-- Spinner End -->
 
 <body class="sb-nav-fixed">
   <nav class="sb-topnav navbar navbar-expand navbar-dark bg-logo1">
     <div class="container-fluid">
       <!-- Navbar Brand-->
       <a class="navbar-brand mx-5 p-0" href="#">
-        <img src="../assets/img/systemLogo.png" alt="Logo" class="d-inline-block">
+        <img src="{{ asset ('assets/img/systemLogo.png') }}" alt="Logo" class="d-inline-block">
         <span class="navbar-title">UniAid</span>
       </a>
       <!-- Sidebar Toggle-->
@@ -36,7 +50,7 @@
               data-bs-toggle="dropdown" aria-expanded="false">
 
               <div class="nav-profile-img">
-                <img src="../assets/img/no_profile.png" alt="image">
+                <img src="{{ asset ('assets/img/no_profile.png') }}" alt="image">
                 <span class="availability-status online"></span>
               </div>
               <div class="nav-profile-text ms-2">
@@ -71,7 +85,7 @@
             <!-- Profile Section -->
             <div class="d-flex justify-content-center align-items-center py-4 border-bottom border-light nav-profile">
               <div class="nav-profile-img">
-                <img src="../assets/img/no_profile.png" alt="image">
+                <img src="{{ asset ('assets/img/no_profile.png') }}" alt="image">
                 <span class="availability-status online"></span>
               </div>
               <div class="nav-profile-text">
@@ -91,12 +105,18 @@
               </div>
               <span>Users</span>
             </a>
+            <a class="nav-link" href="#" title="Users">
+              <div class="sb-nav-link-icon">
+                <i class="fas fa-message"></i>
+              </div>
+              <span>Inquiries</span>
+            </a>
             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#appointment"
               aria-expanded="false" aria-controls="appointment" title="Appointment">
               <div class="sb-nav-link-icon">
                 <i class="fas fa-calendar-check"></i>
               </div>
-              <span>Appointment</span>
+              <span>Dropdown</span>
               <div class="sb-sidenav-collapse-arrow">
                 <i class="fas fa-angle-down"></i>
               </div>
@@ -108,13 +128,13 @@
                   <div class="sb-nav-link-icon">
                     <i class="far fa-circle nav-icon"></i>
                   </div>
-                  <span>Appointment Scheduled</span>
+                  <span>Dropdown 1</span>
                 </a>
                 <a class="nav-link" href="inquiries.php" title="Inquiries">
                   <div class="sb-nav-link-icon">
                     <i class="far fa-circle nav-icon"></i>
                   </div>
-                  <span>Inquiries</span>
+                  <span>Dropdown 2</span>
                 </a>
               </nav>
             </div>
@@ -128,12 +148,12 @@
     <!-- Content -->
     <div id="layoutSidenav_content">
       <main>
-        <div class="container-fluid px-4">
+        <div class="container-fluid p-4">
           <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item active">Dashboard</li>
           </ol>
           <h1 class="mt-3 mb-4">Dashboard</h1>
-          <!-- Main content goes here -->
+
         </div>
       </main>
       <footer class="py-3 bg-dark mt-auto">
@@ -147,9 +167,15 @@
   </div>
 
   <!-- Scripts -->
-  <script src="../lib/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="../lib/fontawesome/all.js"></script>
-  <script src="../assets/admin/js/admin.js"></script>
+  <script src="{{ asset('lib/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+  <script src="{{ asset('lib/fontawesome/all.js') }}"></script>
+  <script src="{{ asset('lib/jquery/jquery.min.js') }}"></script>
+  <script src="{{ asset('lib/datatables/datatables.min.js') }}"></script>
+  <script src="{{ asset('assets/admin/js/admin.js') }}"></script>
+
+  <script>
+
+  </script>
 </body>
 
 </html>

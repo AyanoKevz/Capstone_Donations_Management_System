@@ -329,7 +329,7 @@
                                     </ul>
                                 </div>
                                 <div class="d-flex justify-content-center">
-                                    <img src="../assets/img/Id.png" id="ins-photo" alt="" class="w-50">
+                                    <img src="{{ asset ('assets/img/Id.png') }}" id="ins-photo" alt="" class="w-50">
                                 </div>
                             </div>
                             <!-- Take a Photo Section -->
@@ -348,7 +348,7 @@
                                     <input type="file" id="imageFile" name="imageFile" class="preview-file"
                                         style="display: none;" required>
                                     <div id="preview" style="box-sizing: content-box;">
-                                        <img src="../assets/img/no_profile.png" style="width: 300px; height:250px;"
+                                        <img src="{{ asset ('assets/img/no_profile.png') }}" style="width: 300px; height:250px;"
                                             alt="">
                                     </div>
                                 </div>

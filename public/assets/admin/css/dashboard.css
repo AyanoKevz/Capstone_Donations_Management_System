@@ -155,6 +155,89 @@ button:not(:disabled),
   }
 }
 
+/*** Spinner Start ***/
+/*** Spinner ***/
+#spinner {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .5s ease-out, visibility 0s linear .5s;
+    z-index: 99999;
+}
+
+#spinner.show {
+    transition: opacity .5s ease-out, visibility 0s linear 0s;
+    visibility: visible;
+    opacity: 1;
+}
+
+.loading {
+  width: 105px; 
+  height: 105px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.d1, .d2 {
+  border: 5px solid #ff1f1f;
+  border-radius: 50%;
+}
+
+.loading .d1 {
+  width:100px; 
+  height:100px; 
+  position: absolute;
+  border-left-color: transparent;
+  animation: load161 1s linear infinite;
+}
+
+.loading .d2 {
+  width:85px; 
+  height:85px; 
+  border-top-color: transparent;
+  border-right-color: transparent;
+  margin: 10px;
+  animation: load2812 1.5s linear infinite;
+}
+
+.loading-text {
+  font-size: 14px; 
+  color: #ff1f1f;
+  font-weight: 600; 
+  letter-spacing: 1px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  text-align: center;
+}
+
+@keyframes load161 {
+  0% {
+    transform: rotate(0);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes load2812 {
+  0% {
+    transform: rotate(0);
+  }
+
+  100% {
+    transform: rotate(-360deg);
+  }
+}
+
+
+/*** Spinner End ***/
+
 .collapse:not(.show) {
   display: none;
 }
@@ -543,6 +626,7 @@ body.sb-sidenav-toggled #layoutSidenav #layoutSidenav_nav {
 
 body.sb-sidenav-toggled #layoutSidenav_content {
   margin-left: -140px !important;
+  transition: 0.15s ease-in-out;
 }
 
 body.sb-sidenav-toggled .sb-sidenav .nav-link .sb-nav-link-icon {
@@ -554,4 +638,55 @@ body.sb-sidenav-toggled .sb-sidenav .nav-link .sb-nav-link-icon {
 body.sb-sidenav-toggled .sb-sidenav .nav-profile-text,
 body.sb-sidenav-toggled .sb-sidenav .nav-link span {
   display: none;
+}
+
+
+/*Inquries*/
+
+.card-title {
+  float: left;
+  font-size: 1.1rem;
+  font-weight: 400;
+  margin: 0;
+}
+
+.card-primary.card-outline {
+  border-top: 3px solid #007bff;
+}
+
+
+.mailbox-messages > .table {
+  margin: 0;
+}
+
+.mailbox-controls {
+  padding: 5px;
+}
+
+.mailbox-controls.with-border {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.mailbox-read-info {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+  padding: 10px;
+}
+
+.mailbox-read-info h3 {
+  font-size: 20px;
+  margin: 0;
+}
+
+.mailbox-read-info h5 {
+  margin: 0;
+  padding: 5px 0 0;
+}
+
+.mailbox-read-time {
+  color: #999;
+  font-size: 13px;
+}
+
+.mailbox-read-message {
+  padding: 10px;
 }

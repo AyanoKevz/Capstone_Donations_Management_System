@@ -67,8 +67,12 @@ Route::get('/admin/login/forgot', function () {
     return view('admin.admin_forgot');
 })->name('admin.forgot');
 
-
-// Admin Forgot Page
+// Admin Dashboard Page
 Route::get('/admin/dashboard', function () {
     return view('admin.dashboard');
 })->name('admin.dashboard');
+
+// Admin Dashboard Page
+Route::get('/admin/email', function () {
+    return view('admin.admin_forgot_email');
+})->name('admin.email');

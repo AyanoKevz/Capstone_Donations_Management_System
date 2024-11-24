@@ -5,17 +5,17 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>UniAid - Donor Portal</title>
-    <link rel="icon" href="../../assets/img/systemLogo.png" type="image/png">
+    <link rel="icon" href="{{ asset ('assets/img/systemLogo.png') }}" type="image/png">
     <!-- Google Font-->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Roboto:wght@400;500;700;900&display=swap"
         rel="stylesheet">
-    <!-- Bootstrap -->
-    <link rel="stylesheet" href="../../lib/bootstrap/css/bootstrap.min.css">
-    <!-- CSS style -->
-    <link rel="stylesheet" href="../../assets/users/css/home_donor.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{{ asset('lib/bootstrap/css/bootstrap.min.css') }}">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ asset('assets/users/css/home_donor.css') }}">
 </head>
 
 <body class="hold-transition sidebar-collapse layout-top-nav">
@@ -24,7 +24,7 @@
         <nav class="main-header navbar navbar-expand-lg bg-body-tertiary navbar-light navbar-white">
             <div class="container-fluid">
                 <a href="#" class="navbar-brand">
-                    <img src="../../assets/img/systemLogo.png" alt="AdminLTE Logo" class="brand-image"
+                    <img src="{{ asset('assets/img/systemLogo.png') }}" alt="Logo" class="brand-image"
                         style="opacity: .8">
                     <span class="navbar-title">UniAid</span>
                 </a>
@@ -60,7 +60,7 @@
                         role="button" data-bs-toggle="dropdown" aria-expanded="false">
 
                         <div class="nav-profile-img">
-                            <img src="../../assets/img/no_profile.png" alt="image">
+                            <img src="{{ asset('assets/img/no_profile.png') }}" alt="image">
                             <span class="availability-status online"></span>
                         </div>
                         <div class="nav-profile-text">
@@ -89,7 +89,7 @@
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
             <a href="home.html" class="brand-link">
-                <img src="../../assets/img/systemLogo.png" alt="AdminLTE Logo" class="brand-image img-circle"
+                <img src="{{ asset('assets/img/systemLogo.png') }}" alt="Logo" class="brand-image img-circle"
                     style="opacity: .8">
                 <span class="brand-text">UniAid</span>
             </a>
@@ -98,7 +98,7 @@
                 <!-- Sidebar user (optional) -->
                 <div class="user-panel my-3 pb-3  d-flex justify-content-center">
                     <div class="image">
-                        <img src="../../assets/img/no_profile.png" class="img-circle elevation-2" alt="User Image">
+                        <img src="{{ asset('assets/img/no_profile.png') }}" class="img-circle elevation-2" alt="User Image">
                     </div>
                     <div class="info">
                         <a href="#" class="d-block">Username</a>
@@ -240,14 +240,13 @@
     <!-- ./wrapper -->
 
     <!-- jQuery -->
-    <script src="../../lib/jquery/jquery.min.js"></script>
-    <!-- Bootstrap 5-->
-    <script src="../../lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ asset('lib/jquery/jquery.min.js') }}"></script>
+    <!-- Bootstrap 5 -->
+    <script src="{{ asset('lib/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <!-- Fontawesome 6 -->
-    <script src="../../lib/fontawesome/all.js"></script>
+    <script src="{{ asset('lib/fontawesome/all.js') }}"></script>
     <!-- User JS -->
-    <script src="../../assets/users/js/user.js"></script>
-
+    <script src="{{ asset('assets/users/js/user.js') }}"></script>
 </body>
 
 </html>

@@ -446,7 +446,7 @@ $("form").validate({
     messages: {
         username: {
             required: "Please enter a username",
-            minlength: "Your username must be at least 5 characters long"
+            minlength: "Your username must be at least 8 characters long"
         },
         password: {
             required: "Please provide a password",
@@ -505,7 +505,7 @@ $("#donor-form").validate({
     messages: {
         username: {
             required: "Please enter a username",
-            minlength: "Your username must be at least 5 characters long"
+            minlength: "Your username must be at least 8 characters long"
         },
         password: {
             required: "Please provide a password",
@@ -540,7 +540,7 @@ $("#donee-form").validate({
     messages: {
         username: {
             required: "Please enter a username",
-            minlength: "Your username must be at least 5 characters long"
+            minlength: "Your username must be at least 8 characters long"
         },
         password: {
             required: "Please provide a password",
@@ -576,7 +576,7 @@ $("#vol-form").validate({
     messages: {
         username: {
             required: "Please enter a username",
-            minlength: "Your username must be at least 5 characters long"
+            minlength: "Your username must be at least 8 characters long"
         },
         password: {
             required: "Please provide a password",
@@ -696,9 +696,9 @@ toggleCameraBtn.addEventListener('click', () => {
 // Load face-api models
 async function loadModels() {
   try {
-    await faceapi.nets.tinyFaceDetector.loadFromUri('../lib/face-api.js/weights');
-    await faceapi.nets.faceLandmark68Net.loadFromUri('../lib/face-api.js/weights');
-    await faceapi.nets.faceRecognitionNet.loadFromUri('../lib/face-api.js/weights');
+    await faceapi.nets.tinyFaceDetector.loadFromUri('/lib/face-api.js/weights');
+    await faceapi.nets.faceLandmark68Net.loadFromUri('/lib/face-api.js/weights');
+    await faceapi.nets.faceRecognitionNet.loadFromUri('/lib/face-api.js/weights');
   } catch (error) {
     console.error('Error loading face-api models:', error);
   }

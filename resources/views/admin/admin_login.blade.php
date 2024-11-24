@@ -31,7 +31,7 @@
 
               <div class="col-md-6 col-lg-7 d-flex align-items-center">
                 <div class="card-body p-4 p-lg-4 text-black">
-                  <form>
+                  <form id="admin-login">
                     <div class="d-flex align-items-center justify-content-center  mb-3 pb-1">
                       <i class="fa-solid fa-user-tie fa-3x" style="color: #000000;"></i>
                       <span class="h1 fw-bold my-2 mx-4">Admin Login</span>
@@ -47,7 +47,7 @@
                     </div>
 
                     <div class="pt-1 mb-2 d-grid">
-                      <button type="submit" class="btn btn-success" type="button">Login</button>
+                      <button type="submit" class="btn btn-success">Login</button>
                     </div>
 
                     <div class="d-flex justify-content-center links">
@@ -66,7 +66,9 @@
   </section>
 
   <script src="{{ asset('lib/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-  <script src="{{ asset('lib/fontawesome/all.js') }}"></script>
+  <script src="{{ asset('lib/jquery/jquery.min.js') }}"></script>
+  <script src="{{ asset('lib/jquery/jquery.validate.min.js') }}"></script>
+  <script src="{{ asset('assets/admin/js/admin.js') }}"></script>
 </body>
 
 </html>
