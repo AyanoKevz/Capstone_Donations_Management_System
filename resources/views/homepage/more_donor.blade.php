@@ -145,14 +145,14 @@
                 <div class="col-lg-5 d-flex flex-column justify-content-center wow fadeInRight">
                     <h3>Others Ways to Donate: </h3>
                     <p>Choose your preferred way to contribute via Lazada donation vouchers, online banking transfers, or in-kind donations. 
-                        Every contribution, big or small, helps us bring relief and hope to those in need. Together, we can make a difference!</p>
+                        Every contribution, big or small, helps us bring relief and hope to those in need.</p>
 
                     <div class="icon-box d-flex position-relative">
                     <i class="fa-solid fa-building-columns flex-shrink-0"></i>
                         <div>
-                            <h4><a href="" class="stretched-link">Bank</a></h4>
-                            <p>You can deposit your donation to any of the following bank accounts:<br> BDO (Account: 00-023-111-8977)<br>
-                            Metrobank (Account: 175-3-175001-468)<br> BPI (Account: 4991-0001-44).
+                            <h4><a href="" class="stretched-link">Bank Donations</a></h4>
+                            <p>You can deposit your donation to any of the following bank accounts:<br> - BDO (Account: 00-023-111-8977)<br>
+                            - Metrobank (Account: 175-3-175001-468)<br> - BPI (Account: 4991-0001-44).
                             </p>
                         </div>
                     </div><!-- End Icon Box -->
@@ -160,16 +160,23 @@
                     <div class="icon-box d-flex position-relative">
                     <i class="fa-solid fa-globe flex-shrink-0"></i>
                         <div>
-                            <h4><a href="" class="stretched-link">Online</a></h4>
-                            <p>The Philippine Red Cross accepts donations via GCash and PayMaya. Open your app, navigate to the "Pay Bills" or "Donate" section, and search for "Philippine Red Cross.</p>
+                            <h4><a href="" class="stretched-link">Online Banking</a></h4>
+                            <p>The Philippine Red Cross accepts donations via GCash and PayMaya:</p>
+                            <div>
+                                <!-- Add QR Code image -->
+                                <img src="{{ asset ('assets/img/gcash.jpg') }}" alt="QR code for donations" style="width: 200px; height: 220px; margin-left: 20px;">
+                                <img src="{{ asset ('assets/img/maya.webp') }}" alt="QR code for donations" style="width: 200px; height: 220px; margin-left: 20px;">
+                            </div>
                         </div>
                     </div><!-- End Icon Box -->
 
                     <div class="icon-box d-flex position-relative">
                     <i class="fa-solid fa-credit-card flex-shrink-0"></i>
                         <div>
-                            <h4><a href="https://www.lazada.com.ph/shop/philippine-red-cross" target="_blank" class="stretched-link">Lazada Donation Voucher</a></h4>
-                            <p>Make a meaningful impact with ease, purchase our donation vouchers on Lazada and bring hope and positive change to those in need!</p>
+                            <h4><a href="https://www.lazada.com.ph/shop/philippine-red-cross/" target="_blank" class="stretched-link">Lazada Donation Voucher</a></h4>
+                            <p>Make a meaningful impact with simplicity, purchase our donation vouchers and bring hope 
+                                and positive change to those in need on</p>
+                            <a href="https://www.lazada.com.ph/shop/philippine-red-cross/" target="_blank"><u>Lazada!</u></a>.
                         </div>
                     </div><!-- End Icon Box -->
 
