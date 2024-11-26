@@ -105,6 +105,17 @@
         <div class="container py-5">
             <div class="row g-5">
                 <div class="col-xl-6">
+                    @if (session('success'))
+                    <div id="alert-success" class="alert alert-success wow fadeInLeft">
+                        <i class="fa-solid fa-circle-check me-3"></i>{{ session('success') }}
+                    </div>
+                    @endif
+
+                    @if (session('error'))
+                    <div id="alert-error" class="alert alert-error wow fadeInLeft">
+                        <i class="fa-solid fa-circle-xmark me-3"></i>{{ session('error') }}
+                    </div>
+                    @endif
                     <div>
                         <div class="bg-light rounded p-3 mb-5 wow rotateIn">
                             <h4 class="section-header mb-4">Get in Touch</h4>
@@ -162,47 +173,41 @@
                                 will be happy to assist you. Whether it's inquiries about our services or any other
                                 support, we’re here to help!</p>
 
-                            <form method="post" action="#">
+                            <form method="POST" action="{{ route('inquiry.insert') }}">
+                                @csrf
                                 <div class="row g-4">
                                     <div class="col-lg-12 col-xl-6">
                                         <div class="form-floating">
-                                            <input type="text" class="form-control" id="name" placeholder="Your Name"
-                                                name="name" required>
+                                            <input type="text" class="form-control" id="name" placeholder="Your Name" name="name" required>
                                             <label for="name">Your Name</label>
                                         </div>
                                     </div>
                                     <div class="col-lg-12 col-xl-6">
                                         <div class="form-floating">
-                                            <input type="email" class="form-control" id="email" placeholder="Your Email"
-                                                name="email" required>
+                                            <input type="email" class="form-control" id="email" placeholder="Your Email" name="email" required>
                                             <label for="email">Your Email</label>
                                         </div>
                                     </div>
                                     <div class="col-lg-12 col-xl-6">
                                         <div class="form-floating">
-                                            <input type="number" class="form-control" id="contact" placeholder="contact"
-                                                name="contact" required>
+                                            <input type="number" class="form-control" id="contact" placeholder="Contact" name="contact" required>
                                             <label for="contact">Contact No</label>
                                         </div>
                                     </div>
                                     <div class="col-lg-12 col-xl-6">
                                         <div class="form-floating">
-                                            <input type="text" class="form-control" id="subject" placeholder="Project"
-                                                name="subject" autocomplete="off">
+                                            <input type="text" class="form-control" id="subject" placeholder="Subject" name="subject">
                                             <label for="subject">Subject (Optional)</label>
                                         </div>
                                     </div>
                                     <div class="col-12">
                                         <div class="form-floating">
-                                            <textarea class="form-control" placeholder="Leave a message here"
-                                                id="message" name="message" style="height: 160px" required></textarea>
+                                            <textarea class="form-control" placeholder="Leave a message here" id="message" name="message" required style="height: 160px"></textarea>
                                             <label for="message">Message</label>
                                         </div>
-
                                     </div>
                                     <div class="col-12">
-                                        <button type="submit" class="btn btn-primary w-100 py-3"
-                                            name="submit-message">Send Message</button>
+                                        <button type="submit" class="btn btn-primary w-100 py-3">Send Message</button>
                                     </div>
                                 </div>
                             </form>

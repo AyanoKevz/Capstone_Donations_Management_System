@@ -1,6 +1,11 @@
 (function ($) {
     "use strict";
 
+     setTimeout(() => {
+            $('#alert-success').fadeOut();
+            $('#alert-error').fadeOut();
+        }, 3000);
+
     // Spinner
     var spinner = function () {
         setTimeout(function () {
@@ -371,8 +376,8 @@ function resetDropdown(selector, defaultText) {
 
 
 $.validator.addMethod("mobilePH", function(value, element) {
-    return this.optional(element) || /^09\d{9}$/.test(value); // Regex for 09 followed by 9 digits
-}, "Please enter a valid mobile number starting with 09 and 11 digits long.");
+    return this.optional(element) || /^09\d{9}$/.test(value); 
+});
 
 $("form").validate({
     rules: {
@@ -596,6 +601,8 @@ $("#vol-form").validate({
         form.submit();
     }
 });
+
+    
 
 })(jQuery);
 

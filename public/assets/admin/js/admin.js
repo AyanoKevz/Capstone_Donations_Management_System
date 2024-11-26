@@ -20,11 +20,11 @@ spinner();
     return new bootstrap.Tooltip(tooltipTriggerEl, {
       placement: "right",
       trigger: "hover",
-      container: "body", // Ensure the tooltip is appended to the body to avoid overflow issues
+      container: "body", 
     });
   });
 
-  // Function to update tooltip activation based on sidebar state
+
   function updateTooltips() {
     var isMinimized = document.body.classList.contains("sb-sidenav-toggled");
     tooltipList.forEach(function (tooltip) {
@@ -32,12 +32,11 @@ spinner();
         tooltip.enable();
       } else {
         tooltip.disable();
-        tooltip.hide(); // Hide any visible tooltips
+        tooltip.hide(); 
       }
     });
   }
 
-  // Initial tooltip activation
   updateTooltips();
 
   // Toggle the sidebar
@@ -125,5 +124,20 @@ spinner();
             }
         });
     }
+        $(document).ready(function () {
+      $('#compose-textarea').summernote({
+        placeholder: 'Write your message here...',
+        tabsize: 2,
+        height: 300,
+        toolbar: [
+          ['style', ['bold', 'italic', 'underline', 'clear']],
+          ['font', ['strikethrough', 'superscript', 'subscript']],
+          ['fontsize', ['fontsize']],
+          ['color', ['color']],
+          ['para', ['ul', 'ol', 'paragraph']],
+          ['height', ['height']],
+        ]
+      });
+    });
 
 });

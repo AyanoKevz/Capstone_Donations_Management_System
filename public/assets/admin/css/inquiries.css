@@ -74,8 +74,9 @@ small,
 
 a {
   color: var(--bs-link-color);
-  text-decoration: underline;
+  text-decoration: none;
 }
+
 a:hover {
   color: var(--bs-link-hover-color);
 }
@@ -654,4 +655,52 @@ body.sb-sidenav-toggled .sb-sidenav .nav-link .sb-nav-link-icon {
 body.sb-sidenav-toggled .sb-sidenav .nav-profile-text,
 body.sb-sidenav-toggled .sb-sidenav .nav-link span {
   display: none;
+}
+
+
+/*Inquries*/
+
+.mailbox-messages > .table {
+  margin: 0;
+}
+
+.mailbox-controls {
+  padding: 5px;
+}
+
+.mailbox-controls.with-border {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.mailbox-read-info {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+  padding: 10px;
+}
+
+.mailbox-read-info h3 {
+  font-size: 20px;
+  margin: 0;
+}
+
+.mailbox-read-info h5 {
+  margin: 0;
+  padding: 5px 0 0;
+}
+
+.mailbox-read-time {
+  color: #999;
+  font-size: 13px;
+}
+
+.mailbox-read-message {
+  padding: 10px;
+}
+
+.email-btn {
+ background-color: #f8f9fa;
+    border-color: #ddd;
+    color: #444;
+}
+.email-btn:hover {
+ background-color: #d4d4d4;
 }

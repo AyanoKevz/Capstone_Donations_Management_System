@@ -15,8 +15,8 @@
     href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <link rel="icon" href="{{ asset ('assets/img/systemLogo.png') }}" type="image/png">
   <link rel="stylesheet" href="{{ asset('lib/bootstrap/css/bootstrap.min.css') }}">
-  <link rel="stylesheet" href="{{ asset('lib/datatables/datatables.min.css') }}">
   <link rel="stylesheet" href="{{ asset ('assets/admin/css/dashboard.css') }}">
+
 </head>
 
 <!-- Spinner Start -->
@@ -93,51 +93,169 @@
               </div>
             </div>
             <!-- Nav Links -->
-            <a class="nav-link active" href="dashboard.php" title="Dashboard">
+            <a class="nav-link active" href="{{ route ('admin.dashboard')}}" title="Dashboard">
               <div class="sb-nav-link-icon">
                 <i class="fas fa-tachometer-alt"></i>
               </div>
               <span>Dashboard</span>
             </a>
-            <a class="nav-link" href="#" title="Users">
+            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#admin"
+              aria-expanded="false" aria-controls="admin" title="Manage Admin">
+              <div class="sb-nav-link-icon">
+                <i class="fas fa-user"></i>
+              </div>
+              <span>Admin Settings </span>
+              <div class="sb-sidenav-collapse-arrow">
+                <i class="fas fa-angle-down"></i>
+              </div>
+            </a>
+            <div class="collapse" id="admin" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+              <nav class="sb-sidenav-menu-nested nav">
+                <a class="nav-link" href="#" title="Admin Profile">
+                  <div class="sb-nav-link-icon">
+                    <i class="far fa-circle nav-icon"></i>
+                  </div>
+                  <span>Admin Profile</span>
+                </a>
+                <a class="nav-link" href="#" title="Admin Accounts">
+                  <div class="sb-nav-link-icon">
+                    <i class="far fa-circle nav-icon"></i>
+                  </div>
+                  <span>Admin Accounts</span>
+                </a>
+              </nav>
+            </div>
+
+            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#user"
+              aria-expanded="false" aria-controls="user" title="Manage User">
               <div class="sb-nav-link-icon">
                 <i class="fas fa-users"></i>
               </div>
-              <span>Users</span>
+              <span>Manage Users</span>
+              <div class="sb-sidenav-collapse-arrow">
+                <i class="fas fa-angle-down"></i>
+              </div>
             </a>
-            <a class="nav-link" href="#" title="Users">
+            <div class="collapse" id="user" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+              <nav class="sb-sidenav-menu-nested nav">
+                <a class="nav-link" href="#" title="Donors">
+                  <div class="sb-nav-link-icon">
+                    <i class="far fa-circle nav-icon"></i>
+                  </div>
+                  <span>Donors</span>
+                </a>
+                <a class="nav-link" href="#" title="Donee">
+                  <div class="sb-nav-link-icon">
+                    <i class="far fa-circle nav-icon"></i>
+                  </div>
+                  <span>Donee</span>
+                </a>
+                <a class="nav-link" href="#" title="Volunteer">
+                  <div class="sb-nav-link-icon">
+                    <i class="far fa-circle nav-icon"></i>
+                  </div>
+                  <span>Volunteer</span>
+                </a>
+              </nav>
+              <a class="nav-link" href="#" title="Verify Accounts">
+                <div class="sb-nav-link-icon">
+                  <i class="far fa-circle nav-icon"></i>
+                </div>
+                <span>Verify Accounts</span>
+              </a>
+            </div>
+            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#resources"
+              aria-expanded="false" aria-controls="resources" title="Manage Resources">
+              <div class="sb-nav-link-icon">
+                <i class="fas fa-list-check"></i>
+              </div>
+              <span>Manage Resources</span>
+              <div class="sb-sidenav-collapse-arrow">
+                <i class="fas fa-angle-down"></i>
+              </div>
+            </a>
+            <div class="collapse" id="resources" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+              <nav class="sb-sidenav-menu-nested nav">
+                <a class="nav-link" href="#" title="Donated Resources">
+                  <div class="sb-nav-link-icon">
+                    <i class="far fa-circle nav-icon"></i>
+                  </div>
+                  <span>Donated Resources</span>
+                </a>
+                <a class="nav-link" href="#" title="Distributed Resources">
+                  <div class="sb-nav-link-icon">
+                    <i class="far fa-circle nav-icon"></i>
+                  </div>
+                  <span>Distributed Resources</span>
+                </a>
+              </nav>
+            </div>
+            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#donation"
+              aria-expanded="false" aria-controls="donation" title="Manage Donation">
+              <div class="sb-nav-link-icon">
+                <i class="fas fa-hand-holding-heart"></i>
+              </div>
+              <span>Manage Donation</span>
+              <div class="sb-sidenav-collapse-arrow">
+                <i class="fas fa-angle-down"></i>
+              </div>
+            </a>
+            <div class="collapse" id="donation" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+              <nav class="sb-sidenav-menu-nested nav">
+                <a class="nav-link" href="#" title="Quick Donations">
+                  <div class="sb-nav-link-icon">
+                    <i class="far fa-circle nav-icon"></i>
+                  </div>
+                  <span>Quick Donations</span>
+                </a>
+                <a class="nav-link" href="#" title="Donee Selections">
+                  <div class="sb-nav-link-icon">
+                    <i class="far fa-circle nav-icon"></i>
+                  </div>
+                  <span>Donee Selection</span>
+                </a>
+              </nav>
+            </div>
+            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#request"
+              aria-expanded="false" aria-controls="request" title="Verify Donee Request">
+              <div class="sb-nav-link-icon">
+                <i class="fas fa-handshake"></i>
+              </div>
+              <span>Verify Donee Request</span>
+              <div class="sb-sidenav-collapse-arrow">
+                <i class="fas fa-angle-down"></i>
+              </div>
+            </a>
+            <div class="collapse" id="request" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+              <nav class="sb-sidenav-menu-nested nav">
+                <a class="nav-link" href="#" title="Available Resources">
+                  <div class="sb-nav-link-icon">
+                    <i class="far fa-circle nav-icon"></i>
+                  </div>
+                  <span>Available Resources</span>
+                </a>
+                <a class="nav-link" href="#" title="Post A Request">
+                  <div class="sb-nav-link-icon">
+                    <i class="far fa-circle nav-icon"></i>
+                  </div>
+                  <span>Post A Request</span>
+                </a>
+              </nav>
+            </div>
+
+            <a class="nav-link" href="{{ route ('admin.inquiries')}}" title="Inquiries">
               <div class="sb-nav-link-icon">
                 <i class="fas fa-message"></i>
               </div>
               <span>Inquiries</span>
             </a>
-            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#appointment"
-              aria-expanded="false" aria-controls="appointment" title="Appointment">
+            <a class="nav-link" href="#" title="News">
               <div class="sb-nav-link-icon">
-                <i class="fas fa-calendar-check"></i>
+                <i class="fas fa-newspaper"></i>
               </div>
-              <span>Dropdown</span>
-              <div class="sb-sidenav-collapse-arrow">
-                <i class="fas fa-angle-down"></i>
-              </div>
+              <span>News</span>
             </a>
 
-            <div class="collapse" id="appointment" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-              <nav class="sb-sidenav-menu-nested nav">
-                <a class="nav-link" href="appointment.php" title="Appointment Scheduled">
-                  <div class="sb-nav-link-icon">
-                    <i class="far fa-circle nav-icon"></i>
-                  </div>
-                  <span>Dropdown 1</span>
-                </a>
-                <a class="nav-link" href="inquiries.php" title="Inquiries">
-                  <div class="sb-nav-link-icon">
-                    <i class="far fa-circle nav-icon"></i>
-                  </div>
-                  <span>Dropdown 2</span>
-                </a>
-              </nav>
-            </div>
           </div>
         </div>
         <div class="sb-sidenav-footer bg-logo1">
@@ -148,15 +266,15 @@
     <!-- Content -->
     <div id="layoutSidenav_content">
       <main>
-        <div class="container-fluid p-4">
+        <div class="container-fluid px-3 py-2">
           <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item active">Dashboard</li>
           </ol>
-          <h1 class="mt-3 mb-4">Dashboard</h1>
-
+          <h1 class="my-2">Dashboard</h1>
+          <!-- /.DITO IINSERT CONTENT -->
         </div>
       </main>
-      <footer class="py-3 bg-dark mt-auto">
+      <footer class="py-3 bg-dark mt-3">
         <div class="container-fluid ps-4">
           <div class="d-flex align-items-center justify-content-between">
             <div class="text-muted">&copy; R.O.Salas Construction. All rights reserved</div>
@@ -170,7 +288,6 @@
   <script src="{{ asset('lib/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
   <script src="{{ asset('lib/fontawesome/all.js') }}"></script>
   <script src="{{ asset('lib/jquery/jquery.min.js') }}"></script>
-  <script src="{{ asset('lib/datatables/datatables.min.js') }}"></script>
   <script src="{{ asset('assets/admin/js/admin.js') }}"></script>
 
   <script>

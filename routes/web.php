@@ -2,20 +2,17 @@
 
 use Illuminate\Support\Facades\Route;
 
+
+
 // Homepage route
 Route::get('/', function () {
     return view('homepage.index');
 })->name('home');
 
 // About page route
-Route::get('/about', function () {
-    return view('homepage.about');
-})->name('about');
-
+Route::view('/about', 'homepage.about')->name('about');
 // Donation (Donor) page route
-Route::get('/more-donor', function () {
-    return view('homepage.more_donor');
-})->name('more_donor');
+Route::view('/more-donor', 'homepage.more_donor')->name('more_donor');
 
 // More news page route
 Route::get('/more-news', function () {
@@ -23,19 +20,15 @@ Route::get('/more-news', function () {
 })->name('more-news');
 
 // Recipient page route
-Route::get('/more-recipient', function () {
-    return view('homepage.more_recipient');
-})->name('more_recipient');
+Route::view('/more-recipient', 'homepage.more_recipient')->name('more_recipient');
 
 // Volunteer page route
-Route::get('/more-volunteer', function () {
-    return view('homepage.more_volunteer');
-})->name('more_volunteer');
+Route::view('/more-volunteer', 'homepage.more_volunteer')->name('more_volunteer');
+
 
 // Contact Us page route
-Route::get('/contact', function () {
-    return view('homepage.contact');
-})->name('contact');
+Route::get('/contact', [App\Http\Controllers\InquiryController::class, 'index'])->name('contact');
+Route::post('/contact/submit', [App\Http\Controllers\InquiryController::class, 'insert'])->name('inquiry.insert');
 
 // Register Us page route
 Route::get('/register', function () {
@@ -76,3 +69,8 @@ Route::get('/admin/dashboard', function () {
 Route::get('/admin/email', function () {
     return view('admin.admin_forgot_email');
 })->name('admin.email');
+
+// Admin Dashboard Page
+Route::get('/admin/inquiries', function () {
+    return view('admin.inquiries');
+})->name('admin.inquiries');
