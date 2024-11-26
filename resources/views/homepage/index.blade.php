@@ -508,78 +508,38 @@
                     Philippines, and stay informed about upcoming events, success stories, and volunteer efforts.
                 </p>
             </div>
-            <div class="owl-carousel blog-carousel">
-                <div class="blog-item p-4">
-                    <div class="blog-img mb-4">
-                        <img src="{{asset('assets/img/news.jpg') }}" class="img-fluid w-100 rounded" alt="">
-                    </div>
-                    <a href="{{ route ('more-news')}}" class="h4 d-inline-block mb-3">News Title</a>
-                    <p class="mb-4">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolore aut aliquam
-                        suscipit error corporis accusamus labore....
-                    </p>
-                    <div class="d-flex align-items-center">
-                        <img src="{{asset('assets/img/no_profile.png') }}" class="img-fluid rounded-circle"
-                            style="width: 60px; height: 60px;" alt="">
-                        <div class="ms-3">
-                            <h5>Admin</h5>
-                            <p class="mb-0">Date published</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="blog-item p-4">
-                    <div class="blog-img mb-4">
-                        <img src="{{asset('assets/img/news.jpg') }}" class="img-fluid w-100 rounded" alt="">
-                    </div>
-                    <a href="{{ route ('more-news')}}" class="h4 d-inline-block mb-3">News Title</a>
-                    <p class="mb-4">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolore aut aliquam
-                        suscipit error corporis accusamus labore....
-                    </p>
-                    <div class="d-flex align-items-center">
-                        <img src="{{asset('assets/img/no_profile.png') }}" class="img-fluid rounded-circle"
-                            style="width: 60px; height: 60px;" alt="">
-                        <div class="ms-3">
-                            <h5>Admin</h5>
-                            <p class="mb-0">Date published</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="blog-item p-4">
-                    <div class="blog-img mb-4">
-                        <img src="{{asset('assets/img/news.jpg') }}" class="img-fluid w-100 rounded" alt="">
-                    </div>
-                    <a href="{{ route ('more-news')}}" class="h4 d-inline-block mb-3">News Title</a>
-                    <p class="mb-4">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolore aut aliquam
-                        suscipit error corporis accusamus labore....
-                    </p>
-                    <div class="d-flex align-items-center">
-                        <img src="{{asset('assets/img/no_profile.png') }}" class="img-fluid rounded-circle"
-                            style="width: 60px; height: 60px;" alt="">
-                        <div class="ms-3">
-                            <h5>Admin</h5>
-                            <p class="mb-0">Date published</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="blog-item p-4">
-                    <div class="blog-img mb-4">
-                        <img src="{{asset('assets/img/news.jpg') }}" class="img-fluid w-100 rounded" alt="">
-                    </div>
-                    <a href="{{ route ('more-news')}}" class="h4 d-inline-block mb-3">News Title</a>
-                    <p class="mb-4">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolore aut aliquam
-                        suscipit error corporis accusamus labore....
-                    </p>
-                    <div class="d-flex align-items-center">
-                        <img src="{{asset('assets/img/no_profile.png') }}" class="img-fluid rounded-circle"
-                            style="width: 60px; height: 60px;" alt="">
-                        <div class="ms-3">
-                            <h5>Admin</h5>
-                            <p class="mb-0">Date published</p>
-                        </div>
-                    </div>
-                </div>
+            @if ($news->isEmpty())
+            <!-- WALANG NEWS NA POSOTED -->
+            <div class="text-center">
+                <p class="h4 text-danger">No news posted at the moment. Please check back later!</p>
             </div>
+            @else
+            <!-- MERON -->
+            <div class="owl-carousel blog-carousel">
+                @foreach ($news as $item)
+                <div class="blog-item p-4">
+                    <div class="blog-img mb-4">
+                        <img src="{{ $item->image_url ? asset($item->image_url) : asset('assets/img/news.jpg') }}"
+                            class="img-fluid w-100 rounded" alt="">
+                    </div>
+                    <a href="{{ route('more-news', ['id' => $item->news_id]) }}"
+                        class="h4 d-inline-block mb-3">{{ $item->title }}</a>
+                    <p class="mb-4">{{ Str::limit($item->content, 150) }}</p>
+                    <div class="d-flex align-items-center">
+                        <img src="{{ asset('assets/img/no_profile.png') }}"
+                            class="img-fluid rounded-circle" style="width: 60px; height: 60px;" alt="">
+                        <div class="ms-3">
+                            <h5>Admin</h5>
+                            <p class="mb-0">{{ $item->posted_at->format('F j, Y') }}</p>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+            @endif
         </div>
     </div>
+
     <!-- Blog End -->
 
 

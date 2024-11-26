@@ -5,26 +5,23 @@ use Illuminate\Support\Facades\Route;
 
 
 // Homepage route
-Route::get('/', function () {
-    return view('homepage.index');
-})->name('home');
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 // About page route
 Route::view('/about', 'homepage.about')->name('about');
 // Donation (Donor) page route
 Route::view('/more-donor', 'homepage.more_donor')->name('more_donor');
-
-// More news page route
-Route::get('/more-news', function () {
-    return view('homepage.more_news');
-})->name('more-news');
-
 // Recipient page route
 Route::view('/more-recipient', 'homepage.more_recipient')->name('more_recipient');
-
 // Volunteer page route
 Route::view('/more-volunteer', 'homepage.more_volunteer')->name('more_volunteer');
 
+// More news page route
+Route::get('/more-news/{id}', [App\Http\Controllers\HomeController::class, 'moreNews'])->name('more-news');
+
+/* Route::get('/more-news', function () {
+    return view('homepage.more_news');
+})->name('more-news'); */
 
 // Contact Us page route
 Route::get('/contact', [App\Http\Controllers\InquiryController::class, 'index'])->name('contact');
