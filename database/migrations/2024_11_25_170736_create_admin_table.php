@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('admin', function (Blueprint $table) {
-            $table->increments('admin_id');
+            $table->id();
             $table->string('name', 100);
             $table->string('username', 100)->unique();
             $table->string('email', 100)->unique();
@@ -21,19 +21,13 @@ return new class extends Migration
         });
 
         Schema::create('news', function (Blueprint $table) {
-            $table->increments('news_id'); // Primary key
-            $table->unsignedInteger('admin_id'); // Foreign key to admin
+            $table->id();
+            $table->foreignId('admin_id')->constrained('admin')->onDelete('cascade');
             $table->string('subtitle', 255);
             $table->string('title', 255);
-            $table->string('content', 255);
-            $table->string('image_url', 255)->nullable(); // Nullable for optional image URL
-            $table->timestamp('posted_at')->useCurrent(); // Default to current timestamp
-
-            // Foreign key constraint
-            $table->foreign('admin_id')
-                ->references('admin_id')
-                ->on('admin')
-                ->onDelete('cascade'); // Deletes news if the related admin is deleted
+            $table->text('content');
+            $table->string('image_url', 255)->nullable();
+            $table->timestamp('posted_at')->useCurrent();
         });
     }
 
