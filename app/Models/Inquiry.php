@@ -8,6 +8,10 @@ class Inquiry extends Model
 {
     protected $table = 'inquiry';
     public $timestamps = false;
+    protected $primaryKey = 'inquiry_id';
+    protected $casts = [
+        'submitted_at' => 'datetime',
+    ];
 
     protected $fillable = [
         'name',

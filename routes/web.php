@@ -19,9 +19,6 @@ Route::view('/more-volunteer', 'homepage.more_volunteer')->name('more_volunteer'
 // More news page route
 Route::get('/more-news/{id}', [App\Http\Controllers\HomeController::class, 'moreNews'])->name('more-news');
 
-/* Route::get('/more-news', function () {
-    return view('homepage.more_news');
-})->name('more-news'); */
 
 // Contact Us page route
 Route::get('/contact', [App\Http\Controllers\InquiryController::class, 'index'])->name('contact');
@@ -67,7 +64,8 @@ Route::get('/admin/email', function () {
     return view('admin.admin_forgot_email');
 })->name('admin.email');
 
-// Admin Dashboard Page
-Route::get('/admin/inquiries', function () {
-    return view('admin.inquiries');
-})->name('admin.inquiries');
+// Admin Inquries Page
+Route::get('/admin/inquiries', [App\Http\Controllers\InquiryController::class, 'inbox'])->name('admin.inquiries');
+Route::post('/admin/inquiries/delete', [App\Http\Controllers\InquiryController::class, 'deleteSelected'])->name('inquiries.delete');
+/* Route::get('/admin/inquiries/status/{status}', [App\Http\Controllers\InquiryController::class, 'filterByStatus'])->name('inquiries.status'); */
+Route::get('/admin/inquiries/{inquiry}', [App\Http\Controllers\InquiryController::class, 'inquiriesRead'])->name('inquiries.read');

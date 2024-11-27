@@ -29,7 +29,6 @@ class InquiryController extends Controller
         try {
             // Insert the data into the inquiry table
             Inquiry::create($validated);
-
             session()->flash('success', 'Your inquiry was successfully submitted.');
             session()->flash('success', 'Your inquiry was successfully submitted.');
         } catch (\Exception $e) {
@@ -37,7 +36,47 @@ class InquiryController extends Controller
             session()->flash('error', 'An error occurred while submitting your inquiry.');
         }
 
-        // Redirect to the contact page
         return redirect()->route('contact');
+    }
+
+    public function inbox(Request $request)
+    {
+        $status = $request->query('status', 'all');
+        $query = Inquiry::query();
+
+        if ($status !== 'all') {
+            $query->where('status', $status);
+        }
+
+        $inquiries = $query->orderBy('submitted_at', 'desc')->paginate(10, ['*'], 'page', null)->onEachSide(1);
+        $total = Inquiry::count();
+
+        return view('admin.inquiries', compact('inquiries', 'total', 'status'));
+    }
+
+    public function deleteSelected(Request $request)
+    {
+        $ids = $request->input('selected');
+        if ($ids) {
+            Inquiry::whereIn('inquiry_id', $ids)->delete();
+            return back()->with('success', 'Selected inquiries were deleted successfully.');
+        }
+
+        return back()->with('error', 'No inquiries selected for deletion.');
+    }
+
+
+    public function inquiriesRead($id)
+    {
+        // Find the inquiry by ID
+        $inquiry = Inquiry::where('inquiry_id', $id)->firstOrFail();
+
+
+        if ($inquiry->status === 'unread') {
+            $inquiry->status = 'read';
+            $inquiry->save();
+        }
+
+        return view('admin.inquiries_read', compact('inquiry'));
     }
 }

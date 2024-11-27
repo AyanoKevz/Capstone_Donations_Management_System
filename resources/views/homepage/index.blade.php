@@ -519,7 +519,7 @@
                 @foreach ($news as $item)
                 <div class="blog-item p-4">
                     <div class="blog-img mb-4">
-                        <img src="{{ $item->image_url ? asset($item->image_url) : asset('assets/img/news.jpg') }}"
+                        <img src="{{ asset($item->image_url) }}"
                             class="img-fluid w-100 rounded" alt="">
                     </div>
                     <a href="{{ route('more-news', ['id' => $item->news_id]) }}"
@@ -541,129 +541,6 @@
     </div>
 
     <!-- Blog End -->
-
-
-    <!-- Testimonial Start -->
-    <div class="container-fluid testimonial py-3 rev" id="testimonials">
-        <div class="container py-3 wow fadeInDown" data-wow-delay="0.3s">
-            <div class="text-center mx-auto pb-5" style="max-width: 800px;">
-                <h2 class="section-header">Testimonial</h>
-                    <h1 class="display-5 mb-4">What Our Users Say</h1>
-                    <p class="mb-0">
-                        Hear from our users—donors, recipients, and volunteers—about their experiences
-                        with UniAid. Discover how their involvement has impacted lives, strengthened communities,
-                        and brought people together through the power of giving and receiving.
-                    </p>
-            </div>
-            @if ($review->isEmpty())
-            <!-- WALANG NAG REVIEW -->
-            <div class="text-center">
-                <p class="h4 text-danger">No review of the user posted at the moment.</p>
-            </div>
-            @else
-            <!-- <div class="owl-carousel testimonial-carousel">
-                @foreach ($news as $item)
-                <div class="testimonial-item">
-                    <div class="testimonial-quote-left">
-                        <i class="fas fa-quote-left fa-2x"></i>
-                    </div>
-                    <div class="testimonial-img">
-                        <img src="{asset($item->image_url) }}" class="img-fluid" alt="Image">
-                    </div>
-                    <div class="testimonial-text">
-                        <p class="mb-0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis blanditiis
-                            excepturi quisquam temporibus voluptatum reprehenderit culpa, quasi corrupti laborum
-                            accusamus.
-                        </p>
-                    </div>
-                    <div class="testimonial-title">
-                        <div>
-                            <h4 class="mb-0">Person Name</h4>
-                            <p class="mb-0">User type</p>
-                        </div>
-
-                    </div>
-                    <div class="testimonial-quote-right">
-                        <i class="fas fa-quote-right fa-2x"></i>
-                    </div>
-                </div>
-                <div class="testimonial-item">
-                    <div class="testimonial-quote-left">
-                        <i class="fas fa-quote-left fa-2x"></i>
-                    </div>
-                    <div class="testimonial-img">
-                        <img src="{{asset('assets/img/no_profile.png') }}" class="img-fluid" alt="Image">
-                    </div>
-                    <div class="testimonial-text">
-                        <p class="mb-0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis blanditiis
-                            excepturi quisquam temporibus voluptatum reprehenderit culpa, quasi corrupti laborum
-                            accusamus.
-                        </p>
-                    </div>
-                    <div class="testimonial-title">
-                        <div>
-                            <h4 class="mb-0">Person Name</h4>
-                            <p class="mb-0">User type</p>
-                        </div>
-
-                    </div>
-                    <div class="testimonial-quote-right">
-                        <i class="fas fa-quote-right fa-2x"></i>
-                    </div>
-                </div>
-                <div class="testimonial-item">
-                    <div class="testimonial-quote-left">
-                        <i class="fas fa-quote-left fa-2x"></i>
-                    </div>
-                    <div class="testimonial-img">
-                        <img src="{{asset('assets/img/no_profile.png') }}" class="img-fluid" alt="Image">
-                    </div>
-                    <div class="testimonial-text">
-                        <p class="mb-0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis blanditiis
-                            excepturi quisquam temporibus voluptatum reprehenderit culpa, quasi corrupti laborum
-                            accusamus.
-                        </p>
-                    </div>
-                    <div class="testimonial-title">
-                        <div>
-                            <h4 class="mb-0">Person Name</h4>
-                            <p class="mb-0">User type</p>
-                        </div>
-
-                    </div>
-                    <div class="testimonial-quote-right">
-                        <i class="fas fa-quote-right fa-2x"></i>
-                    </div>
-                </div>
-                <div class="testimonial-item">
-                    <div class="testimonial-quote-left">
-                        <i class="fas fa-quote-left fa-2x"></i>
-                    </div>
-                    <div class="testimonial-img">
-                        <img src="{{asset('assets/img/no_profile.png') }}" class="img-fluid" alt="Image">
-                    </div>
-                    <div class="testimonial-text">
-                        <p class="mb-0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis blanditiis
-                            excepturi quisquam temporibus voluptatum reprehenderit culpa, quasi corrupti laborum
-                            accusamus.
-                        </p>
-                    </div>
-                    <div class="testimonial-title">
-                        <div>
-                            <h4 class="mb-0">Person Name</h4>
-                            <p class="mb-0">User type</p>
-                        </div>
-
-                    </div>
-                    <div class="testimonial-quote-right">
-                        <i class="fas fa-quote-right fa-2x"></i>
-                    </div>
-                </div>
-            </div> -->
-        </div>
-    </div>
-    <!-- Testimonial End -->
-
 
 
     <!-- FAQs Start -->

@@ -140,4 +140,27 @@ spinner();
       });
     });
 
+
+    const toggleButton = $('.checkbox-toggle');
+    const checkboxes = $('input[type="checkbox"][name="selected[]"]');
+
+    toggleButton.on('click', function () {
+        const isChecked = $(this).find('i').hasClass('fa-check-square');
+
+        // Toggle the icon classes
+        $(this).find('i')
+            .toggleClass('fa-square', isChecked)
+            .toggleClass('fa-check-square', !isChecked);
+
+        // Check or uncheck all checkboxes
+        checkboxes.prop('checked', !isChecked);
+    });
+
+        setTimeout(() => {
+            $('#alert-success').fadeOut();
+            $('#alert-error').fadeOut();
+        }, 3000);
+
 });
+
+

@@ -15,6 +15,7 @@
     href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <link rel="icon" href="{{ asset ('assets/img/systemLogo.png') }}" type="image/png">
   <link rel="stylesheet" href="{{ asset('lib/bootstrap/css/bootstrap.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('lib/summernote/summernote-bs5.min.css') }}">
   <link rel="stylesheet" href="{{ asset ('assets/admin/css/inquiries.css') }}">
 
 </head>
@@ -164,72 +165,41 @@
           </div>
           @endif
 
-          <h1 class="my-2">Inquiries Inbox</h1>
+          <h1 class="my-2">Read Inquiries</h1>
           <!-- /. CONTENT -->
           <section class="content mb-2">
-            <div class="container-fluid ps-0">
-              <div class="card card-primary card-outline">
-                <div class="card-header">
-                  <h3 class="card-title">Inbox</h3>
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-md-3">
+                  <div class="d-grid">
+                    <a href="{{ route('admin.inquiries') }}" class="btn btn-primary btn-block mb-3">Back to Inbox</a>
+                  </div>
                 </div>
-                <div class="card-body p-0">
-                  <form method="POST" action="{{ route('inquiries.delete') }}">
-                    @csrf
-                    <div class="mailbox-controls d-flex justify-content-between align-items-center border-bottom border-secondary-subtle border-2">
-                      <div>
-                        <button type="button" class="btn email-btn btn-sm checkbox-toggle" title="Check All">
-                          <i class="far fa-square"></i>
-                        </button>
-                        <button type="submit" class="btn email-btn btn-sm" title="Delete">
-                          <i class="far fa-trash-alt"></i>
-                        </button>
+                <div class="col-md-9">
+                  <div class="card card-primary card-outline">
+                    <div class="card-header">
+                      <h3 class="card-title">Read Mail</h3>
+                    </div>
+                    <div class="card-body p-0">
+                      <div class="mailbox-read-info">
+                        <h5>From: {{ $inquiry->email }}</h5>
+                        <h6 class="mt-2">Contact Number: {{ $inquiry->contact_number }}
+                          <span class="mailbox-read-time float-end">
+                            {{ $inquiry->submitted_at->format('d M Y h:i A') }}
+                          </span>
+                        </h6>
                       </div>
-                      <div>
-                        <a href="{{ route('admin.inquiries', ['status' => 'all']) }}"
-                          class="btn email-btn btn-sm {{ $status === 'all' ? 'custom-active' : '' }}">
-                          All
-                        </a>
-                        <a href="{{ route('admin.inquiries', ['status' => 'unread']) }}"
-                          class="btn email-btn btn-sm {{ $status === 'unread' ? 'custom-active' : '' }}">
-                          Unread
-                        </a>
-                        <a href="{{ route('admin.inquiries', ['status' => 'read']) }}"
-                          class="btn email-btn btn-sm {{ $status === 'read' ? 'custom-active' : '' }}">
-                          Read
-                        </a>
+                      <div class="mailbox-controls with-border">
+                        <h5 class="m-0 p-2 text-body-tertiary">{{ $inquiry->subject }}</h5>
+                      </div>
+                      <div class="mailbox-read-message">
+                        <p>{{ $inquiry->message }}</p>
                       </div>
                     </div>
-                    <div class="table-responsive mailbox-messages">
-                      <table class="table table-hover table-striped">
-                        <tbody>
-                          @forelse($inquiries as $inquiry)
-                          <tr>
-                            <td>
-                              <div class="icheck-primary">
-                                <input type="checkbox" name="selected[]" value="{{ $inquiry->inquiry_id }}" id="check{{ $inquiry->inquiry_id }}">
-                                <label for="check{{ $inquiry->inquiry_id }}"></label>
-                              </div>
-                            </td>
-                            <td class="mailbox-name"><a href="{{ route('inquiries.read', $inquiry->inquiry_id) }}">{{ $inquiry->name }}</a></td>
-                            <td class="mailbox-subject"><b>{{ $inquiry->subject }}</b></td>
-                            <td class="mailbox-date">{{ $inquiry->submitted_at }}</td>
-                            <td class="status">{{ ucfirst($inquiry->status) }}</td>
-                          </tr>
-                          @empty
-                          <tr>
-                            <td colspan="6" class="text-center">No inquiries available for {{ ucfirst($status ?? 'All') }}.</td>
-                          </tr>
-                          @endforelse
-                        </tbody>
-                      </table>
-                    </div>
-                  </form>
-                </div>
-                <div class="card-footer p-0">
-                  <div class="mailbox-controls d-flex justify-content-between align-items-center">
-                    {{ $inquiries->links() }}
-                    <div class="float-end">
-                      Total Inquiries: {{ $total }}
+                    <div class="card-footer bg-body-secondary">
+                      <div class="float-end">
+                        <a href="#" class="btn btn-light"><i class="fas fa-reply"></i> Reply</a>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -252,6 +222,7 @@
   <script src="{{ asset('lib/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
   <script src="{{ asset('lib/fontawesome/all.js') }}"></script>
   <script src="{{ asset('lib/jquery/jquery.min.js') }}"></script>
+  <script src="{{ asset('lib/summernote/summernote-bs5.min.js') }}"></script>
   <script src="{{ asset('assets/admin/js/admin.js') }}"></script>
 
   <script>
