@@ -703,9 +703,9 @@ toggleCameraBtn.addEventListener('click', () => {
 // Load face-api models
 async function loadModels() {
   try {
-    await faceapi.nets.tinyFaceDetector.loadFromUri('/lib/face-api.js/weights');
-    await faceapi.nets.faceLandmark68Net.loadFromUri('/lib/face-api.js/weights');
-    await faceapi.nets.faceRecognitionNet.loadFromUri('/lib/face-api.js/weights');
+    await faceapi.nets.tinyFaceDetector.loadFromUri('{{asset (lib/face-api.js/weights) }}');
+    await faceapi.nets.faceLandmark68Net.loadFromUri('{{asset (lib/face-api.js/weights) }}');
+    await faceapi.nets.faceRecognitionNet.loadFromUri('{{asset (lib/face-api.js/weights) }}');
   } catch (error) {
     console.error('Error loading face-api models:', error);
   }

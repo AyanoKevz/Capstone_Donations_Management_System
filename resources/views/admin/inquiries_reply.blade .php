@@ -15,6 +15,7 @@
     href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <link rel="icon" href="{{ asset ('assets/img/systemLogo.png') }}" type="image/png">
   <link rel="stylesheet" href="{{ asset('lib/bootstrap/css/bootstrap.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('lib/summernote/summernote-bs5.min.css') }}">
   <link rel="stylesheet" href="{{ asset ('assets/admin/css/inquiries.css') }}">
 
 </head>
@@ -166,45 +167,59 @@
 
           <h1 class="my-2">Read Inquiries</h1>
           <!-- /. CONTENT -->
-          <section class="content mb-2">
-            <div class="container-fluid">
-              <div class="row">
-                <div class="col-md-3">
-                  <div class="d-grid">
-                    <a href="{{ route('admin.inquiries') }}" class="btn btn-primary btn-block mb-3">Back to Inbox</a>
-                  </div>
+          <section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="d-grid">
+                    <a href="{{ route('inquiries.read', $inquiry -> id) }}" class="btn btn-primary btn-block mb-3">Read  Message</a>
                 </div>
-                <div class="col-md-9">
-                  <div class="card card-primary card-outline">
-                    <div class="card-header">
-                      <h3 class="card-title">Read Mail</h3>
-                    </div>
-                    <div class="card-body p-0">
-                      <div class="mailbox-read-info">
-                        <h5>From: {{ $inquiry->email }}</h5>
-                        <h6 class="mt-2">Contact Number: {{ $inquiry->contact }}
-                          <span class="mailbox-read-time float-end">
-                            {{ $inquiry->submitted_at->format('d M Y h:i A') }}
-                          </span>
-                        </h6>
-                      </div>
-                      <div class="mailbox-controls with-border">
-                        <h5 class="m-0 p-2 text-body-tertiary">Subject: {{ $inquiry->subject }}</h5>
-                      </div>
-                      <div class="mailbox-read-message">
-                        <p>{{ $inquiry->message }}</p>
-                      </div>
-                    </div>
-                    <div class="card-footer bg-body-secondary">
-                      <div class="float-end">
-                        <a href="{{ route('inquiries.reply', $inquiry->id) }}" class="btn btn-light"><i class="fas fa-reply"></i> Reply</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
-          </section>
+            <!-- /.col -->
+            <div class="col-md-9">
+                <div class="card card-primary card-outline">
+                    <div class="card-header">
+                        <h3 class="card-title">Compose New Message</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <form method="POST" action="{{ route('inquiries.sendReply', $inquiry->id) }}">
+                            @csrf
+                            <div class="form-group mb-3">
+                                <input 
+                                    class="form-control" 
+                                    name="to" 
+                                    placeholder="To:" 
+                                    value="{{ $inquiry->email }}" 
+                                    readonly>
+                            </div>
+                            <div class="form-group mb-3">
+                                <input 
+                                    class="form-control" 
+                                    name="subject" 
+                                    placeholder="Subject:" 
+                                    value="Re: {{ $inquiry->subject }}">
+                            </div>
+                            <div class="form-group">
+                                <textarea 
+                                    id="compose-textarea" 
+                                    name="message" 
+                                    class="form-control" 
+                                    style="height: 300px"></textarea>
+                            </div>
+                            <div class="float-end">
+                                <button type="submit" class="btn email-btn">
+                                    <i class="far fa-envelope"></i> Send
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
         </div>
       </main>
       <footer class="py-3 bg-dark mt-3">
@@ -221,6 +236,7 @@
   <script src="{{ asset('lib/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
   <script src="{{ asset('lib/fontawesome/all.js') }}"></script>
   <script src="{{ asset('lib/jquery/jquery.min.js') }}"></script>
+  <script src="{{ asset('lib/summernote/summernote-bs5.min.js') }}"></script>
   <script src="{{ asset('assets/admin/js/admin.js') }}"></script>
 
   <script>

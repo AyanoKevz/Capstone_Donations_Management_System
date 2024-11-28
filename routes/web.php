@@ -67,5 +67,5 @@ Route::get('/admin/email', function () {
 // Admin Inquries Page
 Route::get('/admin/inquiries', [App\Http\Controllers\InquiryController::class, 'inbox'])->name('admin.inquiries');
 Route::post('/admin/inquiries/delete', [App\Http\Controllers\InquiryController::class, 'deleteSelected'])->name('inquiries.delete');
-/* Route::get('/admin/inquiries/status/{status}', [App\Http\Controllers\InquiryController::class, 'filterByStatus'])->name('inquiries.status'); */
+Route::get('/admin/inquiries/reply/{id}', [App\Http\Controllers\InquiryController::class, 'reply'])->name('inquiries.reply');
 Route::get('/admin/inquiries/{inquiry}', [App\Http\Controllers\InquiryController::class, 'inquiriesRead'])->name('inquiries.read');

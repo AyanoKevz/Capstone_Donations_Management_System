@@ -141,25 +141,40 @@ spinner();
     });
 
 
-    const toggleButton = $('.checkbox-toggle');
-    const checkboxes = $('input[type="checkbox"][name="selected[]"]');
+    const toggleButton = $('.checkbox-toggle'); // The "Check All" button
+    const checkboxes = $('input[type="checkbox"][name="selected[]"]'); // All checkboxes
+    const icon = toggleButton.find('i'); // The icon inside the button
+    let allChecked = false; // Track the toggle state
 
+    // Toggle button click event
     toggleButton.on('click', function () {
-        const isChecked = $(this).find('i').hasClass('fa-check-square');
+        allChecked = !allChecked; // Toggle state
 
-        // Toggle the icon classes
-        $(this).find('i')
-            .toggleClass('fa-square', isChecked)
-            .toggleClass('fa-check-square', !isChecked);
+        // Update all checkboxes
+        checkboxes.prop('checked', allChecked);
 
-        // Check or uncheck all checkboxes
-        checkboxes.prop('checked', !isChecked);
+        // Update the icon
+        icon
+            .toggleClass('fa-square', !allChecked) // Show square icon if unchecking all
+            .toggleClass('fa-square-check', allChecked); // Show check-square icon if checking all
     });
+
+    // Update button icon dynamically when individual checkboxes change
+    checkboxes.on('change', function () {
+        const totalChecked = checkboxes.filter(':checked').length;
+        allChecked = (totalChecked === checkboxes.length); // Update toggle state
+
+        icon
+            .toggleClass('fa-square', !allChecked) // Show square if not all are checked
+            .toggleClass('fa-square-check', allChecked); // Show check-square if all are checked
+    });
+    
 
         setTimeout(() => {
             $('#alert-success').fadeOut();
             $('#alert-error').fadeOut();
         }, 3000);
+        
 
 });
 

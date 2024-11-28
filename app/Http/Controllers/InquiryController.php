@@ -56,21 +56,20 @@ class InquiryController extends Controller
 
     public function deleteSelected(Request $request)
     {
-        $ids = $request->input('selected');
+        $ids = $request->input('selected'); 
         if ($ids) {
-            Inquiry::whereIn('inquiry_id', $ids)->delete();
+            Inquiry::whereIn('id', $ids)->delete(); 
             return back()->with('success', 'Selected inquiries were deleted successfully.');
         }
-
+    
         return back()->with('error', 'No inquiries selected for deletion.');
     }
-
+    
 
     public function inquiriesRead($id)
     {
         // Find the inquiry by ID
-        $inquiry = Inquiry::where('inquiry_id', $id)->firstOrFail();
-
+        $inquiry = Inquiry::findOrFail($id);
 
         if ($inquiry->status === 'unread') {
             $inquiry->status = 'read';
@@ -79,4 +78,12 @@ class InquiryController extends Controller
 
         return view('admin.inquiries_read', compact('inquiry'));
     }
+
+
+    public function reply($id)
+{
+    $inquiry = Inquiry::findOrFail($id);
+    return view('admin.inquiries_reply', compact('inquiry'));
+}
+
 }

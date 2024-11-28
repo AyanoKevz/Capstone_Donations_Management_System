@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Admin | Dashboard</title>
+  <title>Admin | Inquiries</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -206,13 +206,13 @@
                           <tr>
                             <td>
                               <div class="icheck-primary">
-                                <input type="checkbox" name="selected[]" value="{{ $inquiry->inquiry_id }}" id="check{{ $inquiry->inquiry_id }}">
-                                <label for="check{{ $inquiry->inquiry_id }}"></label>
+                                <input type="checkbox" name="selected[]" value="{{ $inquiry->id }}" id="check{{ $inquiry->id }}">
+                                <label for="check{{ $inquiry->id }}"></label>
                               </div>
                             </td>
-                            <td class="mailbox-name"><a href="{{ route('inquiries.read', $inquiry->inquiry_id) }}">{{ $inquiry->name }}</a></td>
+                            <td class="mailbox-name"><a href="{{ route('inquiries.read', $inquiry->id) }}">{{ $inquiry->name }}</a></td>
                             <td class="mailbox-subject"><b>{{ $inquiry->subject }}</b></td>
-                            <td class="mailbox-date">{{ $inquiry->submitted_at }}</td>
+                            <td class="mailbox-date">{{ $inquiry->submitted_at->format('d M Y h:i A') }}</td>
                             <td class="status">{{ ucfirst($inquiry->status) }}</td>
                           </tr>
                           @empty
