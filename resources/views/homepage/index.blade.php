@@ -755,13 +755,16 @@
                                 <button class="accordion-button collapsed rounded-top" type="button"
                                     data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false"
                                     aria-controls="flush-collapseOne">
-                                    Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                                    How to Donate using UniAid?
                             </h2>
                             <div id="flush-collapseOne" class="accordion-collapse collapse"
                                 aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushSection">
-                                <div class="accordion-body">Placeholder content for this accordion, which is intended to
-                                    demonstrate the <code>.accordion-flush</code> class. This is the first item's
-                                    accordion body.</div>
+                                <div class="accordion-body"> 1) <b>Quick Donation Option</b>
+                                     -  Donors can make quick donations without needing to browse or select specific recipients <br>
+                                    2) <b>Donee Selection. </b>
+                                    -  Donors can browse through requests and select which resources to donate based on donee needs displayed on the platform. <br>
+                                    <a href="{{ route ('more_donor')}}">Learn More.</a>
+                                    </div>
                             </div>
                         </div>
                         <div class="accordion-item">
@@ -769,14 +772,15 @@
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#flush-collapseTwo" aria-expanded="false"
                                     aria-controls="flush-collapseTwo">
-                                    Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                                    How to post for donations?
                                 </button>
                             </h2>
                             <div id="flush-collapseTwo" class="accordion-collapse collapse"
                                 aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushSection">
-                                <div class="accordion-body">Placeholder content for this accordion, which is intended to
-                                    demonstrate the <code>.accordion-flush</code> class. This is the second item's
-                                    accordion body. Let's imagine this being filled with some actual content.</div>
+                                <div class="accordion-body"> donee can post a request for specific resources they require, including descriptions, quantity, 
+                                    and urgency, and submit a proof of need.
+                                    <a href="{{ route ('more_recipient')}}" >Learn More.</a>
+                            </div>
                             </div>
                         </div>
                         <div class="accordion-item">
@@ -784,14 +788,15 @@
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#flush-collapseThree" aria-expanded="false"
                                     aria-controls="flush-collapseThree">
-                                    Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                                    How to register as volunteer?
                                 </button>
                             </h2>
                             <div id="flush-collapseThree" class="accordion-collapse collapse"
                                 aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushSection">
-                                <div class="accordion-body">Placeholder content for this accordion, which is intended to
-                                    demonstrate the <code>.accordion-flush</code> class. This is the second item's
-                                    accordion body. Let's imagine this being filled with some actual content.</div>
+                                <div class="accordion-body">
+                                    Volunteers need to register first and then view admin request for help.
+                                    <a href="{{ route ('more_volunteer')}}" >Learn More.</a>
+                                </div>
                             </div>
                         </div>
                         <div class="accordion-item">
@@ -799,14 +804,14 @@
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#flush-collapseFour" aria-expanded="false"
                                     aria-controls="flush-collapseFour">
-                                    Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                                    What kind of donations UniAid accepts? 
                                 </button>
                             </h2>
                             <div id="flush-collapseFour" class="accordion-collapse collapse"
                                 aria-labelledby="flush-headingFour" data-bs-parent="#accordionFlushSection">
-                                <div class="accordion-body">Placeholder content for this accordion, which is intended to
-                                    demonstrate the <code>.accordion-flush</code> class. This is the second item's
-                                    accordion body. Let's imagine this being filled with some actual content.</div>
+                                <div class="accordion-body"> The UniAid accepts in-kind donations such as canned goods, bottled water, medecines, clothes, and other non-perishable Items.
+                                    We also accept monetary doantions. 
+                                </div>
                             </div>
                         </div>
                         <div class="accordion-item">
@@ -814,14 +819,14 @@
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#flush-collapseFive" aria-expanded="false"
                                     aria-controls="flush-collapseFive">
-                                    Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                                    How to be a Donne/Doner?
                                 </button>
                             </h2>
                             <div id="flush-collapseFive" class="accordion-collapse collapse"
                                 aria-labelledby="flush-headingFive" data-bs-parent="#accordionFlushSection">
-                                <div class="accordion-body">Placeholder content for this accordion, which is intended to
-                                    demonstrate the <code>.accordion-flush</code> class. This is the second item's
-                                    accordion body. Let's imagine this being filled with some actual content.</div>
+                                <div class="accordion-body">First thing to do is to register to our portals (Donee/Donor)
+                                    By registration you can be a part of UniAid.
+                                </div>
                             </div>
                         </div>
                         <div class="accordion-item rounded-bottom">
@@ -829,16 +834,13 @@
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#flush-collapseSix" aria-expanded="false"
                                     aria-controls="flush-collapseSix">
-                                    Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                                    Does UniAid provides logistics?
                                 </button>
                             </h2>
                             <div id="flush-collapseSix" class="accordion-collapse collapse"
                                 aria-labelledby="flush-headingSix" data-bs-parent="#accordionFlushSection">
-                                <div class="accordion-body">Placeholder content for this accordion, which is intended to
-                                    demonstrate the <code>.accordion-flush</code> class. This is the third item's
-                                    accordion body. Nothing more exciting happening here in terms of content, but just
-                                    filling up the space to make it look, at least at first glance, a bit more
-                                    representative of how this would look in a real-world application.</div>
+                                <div class="accordion-body">The platform does not integrate internal logistics for collecting, delivering, or tracking donations in transit. 
+                                It only displays logistics details such as delivery methods, tracking numbers, and the status of the donation.</div>
                             </div>
                         </div>
                     </div>
