@@ -819,13 +819,13 @@
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#flush-collapseFive" aria-expanded="false"
                                     aria-controls="flush-collapseFive">
-                                    How to be a Donne/Doner?
+                                    Can I donate anonymously?
                                 </button>
                             </h2>
                             <div id="flush-collapseFive" class="accordion-collapse collapse"
                                 aria-labelledby="flush-headingFive" data-bs-parent="#accordionFlushSection">
-                                <div class="accordion-body">First thing to do is to register to our portals (Donee/Donor)
-                                    By registration you can be a part of UniAid.
+                                <div class="accordion-body">Yes, you can choose to make your donation anonymously. 
+                                    Simply select the "Anonymous" option during the donation process.
                                 </div>
                             </div>
                         </div>
@@ -834,13 +834,14 @@
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#flush-collapseSix" aria-expanded="false"
                                     aria-controls="flush-collapseSix">
-                                    Does UniAid provides logistics?
+                                    How are donees selected?
                                 </button>
                             </h2>
                             <div id="flush-collapseSix" class="accordion-collapse collapse"
                                 aria-labelledby="flush-headingSix" data-bs-parent="#accordionFlushSection">
-                                <div class="accordion-body">The platform does not integrate internal logistics for collecting, delivering, or tracking donations in transit. 
-                                It only displays logistics details such as delivery methods, tracking numbers, and the status of the donation.</div>
+                                <div class="accordion-body">Donees are selected based on specific criteria that assess their needs and 
+                                    eligibility. We work with local organizations, community leaders,
+                                     and other partners to identify those who would benefit the most from our support.</div>
                             </div>
                         </div>
                     </div>
