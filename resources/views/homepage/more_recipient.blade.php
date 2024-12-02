@@ -110,7 +110,7 @@
                     <p>To become a donee in UniAid, you need to follow a series of steps. Here's a detailed guide to help you through the process:</p>
                     
                     <div class="icon-box d-flex position-relative">
-                        <i class="fa-brands fa-gratipay flex-shrink-0"></i>
+                        <i class="fa-solid fa-window-maximize flex-shrink-0"></i>
                         <div>
                             <h4><a class="stretched-link">Complete the Application Form</a></h4>
                             <p>Fill out the online application form with accurate and complete information.</p>
@@ -118,7 +118,7 @@
                     </div><!-- End Icon Box -->
 
                     <div class="icon-box d-flex position-relative">
-                        <i class="fa-brands fa-gratipay flex-shrink-0"></i>
+                        <i class="fa-solid fa-share flex-shrink-0"></i>
                         <div>
                             <h4><a href="" class="stretched-link">Submit Required Documentation</a></h4>
                             <p>Upload all necessary documents that prove your financial situation and support your need for aid.</p>
@@ -126,7 +126,7 @@
                     </div><!-- End Icon Box -->
 
                     <div class="icon-box d-flex position-relative">
-                        <i class="fa-brands fa-gratipay flex-shrink-0"></i>
+                        <i class="fa-solid fa-eye flex-shrink-0"></i>
                         <div>
                             <h4><a href="" class="stretched-link">Application Review and Notification</a></h4>
                             <p>Your application will be reviewed by UniAid's team. If approved, you will receive a notification and begin receiving assistance.</p>
@@ -134,7 +134,7 @@
                     </div><!-- End Icon Box -->
 
                     <div class="icon-box d-flex position-relative">
-                        <i class="fa-brands fa-gratipay flex-shrink-0"></i>
+                         <i class="fa-solid fa-circle-info flex-shrink-0"></i>
                         <div>
                             <h4><a href="" class="stretched-link">For Further Details</a></h4>
                             <p>Reach out to us through the "Contact Us" page on our website.</p>
@@ -164,7 +164,7 @@
                     <h2> Who Are the Recipients?</h2>
 
                     <div class="icon-box d-flex position-relative">
-                        <i class="fa-brands fa-gratipay flex-shrink-0"></i>
+                        <i class="fa-solid fa-person flex-shrink-0"></i>
                         <div>
                             <h4><a class="stretched-link">Underprivileged individuals</a></h4>
                             <p>Underprivileged individuals who face significant challenges due to limited resources and opportunities.</p>
@@ -172,7 +172,7 @@
                     </div><!-- End Icon Box -->
 
                     <div class="icon-box d-flex position-relative">
-                        <i class="fa-brands fa-gratipay flex-shrink-0"></i>
+                        <i class="fa-solid fa-people-roof flex-shrink-0"></i>
                         <div>
                             <h4><a href="" class="stretched-link">Vulnerable Families</a></h4>
                             <p>Many families struggle to meet basic needs like food, shelter, and healthcare.</p>
@@ -180,7 +180,7 @@
                     </div><!-- End Icon Box -->
 
                     <div class="icon-box d-flex position-relative">
-                        <i class="fa-brands fa-gratipay flex-shrink-0"></i>
+                        <i class="fa-solid fa-house-chimney-crack flex-shrink-0"></i>
                         <div>
                             <h4><a href="" class="stretched-link">Disaster-Stricken Communities</a></h4>
                             <p>Natural disasters and conflicts devastate communities, leaving them without basic necessities.</p>
@@ -188,7 +188,7 @@
                     </div><!-- End Icon Box -->
 
                     <div class="icon-box d-flex position-relative">
-                        <i class="fa-brands fa-gratipay flex-shrink-0"></i>
+                        <i class="fa-solid fa-building-ngo flex-shrink-0"></i>
                         <div>
                             <h4><a href="" class="stretched-link">Grassroots Organizations</a></h4>
                             <p>Local organizations understand their communities' needs. Donations empower them to implement sustainable projects and drive positive change.</p>
