@@ -27,13 +27,19 @@
                 </div>
                 <h5 class="fw-normal mb-3 text-center">Please enter a new password.
                 </h5>
-                <div class="input-group mb-3">
+                <div class="input-group mb-5">
                   <input type="password" name="password" autocomplete="off" class="input" id="password" required>
+                  <button type="button" id="toggle-password" class="btn-toggle">
+                    <i class="fas fa-eye" id="toggle-password-icon"></i>
+                  </button>
                   <label class="user-label" for="password">New Password</label>
                 </div>
-                <div class="input-group mb-3">
+                <div class="input-group mb-4">
                   <input type="password" name="cpassword" autocomplete="off" class="input" id="cpassword" required>
-                  <label class="user-label" for="password">Confirm Password</label>
+                  <button type="button" id="toggle-cpassword" class="btn-toggle">
+                    <i class="fas fa-eye" id="toggle-cpassword-icon"></i>
+                  </button>
+                  <label class="user-label" for="cpassword">Confirm Password</label>
                 </div>
             </div>
             <div class="card-footer d-flex justify-content-end mb-2">
@@ -50,6 +56,7 @@
   <script src="{{ asset('lib/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
   <script src="{{ asset('lib/jquery/jquery.min.js') }}"></script>
   <script src="{{ asset('lib/jquery/jquery.validate.min.js') }}"></script>
+  <script src="{{ asset('lib/fontawesome/all.js') }}"></script>
   <script src="{{ asset('assets/admin/js/admin.js') }}"></script>
 </body>
 

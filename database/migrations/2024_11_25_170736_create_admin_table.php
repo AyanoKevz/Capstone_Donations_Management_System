@@ -3,6 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 return new class extends Migration
 {
@@ -17,6 +19,7 @@ return new class extends Migration
             $table->string('username', 100)->unique();
             $table->string('email', 100)->unique();
             $table->string('password', 100);
+            $table->string('profile_image')->nullable();
             $table->timestamps();
         });
 
@@ -26,9 +29,20 @@ return new class extends Migration
             $table->string('subtitle', 255);
             $table->string('title', 255);
             $table->text('content');
-            $table->string('image_url', 255)->nullable();
+            $table->string('image_url_1', 255)->nullable();
+            $table->string('image_url_2', 255)->nullable();
             $table->timestamp('posted_at')->useCurrent();
         });
+
+        DB::table('admin')->insert([
+            'name' => 'UniAid',
+            'username' => 'admin',
+            'email' => 'uniaid2024@gmail.com',
+            'password' => Hash::make('uniaid123'),
+            'profile_image' => 'assets/img/no_profile.png',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
     }
 
     /**

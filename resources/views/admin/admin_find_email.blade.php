@@ -28,7 +28,8 @@
                 <h5 class="fw-normal mb-3 text-center">Enter your email address to search for your account.
                 </h5>
                 <div class="input-group mb-3">
-                  <input type="text" name="email" autocomplete="off" class="input" id="email" required>
+                  <input type="text" name="email" autocomplete="off" class="input" id="email" width="500" required>
+                  <i class="fa-solid fa-envelope fa-2xl ms-2 mt-2"></i>
                   <label class="user-label" for="email">Email Address</label>
                 </div>
             </div>
@@ -50,6 +51,7 @@
   <script src="{{ asset('lib/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
   <script src="{{ asset('lib/jquery/jquery.min.js') }}"></script>
   <script src="{{ asset('lib/jquery/jquery.validate.min.js') }}"></script>
+  <script src="{{ asset('lib/fontawesome/all.js') }}"></script>
   <script src="{{ asset('assets/admin/js/admin.js') }}"></script>
 </body>
 

@@ -59,9 +59,13 @@
             </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
               <li>
-                <a class="dropdown-item d-flex justify-content-center align-items-center" href="logout.php">Logout
-                  <i class="fas fa-right-from-bracket ms-2"></i>
-                </a>
+                <form action="{{ route('admin.logout') }}" method="POST">
+                  @csrf
+                  <button type="submit" class="dropdown-item d-flex justify-content-center align-items-center">
+                    Logout
+                    <i class="fas fa-right-from-bracket ms-2"></i>
+                  </button>
+                </form>
               </li>
               <li>
                 <a class="dropdown-item d-flex justify-content-center align-items-center" href="my_profile">My profile
@@ -93,51 +97,167 @@
               </div>
             </div>
             <!-- Nav Links -->
-            <a class="nav-link " href="{{ route ('admin.dashboard')}}" title="Dashboard">
+            <a class="nav-link" href="{{ route ('admin.dashboard')}}" title="Dashboard">
               <div class="sb-nav-link-icon">
                 <i class="fas fa-tachometer-alt"></i>
               </div>
               <span>Dashboard</span>
             </a>
-            <a class="nav-link" href="{{ route ('admin.dashboard')}}" title="Users">
+            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#admin"
+              aria-expanded="false" aria-controls="admin" title="Manage Admin">
+              <div class="sb-nav-link-icon">
+                <i class="fas fa-user"></i>
+              </div>
+              <span>Admin Settings </span>
+              <div class="sb-sidenav-collapse-arrow">
+                <i class="fas fa-angle-down"></i>
+              </div>
+            </a>
+            <div class="collapse" id="admin" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+              <nav class="sb-sidenav-menu-nested nav">
+                <a class="nav-link" href="#" title="Admin Profile">
+                  <div class="sb-nav-link-icon">
+                    <i class="far fa-circle nav-icon"></i>
+                  </div>
+                  <span>Admin Profile</span>
+                </a>
+                <a class="nav-link" href="#" title="Admin Accounts">
+                  <div class="sb-nav-link-icon">
+                    <i class="far fa-circle nav-icon"></i>
+                  </div>
+                  <span>Admin Accounts</span>
+                </a>
+              </nav>
+            </div>
+
+            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#user"
+              aria-expanded="false" aria-controls="user" title="Manage User">
               <div class="sb-nav-link-icon">
                 <i class="fas fa-users"></i>
               </div>
-              <span>Users</span>
+              <span>Manage Users</span>
+              <div class="sb-sidenav-collapse-arrow">
+                <i class="fas fa-angle-down"></i>
+              </div>
             </a>
+            <div class="collapse" id="user" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+              <nav class="sb-sidenav-menu-nested nav">
+                <a class="nav-link" href="#" title="Donors">
+                  <div class="sb-nav-link-icon">
+                    <i class="far fa-circle nav-icon"></i>
+                  </div>
+                  <span>Donors</span>
+                </a>
+                <a class="nav-link" href="#" title="Donee">
+                  <div class="sb-nav-link-icon">
+                    <i class="far fa-circle nav-icon"></i>
+                  </div>
+                  <span>Donee</span>
+                </a>
+                <a class="nav-link" href="#" title="Volunteer">
+                  <div class="sb-nav-link-icon">
+                    <i class="far fa-circle nav-icon"></i>
+                  </div>
+                  <span>Volunteer</span>
+                </a>
+              </nav>
+              <a class="nav-link" href="#" title="Verify Accounts">
+                <div class="sb-nav-link-icon">
+                  <i class="far fa-circle nav-icon"></i>
+                </div>
+                <span>Verify Accounts</span>
+              </a>
+            </div>
+            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#resources"
+              aria-expanded="false" aria-controls="resources" title="Manage Resources">
+              <div class="sb-nav-link-icon">
+                <i class="fas fa-list-check"></i>
+              </div>
+              <span>Manage Resources</span>
+              <div class="sb-sidenav-collapse-arrow">
+                <i class="fas fa-angle-down"></i>
+              </div>
+            </a>
+            <div class="collapse" id="resources" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+              <nav class="sb-sidenav-menu-nested nav">
+                <a class="nav-link" href="#" title="Donated Resources">
+                  <div class="sb-nav-link-icon">
+                    <i class="far fa-circle nav-icon"></i>
+                  </div>
+                  <span>Donated Resources</span>
+                </a>
+                <a class="nav-link" href="#" title="Distributed Resources">
+                  <div class="sb-nav-link-icon">
+                    <i class="far fa-circle nav-icon"></i>
+                  </div>
+                  <span>Distributed Resources</span>
+                </a>
+              </nav>
+            </div>
+            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#donation"
+              aria-expanded="false" aria-controls="donation" title="Manage Donation">
+              <div class="sb-nav-link-icon">
+                <i class="fas fa-hand-holding-heart"></i>
+              </div>
+              <span>Manage Donation</span>
+              <div class="sb-sidenav-collapse-arrow">
+                <i class="fas fa-angle-down"></i>
+              </div>
+            </a>
+            <div class="collapse" id="donation" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+              <nav class="sb-sidenav-menu-nested nav">
+                <a class="nav-link" href="#" title="Quick Donations">
+                  <div class="sb-nav-link-icon">
+                    <i class="far fa-circle nav-icon"></i>
+                  </div>
+                  <span>Quick Donations</span>
+                </a>
+                <a class="nav-link" href="#" title="Donee Selections">
+                  <div class="sb-nav-link-icon">
+                    <i class="far fa-circle nav-icon"></i>
+                  </div>
+                  <span>Donee Selection</span>
+                </a>
+              </nav>
+            </div>
+            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#request"
+              aria-expanded="false" aria-controls="request" title="Verify Donee Request">
+              <div class="sb-nav-link-icon">
+                <i class="fas fa-handshake"></i>
+              </div>
+              <span>Verify Donee Request</span>
+              <div class="sb-sidenav-collapse-arrow">
+                <i class="fas fa-angle-down"></i>
+              </div>
+            </a>
+            <div class="collapse" id="request" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+              <nav class="sb-sidenav-menu-nested nav">
+                <a class="nav-link" href="#" title="Available Resources">
+                  <div class="sb-nav-link-icon">
+                    <i class="far fa-circle nav-icon"></i>
+                  </div>
+                  <span>Available Resources</span>
+                </a>
+                <a class="nav-link" href="#" title="Post A Request">
+                  <div class="sb-nav-link-icon">
+                    <i class="far fa-circle nav-icon"></i>
+                  </div>
+                  <span>Post A Request</span>
+                </a>
+              </nav>
+            </div>
             <a class="nav-link active" href="{{ route ('admin.inquiries')}}" title="Inquiries">
               <div class="sb-nav-link-icon">
                 <i class="fas fa-message"></i>
               </div>
               <span>Inquiries</span>
             </a>
-            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#appointment"
-              aria-expanded="false" aria-controls="appointment" title="Appointment">
+            <a class="nav-link" href="#" title="News">
               <div class="sb-nav-link-icon">
-                <i class="fas fa-calendar-check"></i>
+                <i class="fas fa-newspaper"></i>
               </div>
-              <span>Dropdown</span>
-              <div class="sb-sidenav-collapse-arrow">
-                <i class="fas fa-angle-down"></i>
-              </div>
+              <span>News</span>
             </a>
-
-            <div class="collapse" id="appointment" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-              <nav class="sb-sidenav-menu-nested nav">
-                <a class="nav-link" href="appointment.php" title="Appointment Scheduled">
-                  <div class="sb-nav-link-icon">
-                    <i class="far fa-circle nav-icon"></i>
-                  </div>
-                  <span>Dropdown 1</span>
-                </a>
-                <a class="nav-link" href="inquiries.php" title="Inquiries">
-                  <div class="sb-nav-link-icon">
-                    <i class="far fa-circle nav-icon"></i>
-                  </div>
-                  <span>Dropdown 2</span>
-                </a>
-              </nav>
-            </div>
           </div>
         </div>
         <div class="sb-sidenav-footer bg-logo1">
@@ -153,17 +273,16 @@
             <li class="breadcrumb-item active">Dashboard</li>
           </ol>
           @if (session('success'))
-          <div id="alert-success" class="alert alert-success">
-            {{ session('success') }}
+          <div id="alert-success" class="alert alert-success wow fadeInLeft">
+            <i class="fa-solid fa-circle-check me-3"></i>{{ session('success') }}
           </div>
           @endif
 
           @if (session('error'))
-          <div id="alert-error" class="alert alert-danger">
-            {{ session('error') }}
+          <div id="alert-error" class="alert alert-error wow fadeInLeft">
+            <i class="fa-solid fa-circle-xmark me-3"></i>{{ session('error') }}
           </div>
           @endif
-
           <h1 class="my-2">Inquiries Inbox</h1>
           <!-- /. CONTENT -->
           <section class="content mb-2">
@@ -210,10 +329,14 @@
                                 <label for="check{{ $inquiry->id }}"></label>
                               </div>
                             </td>
-                            <td class="mailbox-name"><a href="{{ route('inquiries.read', $inquiry->id) }}">{{ $inquiry->name }}</a></td>
-                            <td class="mailbox-subject"><b>{{ $inquiry->subject }}</b></td>
+                            <td class="mailbox-name">
+                              <a href="{{ route('inquiries.read', $inquiry->id) }}" class="{{ $inquiry->status === 'unread' ? 'fw-bold' : 'text-secondary' }}">{{ $inquiry->name }}</a>
+                            </td>
+                            <td class="mailbox-subject {{ $inquiry->status === 'unread' ? 'fw-bold' : 'text-secondary' }}">{{ $inquiry->subject }}</td>
                             <td class="mailbox-date">{{ $inquiry->submitted_at->format('d M Y h:i A') }}</td>
-                            <td class="status">{{ ucfirst($inquiry->status) }}</td>
+                            <td class="{{ $inquiry->status === 'unread' ? 'fw-bold' : 'text-secondary' }}">
+                              {{ ucfirst($inquiry->status) }}
+                            </td>
                           </tr>
                           @empty
                           <tr>
@@ -225,12 +348,10 @@
                     </div>
                   </form>
                 </div>
-                <div class="card-footer p-0">
+                <div class="card-footer px-2">
                   <div class="mailbox-controls d-flex justify-content-between align-items-center">
-                    {{ $inquiries->links() }}
-                    <div class="float-end">
-                      Total Inquiries: {{ $total }}
-                    </div>
+                    Total Inquiries: {{ $total }}
+                    <div class="mt-2"> {{ $inquiries->links() }}</div>
                   </div>
                 </div>
               </div>

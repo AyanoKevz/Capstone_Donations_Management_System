@@ -15,6 +15,7 @@
     href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <link rel="icon" href="{{ asset ('assets/img/systemLogo.png') }}" type="image/png">
   <link rel="stylesheet" href="{{ asset('lib/bootstrap/css/bootstrap.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('lib/summernote/summernote-bs5.min.css') }}">
   <link rel="stylesheet" href="{{ asset ('assets/admin/css/inquiries.css') }}">
 
 </head>
@@ -272,60 +273,72 @@
           <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item active">Dashboard</li>
           </ol>
-          @if (session('success'))
-          <div id="alert-success" class="alert alert-success">
-            {{ session('success') }}
-          </div>
-          @endif
-
-          @if (session('error'))
-          <div id="alert-error" class="alert alert-danger">
-            {{ session('error') }}
-          </div>
-          @endif
-
-          <h1 class="my-2">Read Inquiries</h1>
+          <h1 class="my-2">Reply Inquiry</h1>
           <!-- /. CONTENT -->
-          <section class="content mb-2">
+          <section class="content">
             <div class="container-fluid">
               <div class="row">
                 <div class="col-md-3">
                   <div class="d-grid">
-                    <a href="{{ route('admin.inquiries') }}" class="btn btn-primary btn-block mb-3">Back to Inbox</a>
+                    <a href="{{ route('inquiries.read',  $inquiry->id ) }}" class="btn btn-primary btn-block mb-3">Back to Inbox</a>
                   </div>
+                  @if (session('success'))
+                  <div id="alert-success" class="alert alert-success">
+                    <i class="fa-solid fa-circle-check me-3"></i>
+                    {{ session('success') }}
+                  </div>
+                  @endif
                 </div>
+                <!-- /.col -->
                 <div class="col-md-9">
                   <div class="card card-primary card-outline">
                     <div class="card-header">
-                      <h3 class="card-title">Read Inquiries</h3>
+                      <h3 class="card-title">Compose Reply to {{ $inquiry -> name}}</h3>
                     </div>
-                    <div class="card-body p-0">
-                      <div class="mailbox-read-info">
-                        <h5>Name: {{ $inquiry->name }}</h5>
-                        <h5>From: {{ $inquiry->email }}</h5>
-                        <h6 class="mt-2">Contact Number: {{ $inquiry->contact }}
-                          <span class="mailbox-read-time float-end">
-                            {{ $inquiry->submitted_at->format('d M Y h:i A') }}
-                          </span>
-                        </h6>
-                      </div>
-                      <div class="mailbox-controls with-border">
-                        <h5 class="m-0 p-2 text-body-tertiary">Subject: {{ $inquiry->subject }}</h5>
-                      </div>
-                      <div class="mailbox-read-message">
-                        <p>{{ $inquiry->message }}</p>
-                      </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                      <form method="POST" action="{{ route('inquiries.sendReply') }}">
+                        @csrf
+                        <input type="hidden" name="inquiry_id" value="{{ $inquiry->id }}">
+                        <div class="form-group mb-3">
+                          <input
+                            class="form-control text-secondary"
+                            name="to"
+                            placeholder="To:"
+                            value="{{ $inquiry->email }}"
+                            readonly>
+                        </div>
+                        <div class="form-group mb-3">
+                          <input
+                            class="form-control"
+                            name="subject"
+                            placeholder="Subject:" required>
+                        </div>
+                        <div class="form-group">
+                          <textarea
+                            id="compose-textarea"
+                            name="message"
+                            class="form-control"
+                            style="height: 300px" required></textarea>
+                        </div>
                     </div>
-                    <div class="card-footer bg-body-secondary">
+                    <!-- /.card-body -->
+                    <div class="card-footer">
                       <div class="float-end">
-                        <a href="{{ route('inquiries.reply', $inquiry->id) }}" class="btn btn-light"><i class="fas fa-reply"></i> Reply</a>
+                        <button type="submit" class="btn email-btn">
+                          <i class="far fa-envelope"></i> Send
+                        </button>
                       </div>
                     </div>
+                    </form>
                   </div>
                 </div>
               </div>
             </div>
           </section>
+
+
+
         </div>
       </main>
       <footer class="py-3 bg-dark mt-3">
@@ -342,6 +355,7 @@
   <script src="{{ asset('lib/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
   <script src="{{ asset('lib/fontawesome/all.js') }}"></script>
   <script src="{{ asset('lib/jquery/jquery.min.js') }}"></script>
+  <script src="{{ asset('lib/summernote/summernote-bs5.min.js') }}"></script>
   <script src="{{ asset('assets/admin/js/admin.js') }}"></script>
 
   <script>

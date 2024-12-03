@@ -380,9 +380,8 @@
                     <div class="my-3 d-flex justify-content-center">
                         <img src="{{asset('assets/img/donor.gif') }}" alt="" class="w-25">
                     </div>
-                    <form action="#" method="post" id="donor-form">
-
-                        <div class="d-flex justify-content-center mb-3">
+                    <form action="#" method="post" class="login-form">
+                        <div class="d-flex justify-content-center mb-5">
                             <span class="me-2 my-auto"><i class="fa fa-user fa-lg" style="color: #ff1f1f;"></i></span>
                             <div class="input-group">
                                 <input type="text" name="username" autocomplete="off" class="login-input" id="username"
@@ -391,12 +390,16 @@
                             </div>
                         </div>
 
-                        <div class="d-flex justify-content-center mb-3">
-                            <span class="me-2 my-auto"><i class="fa fa-lock fa-lg" style="color: #ff1f1f;"></i></span>
-                            <div class="input-group">
-                                <input type="password" name="password" autocomplete="off" class="login-input"
-                                    id="password" required>
+                        <div class="d-flex justify-content-center align-items-center mb-5">
+                            <span class="me-2">
+                                <i class="fas fa-lock fa-lg" style="color: #ff1f1f;"></i>
+                            </span>
+                            <div class="input-group position-relative">
+                                <input type="password" name="password" autocomplete="off" class="login-input password-input" required>
                                 <label class="user-label" for="password">Password</label>
+                                <button type="button" class="toggle-password">
+                                    <i class="fas fa-eye-slash toggle-password-icon" id=""></i>
+                                </button>
                             </div>
                         </div>
                 </div>
@@ -425,8 +428,8 @@
                     <div class="my-3 d-flex justify-content-center">
                         <img src="{{asset('assets/img/donee.gif') }}" alt="" class="w-25">
                     </div>
-                    <form action="#" method="post" id="donee-form">
-                        <div class="d-flex justify-content-center mb-3">
+                    <form action="#" method="post" class="login-form">
+                        <div class="d-flex justify-content-center mb-5">
                             <span class="me-2"><i class="fa fa-user fa-lg" style="color: #ff1f1f;"></i></span>
                             <div class="input-group">
                                 <input type="text" name="username" autocomplete="off" class="login-input" id="username"
@@ -434,12 +437,16 @@
                                 <label class="user-label" for="username">Username</label>
                             </div>
                         </div>
-                        <div class="d-flex justify-content-center mb-3">
-                            <span class="me-2"><i class="fa fa-lock fa-lg" style="color: #ff1f1f;"></i></span>
-                            <div class="input-group">
-                                <input type="password" name="password" autocomplete="off" class="login-input"
-                                    id="password" required>
+                        <div class="d-flex justify-content-center align-items-center mb-5">
+                            <span class="me-2">
+                                <i class="fa fa-lock fa-lg" style="color: #ff1f1f;"></i>
+                            </span>
+                            <div class="input-group position-relative">
+                                <input type="password" name="password" autocomplete="off" class="login-input password-input" required>
                                 <label class="user-label" for="password">Password</label>
+                                <button type="button" class="toggle-password">
+                                    <i class="fa fa-eye-slash toggle-password-icon"></i>
+                                </button>
                             </div>
                         </div>
                 </div>
@@ -468,8 +475,8 @@
                     <div class="my-3 d-flex justify-content-center">
                         <img src="{{asset('assets/img/volunteer.gif') }}" alt="" class="w-25">
                     </div>
-                    <form action="" method="post" id="vol-form">
-                        <div class="d-flex justify-content-center mb-3">
+                    <form action="" method="post" class="login-form">
+                        <div class="d-flex justify-content-center mb-5">
                             <span class="me-2"><i class="fa fa-user fa-lg" style="color: #ff1f1f;"></i></span>
                             <div class="input-group">
                                 <input type="text" name="username" autocomplete="off" class="login-input" id="username"
@@ -477,13 +484,16 @@
                                 <label class="user-label" for="username">Username</label>
                             </div>
                         </div>
-
-                        <div class="d-flex justify-content-center mb-3">
-                            <span class="me-2"><i class="fa fa-lock fa-lg" style="color: #ff1f1f;"></i></span>
-                            <div class="input-group">
-                                <input type="password" name="password" autocomplete="off" class="login-input"
-                                    id="password" required>
+                        <div class="d-flex justify-content-center align-items-center mb-5">
+                            <span class="me-2">
+                                <i class="fa fa-lock fa-lg" style="color: #ff1f1f;"></i>
+                            </span>
+                            <div class="input-group position-relative">
+                                <input type="password" name="password" autocomplete="off" class="login-input password-input" required>
                                 <label class="user-label" for="password">Password</label>
+                                <button type="button" class="toggle-password ">
+                                    <i class="fa fa-eye-slash toggle-password-icon"></i>
+                                </button>
                             </div>
                         </div>
                 </div>

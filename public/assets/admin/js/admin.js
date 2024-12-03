@@ -1,16 +1,19 @@
 document.addEventListener("DOMContentLoaded", function () {
 
+var spinnerElement = document.getElementById("spinner");
+if (spinnerElement) {
+    spinnerElement.classList.remove("show");
+}
 
-  
-var spinner = function () {
-    setTimeout(function () {
-        var spinnerElement = document.getElementById("spinner");
+// Show spinner on form submission
+document.querySelectorAll("form").forEach(function (form) {
+    form.addEventListener("submit", function () {
         if (spinnerElement) {
-            spinnerElement.classList.remove("show");
+            spinnerElement.classList.add("show");
         }
-    }, 1);
-};
-spinner();
+    });
+});
+
 
   // Initialize tooltips for nav links with a title attribute
   var tooltipTriggerList = [].slice.call(
@@ -140,41 +143,51 @@ spinner();
       });
     });
 
+    const toggleButton = $('.checkbox-toggle'); 
+    const checkboxes = $('input[type="checkbox"][name="selected[]"]'); 
+    let allChecked = false; 
 
-    const toggleButton = $('.checkbox-toggle'); // The "Check All" button
-    const checkboxes = $('input[type="checkbox"][name="selected[]"]'); // All checkboxes
-    const icon = toggleButton.find('i'); // The icon inside the button
-    let allChecked = false; // Track the toggle state
-
-    // Toggle button click event
     toggleButton.on('click', function () {
-        allChecked = !allChecked; // Toggle state
-
-        // Update all checkboxes
-        checkboxes.prop('checked', allChecked);
-
-        // Update the icon
-        icon
-            .toggleClass('fa-square', !allChecked) // Show square icon if unchecking all
-            .toggleClass('fa-square-check', allChecked); // Show check-square icon if checking all
+    allChecked = !allChecked; 
+    checkboxes.prop('checked', allChecked);
     });
-
-    // Update button icon dynamically when individual checkboxes change
-    checkboxes.on('change', function () {
-        const totalChecked = checkboxes.filter(':checked').length;
-        allChecked = (totalChecked === checkboxes.length); // Update toggle state
-
-        icon
-            .toggleClass('fa-square', !allChecked) // Show square if not all are checked
-            .toggleClass('fa-square-check', allChecked); // Show check-square if all are checked
-    });
-    
 
         setTimeout(() => {
             $('#alert-success').fadeOut();
             $('#alert-error').fadeOut();
         }, 3000);
         
+        
+     // Toggle visibility for the "password" field
+$('#toggle-password').on('click', function () {
+  const passwordInput = $('#password');
+  const toggleIcon = $('#toggle-password-icon');
+
+  // Toggle password type between 'password' and 'text'
+  if (passwordInput.attr('type') === 'password') {
+    passwordInput.attr('type', 'text'); // Show password
+    toggleIcon.removeClass('fa-eye').addClass('fa-eye-slash'); // Change icon to eye-slash
+  } else {
+    passwordInput.attr('type', 'password'); // Hide password
+    toggleIcon.removeClass('fa-eye-slash').addClass('fa-eye'); // Change icon to eye
+  }
+});
+
+// Toggle visibility for the "confirm password" field
+$('#toggle-cpassword').on('click', function () {
+  const cpasswordInput = $('#cpassword');
+  const toggleIcon = $('#toggle-cpassword-icon');
+
+  // Toggle password type between 'password' and 'text'
+  if (cpasswordInput.attr('type') === 'password') {
+    cpasswordInput.attr('type', 'text'); // Show password
+    toggleIcon.removeClass('fa-eye').addClass('fa-eye-slash'); // Change icon to eye-slash
+  } else {
+    cpasswordInput.attr('type', 'password'); // Hide password
+    toggleIcon.removeClass('fa-eye-slash').addClass('fa-eye'); // Change icon to eye
+  }
+});
+
 
 });
 

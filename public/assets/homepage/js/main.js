@@ -6,15 +6,19 @@
             $('#alert-error').fadeOut();
         }, 3000);
 
-    // Spinner
-    var spinner = function () {
-        setTimeout(function () {
-            if ($('#spinner').length > 0) {
-                $('#spinner').removeClass('show');
-            }
-        }, 1);
-    };
-    spinner(0);
+       // Spinner
+   var spinnerElement = document.getElementById("spinner");
+if (spinnerElement) {
+    spinnerElement.classList.remove("show");
+}
+document.querySelectorAll("form").forEach(function (form) {
+    form.addEventListener("submit", function () {
+        if (spinnerElement) {
+            spinnerElement.classList.add("show");
+        }
+    });
+});
+
     
     
    //animation
@@ -172,7 +176,19 @@ $('#individual').on('change', function () {
   $('#fname').attr('placeholder', 'Enter your first name');
   $('#middle-name, #last-name, #gender-options').css('display', 'flex');
   $('#birth-label').html('Date of Birth <span class="text-danger fs-6">*</span>');
-  $('#validID, #proofUpload').parent().css('display', 'block');
+  $('#validID').html(`
+    <option disabled selected value="">Select ID</option>
+    <option value="Philippine Passport">Philippine Passport</option>
+    <option value="Driver's License">Driver's License</option>
+    <option value="SSS ID">SSS ID</option>
+    <option value="UMID">UMID</option>
+    <option value="PhilHealth ID">PhilHealth ID</option>
+    <option value="Voter's ID">Voter's ID</option>
+    <option value="PRC ID">PRC ID</option>
+    <option value="Postal ID">Postal ID</option>
+    <option value="TIN ID">TIN ID</option>
+    <option value="Barangay ID">Barangay ID</option>
+  `);
   $('#proofUpload-label').html('Upload Selected ID <span class="text-danger fs-6">*</span>');
   
   // Show individual ID upload instructions and image
@@ -197,8 +213,17 @@ $('#organization').on('change', function () {
   $('#middle-name, #last-name, #gender-options').css('display', 'none');
   
   // Change to organization proof instructions and image
-  $('#validID').parent().css('display', 'none'); // Hide ID selection
-  $('#proofUpload-label').html('Upload Organization Document <span class="text-danger fs-6">*</span>');
+  $('#validID').html(`
+    <option disabled selected value="">Select Proof Document</option>
+    <option value="SEC Certificate of Registration">SEC Certificate of Registration</option>
+    <option value="Mayor's Permit">Mayor's Permit</option>
+    <option value="BIR 2303 Form">BIR 2303 Form</option>
+    <option value="DTI Certificate">DTI Certificate</option>
+    <option value="Articles of Incorporation">Articles of Incorporation</option>
+    <option value="Organizational Letterhead">Organizational Letterhead</option>
+  `);
+  
+  $('#proofUpload-label').html('Upload Selected Organization Document <span class="text-danger fs-6">*</span>');
   $('#ins-photo').attr('src', '../assets/img/document.png'); // Change image to document image
   $('#upload-instructions').html(`
       <li><p>Upload proof of organization (Certificate of Incorporation, Business Permit, etc.).</p></li>
@@ -212,12 +237,15 @@ $('#organization').on('change', function () {
   $('.take-photo-section').attr('style', 'display: none !important');
 });
 
+
+
 const API_BASE_URL = "https://psgc.gitlab.io/api";
 
 initializeRegionDropdown();
 $('#region').on('change', handleRegionChange);
 $('#province').on('change', handleProvinceChange);
 $('#city').on('change', handleCityChange);
+$('#barangay').on('change', handleBarangayChange);
 
 /**
  * Initialize the Region dropdown by fetching data from the PSGC API.
@@ -227,7 +255,7 @@ function initializeRegionDropdown() {
         const regionDropdown = $('#region');
         regionDropdown.empty().append('<option disabled selected value="">Select Region</option>');
         data.forEach(region => {
-            regionDropdown.append(`<option value="${region.code}">${region.name}</option>`);
+            regionDropdown.append(`<option value="${region.code}" data-name="${region.name}">${region.name}</option>`);
         });
     }).fail(function() {
         console.error("Failed to load regions.");
@@ -238,14 +266,19 @@ function initializeRegionDropdown() {
  * Handle region selection and load corresponding provinces or cities directly for NCR.
  */
 function handleRegionChange() {
-    const regionCode = this.value;
-    if (!regionCode) return;
+    const regionCode = this.value;  // Get the selected region code
+    const regionName = $('option:selected', this).text(); // Get the name from the selected option
+    
+    if (!regionCode) return;  // Exit if no region is selected
 
+    // Store the region name in a hidden input field
+    $('#region-name').val(regionName);  // Assuming you have a hidden input field with id="region-name"
+    
     // Special handling for NCR (no provinces)
     if (regionCode === "130000000") { // NCR region code
         handleNCRRegion();
     } else {
-        loadProvinces(regionCode);
+        loadProvinces(regionCode);  // Use the region code to load provinces
     }
 }
 
@@ -253,8 +286,14 @@ function handleRegionChange() {
  * Handle NCR region by skipping the province dropdown and directly loading cities.
  */
 function handleNCRRegion() {
-    $('#province').empty().append('<option selected value="N/A">N/A</option>'); // NCR has no provinces
-    loadCitiesForRegion("130000000"); // Load cities directly for NCR
+    // Set "N/A" for province dropdown
+    $('#province').empty().append('<option selected value="N/A">N/A</option>');
+    
+    // Set the hidden input to "N/A"
+    $('#province-name').val('N/A');
+    
+    // Load cities directly for NCR
+    loadCitiesForRegion("130000000");
 }
 
 /**
@@ -267,7 +306,7 @@ function loadProvinces(regionCode) {
         provinceDropdown.empty().append('<option disabled selected value="">Select Province</option>');
         if (data.length > 0) {
             data.forEach(province => {
-                provinceDropdown.append(`<option value="${province.code}">${province.name}</option>`);
+                provinceDropdown.append(`<option value="${province.code}" data-name="${province.name}">${province.name}</option>`);
             });
         } else {
             console.warn('No provinces found for this region.');
@@ -286,8 +325,11 @@ function loadProvinces(regionCode) {
  */
 function handleProvinceChange() {
     const provinceCode = this.value;
+    const provinceName = $('option:selected', this).text(); // Get the name from the selected option
+    
     if (provinceCode) {
-        loadCitiesForProvince(provinceCode);
+        $('#province-name').val(provinceName);  // Store the province name in the hidden input field
+        loadCitiesForProvince(provinceCode);  // Load cities for the selected province
     }
 }
 
@@ -301,7 +343,7 @@ function loadCitiesForProvince(provinceCode) {
         cityDropdown.empty().append('<option disabled selected value="">Select City</option>');
         if (data.length > 0) {
             data.forEach(city => {
-                cityDropdown.append(`<option value="${city.code}">${city.name}</option>`);
+                cityDropdown.append(`<option value="${city.code}" data-name="${city.name}">${city.name}</option>`);
             });
         } else {
             console.warn('No cities found for this province.');
@@ -323,7 +365,7 @@ function loadCitiesForRegion(regionCode) {
         cityDropdown.empty().append('<option disabled selected value="">Select City</option>');
         if (data.length > 0) {
             data.forEach(city => {
-                cityDropdown.append(`<option value="${city.code}">${city.name}</option>`);
+                cityDropdown.append(`<option value="${city.code}" data-name="${city.name}">${city.name}</option>`);
             });
         } else {
             console.warn('No cities found for this region.');
@@ -340,8 +382,11 @@ function loadCitiesForRegion(regionCode) {
  */
 function handleCityChange() {
     const cityCode = this.value;
+    const cityName = $('option:selected', this).text(); // Get the name from the selected option
+    
     if (cityCode) {
-        loadBarangays(cityCode);
+        $('#city-name').val(cityName);  // Store the city name in the hidden input field
+        loadBarangays(cityCode);  // Load barangays for the selected city
     }
 }
 
@@ -355,7 +400,7 @@ function loadBarangays(cityCode) {
         barangayDropdown.empty().append('<option disabled selected value="">Select Barangay</option>');
         if (data.length > 0) {
             data.forEach(barangay => {
-                barangayDropdown.append(`<option value="${barangay.code}">${barangay.name}</option>`);
+                barangayDropdown.append(`<option value="${barangay.code}" data-name="${barangay.name}">${barangay.name}</option>`);
             });
         } else {
             console.warn('No barangays found for this city.');
@@ -366,6 +411,18 @@ function loadBarangays(cityCode) {
 }
 
 /**
+ * Handle barangay selection and store the barangay name.
+ */
+function handleBarangayChange() {
+    const barangayCode = this.value;
+    const barangayName = $('option:selected', this).text(); // Get the name from the selected option
+    
+    if (barangayCode) {
+        $('#barangay-name').val(barangayName);  // Store the barangay name in the hidden input field
+    }
+}
+
+/**
  * Reset a dropdown to its default option.
  * @param {string} selector - The selector of the dropdown to reset.
  * @param {string} defaultText - The default option text.
@@ -373,6 +430,7 @@ function loadBarangays(cityCode) {
 function resetDropdown(selector, defaultText) {
     $(selector).empty().append(`<option disabled selected value="">${defaultText}</option>`);
 }
+
 
 
 $.validator.addMethod("mobilePH", function(value, element) {
@@ -389,7 +447,7 @@ $("form").validate({
             required: true,
             minlength: 8
         },
-        cpassword: {
+        password_confirmation: {
             required: true,
             equalTo: "[name='password']"
         },
@@ -410,7 +468,7 @@ $("form").validate({
         gender: {
             required: true
         },
-        number: {
+        contact_number: {
             required: true,
             digits: true,
             mobilePH: true, 
@@ -440,6 +498,9 @@ $("form").validate({
         barangay: {
             required: true
         },
+        full_address: {
+            required: true
+        },
         validID: {
             required: true
         },
@@ -451,13 +512,13 @@ $("form").validate({
     messages: {
         username: {
             required: "Please enter a username",
-            minlength: "Your username must be at least 8 characters long"
+            minlength: "Your username must be at least 5 characters long"
         },
         password: {
             required: "Please provide a password",
             minlength: "Your password must be at least 8 characters long"
         },
-        cpassword: {
+        password_confirmation: {
             required: "Please confirm your password",
             equalTo: "Passwords do not match"
         },
@@ -465,7 +526,7 @@ $("form").validate({
             required: "Please enter a valid email address",
             email: "Please enter a valid email address"
         },
-        number: {
+        contact_number: {
             required: "Please enter your mobile number",
             digits: "Please enter only digits",
             mobilePH: "Invalid Format (09xxxxxxxxx)"
@@ -496,142 +557,79 @@ $("form").validate({
 
 
 // Validation for Donor Form
-$("#donor-form").validate({
-    rules: {
-        username: {
-            required: true,
-            minlength: 5
-        },
-        password: {
-            required: true,
-            minlength: 8
+$(".login-form").each(function() {
+        $(this).validate({
+            rules: {
+                username: {
+                    required: true,
+                    minlength: 5
+                },
+                password: {
+                    required: true,
+                    minlength: 8
+                }
+            },
+            messages: {
+                username: {
+                    required: "Please enter a username",
+                    minlength: "Your username must be at least 5 characters long"
+                },
+                password: {
+                    required: "Please provide a password",
+                    minlength: "Your password must be at least 8 characters long"
+                }
+            },
+            highlight: function(element) {
+                $(element).addClass('is-invalid').removeClass('is-valid');
+            },
+            unhighlight: function(element) {
+                $(element).addClass('is-valid').removeClass('is-invalid');
+            },
+            errorPlacement: function(error, element) {
+                error.insertAfter(element);
+            },
+            submitHandler: function(form) {
+                form.submit();
+            }
+        });
+    });
+
+    // Trigger validation when modal opens
+    $('#donee-login, #volunteer-login').on('shown.bs.modal', function () {
+        // Reinitialize validation after the modal is shown
+        $(this).find(".login-form").validate();
+    });
+
+    // Prevent the form from submitting if it's invalid (for modal forms)
+    $(".login-form").on('submit', function(e) {
+        if (!$(this).valid()) {
+            e.preventDefault(); 
         }
-    },
-    messages: {
-        username: {
-            required: "Please enter a username",
-            minlength: "Your username must be at least 8 characters long"
-        },
-        password: {
-            required: "Please provide a password",
-            minlength: "Your password must be at least 8 characters long"
-        }
-    },
-    highlight: function(element) {
-        $(element).addClass('is-invalid').removeClass('is-valid');
-    },
-    unhighlight: function(element) {
-        $(element).addClass('is-valid').removeClass('is-invalid');
-    },
-    errorPlacement: function(error, element) {
-        error.insertAfter(element);
-    },
-    submitHandler: function(form) {
-        form.submit();
+    });
+
+
+$('.toggle-password').on('click', function () {
+    const passwordInput = $('.password-input'); // Target the password input
+    const toggleIcon = $('.toggle-password-icon'); // Target the icon in the button
+
+    // Toggle password type between 'password' and 'text'
+    if (passwordInput.attr('type') === 'password') {
+        passwordInput.attr('type', 'text'); // Show password
+        toggleIcon.removeClass('fa-eye-slash').addClass('fa-eye'); // Change icon to 'eye'
+    } else {
+        passwordInput.attr('type', 'password'); // Hide password
+        toggleIcon.removeClass('fa-eye').addClass('fa-eye-slash'); // Change icon to 'eye-slash'
     }
 });
-
-$("#donee-form").validate({
-    rules: {
-        username: {
-            required: true,
-            minlength: 5
-        },
-        password: {
-            required: true,
-            minlength: 8
-        }
-    },
-    messages: {
-        username: {
-            required: "Please enter a username",
-            minlength: "Your username must be at least 8 characters long"
-        },
-        password: {
-            required: "Please provide a password",
-            minlength: "Your password must be at least 8 characters long"
-        }
-    },
-    highlight: function(element) {
-        $(element).addClass('is-invalid').removeClass('is-valid');
-    },
-    unhighlight: function(element) {
-        $(element).addClass('is-valid').removeClass('is-invalid');
-    },
-    errorPlacement: function(error, element) {
-        error.insertAfter(element);
-    },
-    submitHandler: function(form) {
-        form.submit();
-    }
-});
-
-
-$("#vol-form").validate({
-    rules: {
-        username: {
-            required: true,
-            minlength: 5
-        },
-        password: {
-            required: true,
-            minlength: 8
-        }
-    },
-    messages: {
-        username: {
-            required: "Please enter a username",
-            minlength: "Your username must be at least 8 characters long"
-        },
-        password: {
-            required: "Please provide a password",
-            minlength: "Your password must be at least 8 characters long"
-        }
-    },
-    highlight: function(element) {
-        $(element).addClass('is-invalid').removeClass('is-valid');
-    },
-    unhighlight: function(element) {
-        $(element).addClass('is-valid').removeClass('is-invalid');
-    },
-    errorPlacement: function(error, element) {
-        error.insertAfter(element);
-    },
-    submitHandler: function(form) {
-        form.submit();
-    }
-});
-
-    
 
 })(jQuery);
-
-/* var individualRadio = document.getElementById("individual");
-var orgRadio = document.getElementById("organization");
-
-individualRadio.addEventListener("change", function () {
-    
-      document.getElementById("info-title").innerText = "Personal Details";
-      document.getElementById("fname-label").innerHTML = `First Name <span class="text-danger fs-6">*</span>`;
-      document.getElementById("middle-name").style.display = "flex";
-      document.getElementById("last-name").style.display = "flex";
-      document.getElementById("gender-options").style.display = "flex";
-});
-orgRadio.addEventListener("change", function () {
-    document.getElementById("info-title").innerText = "Organization Details";
-    document.getElementById("fname-label").innerHTML = 'Organization Name <span class="text-danger fs-6">*</span>';
-    document.getElementById("middle-name").style.display = "none";
-    document.getElementById("last-name").style.display = "none";
-    document.getElementById("gender-options").style.display = "none";
-});
- */
 
 
 let videoStream = null;
 let captureTimeout = null;
-let countdown = 3; // Updated from 4 to 3
+let countdown = 2; 
 let detecting = false;
-let detectionInterval = null; // To track face detection interval
+let detectionInterval = null;
 
 const video = document.getElementById('video');
 const canvas = document.getElementById('overlay');
@@ -703,9 +701,9 @@ toggleCameraBtn.addEventListener('click', () => {
 // Load face-api models
 async function loadModels() {
   try {
-    await faceapi.nets.tinyFaceDetector.loadFromUri('{{asset (lib/face-api.js/weights) }}');
-    await faceapi.nets.faceLandmark68Net.loadFromUri('{{asset (lib/face-api.js/weights) }}');
-    await faceapi.nets.faceRecognitionNet.loadFromUri('{{asset (lib/face-api.js/weights) }}');
+    await faceapi.nets.tinyFaceDetector.loadFromUri('/lib/face-api.js/weights');
+    await faceapi.nets.faceLandmark68Net.loadFromUri('/lib/face-api.js/weights');
+    await faceapi.nets.faceRecognitionNet.loadFromUri('/lib/face-api.js/weights');
   } catch (error) {
     console.error('Error loading face-api models:', error);
   }
@@ -771,7 +769,7 @@ async function detectFace() {
 function startCountdown() {
   if (captureTimeout === null) {
     timerDisplay.style.display = 'block'; // Show timer only when starting capture
-    countdown = 3; // Updated from 4 to 3
+    countdown = 2; 
     timerDisplay.textContent = `Timer: ${countdown}`;
 
     captureTimeout = setInterval(() => {
@@ -792,7 +790,7 @@ function resetCountdown() {
     clearInterval(captureTimeout);
     captureTimeout = null;
   }
-  countdown = 3;
+  countdown = 2;
   timerDisplay.textContent = `Timer: ${countdown}`;
   timerDisplay.style.display = 'none'; // Hide timer when not capturing
 }
@@ -834,5 +832,5 @@ function dataURLtoFile(dataurl, filename) {
   }
   return new File([u8arr], filename, { type: mime });
 }
-// Load models and prepare the application
+
 loadModels();

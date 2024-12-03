@@ -108,7 +108,17 @@
     <div class="container-fluid service py-5">
         <div class="container pb-3">
             <div class="card p-3 register-form">
-                <form action="#" method="post" enctype="multipart/form-data">
+                @if ($errors->any())
+                <div class="alert alert-error">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                        <li><i class="fa-solid fa-circle-xmark me-2 fa-xl"></i>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+                @endif
+                <form method="POST" action="{{ route ('register.donor') }}" enctype="multipart/form-data">
+                    @csrf
                     <div class="form">
                         <div class="details type">
                             <span class="title">Account Type</span>
@@ -145,15 +155,19 @@
                                     <label for="password">Password <span class="text-danger fs-6">*</span>
                                         <span class="icon-status"></span>
                                     </label>
-                                    <input type="password" class="r-input" placeholder="Enter password" required
-                                        name="password">
+                                    <input type="password" class="r-input password-input" placeholder="Enter password" required name="password" id="password">
+                                    <button type="button" class="toggle-password icon-toggle">
+                                        <i class="fas fa-eye-slash toggle-password-icon"></i>
+                                    </button>
                                 </div>
                                 <div class="input-field">
-                                    <label for="cpassword">Confirm Password <span class="text-danger fs-6">*</span>
+                                    <label for="password_confirmation">Confirm Password <span class="text-danger fs-6">*</span>
                                         <span class="icon-status"></span>
                                     </label>
-                                    <input type="password" class="r-input" placeholder="Confirm your password" required
-                                        name="cpassword">
+                                    <input type="password" class="r-input password-input" placeholder="Confirm your password" required name="password_confirmation">
+                                    <button type="button" class="toggle-password icon-toggle">
+                                        <i class="fas fa-eye-slash toggle-password-icon"></i>
+                                    </button>
                                 </div>
                                 <div class="input-field">
                                     <label>Email <span class="text-danger fs-6">*</span> <span
@@ -214,7 +228,7 @@
                                         <span class="icon-status"></span>
                                     </label>
                                     <input type="number" class="r-input" placeholder="Enter mobile number" required
-                                        name="number">
+                                        name="contact_number">
                                 </div>
 
                                 <!-- Gender Options -->
@@ -242,6 +256,7 @@
                                     <select id="region" name="region" required>
                                         <option disabled selected value="">Select Region</option>
                                     </select>
+                                    <input type="hidden" id="region-name" name="region_name">
                                 </div>
 
                                 <div class="input-field">
@@ -251,7 +266,9 @@
                                     <select id="province" name="province" required>
                                         <option disabled selected value="">Select Province</option>
                                     </select>
+                                    <input type="hidden" id="province-name" name="province_name">
                                 </div>
+
                                 <div class="input-field">
                                     <label for="city">City/Municipality <span class="text-danger fs-6">*</span>
                                         <span class="icon-status"></span>
@@ -259,6 +276,7 @@
                                     <select id="city" name="city" required>
                                         <option disabled selected value="">Select City</option>
                                     </select>
+                                    <input type="hidden" id="city-name" name="city_name">
                                 </div>
 
                                 <div class="input-field">
@@ -268,6 +286,15 @@
                                     <select id="barangay" name="barangay" required>
                                         <option disabled selected value="">Select Barangay</option>
                                     </select>
+                                    <input type="hidden" id="barangay-name" name="barangay_name">
+                                </div>
+
+                                <div class="input-field" id="full_address">
+                                    <label for="full_address">Full Address<span class="text-danger fs-6">*</span>
+                                        <span class="icon-status"></span>
+                                    </label>
+                                    <input type="text" class="r-input" placeholder="Full Address" required
+                                        name="full_address">
                                 </div>
                             </div>
                         </div>
@@ -282,7 +309,7 @@
                                             class="text-danger fs-6">*</span>
                                         <span class="icon-status"></span>
                                     </label>
-                                    <select id="validID" name="validID" required>
+                                    <select id="validID" name="id_type" required>
                                         <option disabled selected value="">Select ID</option>
                                         <option value="Philippine Passport">Philippine Passport</option>
                                         <option value="Driver's License">Driver's License</option>
@@ -303,7 +330,7 @@
                                         <span class="text-danger fs-6">*</span>
                                         <span class="icon-status"></span>
                                     </label>
-                                    <input type="file" id="proofUpload" name="proofUpload" required>
+                                    <input type="file" id="proofUpload" name="id_image" required>
                                 </div>
                             </div>
 
@@ -345,7 +372,7 @@
                                         <button class="btn btn-secondary btn-sm my-3" type="button"
                                             id="toggleCameraBtn">Turn On Camera</button>
                                     </div>
-                                    <input type="file" id="imageFile" name="imageFile" class="preview-file"
+                                    <input type="file" id="imageFile" name="user_photo" class="preview-file"
                                         style="display: none;" required>
                                     <div id="preview" style="box-sizing: content-box;">
                                         <img src="{{ asset ('assets/img/no_profile.png') }}" style="width: 300px; height:250px;"
@@ -354,8 +381,6 @@
                                 </div>
                             </div>
                         </div>
-
-                        <input type="hidden" value="donor" name="role" id="role">
                         <div class="d-flex justify-content-end mt-3">
                             <button type="submit" name="register" id="register"
                                 class="btn btn-success">Register</button>

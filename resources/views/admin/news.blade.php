@@ -272,60 +272,10 @@
           <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item active">Dashboard</li>
           </ol>
-          @if (session('success'))
-          <div id="alert-success" class="alert alert-success">
-            {{ session('success') }}
-          </div>
-          @endif
-
-          @if (session('error'))
-          <div id="alert-error" class="alert alert-danger">
-            {{ session('error') }}
-          </div>
-          @endif
 
           <h1 class="my-2">Read Inquiries</h1>
           <!-- /. CONTENT -->
-          <section class="content mb-2">
-            <div class="container-fluid">
-              <div class="row">
-                <div class="col-md-3">
-                  <div class="d-grid">
-                    <a href="{{ route('admin.inquiries') }}" class="btn btn-primary btn-block mb-3">Back to Inbox</a>
-                  </div>
-                </div>
-                <div class="col-md-9">
-                  <div class="card card-primary card-outline">
-                    <div class="card-header">
-                      <h3 class="card-title">Read Inquiries</h3>
-                    </div>
-                    <div class="card-body p-0">
-                      <div class="mailbox-read-info">
-                        <h5>Name: {{ $inquiry->name }}</h5>
-                        <h5>From: {{ $inquiry->email }}</h5>
-                        <h6 class="mt-2">Contact Number: {{ $inquiry->contact }}
-                          <span class="mailbox-read-time float-end">
-                            {{ $inquiry->submitted_at->format('d M Y h:i A') }}
-                          </span>
-                        </h6>
-                      </div>
-                      <div class="mailbox-controls with-border">
-                        <h5 class="m-0 p-2 text-body-tertiary">Subject: {{ $inquiry->subject }}</h5>
-                      </div>
-                      <div class="mailbox-read-message">
-                        <p>{{ $inquiry->message }}</p>
-                      </div>
-                    </div>
-                    <div class="card-footer bg-body-secondary">
-                      <div class="float-end">
-                        <a href="{{ route('inquiries.reply', $inquiry->id) }}" class="btn btn-light"><i class="fas fa-reply"></i> Reply</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
+
         </div>
       </main>
       <footer class="py-3 bg-dark mt-3">

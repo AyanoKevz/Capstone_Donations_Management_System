@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Inquiry;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\InquiryReply;
+use Illuminate\Support\Facades\Auth;
 
 class InquiryController extends Controller
 {
@@ -56,21 +59,18 @@ class InquiryController extends Controller
 
     public function deleteSelected(Request $request)
     {
-        $ids = $request->input('selected'); 
+        $ids = $request->input('selected');
         if ($ids) {
-            Inquiry::whereIn('id', $ids)->delete(); 
+            Inquiry::whereIn('id', $ids)->delete();
             return back()->with('success', 'Selected inquiries were deleted successfully.');
         }
-    
+
         return back()->with('error', 'No inquiries selected for deletion.');
     }
-    
 
     public function inquiriesRead($id)
     {
-        // Find the inquiry by ID
         $inquiry = Inquiry::findOrFail($id);
-
         if ($inquiry->status === 'unread') {
             $inquiry->status = 'read';
             $inquiry->save();
@@ -81,9 +81,35 @@ class InquiryController extends Controller
 
 
     public function reply($id)
-{
-    $inquiry = Inquiry::findOrFail($id);
-    return view('admin.inquiries_reply', compact('inquiry'));
-}
+    {
+        $inquiry = Inquiry::findOrFail($id);
+        return view('admin.inquiries_reply', compact('inquiry'));
+    }
 
+    public function sendReply(Request $request)
+    {
+        $request->validate([
+            'to' => 'required|email',
+            'subject' => 'required|string|max:255',
+            'message' => 'required|string',
+        ]);
+
+        $inquiry = Inquiry::find($request->input('inquiry_id'));
+
+        Mail::to($request->input('to'))
+            ->send(new InquiryReply($inquiry, $request->input('subject'), $request->input('message')));
+
+        return back()->with(
+            'success',
+            'Email sent successfully!'
+        );
+    }
+
+    public function logout()
+    {
+        Auth::guard('admin')->logout();
+        session()->invalidate();
+        session()->regenerateToken();
+        return redirect()->route('admin.login');
+    }
 }

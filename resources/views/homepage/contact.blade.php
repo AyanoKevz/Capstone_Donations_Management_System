@@ -107,13 +107,12 @@
                 <div class="col-xl-6">
                     @if (session('success'))
                     <div id="alert-success" class="alert alert-success wow fadeInLeft">
-                        <i class="fa-solid fa-circle-check me-3"></i>{{ session('success') }}
+                        <i class="fa-solid fa-circle-check fa-xl me-2"></i>{{ session('success') }}
                     </div>
                     @endif
-
                     @if (session('error'))
                     <div id="alert-error" class="alert alert-error wow fadeInLeft">
-                        <i class="fa-solid fa-circle-xmark me-3"></i>{{ session('error') }}
+                        <i class="fa-solid fa-circle-xmark  fa-xl me-2 "></i>{{ session('error') }}
                     </div>
                     @endif
                     <div>

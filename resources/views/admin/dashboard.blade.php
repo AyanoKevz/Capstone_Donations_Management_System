@@ -59,9 +59,13 @@
             </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
               <li>
-                <a class="dropdown-item d-flex justify-content-center align-items-center" href="logout.php">Logout
-                  <i class="fas fa-right-from-bracket ms-2"></i>
-                </a>
+                <form action="{{ route('admin.logout') }}" method="POST">
+                  @csrf
+                  <button type="submit" class="dropdown-item d-flex justify-content-center align-items-center">
+                    Logout
+                    <i class="fas fa-right-from-bracket ms-2"></i>
+                  </button>
+                </form>
               </li>
               <li>
                 <a class="dropdown-item d-flex justify-content-center align-items-center" href="my_profile">My profile
@@ -255,7 +259,6 @@
               </div>
               <span>News</span>
             </a>
-
           </div>
         </div>
         <div class="sb-sidenav-footer bg-logo1">

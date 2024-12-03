@@ -103,6 +103,17 @@
     <!-- Register Start -->
     <div class="container-fluid service py-3">
         <div class="container pb-3">
+            @if(session('success'))
+            <div id="alert-success" class="alert alert-success wow fadeInLeft">
+                <i class="fa-solid fa-circle-check fa-xl me-3"></i>{{ session('success') }}
+            </div>
+            @endif
+
+            @if(session('error'))
+            <div id="alert-error" class="alert alert-danger wow fadeInLeft">
+                <i class="fa-solid fa-circle-xmark fa-xl me-3"></i>{{ session('error') }}
+            </div>
+            @endif
             <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.2s" style="max-width: 800px;">
                 <h2 class="section-header">User Registration</h2>
                 <h1 class="display-5 mb-4">Join Our Community</h1>
@@ -125,7 +136,7 @@
                                 Become a UniAid donor and make a difference in the lives of individuals and communities
                                 in need. Register now to contribute essential resources.
                             </p>
-                            <a class="btn btn-primary rounded-pill py-2 px-4 my-2" href="{{ route('register.donor') }}">Register</a>
+                            <a class="btn btn-primary rounded-pill py-2 px-4 my-2" href="{{ route('donor.register') }}">Register</a>
                         </div>
                     </div>
                 </div>
@@ -140,7 +151,7 @@
                                 If you're in need of assistance, register as a recipient with UniAid. Our platform
                                 connects you with donors and resources to support you through difficult times.
                             </p>
-                            <a class="btn btn-primary rounded-pill py-2 px-4 my-2" href="{{ route('register.donee') }}">Register</a>
+                            <a class="btn btn-primary rounded-pill py-2 px-4 my-2" href="{{ route('donee.register') }}">Register</a>
                         </div>
                     </div>
                 </div>
@@ -157,8 +168,7 @@
                                 Join UniAid as a volunteer and offer your time and skills to help those in need. Uour
                                 involvement can make a lasting impact on communities across the Philippines.
                             </p>
-
-                            <a class="btn btn-primary rounded-pill py-2 px-4 my-2" href="{{ route('register.volunteer') }}">Register</a>
+                            <a class="btn btn-primary rounded-pill py-2 px-4 my-2" href="{{ route('vol.register') }}">Register</a>
                         </div>
                     </div>
                 </div>

@@ -1,7 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\InquiryController;
+use App\Http\Controllers\UserRegistrationController;
 
 
 // Homepage route
@@ -24,48 +26,45 @@ Route::get('/more-news/{id}', [App\Http\Controllers\HomeController::class, 'more
 Route::get('/contact', [App\Http\Controllers\InquiryController::class, 'index'])->name('contact');
 Route::post('/contact/submit', [App\Http\Controllers\InquiryController::class, 'insert'])->name('inquiry.insert');
 
-// Register Us page route
-Route::get('/register', function () {
-    return view('homepage.register');
-})->name('register');
+// Register select view page route
+Route::get('/register', [UserRegistrationController::class, 'showRegistrationType'])->name('register');
 
-// Donor Registration Page
-Route::get('/register/donor', function () {
-    return view('homepage.donor_r');
-})->name('register.donor');
+Route::get('/register/donor', [UserRegistrationController::class, 'showDonorForm'])->name('donor.register');
+Route::get('/register/donee', [UserRegistrationController::class, 'showDoneeForm'])->name('donee.register');
+Route::get('/register/volunteer', [UserRegistrationController::class, 'showVolunteerForm'])->name('vol.register');
 
-// Donee Registration Page
-Route::get('/register/donee', function () {
-    return view('homepage.donee_r');
-})->name('register.donee');
 
-// Volunteer Registration Page
-Route::get('/register/volunteer', function () {
-    return view('homepage.volunteer_r');
-})->name('register.volunteer');
+Route::post('/register/donor', [UserRegistrationController::class, 'registerDonor'])->name('register.donor');
+Route::post('/register/donee', [UserRegistrationController::class, 'registerDonee'])->name('register.donee');
+Route::post('/register/volunteer', [UserRegistrationController::class, 'registerVolunteer'])->name('register.vol');
 
-// Admin Login Page
-Route::get('/admin/login', function () {
-    return view('admin.admin_login');
-})->name('admin.login');
 
 // Admin Forgot Page
-Route::get('/admin/login/forgot', function () {
+Route::get('/admin/login/reset_password', function () {
     return view('admin.admin_forgot');
-})->name('admin.forgot');
+})->name('admin.reset_password');
 
-// Admin Dashboard Page
-Route::get('/admin/dashboard', function () {
-    return view('admin.dashboard');
-})->name('admin.dashboard');
 
-// Admin Dashboard Page
-Route::get('/admin/email', function () {
-    return view('admin.admin_forgot_email');
-})->name('admin.email');
+// Admin Forgot Page
+Route::get('/admin/login/find_email', function () {
+    return view('admin.admin_find_email');
+})->name('admin.findEmail');
 
-// Admin Inquries Page
-Route::get('/admin/inquiries', [App\Http\Controllers\InquiryController::class, 'inbox'])->name('admin.inquiries');
-Route::post('/admin/inquiries/delete', [App\Http\Controllers\InquiryController::class, 'deleteSelected'])->name('inquiries.delete');
-Route::get('/admin/inquiries/reply/{id}', [App\Http\Controllers\InquiryController::class, 'reply'])->name('inquiries.reply');
-Route::get('/admin/inquiries/{inquiry}', [App\Http\Controllers\InquiryController::class, 'inquiriesRead'])->name('inquiries.read');
+Route::get('/admin/login', [App\Http\Controllers\AdminController::class, 'showLoginForm'])->name('admin.login');
+Route::post('/admin/login', [App\Http\Controllers\AdminController::class, 'login'])->name('admin.login.submit');
+
+Route::middleware('admin')->prefix('admin')->group(function () {
+    // Admin Dashboard
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+
+    // Admin Inquiries
+    Route::get('/inquiries', [InquiryController::class, 'inbox'])->name('admin.inquiries');
+    Route::post('/inquiries/delete', [InquiryController::class, 'deleteSelected'])->name('inquiries.delete');
+    Route::get('/inquiries/read/{id}', [InquiryController::class, 'inquiriesRead'])->name('inquiries.read');
+    Route::get('/inquiries/reply/{id}', [InquiryController::class, 'reply'])->name('inquiries.reply');
+    Route::post('/inquiry-sendreply', [InquiryController::class, 'sendReply'])->name('inquiries.sendReply');
+});
+
+
+// Admin Logout
+Route::post('/admin/logout', [AdminController::class, 'logout'])->name('admin.logout');

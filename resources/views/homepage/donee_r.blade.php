@@ -14,7 +14,6 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Roboto:wght@400;500;700;900&display=swap"
         rel="stylesheet">
-    <!-- Libraries Stylesheet -->
     <link rel="icon" href="{{ asset ('assets/img/systemLogo.png') }}" type="image/png">
     <!-- Libraries Stylesheet -->
     <link rel="stylesheet" href="{{ asset('lib/animate/animate.min.css') }}" />
@@ -42,8 +41,8 @@
     <!-- Navbar & Hero Start -->
     <div class="container-fluid position-relative p-0">
         <nav class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-2">
-            <a href="index.htmls" class="navbar-brand p-0">
-                <h1 class="m-0"><img src="../assets/img/systemLogo.png" class="me-3" alt="Logo">UniAid</h1>
+            <a href="" class="navbar-brand p-0">
+                <h1 class="m-0 fw-semibold"><img src="{{ asset('assets/img/systemLogo.png') }}" class="me-3" alt="Logo">UniAid</h1>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                 <span class="fa fa-bars"></span>
@@ -82,7 +81,7 @@
                                 data-wow-delay="0.3s">
                                 <li class="breadcrumb-item"><a href="#">Home</a></li>
                                 <li class="breadcrumb-item"><a href="#">Register</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Volunteer Registration</li>
+                                <li class="breadcrumb-item active" aria-current="page">Donee Registration</li>
                             </ol>
                         </nav>
                     </div>
@@ -118,17 +117,39 @@
                     </ul>
                 </div>
                 @endif
-                <form method="POST" action="{{ route ('register.vol') }}" enctype="multipart/form-data">
+                <form method="POST" action="{{ route ('register.donee') }}" enctype="multipart/form-data">
                     @csrf
                     <div class="form">
+                        <div class="details type">
+                            <span class="title">Account Type</span>
+                            <div class="fields">
+                                <p class="fw-semibold m-0">Register As:</p>
+                                <div class="input-field">
+                                    <label>
+                                        <input type="radio" name="accountType" id="individual" value="Individual"
+                                            checked>
+                                        Individual
+                                    </label>
+                                    <span class="icon-status"></span>
+                                </div>
+                                <div class="input-field">
+                                    <label>
+                                        <input type="radio" name="accountType" id="organization" value="Organization">
+                                        Organization
+                                    </label>
+                                    <span class="icon-status"></span>
+                                </div>
+                            </div>
+                        </div>
                         <div class="details acct">
                             <span class="title">Account Details</span>
                             <div class="fields">
                                 <div class="input-field">
-                                    <label for="uname">Username <span class="text-danger fs-6">*</span> <span
-                                            class="icon-status"></span> </label>
-                                    <input type="text" class="r-input" placeholder="Enter username" name="username"
-                                        autocomplete="off">
+                                    <label for="fname">Username <span class="text-danger fs-6">*</span>
+                                        <span class="icon-status"></span>
+                                    </label>
+                                    <input type="text" class="r-input" placeholder="Enter username" required
+                                        name="username">
                                 </div>
                                 <div class="input-field">
                                     <label for="password">Password <span class="text-danger fs-6">*</span>
@@ -149,162 +170,77 @@
                                     </button>
                                 </div>
                                 <div class="input-field">
-                                    <label for="email">Email <span class="text-danger fs-6">* </span> <span
-                                            style="font-size: small; color: #aaa;">(Must Active)</span> <span
-                                            class="icon-status"></span> </label>
-                                    <input type="email" class="r-input" id="email" placeholder="Enter your email"
+                                    <label>Email <span class="text-danger fs-6">*</span> <span
+                                            style="font-size: small; color: #aaa;">(Must be Active)</span>
+                                        <span class="icon-status"></span>
+                                    </label>
+                                    <input type="email" class="r-input" placeholder="Enter your email" required
                                         name="email">
                                 </div>
                             </div>
                         </div>
-                        <!-- Personal -->
+                        <!-- Personal/Organization Details -->
                         <div class="details personal">
                             <span class="title" id="info-title">Personal Details</span>
                             <div class="fields">
                                 <!-- First Name / Organization Name -->
                                 <div class="input-field">
-                                    <label for="fname" id="fname-label">First Name <span class="text-danger fs-6">*
-                                        </span> <span class="icon-status"></span></label>
+                                    <label for="fname" id="fname-label">First Name <span
+                                            class="text-danger fs-6">*</span>
+                                        <span class="icon-status"></span>
+                                    </label>
                                     <input type="text" class="r-input" id="fname" placeholder="Enter your first name"
-                                        name="fname">
+                                        required name="fname">
                                 </div>
 
                                 <!-- Middle Name -->
                                 <div class="input-field" id="middle-name">
-                                    <label for="mname">Middle Name <span class="icon-status"></span> </label>
-                                    <input type="text" class="r-input" id="mname" placeholder="Enter your middle name"
-                                        name="mname" autocomplete="off">
+                                    <label for="mname">Middle Name
+                                        <span class="icon-status"></span>
+                                    </label>
+                                    <input type="text" class="r-input" placeholder="Enter your middle name"
+                                        name="mname">
                                 </div>
 
                                 <!-- Last Name -->
                                 <div class="input-field" id="last-name">
-                                    <label for="lname">Last Name <span class="text-danger fs-6">*</span> <span
-                                            class="icon-status"></span></label>
-                                    <input type="text" class="r-input" placeholder="Enter your last name" name="lname">
+                                    <label for="lname">Last Name <span class="text-danger fs-6">*</span>
+                                        <span class="icon-status"></span>
+                                    </label>
+                                    <input type="text" class="r-input" placeholder="Enter your last name" required
+                                        name="lname">
                                 </div>
 
                                 <!-- Date of Birth -->
                                 <div class="input-field">
                                     <label for="bday" id="birth-label">Date of Birth <span
-                                            class="text-danger fs-6">*</span> <span class="icon-status"></span></label>
-                                    <input type="date" class="r-input" placeholder="Enter birth date" name="bday">
+                                            class="text-danger fs-6">*</span>
+                                        <span class="icon-status"></span>
+                                    </label>
+                                    <input type="date" class="r-input" placeholder="Enter birth date" required
+                                        name="bday">
+                                </div>
+
+                                <!-- Mobile Number -->
+                                <div class="input-field">
+                                    <label>Mobile Number <span class="text-danger fs-6">*</span> <span
+                                            style="font-size: small; color: #aaa;">(Must be Active)</span>
+                                        <span class="icon-status"></span>
+                                    </label>
+                                    <input type="number" class="r-input" placeholder="Enter mobile number" required
+                                        name="contact_number">
                                 </div>
 
                                 <!-- Gender Options -->
                                 <div class="input-field" id="gender-options">
-                                    <label>Gender <span class="text-danger fs-6">*</span> <span
-                                            class="icon-status"></span></label>
-                                    <select name="gender">
+                                    <label>Gender <span class="text-danger fs-6">*</span>
+                                        <span class="icon-status"></span>
+                                    </label>
+                                    <select required name="gender">
                                         <option disabled selected value="">Select gender</option>
                                         <option value="Male">Male</option>
                                         <option value="Female">Female</option>
                                         <option value="Others">Others</option>
-                                    </select>
-                                </div>
-                                <!-- Contact -->
-                                <div class="input-field">
-                                    <label>Mobile Number <span class="text-danger fs-6">*</span> <span
-                                            style="font-size: small; color: #aaa;">(Must Active)</span> <span
-                                            class="icon-status"></span></label>
-                                    <input type="number" class="r-input" placeholder="Enter mobile number (09xxxxx)"
-                                        name="number">
-                                </div>
-
-                            </div>
-                        </div>
-
-                        <div class="details educ">
-                            <span class="title" id="info-title">Education & Profession</span>
-                            <div class="fields">
-                                <!-- Highest Educational Attainment -->
-                                <div class="input-field">
-                                    <label>Highest Educational Attainment <span class="text-danger fs-6">*</span>
-                                        <span class="icon-status"></span> <!-- Icon placeholder -->
-                                    </label>
-                                    <select id="educ_prof" name="educ_prof">
-                                        <option disabled selected value="">Select</option>
-                                        <option value="grade_school_graduate">Grade School graduate</option>
-                                        <option value="high_school_graduate">High School graduate</option>
-                                        <option value="vocational_short_courses_graduate">Vocational/Short Courses
-                                            graduate</option>
-                                        <option value="college_graduate">College graduate</option>
-                                        <option value="masters_degree_holder">Master's degree holder</option>
-                                        <option value="doctorate_degree_holder">Doctorate degree holder</option>
-                                    </select>
-                                </div>
-
-                                <div class="input-field">
-                                    <p class="fw-semibold my-2">Are you still studying? <span
-                                            class="text-danger fs-6">*</span></p>
-                                    <label>
-                                        <input type="radio" name="studying" value="Yes" checked> Yes
-                                    </label>
-                                    <label>
-                                        <input type="radio" name="studying" value="No"> No
-                                    </label>
-                                    <span class="icon-status"></span> <!-- Icon placeholder -->
-                                </div>
-
-                                <div class="input-field">
-                                    <p class="fw-semibold my-2">Are you employed? <span
-                                            class="text-danger fs-6">*</span></p>
-                                    <label>
-                                        <input type="radio" name="employed" value="Yes" checked> Yes
-                                    </label>
-                                    <label>
-                                        <input type="radio" name="employed" value="No"> No
-                                    </label>
-                                    <span class="icon-status"></span> <!-- Icon placeholder -->
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="details volunteering">
-                            <span class="title" id="info-title">Volunteering Details</span>
-                            <div class="fields">
-                                <div class="input-field" id="gender-options">
-                                    <label>Most preferred services would you like to be involved with? <span
-                                            class="text-danger fs-6">*</span>
-                                        <span class="icon-status"></span> <!-- Icon placeholder -->
-                                    </label>
-                                    <select name="pref_services">
-                                        <option disabled selected value="">Select preferred services</option>
-                                        <option value="collect_donations">Collect Donations</option>
-                                        <option value="distribute_donations">Distribute Donations</option>
-                                        <option value="provide_support">Provide Recipient Support</option>
-                                    </select>
-                                </div>
-
-                                <div class="input-field" id="availability-options">
-                                    <label>When are you usually available as a volunteer? <span
-                                            class="text-danger fs-6">*</span>
-                                        <span class="icon-status"></span> <!-- Icon placeholder -->
-                                    </label>
-                                    <select name="availability">
-                                        <option disabled selected value="">Select your availability</option>
-                                        <option value="weekday">Weekday</option>
-                                        <option value="weekend">Weekend</option>
-                                        <option value="holiday">Holiday</option>
-                                        <option value="disasters">In time of disasters</option>
-                                    </select>
-                                </div>
-
-                                <div class="input-field" id="availability-time-options">
-                                    <label>What time of the day are you usually available as a Volunteer? <span
-                                            class="text-danger fs-6">*</span>
-                                        <span class="icon-status"></span> <!-- Icon placeholder -->
-                                    </label>
-                                    <select name="availability_time">
-                                        <option disabled selected value="">Select your availability time</option>
-                                        <option value="morning" title="Typically between 6 AM to 12 PM">Morning</option>
-                                        <option value="afternoon" title="Typically between 12 PM to 6 PM">Afternoon
-                                        </option>
-                                        <option value="night" title="Typically between 6 PM to 12 AM">Night</option>
-                                        <option value="on_call"
-                                            title="Available as needed, potentially outside regular hours">On-Call
-                                        </option>
-                                        <option value="whole_day" title="Available throughout the entire day">Whole Day
-                                        </option>
                                     </select>
                                 </div>
                             </div>
@@ -371,8 +307,9 @@
                                 <div class="input-field" id="id-select">
                                     <label for="proofOfIdentity" class="fw-medium">Select ID Type <span
                                             class="text-danger fs-6">*</span>
+                                        <span class="icon-status"></span>
                                     </label>
-                                    <select id="validID" name="validID">
+                                    <select id="validID" name="id_type" required>
                                         <option disabled selected value="">Select ID</option>
                                         <option value="Philippine Passport">Philippine Passport</option>
                                         <option value="Driver's License">Driver's License</option>
@@ -391,8 +328,9 @@
                                 <div class="input-field">
                                     <label for="proofUpload" id="proofUpload-label" class="fw-medium">Upload Selected ID
                                         <span class="text-danger fs-6">*</span>
+                                        <span class="icon-status"></span>
                                     </label>
-                                    <input type="file" id="proofUpload" name="proofUpload" accept=".jpg, .jpeg, .png">
+                                    <input type="file" id="proofUpload" name="id_image" required>
                                 </div>
                             </div>
 
@@ -434,8 +372,8 @@
                                         <button class="btn btn-secondary btn-sm my-3" type="button"
                                             id="toggleCameraBtn">Turn On Camera</button>
                                     </div>
-                                    <input type="file" id="imageFile" name="imageFile" class="preview-file"
-                                        style="display: none;">
+                                    <input type="file" id="imageFile" name="user_photo" class="preview-file"
+                                        style="display: none;" required>
                                     <div id="preview" style="box-sizing: content-box;">
                                         <img src="{{ asset ('assets/img/no_profile.png') }}" style="width: 300px; height:250px;"
                                             alt="">
@@ -450,10 +388,12 @@
                         </div>
                     </div>
                 </form>
+
             </div>
         </div>
     </div>
     <!-- Register End -->
+
 
     <!-- Footer Start -->
     <div class="container-fluid footer py-3 wow fadeIn" data-wow-delay="0.2s">
@@ -472,11 +412,11 @@
                 <div class="col-md-2 col-lg-2 col-xl-3">
                     <div class="footer-item">
                         <h4 class="text-white mb-4">Quick Links</h4>
-                        <a href="about.html"><i class="fas fa-angle-right me-2"></i> About Us</a>
-                        <a href="register.html"><i class="fas fa-angle-right me-2"></i> Register</a>
-                        <a href="#portals"><i class="fas fa-angle-right me-2"></i> Portals</a>
-                        <a href="#news"><i class="fas fa-angle-right me-2"></i> News</a>
-                        <a href="contact.html"><i class="fas fa-angle-right me-2"></i> Contact us</a>
+                        <a href="{{ route('about') }}"><i class="fas fa-angle-right me-2"></i> About Us</a>
+                        <a href="{{ route('register') }}"><i class="fas fa-angle-right me-2"></i> Register</a>
+                        <a href="{{ route('home') }}#portals"><i class="fas fa-angle-right me-2"></i> Portals</a>
+                        <a href="{{ route('home') }}#news"><i class="fas fa-angle-right me-2"></i> News</a>
+                        <a href="{{ route('contact') }}"><i class="fas fa-angle-right me-2"></i> Contact us</a>
                     </div>
                 </div>
 
@@ -535,17 +475,16 @@
     <!-- Back to Top -->
     <a href="#" class="btn btn-primary btn-lg-square rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>
     <!-- JavaScript Libraries -->
-    <script src="../lib/jquery/jquery.min.js"></script>
-    <script src="../lib/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="../lib/animate/wow.min.js"></script>
-    <script src="../lib/jquery/easing.min.js"></script>
-    <script src="../lib/jquery/counterup.min.js"></script>
-    <script src="../lib/owlcarousel/owl.carousel.min.js"></script>
-    <script src="../lib/fontawesome/all.js"></script>
-    <!-- My Javascript -->
-    <script src="../lib/jquery/jquery.validate.min.js"></script>
-    <script src="../assets/homepage/js/main.js"></script>
-
+    <script src="{{ asset('lib/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('lib/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('lib/animate/wow.min.js') }}"></script>
+    <script src="{{ asset('lib/jquery/easing.min.js') }}"></script>
+    <script src="{{ asset('lib/jquery/counterup.min.js') }}"></script>
+    <script src="{{ asset('lib/owlcarousel/owl.carousel.min.js') }}"></script>
+    <script src="{{ asset('lib/fontawesome/all.js') }}"></script>
+    <script src="{{ asset('lib/jquery/jquery.validate.min.js') }}"></script>
+    <!-- Template Javascript -->
+    <script src="{{ asset('assets/homepage/js/main.js') }}"></script>
 </body>
 
 </html>
