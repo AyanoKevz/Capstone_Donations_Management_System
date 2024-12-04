@@ -110,17 +110,20 @@
                 <div class="col-lg-7 wow fadeInLeft">
                     <h2>About UniAid Donations</h2>
                     <div class="our-story">
-                        <h3>Donations Details</h3>
-                        <p>Inventore aliquam beatae at et id alias. Ipsa dolores amet consequuntur minima quia maxime autem.
-                            Quidem id sed ratione. Tenetur provident autem in reiciendis rerum at dolor. Aliquam consectetur
-                            laudantium temporibus dicta minus dolor.</p>
+                        <h3>How to Donate?</h3>
+                        <p>Here are some steps to help bridge the gap between you and others through 
+                            meaningful acts of donation and support using our platform: </p>
                         <ul>
-                            <li><i class="fas fa-handshake me-2" style="color: #ff1f1f;"></i> <span>Ullamco laboris nisi ut aliquip ex ea commo</span></li>
-                            <li><i class="fas fa-handshake me-2" style="color: #ff1f1f;"></i> <span>Duis aute irure dolor in reprehenderit in</span></li>
-                            <li><i class="fas fa-handshake me-2" style="color: #ff1f1f;"></i> <span>Ullamco laboris nisi ut aliquip ex ea</span></li>
+                            <li><i class="fas fa-handshake me-2" style="color: #ff1f1f;"></i> <span>Select option (Quick Donation/Donee Selection)</span></li>  
+                            <li><i class="fas fa-handshake me-2" style="color: #ff1f1f;"></i> <span>Donor Options for Delivery (Pickup, Drop-Off)</span></li>
+                            <li><i class="fas fa-handshake me-2" style="color: #ff1f1f;"></i> <span>Filters and Search (Resource Type, location, Urgency)</span></li>
+                            <li><i class="fas fa-handshake me-2" style="color: #ff1f1f;"></i> <span>Track on-going donation</span></li>
+                            <li><i class="fas fa-handshake me-2" style="color: #ff1f1f;"></i> <span>Recieve SMS notification upon completing</span></li>
                         </ul>
-                        <p>Vitae autem velit excepturi fugit. Animi ad non. Eligendi et non nesciunt suscipit repellendus porro in
-                            quo eveniet. Molestias in maxime doloremque.</p>
+                        <p>
+                        Join our mission to make a difference! Learn how your contributions can help change lives and support our cause.
+                         Every donation matters, sign up now to learn more and become a valued supporter today.
+                        </p>
 
                         <div class="watch-video d-flex align-items-center position-relative">
                             <i class="fas fa-hand-point-right fa-2xl me-2" style="color: #ff1f1f;"></i>
@@ -137,48 +140,68 @@
         <div class="container">
 
             <div class="row justify-content-around gy-4">
-                <div class="col-lg-6 img-bg wow fadeInLeft" style="background-image: url({{asset('assets/img/d2.jpg') }});"></div>
+                <div class="col-lg-6 img-bg wow fadeInLeft" style="background-image: url({{asset('assets/img/d2.jfif') }});"></div>
 
                 <div class="col-lg-5 d-flex flex-column justify-content-center wow fadeInRight">
-                    <h3>How to Donate in UniAid?</h3>
-                    <p>Esse voluptas cumque vel exercitationem. Reiciendis est hic accusamus. Non ipsam et sed minima temporibus
-                        laudantium. Soluta voluptate sed facere corporis dolores excepturi</p>
+                    <h3>Others Ways to Donate: </h3>
+                    <p>Choose your preferred way to contribute via Lazada donation vouchers, online banking transfers, or in-kind donations. 
+                        Every contribution, big or small, helps us bring relief and hope to those in need.</p>
 
                     <div class="icon-box d-flex position-relative">
-                        <i class="fa-brands fa-gratipay flex-shrink-0"></i>
+                    <i class="fa-solid fa-building-columns flex-shrink-0"></i>
                         <div>
-                            <h4><a href="" class="stretched-link">Lorem Ipsum</a></h4>
-                            <p>Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate
-                                non provident</p>
+                            <h4><a href="" class="stretched-link">Bank Donations</a></h4>
+                            <p>You can deposit your donation to any of the following bank accounts:<br> - BDO (Account: 00-023-111-8977)<br>
+                            - Metrobank (Account: 175-3-175001-468)<br> - BPI (Account: 4991-0001-44).
+                            </p>
                         </div>
                     </div><!-- End Icon Box -->
 
                     <div class="icon-box d-flex position-relative">
-                        <i class="fa-brands fa-gratipay flex-shrink-0"></i>
+                    <i class="fa-solid fa-globe flex-shrink-0"></i>
                         <div>
-                            <h4><a href="" class="stretched-link">Nemo Enim</a></h4>
-                            <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum
-                                deleniti atque</p>
+                            <h4><a href="" class="stretched-link">Online Banking</a></h4>
+                            <p>The Philippine Red Cross accepts donations via GCash and PayMaya:</p>
+                            <div>
+                                <!-- Add QR Code image -->
+                                <img src="{{ asset ('assets/img/gcash.jpg') }}" alt="QR code for donations" style="width: 200px; height: 220px; margin-left: 20px;">
+                                <img src="{{ asset ('assets/img/maya.webp') }}" alt="QR code for donations" style="width: 200px; height: 220px; margin-left: 20px;">
+                            </div>
                         </div>
                     </div><!-- End Icon Box -->
 
                     <div class="icon-box d-flex position-relative">
-                        <i class="fa-brands fa-gratipay flex-shrink-0"></i>
+                    <i class="fa-solid fa-credit-card flex-shrink-0"></i>
                         <div>
-                            <h4><a href="" class="stretched-link">Dine Pad</a></h4>
-                            <p>Explicabo est voluptatum asperiores consequatur magnam. Et veritatis odit. Sunt aut deserunt minus
-                                aut eligendi omnis</p>
+                            <h4><a href="https://www.lazada.com.ph/shop/philippine-red-cross/" target="_blank" class="stretched-link">Lazada Donation Voucher</a></h4>
+                            <p>Make a meaningful impact with simplicity, purchase our donation vouchers and bring hope 
+                                and positive change to those in need on</p>
+                            <a href="https://www.lazada.com.ph/shop/philippine-red-cross/" target="_blank"><u>Lazada!</u></a>.
                         </div>
                     </div><!-- End Icon Box -->
 
                     <div class="icon-box d-flex position-relative">
-                        <i class="fa-brands fa-gratipay flex-shrink-0"></i>
+                    <i class="fa-solid fa-box-open flex-shrink-0"></i>
                         <div>
-                            <h4><a href="" class="stretched-link">Tride clov</a></h4>
-                            <p>Est voluptatem labore deleniti quis a delectus et. Saepe dolorem libero sit non aspernatur odit amet.
-                                Et eligendi</p>
+                            <h4><a href="" class="stretched-link">In-Kind</a></h4>
+                            <p> &nbsp - For perishable goods, PRC only accepts goods with an expiry date of <br> &nbsp not less than six (6) months.<br>
+                            &nbsp - PRC does not accept rotten, damaged, expired, or decayed goods.<br>
+                            &nbsp   - The PRC also discourages donations of old clothes as we have more <br>&nbsp than enough to go around.<br>
+                                 <B>ADDRESS:</B> Philippine Red Cross 37 EDSA corner Boni Ave. Mandaluyong City 1550 Philippines
+                                <br> <B>EMERGENCY HOTLINE</B>: 143</p>
                         </div>
                     </div><!-- End Icon Box -->
+
+                    <div class="icon-box d-flex position-relative">
+                    <i class="fa-solid fa-capsules flex-shrink-0"></i>
+                        <div>
+                            <h4><a href="" class="stretched-link">Medecines and Food Donations:</a></h4>
+                            <p> 1. In the case of medicines & food,  a certification from the Philippines' Department of Health and the Food & Drug Administration commodities are allowed to be imported without a prior prescription.
+                                <br>2. Expiry should be at least 24 months or 2 years.
+                            </p>
+                        </div>
+                    </div><!-- End Icon Box -->
+
                 </div>
             </div>
         </div>
@@ -199,31 +222,67 @@
 
                 <div class="blog-item text-center">
                     <div class="blog-img mb-2">
-                        <img src="{{asset('assets/img/resource1.jpg') }}" class="img-fluid w-100 rounded" alt="">
+                        <img src="{{asset('assets/img/r1.jpg') }}" class="img-fluid w-100 rounded" alt="">
                     </div>
-                    <h4 class="d-inline-block m-2">Resource Type</h4>
+                    <h4 class="d-inline-block m-2">Canned Goods</h4>
                 </div>
 
                 <div class="blog-item text-center">
                     <div class="blog-img mb-2">
-                        <img src="{{asset('assets/img/resource1.jpg') }}" class="img-fluid w-100 rounded" alt="">
+                        <img src="{{asset('assets/img/r2.png') }}" class="img-fluid w-100 rounded" alt="">
                     </div>
-                    <h4 class="d-inline-block m-2">Resource Type</h4>
+                    <h4 class="d-inline-block m-2">Breads</h4>
                 </div>
 
                 <div class="blog-item text-center">
                     <div class="blog-img mb-2">
-                        <img src="{{asset('assets/img/resource1.jpg') }}" class="img-fluid w-100 rounded" alt="">
+                        <img src="{{asset('assets/img/r3.png') }}" class="img-fluid w-100 rounded" alt="">
                     </div>
-                    <h4 class="d-inline-block m-2">Resource Type</h4>
+                    <h4 class="d-inline-block m-2">Instant Noodles</h4>
                 </div>
 
                 <div class="blog-item text-center">
                     <div class="blog-img mb-2">
-                        <img src="{{asset('assets/img/resource1.jpg') }}" class="img-fluid w-100 rounded" alt="">
+                        <img src="{{asset('assets/img/r4.png') }}" class="img-fluid w-100 rounded" alt="">
                     </div>
-                    <h4 class="d-inline-block m-2">Resource Type</h4>
+                    <h4 class="d-inline-block m-2">Bottled Drinks</h4>
                 </div>
+
+                <div class="blog-item text-center">
+                    <div class="blog-img mb-2">
+                        <img src="{{asset('assets/img/r5.png') }}" class="img-fluid w-100 rounded" alt="">
+                    </div>
+                    <h4 class="d-inline-block m-2">Rice</h4>
+                </div>
+
+                <div class="blog-item text-center">
+                    <div class="blog-img mb-2">
+                        <img src="{{asset('assets/img/r6.png') }}" class="img-fluid w-100 rounded" alt="">
+                    </div>
+                    <h4 class="d-inline-block m-2">First Aid Kits</h4>
+                </div>
+
+                <div class="blog-item text-center">
+                    <div class="blog-img mb-2">
+                        <img src="{{asset('assets/img/r7.png') }}" class="img-fluid w-100 rounded" alt="">
+                    </div>
+                    <h4 class="d-inline-block m-2">Medecines</h4>
+                </div>
+
+                <div class="blog-item text-center">
+                    <div class="blog-img mb-2">
+                        <img src="{{asset('assets/img/r8.png') }}" class="img-fluid w-100 rounded" alt="">
+                    </div>
+                    <h4 class="d-inline-block m-2">Clothes</h4>
+                </div>
+
+                <div class="blog-item text-center">
+                    <div class="blog-img mb-2">
+                        <img src="{{asset('assets/img/r9.png') }}" class="img-fluid w-100 rounded" alt="">
+                    </div>
+                    <h4 class="d-inline-block m-2">School Supplies</h4>
+                </div>
+
             </div>
         </div>
     </div>
