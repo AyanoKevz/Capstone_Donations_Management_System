@@ -223,13 +223,14 @@
                                     </label>
                                     <select id="educ_prof" name="educ_prof">
                                         <option disabled selected value="">Select</option>
-                                        <option value="grade_school_graduate">Grade School graduate</option>
-                                        <option value="high_school_graduate">High School graduate</option>
-                                        <option value="vocational_short_courses_graduate">Vocational/Short Courses
+                                        <option value="Grade School graduate">Grade School graduate</option>
+                                        <option value="High School graduate">High School graduate</option>
+                                        <option value="Vocational/Short Courses
+                                            graduate">Vocational/Short Courses
                                             graduate</option>
-                                        <option value="college_graduate">College graduate</option>
-                                        <option value="masters_degree_holder">Master's degree holder</option>
-                                        <option value="doctorate_degree_holder">Doctorate degree holder</option>
+                                        <option value="College graduate">College graduate</option>
+                                        <option value="Master's degree holder">Master's degree holder</option>
+                                        <option value="Doctorate degree holder">Doctorate degree holder</option>
                                     </select>
                                 </div>
 
@@ -269,9 +270,9 @@
                                     </label>
                                     <select name="pref_services">
                                         <option disabled selected value="">Select preferred services</option>
-                                        <option value="collect_donations">Collect Donations</option>
-                                        <option value="distribute_donations">Distribute Donations</option>
-                                        <option value="provide_support">Provide Recipient Support</option>
+                                        <option value="Collect Donations">Collect Donations</option>
+                                        <option value="Distribute Donations">Distribute Donations</option>
+                                        <option value="Provide Recipient Support">Provide Recipient Support</option>
                                     </select>
                                 </div>
 
@@ -445,8 +446,10 @@
                         </div>
                         <input type="hidden" value="donor" name="role" id="role">
                         <div class="d-flex justify-content-end mt-3">
-                            <button type="submit" name="register" id="register"
-                                class="btn btn-success">Register</button>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                Review and Confirm
+                            </button>
+                            <button type="submit" name="register" id="register" class="btn btn-success" style="display: none;">Register</button>
                         </div>
                     </div>
                 </form>
@@ -454,6 +457,60 @@
         </div>
     </div>
     <!-- Register End -->
+
+    <!-- Review Modal -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Review Your Details</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h5>Account Details</h5>
+                    <p><strong>Account Type:</strong> <span id="reviewAccountType"></span></p>
+                    <p><strong>Username:</strong> <span id="reviewUsername"></span></p>
+                    <p><strong>Email:</strong> <span id="reviewEmail"></span></p>
+                    <p><strong>Password:</strong> <span id="reviewPassword"></span></p>
+                    <hr />
+                    <h5>Account Details</h5>
+                    <p><strong>First Name:</strong> <span id="reviewFname"></span></p>
+                    <p><strong>Last Name:</strong> <span id="reviewLname"></span></p>
+                    <p><strong>Mobile Number:</strong> <span id="reviewContactNumber"></span></p>
+                    <p><strong>Gender:</strong> <span id="reviewGender"></span></p>
+                    <hr>
+                    <h5>Education & Profession</h5>
+                    <p><strong>Highest Educational Attainment:</strong> <span id="reviewEducation"></span></p>
+                    <p><strong>Still Studying:</strong> <span id="reviewStudying"></span></p>
+                    <p><strong>Employed:</strong> <span id="reviewEmployed"></span></p>
+                    <hr />
+                    <h5>Volunteering Details</h5>
+                    <p><strong>Preferred Services:</strong> <span id="reviewPreferredService"></span></p>
+                    <p><strong>Availability:</strong> <span id="reviewAvailability"></span></p>
+                    <p><strong>Availability Time:</strong> <span id="reviewAvailabilityTime"></span></p>
+                    <hr>
+
+                    <h5>Address Details</h5>
+                    <p><strong>Region:</strong> <span id="reviewRegion"></span></p>
+                    <p><strong>Province:</strong> <span id="reviewProvince"></span></p>
+                    <p><strong>City:</strong> <span id="reviewCity"></span></p>
+                    <p><strong>Barangay:</strong> <span id="reviewBarangay"></span></p>
+                    <p><strong>Full Address:</strong> <span id="reviewFullAddress"></span></p>
+                    <hr>
+                    <h5>Identity Details</h5>
+                    <p><strong>ID Type:</strong> <span id="reviewIdType"></span></p>
+                    <p><strong>ID Image:</strong></p>
+                    <img id="reviewIdImage" class="border border-secondary" src="{{ asset ('assets/img/no_image.jpg') }}" alt="ID Image" style="width: 200px; height:200px; margin-bottom: 16px;" />
+                    <p><strong>User Image:</strong></p>
+                    <img id="reviewUserImage" class="border border-secondary" src="{{ asset ('assets/img/no_image.jpg') }}" alt="User Image" style="width: 200px; height:200px;" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Edit</button>
+                    <button type="button" id="confirmBtn" class="btn btn-success" style="display: none;">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Footer Start -->
     <div class="container-fluid footer py-3 wow fadeIn" data-wow-delay="0.2s">

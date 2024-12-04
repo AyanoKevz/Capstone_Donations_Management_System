@@ -15,7 +15,8 @@
     href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <link rel="icon" href="{{ asset ('assets/img/systemLogo.png') }}" type="image/png">
   <link rel="stylesheet" href="{{ asset('lib/bootstrap/css/bootstrap.min.css') }}">
-  <link rel="stylesheet" href="{{ asset ('assets/admin/css/inquiries.css') }}">
+  <link rel="stylesheet" href="{{ asset('lib/datatables/datatables.min.css') }}">
+  <link rel="stylesheet" href="{{ asset ('assets/admin/css/verify.css') }}">
 
 </head>
 
@@ -130,7 +131,7 @@
               </nav>
             </div>
 
-            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#user"
+            <a class="nav-link collapsed active" href="#" data-bs-toggle="collapse" data-bs-target="#user"
               aria-expanded="false" aria-controls="user" title="Manage User">
               <div class="sb-nav-link-icon">
                 <i class="fas fa-users"></i>
@@ -161,9 +162,9 @@
                   <span>Volunteer</span>
                 </a>
               </nav>
-              <a class="nav-link" href="#" title="Verify Accounts">
+              <a class="nav-link active" href="{{route ('verify_account')}}" title="Verify Accounts">
                 <div class="sb-nav-link-icon">
-                  <i class="far fa-circle nav-icon"></i>
+                  <i class="fas fa-circle nav-icon"></i>
                 </div>
                 <span>Verify Accounts</span>
               </a>
@@ -246,13 +247,13 @@
                 </a>
               </nav>
             </div>
-            <a class="nav-link" href="{{ route ('admin.inquiries')}}" title="Inquiries">
+            <a class="nav-link " href="{{ route ('admin.inquiries')}}" title="Inquiries">
               <div class="sb-nav-link-icon">
                 <i class="fas fa-message"></i>
               </div>
               <span>Inquiries</span>
             </a>
-            <a class="nav-link active" href="#" title="News">
+            <a class="nav-link" href="#" title="News">
               <div class="sb-nav-link-icon">
                 <i class="fas fa-newspaper"></i>
               </div>
@@ -273,9 +274,66 @@
             <li class="breadcrumb-item active">Dashboard</li>
           </ol>
 
-          <h1 class="my-2">Read Inquiries</h1>
-          <!-- /. CONTENT -->
+          <h1 class="my-2">Verify Accounts</h1>
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">All Inactive Accounts</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+              <div class="float-end">
+                <!-- Filter Buttons -->
+                <a href="{{ route('verify_account', ['role_name' => 'all']) }}"
+                  class="btn table-btn btn-sm {{ $filter === 'all' ? 'custom-active' : '' }}">
+                  All
+                </a>
+                <a href="{{ route('verify_account', ['role_name' => 'Donor']) }}"
+                  class="btn table-btn btn-sm {{ $filter === 'Donor' ? 'custom-active' : '' }}">
+                  Donor
+                </a>
+                <a href="{{ route('verify_account', ['role_name' => 'Donee']) }}"
+                  class="btn table-btn btn-sm {{ $filter === 'Donee' ? 'custom-active' : '' }}">
+                  Donee
+                </a>
+                <a href="{{ route('verify_account', ['role_name' => 'Volunteer']) }}"
+                  class="btn table-btn btn-sm {{ $filter === 'Volunteer' ? 'custom-active' : '' }}">
+                  Volunteer
+                </a>
+              </div>
+              <table id="example1" class="table table-bordered table-hover table-striped">
+                <thead>
+                  <tr>
+                    <th>Username</th>
+                    <th>Account Type</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Details</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @forelse($inactiveAccounts as $account)
+                  <tr>
+                    <td>{{ $account->username }}</td>
+                    <td>{{ ucfirst($account->account_type) }}</td>
+                    <td>
+                      {{ optional($account->roles->first())->role_name ?? 'No Role Assigned' }}
+                    </td>
+                    <td>
+                      <p class="bg-dark-subtle text-dark-emphasis m-0 p-1 fw-bold">Not Active</p>
+                    </td>
+                    <td><a href="#">View</a></td>
+                  </tr>
+                  @empty
+                  <tr>
+                    <td colspan="5" class="text-center">No inactive accounts found</td>
+                  </tr>
+                  @endforelse
+                </tbody>
 
+              </table>
+            </div>
+            <!-- /.card-body -->
+          </div>
         </div>
       </main>
       <footer class="py-3 bg-dark mt-3">
@@ -292,6 +350,7 @@
   <script src="{{ asset('lib/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
   <script src="{{ asset('lib/fontawesome/all.js') }}"></script>
   <script src="{{ asset('lib/jquery/jquery.min.js') }}"></script>
+  <script src="{{ asset('lib/datatables/datatables.min.js') }}"></script>
   <script src="{{ asset('assets/admin/js/admin.js') }}"></script>
 
   <script>

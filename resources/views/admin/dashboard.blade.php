@@ -161,7 +161,7 @@
                   <span>Volunteer</span>
                 </a>
               </nav>
-              <a class="nav-link" href="#" title="Verify Accounts">
+              <a class="nav-link" href="{{route ('verify_account')}}" title="Verify Accounts">
                 <div class="sb-nav-link-icon">
                   <i class="far fa-circle nav-icon"></i>
                 </div>

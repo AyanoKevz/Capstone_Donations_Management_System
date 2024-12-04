@@ -622,6 +622,83 @@ $('.toggle-password').on('click', function () {
     }
 });
 
+
+  function previewImage(input, targetImg) {
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                $(targetImg).attr('src', e.target.result);
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    // Event listeners for file inputs
+    $('input[name="id_image"]').on('change', function () {
+        previewImage(this, '#reviewIdImage');
+    });
+
+
+    // Validate inputs and show/hide Confirm button
+    function validateInputs() {
+        let isValid = true;
+
+        // Check each required input field
+        $('input, select').each(function () {
+            if ($(this).prop('required') && !$(this).val()) {
+                isValid = false;
+            }
+        });
+
+        // Show Confirm button if all inputs are valid
+        $('#confirmBtn').toggle(isValid);
+    }
+
+    // Validate on keyup, change, or file select
+    $('input, select').on('keyup change', function () {
+        validateInputs();
+    });
+
+    // Populate modal on Review and Confirm button click
+    $('[data-bs-target="#staticBackdrop"]').click(function () {
+        validateInputs(); // Validate before showing modal
+
+        $('#reviewAccountType').text($('input[name="accountType"]:checked').val());
+        $('#reviewUsername').text($('input[name="username"]').val());
+        $('#reviewEmail').text($('input[name="email"]').val());
+        $('#reviewPassword').text($('input[name="password"]').val());
+        $('#reviewFname').text($('input[name="fname"]').val());
+        $('#reviewLname').text($('input[name="lname"]').val());
+        $('#reviewContactNumber').text($('input[name="contact_number"]').val());
+        $('#reviewGender').text($('select[name="gender"]').val());
+        $('#reviewRegion').text($('select[name="region"] option:selected').text());
+        $('#reviewProvince').text($('select[name="province"] option:selected').text());
+        $('#reviewCity').text($('select[name="city"] option:selected').text());
+        $('#reviewBarangay').text($('select[name="barangay"] option:selected').text());
+        $('#reviewFullAddress').text($('input[name="full_address"]').val());
+        $('#reviewIdType').text($('select[name="id_type"]').val());
+
+        // Education & Profession
+    $('#reviewEducation').text($('select[name="educ_prof"]').val());
+    $('#reviewStudying').text($('input[name="studying"]:checked').val());
+    $('#reviewEmployed').text($('input[name="employed"]:checked').val());
+
+    // Volunteering Details
+    $('#reviewPreferredService').text($('select[name="pref_services"]').val());
+    $('#reviewAvailability').text($('select[name="availability"]').val());
+    $('#reviewAvailabilityTime').text($('select[name="availability_time"]').val());
+    
+    });
+
+    // Confirm button logic
+    $('#confirmBtn').click(function () {
+        $('#staticBackdrop').modal('hide'); // Close the modal
+        $('[data-bs-target="#staticBackdrop"]').hide(); // Hide trigger button
+        $('#register').show(); // Show register button
+    });
+
+
+
 })(jQuery);
 
 
@@ -803,6 +880,11 @@ function captureImage() {
   }
   const imageData = canvas.toDataURL('image/png');
 
+   const modalPreviewImg = document.getElementById('reviewUserImage');
+    if (modalPreviewImg) {
+        modalPreviewImg.src = imageData;
+    }
+
   // Set captured image in input file
   const file = dataURLtoFile(imageData, 'captured.png');
   const dataTransfer = new DataTransfer();
@@ -834,3 +916,5 @@ function dataURLtoFile(dataurl, filename) {
 }
 
 loadModels();
+
+

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\InquiryController;
+use App\Http\Controllers\VerifyAcct;
 use App\Http\Controllers\UserRegistrationController;
 
 
@@ -68,3 +69,8 @@ Route::middleware('admin')->prefix('admin')->group(function () {
 
 // Admin Logout
 Route::post('/admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
+
+
+
+
+Route::get('/admin/verify_account', [VerifyAcct::class, 'showInactiveAccounts'])->name('verify_account');

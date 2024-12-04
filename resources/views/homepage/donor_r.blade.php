@@ -112,7 +112,7 @@
                 <div class="alert alert-error">
                     <ul>
                         @foreach ($errors->all() as $error)
-                        <li><i class="fa-solid fa-circle-xmark me-2 fa-xl"></i>{{ $error }}</li>
+                        <li class="mb-2"><i class="fa-solid fa-circle-xmark me-2 fa-xl"></i>{{ $error }}</li>
                         @endforeach
                     </ul>
                 </div>
@@ -382,9 +382,12 @@
                             </div>
                         </div>
                         <div class="d-flex justify-content-end mt-3">
-                            <button type="submit" name="register" id="register"
-                                class="btn btn-success">Register</button>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                Review and Confirm
+                            </button>
+                            <button type="submit" name="register" id="register" class="btn btn-success" style="display: none;">Register</button>
                         </div>
+
                     </div>
                 </form>
 
@@ -393,6 +396,50 @@
     </div>
     <!-- Register End -->
 
+
+    <!-- Review Modal -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Review Your Details</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h5>Account Details</h5>
+                    <p><strong>Account Type:</strong> <span id="reviewAccountType"></span></p>
+                    <p><strong>Username:</strong> <span id="reviewUsername"></span></p>
+                    <p><strong>Email:</strong> <span id="reviewEmail"></span></p>
+                    <p><strong>Password:</strong> <span id="reviewPassword"></span></p>
+                    <hr />
+                    <h5>Account Details</h5>
+                    <p><strong>First Name:</strong> <span id="reviewFname"></span></p>
+                    <p><strong>Last Name:</strong> <span id="reviewLname"></span></p>
+                    <p><strong>Mobile Number:</strong> <span id="reviewContactNumber"></span></p>
+                    <p><strong>Gender:</strong> <span id="reviewGender"></span></p>
+                    <hr>
+                    <h5>Address Details</h5>
+                    <p><strong>Region:</strong> <span id="reviewRegion"></span></p>
+                    <p><strong>Province:</strong> <span id="reviewProvince"></span></p>
+                    <p><strong>City:</strong> <span id="reviewCity"></span></p>
+                    <p><strong>Barangay:</strong> <span id="reviewBarangay"></span></p>
+                    <p><strong>Full Address:</strong> <span id="reviewFullAddress"></span></p>
+                    <hr>
+                    <h5>Identity Details</h5>
+                    <p><strong>ID Type:</strong> <span id="reviewIdType"></span></p>
+                    <p><strong>ID Image:</strong></p>
+                    <img id="reviewIdImage" class="border border-secondary" src="{{ asset ('assets/img/no_image.jpg') }}" alt="ID Image" style="width: 200px; height:200px; margin-bottom: 16px;" />
+                    <p><strong>User Image:</strong></p>
+                    <img id="reviewUserImage" class="border border-secondary" src="{{ asset ('assets/img/no_image.jpg') }}" alt="User Image" style="width: 200px; height:200px;" />
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Edit</button>
+                    <button type="button" id="confirmBtn" class="btn btn-success" style="display: none;">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Footer Start -->
     <div class="container-fluid footer py-3 wow fadeIn" data-wow-delay="0.2s">

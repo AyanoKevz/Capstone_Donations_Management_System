@@ -12,6 +12,8 @@ use App\Models\Role;
 use App\Models\Location;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
+
 
 class UserRegistrationController extends Controller
 {
@@ -37,7 +39,7 @@ class UserRegistrationController extends Controller
 
     public function registerDonor(Request $request)
     {
-        $validated = $this->validateRegistration($request);
+        $validated = $this->validateRegistration($request, 'Donor');
 
         $location = Location::create($this->mapLocationData($request));
 
@@ -62,7 +64,7 @@ class UserRegistrationController extends Controller
 
     public function registerDonee(Request $request)
     {
-        $validated = $this->validateRegistration($request);
+        $validated = $this->validateRegistration($request, 'Donee');
 
         $location = Location::create($this->mapLocationData($request));
 
@@ -87,7 +89,7 @@ class UserRegistrationController extends Controller
 
     public function registerVolunteer(Request $request)
     {
-        $validated = $this->validateVolunteerRegistration($request);
+        $validated = $this->validateRegistration($request, 'Volunteer');
 
         $location = Location::create($this->mapLocationData($request));
 
@@ -117,16 +119,29 @@ class UserRegistrationController extends Controller
     }
 
 
-    private function validateRegistration(Request $request)
+    private function validateRegistration(Request $request, string $role)
     {
+        // Determine the table based on the role
+        $table = match ($role) {
+            'Donor' => 'donor',
+            'Donee' => 'donee',
+            'Volunteer' => 'volunteer',
+            default => throw new \InvalidArgumentException('Invalid role'),
+        };
+
         return $request->validate([
             'username' => 'required|string|max:100|unique:user_account',
             'email' => 'required|email|max:100|unique:user_account',
             'password' => 'required|confirmed|min:8',
-            'accountType' => 'required|string',
+            'accountType' => 'required|string|in:Individual,Organization',
             'fname' => 'required|string|max:100',
             'lname' => 'required|string|max:100',
-            'contact_number' => 'required|string|max:15|',
+            'contact_number' => [
+                'required',
+                'string',
+                'max:15',
+                Rule::unique($table, 'contact')
+            ],
             'bday' => 'required|date',
             'gender' => 'required|string',
             'region' => 'required|string',
