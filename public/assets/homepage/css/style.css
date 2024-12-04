@@ -708,6 +708,7 @@ input.is-invalid, select.is-invalid {
 }
 
 .blog .blog-item .blog-img img {
+    padding: 10%;
     transition: 0.5s;
 }
 
@@ -736,6 +737,7 @@ input.is-invalid, select.is-invalid {
 .blog-carousel .owl-stage-outer {
     margin-top: 58px;
 }
+
 
 /* owl btn */
 
