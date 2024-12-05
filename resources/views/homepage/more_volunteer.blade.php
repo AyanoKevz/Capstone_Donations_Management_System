@@ -135,23 +135,24 @@
             <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.2s" style="max-width: 800px;">
                 <h4 class="section-header"> Volunteer Service FAQs</h4>
                 <h1 class="display-5 mb-4">Become A UniAid Volunteer</h1>
-                <p class="mb-0">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tenetur adipisci facilis cupiditate recusandae aperiam temporibus corporis itaque quis facere, numquam, ad culpa deserunt sint dolorem autem obcaecati, ipsam mollitia hic.
-                </p>
+                <p class="mb-0">
+                The Volunteer Service Office manages programs to encourage people to volunteer for the Philippine Red Cross (PRC), offering their time and resources to alleviate human suffering.
+                It oversees volunteer recruitment, development, and mobilization both locally and nationwide.
             </div>
             <div class="row g-5 align-items-center">
                 <div class="col-xl-5 wow fadeInLeft" data-wow-delay="0.2s">
                     <div class="nav nav-pills bg-light rounded p-5">
                         <a class="accordion-link p-4 active mb-4" data-bs-toggle="pill" href="#collapseOne">
-                            <h5 class="mb-0">Lorem ipsum dolor sit amet consectetur adipisicing elit.</h5>
+                            <h5 class="mb-0">How do i start volunteering?</h5>
                         </a>
                         <a class="accordion-link p-4 mb-4" data-bs-toggle="pill" href="#collapseTwo">
-                            <h5 class="mb-0">Lorem ipsum dolor sit amet consectetur adipisicing elit.</h5>
+                            <h5 class="mb-0">What are the requirements?</h5>
                         </a>
                         <a class="accordion-link p-4 mb-4" data-bs-toggle="pill" href="#collapseThree">
-                            <h5 class="mb-0">Lorem ipsum dolor sit amet consectetur adipisicing elit.</h5>
+                            <h5 class="mb-0">Is there  any age requirement?</h5>
                         </a>
                         <a class="accordion-link p-4 mb-0" data-bs-toggle="pill" href="#collapseFour">
-                            <h5 class="mb-0">Lorem ipsum dolor sit amet consectetur adipisicing elit.</h5>
+                            <h5 class="mb-0">Where exactly are located?</h5>
                         </a>
                     </div>
                 </div>
@@ -163,8 +164,11 @@
                                     <img src="{{asset('assets/img/d5.jpg') }}" class="img-fluid w-100 h-100 rounded" alt="">
                                 </div>
                                 <div class="col-md-5">
-                                    <h1 class="display-5 mb-4">Loren Ipsum blah blah</h1>
-                                    <p class="mb-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis amet sequi molestiae tenetur eum mollitia, blanditiis, magnam illo magni error dolore unde perspiciatis tempore et totam corrupti dignissimos aut praesentium?
+                                    <h1 class="display-5 mb-4">How do i start volunteering?</h1>
+                                    <p class="mb-4">To become a PRC volunteer, you need to fill out the online application form through redcross.ph/volunteer.
+                                        You may also personally go to NHQ or at our local chapter nearest you to complete the profile form.
+                                        You can inquire through our website at www.redcross.org.ph or call us at 7902300 LOCAL 945 or send us an email at volunteer@redcross.org.ph.
+
                                     </p>
                                     <a class="btn btn-primary rounded-pill py-2 px-4" href="#">Learn More</a>
                                 </div>
@@ -176,8 +180,14 @@
                                     <img src="{{asset('assets/img/ab3.jpg') }}" class="img-fluid w-100 h-100 rounded" alt="">
                                 </div>
                                 <div class="col-md-5">
-                                    <h1 class="display-5 mb-4">Loren Ipsum blah blah</h1>
-                                    <p class="mb-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis amet sequi molestiae tenetur eum mollitia, blanditiis, magnam illo magni error dolore unde perspiciatis tempore et totam corrupti dignissimos aut praesentium?
+                                    <h1 class="display-5 mb-4">What are the requirements?</h1>
+                                    <p class="mb-4">After filling out of the application form online, wait for an invitation to be sent in your email address and know your schedule of orientation.
+                                        You will be required to attend the Basic Volunteer Orientation Course (BVOC). 
+                                        Other requirements include: <br>
+                                        <br>a. PRC membership known as Membership with Accident Assistance Benefit (MAAB)
+                                        <br>b. Photocopy of two valid IDs
+                                        <br>c. Copy of Resume
+                                        <br>d. 2x2 ID picture
                                     </p>
                                     <a class="btn btn-primary rounded-pill py-2 px-4" href="#">Learn More</a>
                                 </div>
@@ -189,8 +199,9 @@
                                     <img src="{{asset('assets/img/ab3.jpg') }}" class="img-fluid w-100  h-100 rounded" alt="">
                                 </div>
                                 <div class="col-md-5">
-                                    <h1 class="display-5 mb-4">Loren Ipsum blah blah</h1>
-                                    <p class="mb-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis amet sequi molestiae tenetur eum mollitia, blanditiis, magnam illo magni error dolore unde perspiciatis tempore et totam corrupti dignissimos aut praesentium?
+                                    <h1 class="display-5 mb-4">Is there  any age requirement?</h1>
+                                    <p class="mb-4">We have youth programs involving school-based Red Cross Youth volunteers in elementary, high school and college and young professionals in the community.
+                                        We do not have a maximum age limit in place.As long as you are physically and mentally healthy, and willing to serve, you are welcome.
                                     </p>
                                     <a class="btn btn-primary rounded-pill py-2 px-4" href="#">Learn More</a>
                                 </div>
@@ -202,8 +213,9 @@
                                     <img src="{{asset('assets/img/ab3.jpg') }}" class="img-fluid w-100  h-100 rounded" alt="">
                                 </div>
                                 <div class="col-md-5">
-                                    <h1 class="display-5 mb-4">Loren Ipsum blah blah</h1>
-                                    <p class="mb-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis amet sequi molestiae tenetur eum mollitia, blanditiis, magnam illo magni error dolore unde perspiciatis tempore et totam corrupti dignissimos aut praesentium?
+                                    <h1 class="display-5 mb-4">Where exactly are located?</h1>
+                                    <p class="mb-4">PRC National Headquarters is located at 37 EDSA corner Boni Avenue, Mandaluyong City.
+                                        You may call the Volunteer Service at (02)790 2300 local 945. We can also refer you to our Chapters nearest you.
                                     </p>
                                     <a class="btn btn-primary rounded-pill py-2 px-4" href="#">Learn More</a>
                                 </div>
