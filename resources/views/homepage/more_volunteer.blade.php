@@ -110,20 +110,18 @@
                     <h2>Become A Volunteer</h2>
                     <div class="our-story">
                         <h3>Donations Details</h3>
-                        <p>Inventore aliquam beatae at et id alias. Ipsa dolores amet consequuntur minima quia maxime autem.
-                            Quidem id sed ratione. Tenetur provident autem in reiciendis rerum at dolor. Aliquam consectetur
-                            laudantium temporibus dicta minus dolor.</p>
+                        <p>Join our community of dedicated individuals and make a positive impact! By registering as a volunteer, you will contribute your time and skills to support our mission. 
+                            Whether you're helping at an event, supporting programs, or providing valuable assistance, your participation is vital to our success.</p>
                         <ul>
-                            <li><i class="fas fa-handshake me-2" style="color: #ff1f1f;"></i> <span>Ullamco laboris nisi ut aliquip ex ea commo</span></li>
-                            <li><i class="fas fa-handshake me-2" style="color: #ff1f1f;"></i> <span>Duis aute irure dolor in reprehenderit in</span></li>
-                            <li><i class="fas fa-handshake me-2" style="color: #ff1f1f;"></i> <span>Ullamco laboris nisi ut aliquip ex ea</span></li>
+                            <li><i class="fas fa-handshake me-2" style="color: #ff1f1f;"></i> <span>Task and Event Participation</span></li>
+                            <li><i class="fas fa-handshake me-2" style="color: #ff1f1f;"></i> <span>Assisting in Donation Collection and Distribution</span></li>
+                            <li><i class="fas fa-handshake me-2" style="color: #ff1f1f;"></i> <span>Volunteer Activity Tracking</span></li>
                         </ul>
-                        <p>Vitae autem velit excepturi fugit. Animi ad non. Eligendi et non nesciunt suscipit repellendus porro in
-                            quo eveniet. Molestias in maxime doloremque.</p>
+                        <p>We appreciate your interest and look forward to having you as part of our volunteer team!</p>
 
                         <div class="watch-video d-flex align-items-center position-relative">
                             <i class="fas fa-hand-point-right fa-2xl me-2" style="color: #ff1f1f;"></i>
-                            <a href="{{ route ('register')}}" class="btn btn-primary rounded-pill py-3 px-4 px-md-5 ms-2">Register and Donate Now!</a>
+                            <a href="{{ route ('register')}}" class="btn btn-primary rounded-pill py-3 px-4 px-md-5 ms-2">Register Now!</a>
                         </div>
                     </div>
                 </div>
