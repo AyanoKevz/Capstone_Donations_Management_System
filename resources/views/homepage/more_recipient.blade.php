@@ -100,51 +100,50 @@
     </div>
     <!-- Navbar & Hero End -->
 
-    <!-- =======  Section ======= -->
+    <!-- ======= More About Donee Section ======= -->
     <section id="alt-services-2" class="alt-services p-3 m-3">
         <div class="container" data-aos="fade-up">
 
             <div class="row justify-content-around gy-4">
                 <div class="col-lg-5 d-flex flex-column justify-content-center wow fadeInLeft">
-                    <h3>How to Donate in UniAid?</h3>
-                    <p>Esse voluptas cumque vel exercitationem. Reiciendis est hic accusamus. Non ipsam et sed minima temporibus
-                        laudantium. Soluta voluptate sed facere corporis dolores excepturi</p>
-
+                    <h3>How to Become a Donee in UniAid?</h3>
+                    <p>To become a donee in UniAid, you need to follow a series of steps. Here's a detailed guide to help you through the process:</p>
+                    
                     <div class="icon-box d-flex position-relative">
-                        <i class="fa-brands fa-gratipay flex-shrink-0"></i>
+                        <i class="fa-solid fa-window-maximize flex-shrink-0"></i>
                         <div>
-                            <h4><a href="" class="stretched-link">Lorem Ipsum</a></h4>
-                            <p>Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate
-                                non provident</p>
+                            <h4><a class="stretched-link">Complete the Application Form</a></h4>
+                            <p>Fill out the online application form with accurate and complete information.</p>
                         </div>
                     </div><!-- End Icon Box -->
 
                     <div class="icon-box d-flex position-relative">
-                        <i class="fa-brands fa-gratipay flex-shrink-0"></i>
+                        <i class="fa-solid fa-share flex-shrink-0"></i>
                         <div>
-                            <h4><a href="" class="stretched-link">Nemo Enim</a></h4>
-                            <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum
-                                deleniti atque</p>
+                            <h4><a href="" class="stretched-link">Submit Required Documentation</a></h4>
+                            <p>Upload all necessary documents that prove your financial situation and support your need for aid.</p>
                         </div>
                     </div><!-- End Icon Box -->
 
                     <div class="icon-box d-flex position-relative">
-                        <i class="fa-brands fa-gratipay flex-shrink-0"></i>
+                        <i class="fa-solid fa-eye flex-shrink-0"></i>
                         <div>
-                            <h4><a href="" class="stretched-link">Dine Pad</a></h4>
-                            <p>Explicabo est voluptatum asperiores consequatur magnam. Et veritatis odit. Sunt aut deserunt minus
-                                aut eligendi omnis</p>
+                            <h4><a href="" class="stretched-link">Application Review and Notification</a></h4>
+                            <p>Your application will be reviewed by UniAid's team. If approved, you will receive a notification and begin receiving assistance.</p>
                         </div>
                     </div><!-- End Icon Box -->
 
                     <div class="icon-box d-flex position-relative">
-                        <i class="fa-brands fa-gratipay flex-shrink-0"></i>
+                         <i class="fa-solid fa-circle-info flex-shrink-0"></i>
                         <div>
-                            <h4><a href="" class="stretched-link">Tride clov</a></h4>
-                            <p>Est voluptatem labore deleniti quis a delectus et. Saepe dolorem libero sit non aspernatur odit amet.
-                                Et eligendi</p>
+                            <h4><a href="" class="stretched-link">For Further Details</a></h4>
+                            <p>Reach out to us through the "Contact Us" page on our website.</p>
                         </div>
                     </div><!-- End Icon Box -->
+                    <div class="watch-video d-flex align-items-center position-relative">
+                            <i class="fas fa-hand-point-right fa-2xl me-2" style="color: #ff1f1f;"></i>
+                            <a href="{{ route ('register')}}" class="btn btn-primary rounded-pill py-3 px-4 px-md-5 ms-2">Register or Sign Up</a>
+                        </div>
                 </div>
 
                 <div class="col-lg-6 img-bg wow  wow fadeInRight " style="background-image: url({{asset('assets/img/d3.jpg') }});"></div>
@@ -159,43 +158,40 @@
                 <div class="col-lg-6 img-bg wow fadeInLeft" style="background-image: url({{asset('assets/img/d4.jpg')}});"></div>
 
                 <div class="col-lg-5 d-flex flex-column justify-content-center wow fadeInRight">
-                    <h3>How to Donate in UniAid?</h3>
-                    <p>Esse voluptas cumque vel exercitationem. Reiciendis est hic accusamus. Non ipsam et sed minima temporibus
-                        laudantium. Soluta voluptate sed facere corporis dolores excepturi</p>
+                    <h3>Donee Details</h3>
+                    <p>UniAid supports individuals, organizations and communities in need through targeted donations and aid programs.
+                        By donating to UniAid, you provide essential resources and support where it's needed most, improving lives directly.</p>
+                    <h2> Who Are the Recipients?</h2>
 
                     <div class="icon-box d-flex position-relative">
-                        <i class="fa-brands fa-gratipay flex-shrink-0"></i>
+                        <i class="fa-solid fa-person flex-shrink-0"></i>
                         <div>
-                            <h4><a href="" class="stretched-link">Lorem Ipsum</a></h4>
-                            <p>Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate
-                                non provident</p>
+                            <h4><a class="stretched-link">Underprivileged individuals</a></h4>
+                            <p>Underprivileged individuals who face significant challenges due to limited resources and opportunities.</p>
                         </div>
                     </div><!-- End Icon Box -->
 
                     <div class="icon-box d-flex position-relative">
-                        <i class="fa-brands fa-gratipay flex-shrink-0"></i>
+                        <i class="fa-solid fa-people-roof flex-shrink-0"></i>
                         <div>
-                            <h4><a href="" class="stretched-link">Nemo Enim</a></h4>
-                            <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum
-                                deleniti atque</p>
+                            <h4><a href="" class="stretched-link">Vulnerable Families</a></h4>
+                            <p>Many families struggle to meet basic needs like food, shelter, and healthcare.</p>
                         </div>
                     </div><!-- End Icon Box -->
 
                     <div class="icon-box d-flex position-relative">
-                        <i class="fa-brands fa-gratipay flex-shrink-0"></i>
+                        <i class="fa-solid fa-house-chimney-crack flex-shrink-0"></i>
                         <div>
-                            <h4><a href="" class="stretched-link">Dine Pad</a></h4>
-                            <p>Explicabo est voluptatum asperiores consequatur magnam. Et veritatis odit. Sunt aut deserunt minus
-                                aut eligendi omnis</p>
+                            <h4><a href="" class="stretched-link">Disaster-Stricken Communities</a></h4>
+                            <p>Natural disasters and conflicts devastate communities, leaving them without basic necessities.</p>
                         </div>
                     </div><!-- End Icon Box -->
 
                     <div class="icon-box d-flex position-relative">
-                        <i class="fa-brands fa-gratipay flex-shrink-0"></i>
+                        <i class="fa-solid fa-building-ngo flex-shrink-0"></i>
                         <div>
-                            <h4><a href="" class="stretched-link">Tride clov</a></h4>
-                            <p>Est voluptatem labore deleniti quis a delectus et. Saepe dolorem libero sit non aspernatur odit amet.
-                                Et eligendi</p>
+                            <h4><a href="" class="stretched-link">Grassroots Organizations</a></h4>
+                            <p>Local organizations understand their communities' needs. Donations empower them to implement sustainable projects and drive positive change.</p>
                         </div>
                     </div><!-- End Icon Box -->
                 </div>
