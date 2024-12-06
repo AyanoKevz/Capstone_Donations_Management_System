@@ -65,7 +65,7 @@
                     <a href="register.html" class="nav-item nav-link active">Register</a>
                 </div>
                 <a href="index.html#portals"
-                    class="btn btn-primary rounded-pill py-2 px-4 my-3 my-lg-0 flex-shrink-0">Portals</a>
+                    class="btn btn-primary rounded-pill py-2 px-4 my-3 my-lg-0 flex-shrink-0">Portal</a>
             </div>
         </nav>
 
