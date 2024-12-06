@@ -235,7 +235,7 @@
             <h4 class="text-white mb-4">Quick Links</h4>
             <a href="{{ route('about') }}"><i class="fas fa-angle-right me-2"></i> About Us</a>
             <a href="{{ route('register') }}"><i class="fas fa-angle-right me-2"></i> Register</a>
-            <a href="{{ route('home') }}#portals"><i class="fas fa-angle-right me-2"></i> Portals</a>
+            <a href="{{ route('home') }}#portals"><i class="fas fa-angle-right me-2"></i> Portal</a>
             <a href="{{ route('home') }}#news"><i class="fas fa-angle-right me-2"></i> News</a>
             <a href="{{ route('contact') }}"><i class="fas fa-angle-right me-2"></i> Contact us</a>
           </div>

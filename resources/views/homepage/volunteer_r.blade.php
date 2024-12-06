@@ -67,7 +67,7 @@
                     <a href="{{ route ('contact')}}" class="nav-item nav-link">Contact Us</a>
                     <a href="{{ route ('register')}}" class="nav-item nav-link active">Register</a>
                 </div>
-                <a href="{{ route('home') }}#portals" class="btn btn-primary rounded-pill py-2 px-4 my-3 my-lg-0 flex-shrink-0">Portals</a>
+                <a href="{{ route('home') }}#portals" class="btn btn-primary rounded-pill py-2 px-4 my-3 my-lg-0 flex-shrink-0">Portal</a>
             </div>
         </nav>
 
