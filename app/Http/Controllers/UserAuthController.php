@@ -37,16 +37,16 @@ class UserAuthController extends Controller
             // Redirect based on the user's role
             switch ($role_name) {
                 case 'Donor':
-                    return redirect()->route('donor.dashboard');
+                    return redirect()->route('donor.home');
                 case 'Donee':
-                    return redirect()->route('donee.dashboard');
+                    return redirect()->route('donee.home');
                 case 'Volunteer':
                     return redirect()->route('volunteer.dashboard');
                 case 'Admin':
                     return redirect()->route('admin.dashboard');
                 default:
                     Auth::logout();
-                    // Redirect with error message if role is invalid
+                    
                     return redirect()->route('home')
                         ->with('error', 'Invalid user role.')
                         ->withInput()

@@ -101,10 +101,10 @@
     <!-- Navbar & Hero End -->
 
     <!-- ======= More About Donee Section ======= -->
-    <section id="alt-services-2" class="alt-services p-3 m-3">
+    <section id="alt-services-2" class="alt-services p-3 m-3 about">
         <div class="container" data-aos="fade-up">
 
-            <div class="row justify-content-around gy-4">
+            <div class="row justify-content-around gy-4 ">
                 <div class="col-lg-5 d-flex flex-column justify-content-center wow fadeInLeft">
                     <h3>How to Become a Donee in UniAid?</h3>
                     <p>To become a donee in UniAid, you need to follow a series of steps. Here's a detailed guide to help you through the process:</p>
@@ -140,7 +140,7 @@
                             <p>Reach out to us through the "Contact Us" page on our website.</p>
                         </div>
                     </div><!-- End Icon Box -->
-                    <div class="watch-video d-flex align-items-center position-relative">
+                    <div class="watch-video d-flex align-items-center position-relative mt-2 ">
                             <i class="fas fa-hand-point-right fa-2xl me-2" style="color: #ff1f1f;"></i>
                             <a href="{{ route ('register')}}" class="btn btn-primary rounded-pill py-3 px-4 px-md-5 ms-2">Register or Sign Up</a>
                         </div>
@@ -201,8 +201,6 @@
 
 
     <!-- End Section  -->
-
-
 
 
     <!-- Footer Start -->

@@ -242,7 +242,7 @@
                   <div class="sb-nav-link-icon">
                     <i class="far fa-circle nav-icon"></i>
                   </div>
-                  <span>Post A Request</span>
+                  <span>Submitted Post</span>
                 </a>
               </nav>
             </div>

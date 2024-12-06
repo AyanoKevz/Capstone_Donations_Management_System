@@ -40,7 +40,7 @@ return new class extends Migration
         // Create location table
         Schema::create('location', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('user_account')->onDelete('cascade'); // Ties location to a user
+            $table->foreignId('user_id')->constrained('user_account')->onDelete('cascade');
             $table->string('region', 100);
             $table->string('province', 100);
             $table->string('city_municipality', 100);

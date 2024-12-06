@@ -318,10 +318,10 @@
                     @endif
                     <h4>Address Details</h4>
                     <div class="ms-3 mt-3">
-                      <p><strong>Region:</strong> {{ $details->location->region ?? 'N/A' }}</p>
-                      <p><strong>Province:</strong> {{ $details->location->province ?? 'N/A' }}</p>
-                      <p><strong>City:</strong> {{ $details->location->city_municipality ?? 'N/A' }}</p>
-                      <p><strong>Barangay:</strong> {{ $details->location->barangay ?? 'N/A' }}</p>
+                      <p><strong>Region:</strong> {{ $user->location->region ?? 'N/A' }}</p>
+                      <p><strong>Province:</strong> {{ $user->location->province ?? 'N/A' }}</p>
+                      <p><strong>City:</strong> {{ $user->location->city_municipality ?? 'N/A' }}</p>
+                      <p><strong>Barangay:</strong> {{ $user->location->barangay ?? 'N/A' }}</p>
                     </div>
                     <hr />
                     <h4>Identity Details</h4>

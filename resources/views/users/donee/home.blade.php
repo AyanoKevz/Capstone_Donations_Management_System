@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>UniAid - Donor Portal</title>
+    <title>UniAid - Donee Portal</title>
     <link rel="icon" href="{{ asset ('assets/img/systemLogo.png') }}" type="image/png">
     <!-- Google Font-->
     <link rel="preconnect" href="https://fonts.googleapis.com">

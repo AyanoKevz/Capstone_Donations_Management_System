@@ -27,17 +27,16 @@ class VerifyAcct extends Controller
         return view('admin.verify_account', compact('inactiveAccounts', 'filter'));
     }
 
-
     public function viewDetails($id)
     {
-        // Retrieve the user and load roles
-        $user = UserAccount::with(['roles'])->findOrFail($id);
-
+        // Retrieve the user along with roles and location
+        $user = UserAccount::with(['roles', 'location'])->findOrFail($id);
+    
         $details = null;
-
+    
         // Check the first role assigned to the user
         $role = $user->roles->first()->role_name ?? null;
-
+    
         if ($role === 'Donor') {
             $details = $user->donor;
         } elseif ($role === 'Donee') {
@@ -45,10 +44,10 @@ class VerifyAcct extends Controller
         } elseif ($role === 'Volunteer') {
             $details = $user->volunteer;
         }
-
+    
         return view('admin.view_details', compact('user', 'details', 'role'));
     }
-
+    
     public function processVerification(Request $request, $id)
     {
         $user = UserAccount::findOrFail($id);
