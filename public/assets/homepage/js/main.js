@@ -4,22 +4,32 @@
      setTimeout(() => {
             $('#alert-success').fadeOut();
             $('#alert-error').fadeOut();
-        }, 3000);
+        },3000);
 
        // Spinner
-   var spinnerElement = document.getElementById("spinner");
+var spinnerElement = document.getElementById("spinner");
+
 if (spinnerElement) {
+    // Initially hide the spinner
     spinnerElement.classList.remove("show");
 }
+
+// Attach event listener to all forms
 document.querySelectorAll("form").forEach(function (form) {
-    form.addEventListener("submit", function () {
-        if (spinnerElement) {
-            spinnerElement.classList.add("show");
+    form.addEventListener("submit", function (e) {
+        // Check if the form is valid before showing the spinner
+        if (form.checkValidity()) {
+            if (spinnerElement) {
+                // Show the spinner when the form is valid
+                spinnerElement.classList.add("show");
+            }
+        } else {
+            // Prevent form submission if form is invalid
+            e.preventDefault();
         }
     });
 });
 
-    
     
    //animation
 const wow = new WOW({
@@ -556,56 +566,47 @@ $("form").validate({
 });
 
 
-// Validation for Donor Form
-$(".login-form").each(function() {
-        $(this).validate({
-            rules: {
-                username: {
-                    required: true,
-                    minlength: 5
-                },
-                password: {
-                    required: true,
-                    minlength: 8
-                }
-            },
-            messages: {
-                username: {
-                    required: "Please enter a username",
-                    minlength: "Your username must be at least 5 characters long"
-                },
-                password: {
-                    required: "Please provide a password",
-                    minlength: "Your password must be at least 8 characters long"
-                }
-            },
-            highlight: function(element) {
-                $(element).addClass('is-invalid').removeClass('is-valid');
-            },
-            unhighlight: function(element) {
-                $(element).addClass('is-valid').removeClass('is-invalid');
-            },
-            errorPlacement: function(error, element) {
-                error.insertAfter(element);
-            },
-            submitHandler: function(form) {
-                form.submit();
-            }
-        });
-    });
-
-    // Trigger validation when modal opens
-    $('#donee-login, #volunteer-login').on('shown.bs.modal', function () {
-        // Reinitialize validation after the modal is shown
-        $(this).find(".login-form").validate();
-    });
-
-    // Prevent the form from submitting if it's invalid (for modal forms)
-    $(".login-form").on('submit', function(e) {
-        if (!$(this).valid()) {
-            e.preventDefault(); 
+$("#login-form").validate({
+    rules: {
+        username: {
+            required: true,
+            minlength: 5
+        },
+        password: {
+            required: true,
+            minlength: 8
         }
-    });
+    },
+    messages: {
+        username: {
+            required: "Please enter a username",
+            minlength: "Your username must be at least 5 characters long"
+        },
+        password: {
+            required: "Please provide a password",
+            minlength: "Your password must be at least 8 characters long"
+        }
+    },
+    highlight: function(element) {
+        $(element).addClass('is-invalid').removeClass('is-valid');
+    },
+    unhighlight: function(element) {
+        $(element).addClass('is-valid').removeClass('is-invalid');
+    },
+    errorPlacement: function(error, element) {
+        error.insertAfter(element);
+    },
+    submitHandler: function(form) {
+        form.submit(); // Submit the form if valid
+    }
+});
+
+// Prevent modal form from submitting if validation fails
+$('#login-form').on('submit', function(event) {
+    if (!$(this).valid()) { // Check if the form is valid
+        event.preventDefault(); // Prevent form submission if validation fails
+    }
+});
 
 
 $('.toggle-password').on('click', function () {
@@ -676,17 +677,17 @@ $('.toggle-password').on('click', function () {
         $('#reviewCity').text($('select[name="city"] option:selected').text());
         $('#reviewBarangay').text($('select[name="barangay"] option:selected').text());
         $('#reviewFullAddress').text($('input[name="full_address"]').val());
-        $('#reviewIdType').text($('select[name="id_type"]').val());
+        $('#reviewIdType').text($('select[name="id_type"] option:selected').text());
 
         // Education & Profession
-    $('#reviewEducation').text($('select[name="educ_prof"]').val());
+    $('#reviewEducation').text($('select[name="educ_prof"]  option:selected').val());
     $('#reviewStudying').text($('input[name="studying"]:checked').val());
     $('#reviewEmployed').text($('input[name="employed"]:checked').val());
 
     // Volunteering Details
-    $('#reviewPreferredService').text($('select[name="pref_services"]').val());
-    $('#reviewAvailability').text($('select[name="availability"]').val());
-    $('#reviewAvailabilityTime').text($('select[name="availability_time"]').val());
+    $('#reviewPreferredService').text($('select[name="pref_services"]  option:selected').val());
+    $('#reviewAvailability').text($('select[name="availability"]  option:selected').val());
+    $('#reviewAvailabilityTime').text($('select[name="availability_time"]  option:selected').val());
     
     });
 

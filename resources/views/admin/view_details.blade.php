@@ -5,7 +5,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Admin | Inquiries</title>
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  <title>Admin | Read Inquiries</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -15,7 +16,8 @@
     href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <link rel="icon" href="{{ asset ('assets/img/systemLogo.png') }}" type="image/png">
   <link rel="stylesheet" href="{{ asset('lib/bootstrap/css/bootstrap.min.css') }}">
-  <link rel="stylesheet" href="{{ asset ('assets/admin/css/inquiries.css') }}">
+  <link rel="stylesheet" href="{{ asset('lib/datatables/datatables.min.css') }}">
+  <link rel="stylesheet" href="{{ asset ('assets/admin/css/verify.css') }}">
 
 </head>
 
@@ -130,7 +132,7 @@
               </nav>
             </div>
 
-            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#user"
+            <a class="nav-link collapsed active" href="#" data-bs-toggle="collapse" data-bs-target="#user"
               aria-expanded="false" aria-controls="user" title="Manage User">
               <div class="sb-nav-link-icon">
                 <i class="fas fa-users"></i>
@@ -161,9 +163,9 @@
                   <span>Volunteer</span>
                 </a>
               </nav>
-              <a class="nav-link" href="#" title="Verify Accounts">
+              <a class="nav-link active" href="{{route ('verify_account')}}" title="Verify Accounts">
                 <div class="sb-nav-link-icon">
-                  <i class="far fa-circle nav-icon"></i>
+                  <i class="fas fa-circle nav-icon"></i>
                 </div>
                 <span>Verify Accounts</span>
               </a>
@@ -246,7 +248,7 @@
                 </a>
               </nav>
             </div>
-            <a class="nav-link active" href="{{ route ('admin.inquiries')}}" title="Inquiries">
+            <a class="nav-link " href="{{ route ('admin.inquiries')}}" title="Inquiries">
               <div class="sb-nav-link-icon">
                 <i class="fas fa-message"></i>
               </div>
@@ -272,93 +274,146 @@
           <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item active"></li>
           </ol>
-          @if (session('success'))
-          <div id="alert-success" class="alert alert-success wow fadeInLeft">
-            <i class="fa-solid fa-circle-check me-3"></i>{{ session('success') }}
-          </div>
-          @endif
 
-          @if (session('error'))
-          <div id="alert-error" class="alert alert-error wow fadeInLeft">
-            <i class="fa-solid fa-circle-xmark me-3"></i>{{ session('error') }}
-          </div>
-          @endif
-          <h1 class="my-2">Inquiries Inbox</h1>
-          <!-- /. CONTENT -->
-          <section class="content mb-2">
-            <div class="container-fluid ps-0">
-              <div class="card card-primary card-outline">
-                <div class="card-header">
-                  <h3 class="card-title">Inbox</h3>
-                </div>
-                <div class="card-body p-0">
-                  <form method="POST" action="{{ route('inquiries.delete') }}">
-                    @csrf
-                    <div class="mailbox-controls d-flex justify-content-between align-items-center border-bottom border-secondary-subtle border-2">
-                      <div>
-                        <button type="button" class="btn email-btn btn-sm checkbox-toggle" title="Check All">
-                          <i class="far fa-square"></i>
-                        </button>
-                        <button type="submit" class="btn email-btn btn-sm" title="Delete">
-                          <i class="far fa-trash-alt"></i>
-                        </button>
-                      </div>
-                      <div>
-                        <a href="{{ route('admin.inquiries', ['status' => 'all']) }}"
-                          class="btn email-btn btn-sm {{ $status === 'all' ? 'custom-active' : '' }}">
-                          All
-                        </a>
-                        <a href="{{ route('admin.inquiries', ['status' => 'unread']) }}"
-                          class="btn email-btn btn-sm {{ $status === 'unread' ? 'custom-active' : '' }}">
-                          Unread
-                        </a>
-                        <a href="{{ route('admin.inquiries', ['status' => 'read']) }}"
-                          class="btn email-btn btn-sm {{ $status === 'read' ? 'custom-active' : '' }}">
-                          Read
-                        </a>
+          <h1 class="my-2">User Information</h1>
+
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card p-4">
+                <div class="row">
+                  <!-- First Column: Details -->
+                  <div class="col-md-8">
+                    <h4>Account Details</h4>
+                    <div class="ms-3 mt-3">
+                      <p><strong>Account Type:</strong> {{ ucfirst($user->account_type) }}</p>
+                      <p><strong>Role:</strong> {{ $role }}</p>
+                      <p><strong>Username:</strong> {{ $user->username }}</p>
+                      <p><strong>Email:</strong> {{ $user->email }}</p>
+                    </div>
+                    <hr />
+                    <h4>Person Details</h4>
+                    <div class="ms-3 mt-3">
+                      <p><strong>First Name:</strong> {{ $details->first_name }}</p>
+                      <p><strong>Middle Name:</strong> {{ $details->middle_name ?? 'N/A' }}</p>
+                      <p><strong>Last Name:</strong> {{ $details->last_name }}</p>
+                      <p><strong>Contact:</strong> {{ $details->contact }}</p>
+                      <p><strong>Birthday:</strong> {{ $details->birthday }}</p>
+                      <p><strong>Gender:</strong> {{ ucfirst($details->gender ?? 'N/A') }}</p>
+                    </div>
+                    <hr />
+                    @if($role === 'volunteer')
+                    <h4>Volunteer Details</h4>
+                    <div class="ms-3 mt-3">
+                      <p><strong>Preferred Services:</strong> {{ ucfirst($details->pref_services) }}</p>
+                      <p><strong>Availability:</strong> {{ ucfirst($details->availability) }}</p>
+                      <p><strong>Availability Time:</strong> {{ ucfirst($details->availability_time) }}</p>
+                    </div>
+                    <hr>
+                    <h4>Educational Attainment</h4>
+                    <div class="ms-3 mt-3">
+                      <p><strong>Educational Attainment:</strong> {{ str_replace('_', ' ', ucfirst($details->educational_attainment)) }}</p>
+                      <p><strong>Currently Studying:</strong> {{ $details->is_studying ? 'Yes' : 'No' }}</p>
+                      <p><strong>Currently Employed:</strong> {{ $details->is_employed ? 'Yes' : 'No' }}</p>
+                    </div>
+                    @endif
+                    <h4>Address Details</h4>
+                    <div class="ms-3 mt-3">
+                      <p><strong>Region:</strong> {{ $details->location->region ?? 'N/A' }}</p>
+                      <p><strong>Province:</strong> {{ $details->location->province ?? 'N/A' }}</p>
+                      <p><strong>City:</strong> {{ $details->location->city_municipality ?? 'N/A' }}</p>
+                      <p><strong>Barangay:</strong> {{ $details->location->barangay ?? 'N/A' }}</p>
+                    </div>
+                    <hr />
+                    <h4>Identity Details</h4>
+                    <div class="ms-3 mt-3 mb-3">
+                      <p><strong>ID Type Submitted:</strong> {{ $details->id_type ?? 'N/A' }}</p>
+                    </div>
+                  </div>
+                  <!-- Second Column: Images -->
+                  <div class="col-md-4 text-center">
+                    <h4>Submitted Images</h4>
+                    <div class="mb-4">
+                      <label for="userPicture" class="form-label">User ID</label>
+                      <div class="image-container border rounded mx-auto d-flex align-items-center justify-content-center">
+                        <img src="{{ asset('storage/' . $details->id_image) }}" alt="ID Image">
                       </div>
                     </div>
-                    <div class="table-responsive mailbox-messages">
-                      <table class="table table-hover table-striped">
-                        <tbody>
-                          @forelse($inquiries as $inquiry)
-                          <tr>
-                            <td>
-                              <div class="icheck-primary">
-                                <input type="checkbox" name="selected[]" value="{{ $inquiry->id }}" id="check{{ $inquiry->id }}">
-                                <label for="check{{ $inquiry->id }}"></label>
-                              </div>
-                            </td>
-                            <td class="mailbox-name">
-                              <a href="{{ route('inquiries.read', $inquiry->id) }}" class="{{ $inquiry->status === 'unread' ? 'fw-bold' : 'text-secondary' }}">{{ $inquiry->name }}</a>
-                            </td>
-                            <td class="mailbox-subject {{ $inquiry->status === 'unread' ? 'fw-bold' : 'text-secondary' }}">{{ $inquiry->subject }}</td>
-                            <td class="mailbox-date">{{ $inquiry->submitted_at->format('d M Y h:i A') }}</td>
-                            <td class="{{ $inquiry->status === 'unread' ? 'fw-bold' : 'text-secondary' }}">
-                              {{ ucfirst($inquiry->status) }}
-                            </td>
-                          </tr>
-                          @empty
-                          <tr>
-                            <td colspan="6" class="text-center">No inquiries available for {{ ucfirst($status ?? 'All') }}.</td>
-                          </tr>
-                          @endforelse
-                        </tbody>
-                      </table>
+                    <div>
+                      <label for="userID" class="form-label">User Photo</label>
+                      <div class="image-container border rounded mx-auto d-flex align-items-center justify-content-center">
+                        <img src="{{ asset('storage/' . $details->user_photo) }}" alt="User Photo">
+                      </div>
                     </div>
-                  </form>
+                  </div>
                 </div>
-                <div class="card-footer px-2">
-                  <div class="mailbox-controls d-flex justify-content-between align-items-center">
-                    Total Inquiries: {{ $total }}
-                    <div class="mt-2"> {{ $inquiries->links() }}</div>
+                <!-- Buttons -->
+                <div class="row mt-4">
+                  <div class="col text-center">
+                    <button type="button" class="btn btn-success me-3" data-bs-toggle="modal" data-bs-target="#verify" data-user-id="{{ $user->id }}">
+                      Verify
+                    </button>
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#unverify" data-user-id="{{ $user->id }}">
+                      Not Verify
+                    </button>
                   </div>
                 </div>
               </div>
             </div>
-          </section>
+          </div>
         </div>
       </main>
+
+      <!-- Verify Modal -->
+      <div class="modal fade" id="verify" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-4">Do you want to verify?</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+              <p class="m-0">Verify this account? This account will be active.</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+
+              <!-- Traditional Form for Verify -->
+              <form action="{{ route('process_verification', $user->id) }}" method="POST">
+                @csrf
+                <input type="hidden" name="action" value="verify">
+                <button type="submit" class="btn btn-success">Yes</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Unverify Modal -->
+      <div class="modal fade" id="unverify" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header text-center">
+              <h1 class="modal-title fs-4">Do you want to unverify?</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+              <p class="m-0">Unverify this account? This account will be unused and removed from the account list.</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+
+              <!-- Traditional Form for Not Verify -->
+              <form action="{{ route('process_verification', $user->id) }}" method="POST">
+                @csrf
+                <input type="hidden" name="action" value="not_verify">
+                <button type="submit" class="btn btn-danger">Yes</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
       <footer class="py-3 bg-dark mt-3">
         <div class="container-fluid ps-4">
           <div class="d-flex align-items-center justify-content-between">
@@ -373,11 +428,9 @@
   <script src="{{ asset('lib/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
   <script src="{{ asset('lib/fontawesome/all.js') }}"></script>
   <script src="{{ asset('lib/jquery/jquery.min.js') }}"></script>
+  <script src="{{ asset('lib/datatables/datatables.min.js') }}"></script>
   <script src="{{ asset('assets/admin/js/admin.js') }}"></script>
 
-  <script>
-
-  </script>
 </body>
 
 </html>

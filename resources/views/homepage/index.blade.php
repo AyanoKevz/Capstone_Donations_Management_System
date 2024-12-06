@@ -337,61 +337,29 @@
     <!-- Portals Start -->
     <div class="container-fluid service py-5 portals" id="portals">
         <div class="container pb-5 wow zoomIn" data-wow-delay="0.3s">
+            @if (session('error'))
+            <div id="alert-error" class="alert alert-error wow fadeInLeft">
+                <i class="fa-solid fa-circle-xmark fa-xl me-2 "></i>{{ session('error') }}
+            </div>
+            @endif
+
             <div class="text-center mx-auto pb-5" style="max-width: 800px;">
                 <h2 class="section-header">Portals</h2>
-                <h1 class="display-5 mb-4">User Login Portals</h1>
-                <p class="mb-0">UniAid offers distinct portals to cater to the needs of different users:
-                    donors, recipients, and volunteers, ensuring a streamlined experience for everyone involved in
-                    community assistance efforts
+                <h1 class="display-5 mb-4">User Login Portal</h1>
+                <p class="mb-0"> Access UniAid's secure login portal tailored for donors, recipients, and volunteers.Make a dontation, request, and help the community in one platform.
                 </p>
             </div>
-            <div class="row g-4">
-                <div class="col-md-6 col-lg-4">
-                    <div class="service-item">
-                        <div class="service-img">
-                            <img src="{{asset('assets/img/donor.jpg') }}" class="img-fluid rounded-top w-100 h-100" alt="Image">
-                        </div>
-                        <div class="rounded-bottom p-2 d-flex flex-column align-items-center text-center">
-                            <h4 class="d-inline-block my-2"> Donor</h4>
-                            <p class="mb-2">The Donor Portal allows individuals and organizations to contribute
-                                resources such as money and in-kind resources.
-                            </p>
-                            <a class="btn btn-primary rounded-pill py-2 px-4  my-2" data-bs-toggle="modal"
-                                data-bs-target="#donor-login">Login</a>
-                        </div>
-                    </div>
+            <div class="row g-4 align-items-center">
+                <div class="col-md-5">
+                    <img src="{{asset('assets/img/portal.gif') }}" class="img-fluid w-100 rounded border border-dark" alt="">
                 </div>
-                <div class="col-md-6 col-lg-4" data-wow-delay="0.4s">
-                    <div class="service-item">
-                        <div class="service-img">
-                            <img src="{{asset('assets/img/donee.jpg') }}" class="img-fluid rounded-top w-100 h-100" alt="Image">
-                        </div>
-                        <div class="rounded-bottom p-2 d-flex flex-column align-items-center text-center">
-                            <h4 class="d-inline-block my-2">Recipient (Donee)</h4>
-                            <p class="mb-2">The Recipient Portal enables individuals and organizations in need to
-                                request and post assistance through the platform.
-                            </p>
-                            <a class="btn btn-primary rounded-pill py-2 px-4  my-2" data-bs-toggle="modal"
-                                data-bs-target="#donee-login">Login</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-6 col-lg-4">
-                    <div class="service-item">
-                        <div class="service-img">
-                            <img src="{{asset('assets/img/volunteer.jpeg') }}" class="img-fluid rounded-top w-100 h-100"
-                                alt="Image">
-                        </div>
-                        <div class="rounded-bottom p-2 d-flex flex-column align-items-center text-center">
-                            <h4 class="d-inline-block my-2">Volunteer</h4>
-                            <p class="mb-2"> The Volunteer Portal is designed for those who wish to contribute their
-                                time, effort, and services towards those in need in the community
-                            </p>
-                            <a class="btn btn-primary rounded-pill py-2 px-4  my-2" data-bs-toggle="modal"
-                                data-bs-target="#volunteer-login">Login</a>
-                        </div>
-                    </div>
+                <div class="col-md-7">
+                    <h1 class="display-5 mb-4">Access Your Portal</h1>
+                    <p class="mb-4">
+                        Navigate effortlessly through a secure and personalized portal. Click "Login" to explore and access your personalized portal tailored to your needs.
+                    </p>
+                    <a class="btn btn-primary rounded-pill py-2 px-4" data-bs-toggle="modal"
+                        data-bs-target="#login">Login Now</a>
                 </div>
             </div>
         </div>
@@ -400,13 +368,13 @@
 
     <!-- Modal -->
 
-    <!--  Donor -->
-    <div class="modal fade" id="donor-login" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    <!--  Login -->
+    <div class="modal fade" id="login" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title fs-5" id="staticBackdropLabel">Donor Login Portal</h5>
+                    <h5 class="modal-title fs-5" id="staticBackdropLabel">Login Portal</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body d-flex flex-column align-items-center">
@@ -414,14 +382,14 @@
                     <h6 class="mt-2">UnidAid: Community Donations and
                         Resources Distribution</h6>
                     <div class="my-3 d-flex justify-content-center">
-                        <img src="{{asset('assets/img/donor.gif') }}" alt="" class="w-25">
+                        <img src="{{asset('assets/img/systemLogo.png')  }}" alt="" class="w-25">
                     </div>
-                    <form action="#" method="post" class="login-form">
+                    <form action="{{ route('user.login') }}" method="POST" id="login-form">
+                        @csrf
                         <div class="d-flex justify-content-center mb-5">
                             <span class="me-2 my-auto"><i class="fa fa-user fa-lg" style="color: #ff1f1f;"></i></span>
                             <div class="input-group">
-                                <input type="text" name="username" autocomplete="off" class="login-input" id="username"
-                                    required>
+                                <input type="text" name="username" autocomplete="off" class="login-input" id="username" required>
                                 <label class="user-label" for="username">Username</label>
                             </div>
                         </div>
@@ -438,106 +406,12 @@
                                 </button>
                             </div>
                         </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" name="login" id="login" class="btn btn-success">Login</button>
-                </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!--  Donee -->
-    <div class="modal fade" id="donee-login" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title fs-5" id="staticBackdropLabel">Recipient (Donee) Login Portal</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body d-flex flex-column align-items-center">
-
-                    <h6 class="mt-2">UnidAid: Community Donations and
-                        Resources Distribution</h6>
-                    <div class="my-3 d-flex justify-content-center">
-                        <img src="{{asset('assets/img/donee.gif') }}" alt="" class="w-25">
-                    </div>
-                    <form action="#" method="post" class="login-form">
-                        <div class="d-flex justify-content-center mb-5">
-                            <span class="me-2"><i class="fa fa-user fa-lg" style="color: #ff1f1f;"></i></span>
-                            <div class="input-group">
-                                <input type="text" name="username" autocomplete="off" class="login-input" id="username"
-                                    required>
-                                <label class="user-label" for="username">Username</label>
-                            </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" name="login" id="login" class="btn btn-success">Login</button>
                         </div>
-                        <div class="d-flex justify-content-center align-items-center mb-5">
-                            <span class="me-2">
-                                <i class="fa fa-lock fa-lg" style="color: #ff1f1f;"></i>
-                            </span>
-                            <div class="input-group position-relative">
-                                <input type="password" name="password" autocomplete="off" class="login-input password-input" required>
-                                <label class="user-label" for="password">Password</label>
-                                <button type="button" class="toggle-password">
-                                    <i class="fa fa-eye-slash toggle-password-icon"></i>
-                                </button>
-                            </div>
-                        </div>
+                    </form>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" name="login" id="login" class="btn btn-success">Login</button>
-                </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!--  Volunteer -->
-    <div class="modal fade" id="volunteer-login" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title fs-5" id="staticBackdropLabel">Volunteer Login Portal</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body d-flex flex-column align-items-center">
-
-                    <h6 class="mt-2">UnidAid: Community Donations and
-                        Resources Distribution</h6>
-                    <div class="my-3 d-flex justify-content-center">
-                        <img src="{{asset('assets/img/volunteer.gif') }}" alt="" class="w-25">
-                    </div>
-                    <form action="" method="post" class="login-form">
-                        <div class="d-flex justify-content-center mb-5">
-                            <span class="me-2"><i class="fa fa-user fa-lg" style="color: #ff1f1f;"></i></span>
-                            <div class="input-group">
-                                <input type="text" name="username" autocomplete="off" class="login-input" id="username"
-                                    required>
-                                <label class="user-label" for="username">Username</label>
-                            </div>
-                        </div>
-                        <div class="d-flex justify-content-center align-items-center mb-5">
-                            <span class="me-2">
-                                <i class="fa fa-lock fa-lg" style="color: #ff1f1f;"></i>
-                            </span>
-                            <div class="input-group position-relative">
-                                <input type="password" name="password" autocomplete="off" class="login-input password-input" required>
-                                <label class="user-label" for="password">Password</label>
-                                <button type="button" class="toggle-password ">
-                                    <i class="fa fa-eye-slash toggle-password-icon"></i>
-                                </button>
-                            </div>
-                        </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" name="login" id="login" class="btn btn-success">Login</button>
-                </div>
-                </form>
             </div>
         </div>
     </div>
@@ -589,6 +463,112 @@
     <!-- Blog End -->
 
 
+    <!-- Testimonial Start -->
+    <div class="container-fluid testimonial py-3 rev" id="testimonials">
+        <div class="container py-3 wow fadeInDown" data-wow-delay="0.3s">
+            <div class="text-center mx-auto pb-5" style="max-width: 800px;">
+                <h2 class="section-header">Testimonial</h>
+                    <h1 class="display-5 mb-4">What Our Users Say</h1>
+                    <p class="mb-0">
+                        Hear from our users—donors, recipients, and volunteers—about their experiences
+                        with UniAid. Discover how their involvement has impacted lives, strengthened communities,
+                        and brought people together through the power of giving and receiving.
+                    </p>
+            </div>
+            <div class="owl-carousel testimonial-carousel">
+                <div class="testimonial-item">
+                    <div class="testimonial-quote-left">
+                        <i class="fas fa-quote-left fa-2x"></i>
+                    </div>
+                    <div class="testimonial-img">
+                        <img src="{{asset('assets/img/no_profile.png') }}" class="img-fluid" alt="Image">
+                    </div>
+                    <div class="testimonial-text">
+                        <p> [CONTENT / MESSAGE OF THE REVIEW ]
+                        </p>
+                    </div>
+                    <div class="testimonial-title">
+                        <div>
+                            <h4 class="mb-0">USERNAME HERE</h4>
+                            <p class="mb-0">ROLE OF THE USER</p>
+                        </div>
+
+                    </div>
+                    <div class="testimonial-quote-right">
+                        <i class="fas fa-quote-right fa-2x"></i>
+                    </div>
+                </div>
+                <div class="testimonial-item">
+                    <div class="testimonial-quote-left">
+                        <i class="fas fa-quote-left fa-2x"></i>
+                    </div>
+                    <div class="testimonial-img">
+                        <img src="{{asset('assets/img/no_profile.png') }}" class="img-fluid" alt="Image">
+                    </div>
+                    <div class="testimonial-text">
+                        <p> [CONTENT / MESSAGE OF THE REVIEW ]
+                        </p>
+                    </div>
+                    <div class="testimonial-title">
+                        <div>
+                            <h4 class="mb-0">USERNAME HERE</h4>
+                            <p class="mb-0">ROLE OF THE USER</p>
+                        </div>
+
+                    </div>
+                    <div class="testimonial-quote-right">
+                        <i class="fas fa-quote-right fa-2x"></i>
+                    </div>
+                </div>
+                <div class="testimonial-item">
+                    <div class="testimonial-quote-left">
+                        <i class="fas fa-quote-left fa-2x"></i>
+                    </div>
+                    <div class="testimonial-img">
+                        <img src="{{asset('assets/img/no_profile.png') }}" class="img-fluid" alt="Image">
+                    </div>
+                    <div class="testimonial-text">
+                        <p> [CONTENT / MESSAGE OF THE REVIEW ]
+                        </p>
+                    </div>
+                    <div class="testimonial-title">
+                        <div>
+                            <h4 class="mb-0">USERNAME HERE</h4>
+                            <p class="mb-0">ROLE OF THE USER</p>
+                        </div>
+
+                    </div>
+                    <div class="testimonial-quote-right">
+                        <i class="fas fa-quote-right fa-2x"></i>
+                    </div>
+                </div>
+                <div class="testimonial-item">
+                    <div class="testimonial-quote-left">
+                        <i class="fas fa-quote-left fa-2x"></i>
+                    </div>
+                    <div class="testimonial-img">
+                        <img src="{{asset('assets/img/no_profile.png') }}" class="img-fluid" alt="Image">
+                    </div>
+                    <div class="testimonial-text">
+                        <p> [CONTENT / MESSAGE OF THE REVIEW ]
+                        </p>
+                    </div>
+                    <div class="testimonial-title">
+                        <div>
+                            <h4 class="mb-0">USERNAME HERE</h4>
+                            <p class="mb-0">ROLE OF THE USER</p>
+                        </div>
+
+                    </div>
+                    <div class="testimonial-quote-right">
+                        <i class="fas fa-quote-right fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Testimonial End -->
+
     <!-- FAQs Start -->
     <div class="container-fluid faq-section py-3">
         <div class="container py-3 overflow-hidden">
@@ -614,11 +594,11 @@
                             <div id="flush-collapseOne" class="accordion-collapse collapse"
                                 aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushSection">
                                 <div class="accordion-body"> 1) <b>Quick Donation Option</b>
-                                     -  Donors can make quick donations without needing to browse or select specific recipients <br>
+                                    - Donors can make quick donations without needing to browse or select specific recipients <br>
                                     2) <b>Donee Selection. </b>
-                                    -  Donors can browse through requests and select which resources to donate based on donee needs displayed on the platform. <br>
+                                    - Donors can browse through requests and select which resources to donate based on donee needs displayed on the platform. <br>
                                     <a href="{{ route ('more_donor')}}">Learn More.</a>
-                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="accordion-item">
@@ -631,10 +611,10 @@
                             </h2>
                             <div id="flush-collapseTwo" class="accordion-collapse collapse"
                                 aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushSection">
-                                <div class="accordion-body"> donee can post a request for specific resources they require, including descriptions, quantity, 
+                                <div class="accordion-body"> donee can post a request for specific resources they require, including descriptions, quantity,
                                     and urgency, and submit a proof of need.
-                                    <a href="{{ route ('more_recipient')}}" >Learn More.</a>
-                            </div>
+                                    <a href="{{ route ('more_recipient')}}">Learn More.</a>
+                                </div>
                             </div>
                         </div>
                         <div class="accordion-item">
@@ -649,7 +629,7 @@
                                 aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushSection">
                                 <div class="accordion-body">
                                     Volunteers need to register first and then view admin request for help.
-                                    <a href="{{ route ('more_volunteer')}}" >Learn More.</a>
+                                    <a href="{{ route ('more_volunteer')}}">Learn More.</a>
                                 </div>
                             </div>
                         </div>
@@ -658,13 +638,13 @@
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#flush-collapseFour" aria-expanded="false"
                                     aria-controls="flush-collapseFour">
-                                    What kind of donations UniAid accepts? 
+                                    What kind of donations UniAid accepts?
                                 </button>
                             </h2>
                             <div id="flush-collapseFour" class="accordion-collapse collapse"
                                 aria-labelledby="flush-headingFour" data-bs-parent="#accordionFlushSection">
                                 <div class="accordion-body"> The UniAid accepts in-kind donations such as canned goods, bottled water, medecines, clothes, and other non-perishable Items.
-                                    We also accept monetary doantions. 
+                                    We also accept monetary doantions.
                                 </div>
                             </div>
                         </div>
@@ -678,7 +658,7 @@
                             </h2>
                             <div id="flush-collapseFive" class="accordion-collapse collapse"
                                 aria-labelledby="flush-headingFive" data-bs-parent="#accordionFlushSection">
-                                <div class="accordion-body">Yes, you can choose to make your donation anonymously. 
+                                <div class="accordion-body">Yes, you can choose to make your donation anonymously.
                                     Simply select the "Anonymous" option during the donation process.
                                 </div>
                             </div>
@@ -693,9 +673,9 @@
                             </h2>
                             <div id="flush-collapseSix" class="accordion-collapse collapse"
                                 aria-labelledby="flush-headingSix" data-bs-parent="#accordionFlushSection">
-                                <div class="accordion-body">Donees are selected based on specific criteria that assess their needs and 
+                                <div class="accordion-body">Donees are selected based on specific criteria that assess their needs and
                                     eligibility. We work with local organizations, community leaders,
-                                     and other partners to identify those who would benefit the most from our support.</div>
+                                    and other partners to identify those who would benefit the most from our support.</div>
                             </div>
                         </div>
                     </div>

@@ -39,4 +39,9 @@ class UserAccount extends Model
     {
         return $this->hasOne(Volunteer::class, 'user_id');
     }
+
+    public function location()
+    {
+        return $this->hasOne(Location::class, 'user_id');
+    }
 }

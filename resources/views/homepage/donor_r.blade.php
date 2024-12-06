@@ -412,7 +412,7 @@
                     <p><strong>Email:</strong> <span id="reviewEmail"></span></p>
                     <p><strong>Password:</strong> <span id="reviewPassword"></span></p>
                     <hr />
-                    <h5>Account Details</h5>
+                    <h5>Person Details</h5>
                     <p><strong>First Name:</strong> <span id="reviewFname"></span></p>
                     <p><strong>Last Name:</strong> <span id="reviewLname"></span></p>
                     <p><strong>Mobile Number:</strong> <span id="reviewContactNumber"></span></p>

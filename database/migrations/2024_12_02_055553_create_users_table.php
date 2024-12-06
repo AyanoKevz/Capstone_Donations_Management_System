@@ -13,7 +13,6 @@ return new class extends Migration
     public function up()
     {
 
-        // Create user_account table
         Schema::create('user_account', function (Blueprint $table) {
             $table->id();
             $table->string('username', 100)->unique();
@@ -24,14 +23,12 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create(
-            'roles',
-            function (Blueprint $table) {
-                $table->id();
-                $table->string('role_name', 50)->unique();
-                $table->timestamps();
-            }
-        );
+        // Create roles table
+        Schema::create('roles', function (Blueprint $table) {
+            $table->id();
+            $table->string('role_name', 50)->unique();
+            $table->timestamps();
+        });
 
         // Create user_roles table
         Schema::create('user_roles', function (Blueprint $table) {
@@ -43,6 +40,7 @@ return new class extends Migration
         // Create location table
         Schema::create('location', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained('user_account')->onDelete('cascade'); // Ties location to a user
             $table->string('region', 100);
             $table->string('province', 100);
             $table->string('city_municipality', 100);
@@ -66,7 +64,6 @@ return new class extends Migration
             $table->string('id_type', 50)->nullable();
             $table->string('id_image', 255)->nullable();
             $table->string('user_photo', 255)->nullable();
-            $table->foreignId('location_id')->nullable()->constrained('location')->onDelete('set null');
             $table->timestamps();
         });
 
@@ -83,7 +80,6 @@ return new class extends Migration
             $table->string('id_type', 50)->nullable();
             $table->string('id_image', 255)->nullable();
             $table->string('user_photo', 255)->nullable();
-            $table->foreignId('location_id')->nullable()->constrained('location')->onDelete('set null');
             $table->timestamps();
         });
 
@@ -100,26 +96,19 @@ return new class extends Migration
             $table->string('id_type', 50)->nullable();
             $table->string('id_image', 255)->nullable();
             $table->string('user_photo', 255)->nullable();
-            $table->foreignId('location_id')->nullable()->constrained('location')->onDelete('set null');
             $table->enum('pref_services', ['collect_donations', 'distribute_donations', 'provide_support']);
             $table->enum('availability', ['weekday', 'weekend', 'holiday', 'disasters']);
             $table->enum('availability_time', ['morning', 'afternoon', 'night', 'on_call', 'whole_day']);
-
-            // New fields for Education and Profession
-            $table->enum(
-                'educational_attainment',
-                [
-                    'grade_school_graduate',
-                    'high_school_graduate',
-                    'vocational_short_courses_graduate',
-                    'college_graduate',
-                    'masters_degree_holder',
-                    'doctorate_degree_holder'
-                ]
-            )->nullable();
+            $table->enum('educational_attainment', [
+                'grade_school_graduate',
+                'high_school_graduate',
+                'vocational_short_courses_graduate',
+                'college_graduate',
+                'masters_degree_holder',
+                'doctorate_degree_holder'
+            ])->nullable();
             $table->boolean('is_studying')->default(true);
             $table->boolean('is_employed')->default(true);
-
             $table->timestamps();
         });
 

@@ -283,10 +283,10 @@
                                     </label>
                                     <select name="availability">
                                         <option disabled selected value="">Select your availability</option>
-                                        <option value="weekday">Weekday</option>
-                                        <option value="weekend">Weekend</option>
-                                        <option value="holiday">Holiday</option>
-                                        <option value="disasters">In time of disasters</option>
+                                        <option value="Weekday">Weekday</option>
+                                        <option value="Weekend">Weekend</option>
+                                        <option value="Holiday">Holiday</option>
+                                        <option value="In time of Disasters">In time of disasters</option>
                                     </select>
                                 </div>
 
@@ -297,14 +297,14 @@
                                     </label>
                                     <select name="availability_time">
                                         <option disabled selected value="">Select your availability time</option>
-                                        <option value="morning" title="Typically between 6 AM to 12 PM">Morning</option>
-                                        <option value="afternoon" title="Typically between 12 PM to 6 PM">Afternoon
+                                        <option value="Morning" title="Typically between 6 AM to 12 PM">Morning</option>
+                                        <option value="Afternoon" title="Typically between 12 PM to 6 PM">Afternoon
                                         </option>
-                                        <option value="night" title="Typically between 6 PM to 12 AM">Night</option>
-                                        <option value="on_call"
+                                        <option value="Night" title="Typically between 6 PM to 12 AM">Night</option>
+                                        <option value="On-Call"
                                             title="Available as needed, potentially outside regular hours">On-Call
                                         </option>
-                                        <option value="whole_day" title="Available throughout the entire day">Whole Day
+                                        <option value="Whole Day" title="Available throughout the entire day">Whole Day
                                         </option>
                                     </select>
                                 </div>
@@ -372,8 +372,9 @@
                                 <div class="input-field" id="id-select">
                                     <label for="proofOfIdentity" class="fw-medium">Select ID Type <span
                                             class="text-danger fs-6">*</span>
+                                        <span class="icon-status"></span>
                                     </label>
-                                    <select id="validID" name="validID">
+                                    <select id="validID" name="id_type" required>
                                         <option disabled selected value="">Select ID</option>
                                         <option value="Philippine Passport">Philippine Passport</option>
                                         <option value="Driver's License">Driver's License</option>
@@ -392,8 +393,9 @@
                                 <div class="input-field">
                                     <label for="proofUpload" id="proofUpload-label" class="fw-medium">Upload Selected ID
                                         <span class="text-danger fs-6">*</span>
+                                        <span class="icon-status"></span>
                                     </label>
-                                    <input type="file" id="proofUpload" name="proofUpload" accept=".jpg, .jpeg, .png">
+                                    <input type="file" id="proofUpload" name="id_image" required>
                                 </div>
                             </div>
 
@@ -435,8 +437,8 @@
                                         <button class="btn btn-secondary btn-sm my-3" type="button"
                                             id="toggleCameraBtn">Turn On Camera</button>
                                     </div>
-                                    <input type="file" id="imageFile" name="imageFile" class="preview-file"
-                                        style="display: none;">
+                                    <input type="file" id="imageFile" name="user_photo" class="preview-file"
+                                        style="display: none;" required>
                                     <div id="preview" style="box-sizing: content-box;">
                                         <img src="{{ asset ('assets/img/no_profile.png') }}" style="width: 300px; height:250px;"
                                             alt="">
@@ -444,7 +446,6 @@
                                 </div>
                             </div>
                         </div>
-                        <input type="hidden" value="donor" name="role" id="role">
                         <div class="d-flex justify-content-end mt-3">
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                                 Review and Confirm
@@ -479,17 +480,16 @@
                     <p><strong>Mobile Number:</strong> <span id="reviewContactNumber"></span></p>
                     <p><strong>Gender:</strong> <span id="reviewGender"></span></p>
                     <hr>
-                    <h5>Education & Profession</h5>
+                    <h5>Education & Profession</h5> <!--  for volunteer only -->
                     <p><strong>Highest Educational Attainment:</strong> <span id="reviewEducation"></span></p>
                     <p><strong>Still Studying:</strong> <span id="reviewStudying"></span></p>
                     <p><strong>Employed:</strong> <span id="reviewEmployed"></span></p>
                     <hr />
-                    <h5>Volunteering Details</h5>
+                    <h5>Volunteering Details</h5> <!--  for volunteer only -->
                     <p><strong>Preferred Services:</strong> <span id="reviewPreferredService"></span></p>
                     <p><strong>Availability:</strong> <span id="reviewAvailability"></span></p>
                     <p><strong>Availability Time:</strong> <span id="reviewAvailabilityTime"></span></p>
                     <hr>
-
                     <h5>Address Details</h5>
                     <p><strong>Region:</strong> <span id="reviewRegion"></span></p>
                     <p><strong>Province:</strong> <span id="reviewProvince"></span></p>

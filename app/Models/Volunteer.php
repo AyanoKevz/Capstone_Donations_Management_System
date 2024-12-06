@@ -22,7 +22,6 @@ class Volunteer extends Model
         'id_type',
         'id_image',
         'user_photo',
-        'location_id',
         'pref_services',
         'availability',
         'availability_time',
@@ -35,10 +34,5 @@ class Volunteer extends Model
     public function user()
     {
         return $this->belongsTo(UserAccount::class, 'user_id');
-    }
-
-    public function location()
-    {
-        return $this->belongsTo(Location::class, 'location_id');
     }
 }

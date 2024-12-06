@@ -12,6 +12,7 @@ class Location extends Model
     protected $table = 'location';
 
     protected $fillable = [
+        'user_id', // Added user_id as part of fillable attributes
         'region',
         'province',
         'city_municipality',
@@ -20,4 +21,10 @@ class Location extends Model
         'latitude',
         'longitude',
     ];
+
+    // Relationships
+    public function user()
+    {
+        return $this->belongsTo(UserAccount::class, 'user_id');
+    }
 }

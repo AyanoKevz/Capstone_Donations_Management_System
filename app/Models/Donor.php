@@ -22,17 +22,11 @@ class Donor extends Model
         'id_type',
         'id_image',
         'user_photo',
-        'location_id',
     ];
 
     // Relationships
     public function user()
     {
         return $this->belongsTo(UserAccount::class, 'user_id');
-    }
-
-    public function location()
-    {
-        return $this->belongsTo(Location::class, 'location_id');
     }
 }

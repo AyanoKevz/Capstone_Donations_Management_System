@@ -36,7 +36,7 @@ return new class extends Migration
 
         DB::table('admin')->insert([
             'name' => 'UniAid',
-            'username' => 'admin',
+            'username' => 'uniaid_admin',
             'email' => 'uniaid2024@gmail.com',
             'password' => Hash::make('uniaid123'),
             'profile_image' => 'assets/img/no_profile.png',

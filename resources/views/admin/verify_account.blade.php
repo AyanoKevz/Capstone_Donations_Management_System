@@ -275,31 +275,41 @@
           </ol>
 
           <h1 class="my-2">Verify Accounts</h1>
+          @if(session('success'))
+          <div id="alert-success" class="alert alert-success">
+            <i class="fa-solid fa-circle-check fa-xl me-3"></i>{{ session('success') }}
+          </div>
+          @endif
+
+          @if(session('error'))
+          <div id="alert-error" class="alert alert-danger">
+            <i class="fa-solid fa-circle-xmark fa-xl me-3"></i>{{ session('error') }}
+          </div>
+          @endif
+          <div class="d-flex justify-content-end  mb-1">
+            <a href="{{ route('verify_account', ['role_name' => 'all']) }}"
+              class="btn table-btn btn-sm {{ $filter === 'all' ? 'custom-active' : '' }}">
+              All
+            </a>
+            <a href="{{ route('verify_account', ['role_name' => 'Donor']) }}"
+              class="btn table-btn btn-sm {{ $filter === 'Donor' ? 'custom-active' : '' }}">
+              Donor
+            </a>
+            <a href="{{ route('verify_account', ['role_name' => 'Donee']) }}"
+              class="btn table-btn btn-sm {{ $filter === 'Donee' ? 'custom-active' : '' }}">
+              Donee
+            </a>
+            <a href="{{ route('verify_account', ['role_name' => 'Volunteer']) }}"
+              class="btn table-btn btn-sm {{ $filter === 'Volunteer' ? 'custom-active' : '' }}">
+              Volunteer
+            </a>
+          </div>
           <div class="card">
             <div class="card-header">
               <h3 class="card-title">All Inactive Accounts</h3>
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-              <div class="float-end">
-                <!-- Filter Buttons -->
-                <a href="{{ route('verify_account', ['role_name' => 'all']) }}"
-                  class="btn table-btn btn-sm {{ $filter === 'all' ? 'custom-active' : '' }}">
-                  All
-                </a>
-                <a href="{{ route('verify_account', ['role_name' => 'Donor']) }}"
-                  class="btn table-btn btn-sm {{ $filter === 'Donor' ? 'custom-active' : '' }}">
-                  Donor
-                </a>
-                <a href="{{ route('verify_account', ['role_name' => 'Donee']) }}"
-                  class="btn table-btn btn-sm {{ $filter === 'Donee' ? 'custom-active' : '' }}">
-                  Donee
-                </a>
-                <a href="{{ route('verify_account', ['role_name' => 'Volunteer']) }}"
-                  class="btn table-btn btn-sm {{ $filter === 'Volunteer' ? 'custom-active' : '' }}">
-                  Volunteer
-                </a>
-              </div>
               <table id="example1" class="table table-bordered table-hover table-striped">
                 <thead>
                   <tr>
@@ -316,12 +326,12 @@
                     <td>{{ $account->username }}</td>
                     <td>{{ ucfirst($account->account_type) }}</td>
                     <td>
-                      {{ optional($account->roles->first())->role_name ?? 'No Role Assigned' }}
+                      {{ $account->roles->first()->role_name }}
                     </td>
                     <td>
                       <p class="bg-dark-subtle text-dark-emphasis m-0 p-1 fw-bold">Not Active</p>
                     </td>
-                    <td><a href="#">View</a></td>
+                    <td><a href="{{ route('view_details', $account->id) }}">View</a></td>
                   </tr>
                   @empty
                   <tr>
