@@ -302,40 +302,9 @@
                         <!-- Identity Details Section -->
                         <div class="details identity">
                             <span class="title">Identity Details</span>
-                            <div class="fields">
-                                <!-- Select ID Type -->
-                                <div class="input-field" id="id-select">
-                                    <label for="proofOfIdentity" class="fw-medium">Select ID Type <span
-                                            class="text-danger fs-6">*</span>
-                                        <span class="icon-status"></span>
-                                    </label>
-                                    <select id="validID" name="id_type" required>
-                                        <option disabled selected value="">Select ID</option>
-                                        <option value="Philippine Passport">Philippine Passport</option>
-                                        <option value="Driver's License">Driver's License</option>
-                                        <option value="SSS ID">SSS ID</option>
-                                        <option value="UMID">UMID</option>
-                                        <option value="PhilHealth ID">PhilHealth ID</option>
-                                        <option value="Voter's ID">Voter's ID</option>
-                                        <option value="PRC ID">PRC ID</option>
-                                        <option value="Postal ID">Postal ID</option>
-                                        <option value="TIN ID">TIN ID</option>
-                                        <option value="Barangay ID">Barangay ID</option>
-                                    </select>
-                                </div>
-
-                                <!-- File Upload -->
-                                <div class="input-field">
-                                    <label for="proofUpload" id="proofUpload-label" class="fw-medium">Upload Selected ID
-                                        <span class="text-danger fs-6">*</span>
-                                        <span class="icon-status"></span>
-                                    </label>
-                                    <input type="file" id="proofUpload" name="id_image" required>
-                                </div>
-                            </div>
-
                             <!-- Instructions for ID/Organization Proof Upload -->
-                            <div class="d-flex justify-content-around align-items-center my-3 flex-wrap-reverse">
+                            <h4 class="m-0">ID Submission Instructions: </h4>
+                            <div class="d-flex justify-content-around align-items-center flex-wrap-reverse">
                                 <div>
                                     <ul id="upload-instructions">
                                         <li>
@@ -353,14 +322,99 @@
                                         <li>
                                             <p>Use good lighting and avoid glare.</p>
                                         </li>
+                                        <li>
+                                            <p>Select if upload the image or take photo of the ID.</p>
+                                        </li>
                                     </ul>
                                 </div>
                                 <div class="d-flex justify-content-center">
                                     <img src="{{ asset ('assets/img/Id.png') }}" id="ins-photo" alt="" class="w-50">
                                 </div>
                             </div>
+
+                            <div class="fields mb-5">
+                                <!-- Select ID Type -->
+                                <div class="input-field" id="id-select">
+                                    <label for="proofOfIdentity" class="fw-medium">
+                                        Select ID Type <span class="text-danger fs-6">*</span>
+                                        <span class="icon-status"></span>
+                                    </label>
+                                    <select id="validID" name="id_type" required>
+                                        <option disabled selected value="">Select ID</option>
+                                        <option value="Philippine Passport">Philippine Passport</option>
+                                        <option value="Driver's License">Driver's License</option>
+                                        <option value="SSS ID">SSS ID</option>
+                                        <option value="UMID">UMID</option>
+                                        <option value="PhilHealth ID">PhilHealth ID</option>
+                                        <option value="Voter's ID">Voter's ID</option>
+                                        <option value="PRC ID">PRC ID</option>
+                                        <option value="Postal ID">Postal ID</option>
+                                        <option value="TIN ID">TIN ID</option>
+                                        <option value="Barangay ID">Barangay ID</option>
+                                    </select>
+                                </div>
+
+                                <!-- Upload or Take Photo Option -->
+                                <div class="input-field">
+                                    <label class="fw-medium">Select Option:</label>
+                                    <div>
+                                        <input type="radio" id="uploadOption" name="photoOption" value="upload" checked>
+                                        <label for="uploadOption">Upload File</label>
+                                        <input type="radio" id="cameraOption" name="photoOption" value="camera">
+                                        <label for="cameraOption">Take Photo</label>
+                                    </div>
+                                </div>
+
+                                <!-- File Upload -->
+                                <div class="input-field" id="fileUploadSection">
+                                    <label for="proofUpload" id="proofUpload-label" class="fw-medium">
+                                        Upload Selected ID <span class="text-danger fs-6">*</span>
+                                    </label>
+                                    <input type="file" id="proofUpload" name="id_image" required>
+                                </div>
+
+                                <!-- Webcam Section (Hidden by Default) -->
+                                <div id="cameraSection" style="display: none; text-align: center;">
+                                    <div id="my_camera" style="width: 300px; height: 250px; margin: 0 auto; "></div>
+                                    <div id="capturedImage" style=" text-align: center; display: none;"></div>
+                                    <br>
+                                    <div class="d-flex justify-content-center align-items-center">
+                                        <button type="button" id="captureBtn" class="btn btn-secondary btn-sm m-0">Capture Photo</button>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
                             <!-- Take a Photo Section -->
                             <div class="d-flex flex-column align-items-around take-photo-section">
+
+                                <h4 class="m-0">Take Photo of Yourself Instructions: </h4>
+                                <div class="d-flex justify-content-around align-items-center flex-wrap-reverse">
+                                    <div>
+                                        <ul id="upload-instructions">
+                                            <li>
+                                                <p>Ensure your face is clear, centered, and well-lit.</p>
+                                            </li>
+                                            <li>
+                                                <p>Avoid accessories like sunglasses or hats that obstruct your face.</p>
+                                            </li>
+                                            <li>
+                                                <p>The system detects your face and starts a 3-second timer.</p>
+                                            </li>
+                                            <li>
+                                                <p>Keep a neutral expression throughout the process.</p>
+                                            </li>
+                                            <li>
+                                                <p>Ensure your face fills most of the frame for accurate capture.</p>
+                                            </li>
+                                        </ul>
+
+                                    </div>
+                                    <div class="d-flex justify-content-center">
+                                        <img src="{{ asset ('assets/img/phototake.jpg') }}" id="ins-photo" alt="" class="w-50">
+                                    </div>
+                                </div>
                                 <p class="text-center fw-semibold">Take a photo</p>
                                 <div class="d-flex justify-content-around flex-wrap">
                                     <div class="d-flex flex-column align-items-center">
@@ -529,6 +583,7 @@
     <script src="{{ asset('lib/owlcarousel/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('lib/fontawesome/all.js') }}"></script>
     <script src="{{ asset('lib/jquery/jquery.validate.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js"></script>
     <!-- Template Javascript -->
     <script src="{{ asset('assets/homepage/js/main.js') }}"></script>
 </body>

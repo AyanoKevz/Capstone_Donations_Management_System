@@ -57,29 +57,13 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('user_account')->onDelete('cascade');
             $table->string('first_name', 100);
             $table->string('middle_name', 100)->nullable();
-            $table->string('last_name', 100);
+            $table->string('last_name', 100)->nullable();
             $table->string('contact', 15)->unique();
             $table->date('birthday');
             $table->string('gender', 10)->nullable();
             $table->string('id_type', 50)->nullable();
             $table->string('id_image', 255)->nullable();
-            $table->string('user_photo', 255)->nullable();
-            $table->timestamps();
-        });
-
-        // Create donee table
-        Schema::create('donee', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->constrained('user_account')->onDelete('cascade');
-            $table->string('first_name', 100);
-            $table->string('middle_name', 100)->nullable();
-            $table->string('last_name', 100);
-            $table->string('contact', 15)->unique();
-            $table->date('birthday');
-            $table->string('gender', 10)->nullable();
-            $table->string('id_type', 50)->nullable();
-            $table->string('id_image', 255)->nullable();
-            $table->string('user_photo', 255)->nullable();
+            $table->string('user_photo', 255);
             $table->timestamps();
         });
 
@@ -88,14 +72,14 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('user_account')->onDelete('cascade');
             $table->string('first_name', 100);
-            $table->string('middle_name', 100)->nullable();
+            $table->string('middle_name', 100);
             $table->string('last_name', 100);
             $table->string('contact', 15)->unique();
             $table->date('birthday');
-            $table->string('gender', 10)->nullable();
-            $table->string('id_type', 50)->nullable();
-            $table->string('id_image', 255)->nullable();
-            $table->string('user_photo', 255)->nullable();
+            $table->string('gender', 10);
+            $table->string('id_type', 50);
+            $table->string('id_image', 255);
+            $table->string('user_photo', 255);
             $table->enum('pref_services', ['collect_donations', 'distribute_donations', 'provide_support']);
             $table->enum('availability', ['weekday', 'weekend', 'holiday', 'disasters']);
             $table->enum('availability_time', ['morning', 'afternoon', 'night', 'on_call', 'whole_day']);
@@ -106,7 +90,7 @@ return new class extends Migration
                 'college_graduate',
                 'masters_degree_holder',
                 'doctorate_degree_holder'
-            ])->nullable();
+            ]);
             $table->boolean('is_studying')->default(true);
             $table->boolean('is_employed')->default(true);
             $table->timestamps();
@@ -115,7 +99,6 @@ return new class extends Migration
         // Insert default roles
         DB::table('roles')->insert([
             ['role_name' => 'Donor'],
-            ['role_name' => 'Donee'],
             ['role_name' => 'Volunteer'],
         ]);
     }

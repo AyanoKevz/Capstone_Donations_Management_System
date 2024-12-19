@@ -71,6 +71,7 @@
         <!-- Carousel Start -->
         <div class="header-carousel owl-carousel">
             <div class="header-carousel-item">
+
                 <img src="{{asset('assets/img/hero-2.jfif') }}" class="img-fluid w-100" alt="Image">
                 <div class="carousel-caption">
                     <div class="container">
@@ -82,6 +83,11 @@
                             <div class="col-xl-7 wow fadeInRight">
                                 <div class="text-sm-center text-md-end">
                                     <h3 class="carousel-header text-uppercase mb-4">Welcome To UniAid</h4>
+                                        <!-- @if (session('error'))
+                                        <div id="alert-error" class="alert alert-error wow fadeInLeft">
+                                            <i class="fa-solid fa-circle-xmark me-3"></i>{{ session('error') }}
+                                        </div>
+                                        @endif -->
                                         <h2 class="display-4 text-uppercase text-white mb-4">Community Donations and
                                             Resources Distribution</h2>
                                         <p class="mb-3 fs-5">UniAid is a platform that bridges the gap between donors
@@ -339,10 +345,9 @@
         <div class="container pb-5 wow zoomIn" data-wow-delay="0.3s">
             @if (session('error'))
             <div id="alert-error" class="alert alert-error wow fadeInLeft">
-                <i class="fa-solid fa-circle-xmark fa-xl me-2 "></i>{{ session('error') }}
+                <i class="fa-solid fa-circle-xmark me-3"></i>{{ session('error') }}
             </div>
             @endif
-
             <div class="text-center mx-auto pb-5" style="max-width: 800px;">
                 <h2 class="section-header">Portals</h2>
                 <h1 class="display-5 mb-4">User Login Portal</h1>
@@ -384,7 +389,7 @@
                     <div class="my-3 d-flex justify-content-center">
                         <img src="{{asset('assets/img/systemLogo.png')  }}" alt="" class="w-25">
                     </div>
-                    <form action="{{ route('user.login') }}" method="POST" id="login-form">
+                    <form action="{{ route('login') }}" method="POST" id="login-form">
                         @csrf
                         <div class="d-flex justify-content-center mb-5">
                             <span class="me-2 my-auto"><i class="fa fa-user fa-lg" style="color: #ff1f1f;"></i></span>
@@ -393,7 +398,6 @@
                                 <label class="user-label" for="username">Username</label>
                             </div>
                         </div>
-
                         <div class="d-flex justify-content-center align-items-center mb-5">
                             <span class="me-2">
                                 <i class="fas fa-lock fa-lg" style="color: #ff1f1f;"></i>
@@ -408,7 +412,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" name="login" id="login" class="btn btn-success">Login</button>
+                            <button type="submit" name="userlogin" id="userlogin" class="btn btn-success">Login</button>
                         </div>
                     </form>
                 </div>

@@ -5,7 +5,9 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\InquiryController;
 use App\Http\Controllers\VerifyAcct;
 use App\Http\Controllers\UserRegistrationController;
-use App\Http\Controllers\UserAuthController;
+use App\Http\Controllers\DonorController;
+use App\Http\Controllers\userLoginController;
+use App\Http\Controllers\VolunteerController;
 
 
 // Homepage route
@@ -38,7 +40,7 @@ Route::post('/register/donee', [UserRegistrationController::class, 'registerDone
 Route::post('/register/volunteer', [UserRegistrationController::class, 'registerVolunteer'])->name('register.vol');
 
 //LOGIN ROUTES: 
-Route::post('/login', [UserAuthController::class, 'login'])->name('user.login');
+
 
 
 
@@ -70,9 +72,9 @@ Route::middleware('admin')->prefix('admin')->group(function () {
     Route::post('/inquiry-sendreply', [InquiryController::class, 'sendReply'])->name('inquiries.sendReply');
 
     // Admin verifiy
-    Route::get('/admin/verify_account', [VerifyAcct::class, 'showInactiveAccounts'])->name('verify_account');
-    Route::get('/admin/verify_account/view_details/{id}', [VerifyAcct::class, 'viewDetails'])->name('view_details');
-    Route::post('/admin/verify_account/{id}', [VerifyAcct::class, 'processVerification'])->name('process_verification');
+    Route::get('/verify_account', [VerifyAcct::class, 'showInactiveAccounts'])->name('verify_account');
+    Route::get('/verify_account/view_details/{id}', [VerifyAcct::class, 'viewDetails'])->name('view_details');
+    Route::post('/verify_account/{id}', [VerifyAcct::class, 'processVerification'])->name('process_verification');
 });
 
 // Admin Logout
@@ -80,31 +82,14 @@ Route::post('/admin/logout', [AdminController::class, 'logout'])->name('admin.lo
 
 
 
-// USERS 
+// POST route for handling login
+Route::post('/', [userLoginController::class, 'login'])->name('login');
 
-Route::view('/users/donor/home', 'users.donor.home')->name('donor.home');
-Route::view('/users/donee/home', 'users.donee.home')->name('donee.home');
-
-
-
-/* // Donor Routes
-Route::middleware('role:Donor')->prefix('donor')->group(function () {
-    Route::get('/dashboard', [DonorController::class, 'dashboard'])->name('donor.dashboard');
-    Route::get('/profile', [DonorController::class, 'profile'])->name('donor.profile');
-    // Add more donor-specific routes here
+// Middleware-protected routes
+Route::middleware(['auth'])->prefix('user')->group(function () {
+    Route::get('/donor/home', [DonorController::class, 'index'])->name('donor.home')->middleware('role:Donor');
+    Route::get('/volunteer/home', [VolunteerController::class, 'index'])->name('volunteer.home')->middleware('role:Volunteer');
 });
 
-// Donee Routes
-Route::middleware('role:Donee')->prefix('donee')->group(function () {
-    Route::get('/dashboard', [DoneeController::class, 'dashboard'])->name('donee.dashboard');
-    Route::get('/requests', [DoneeController::class, 'requests'])->name('donee.requests');
-    // Add more donee-specific routes here
-});
-
-// Volunteer Routes
-Route::middleware('role:Volunteer')->prefix('volunteer')->group(function () {
-    Route::get('/dashboard', [VolunteerController::class, 'dashboard'])->name('volunteer.dashboard');
-    Route::get('/tasks', [VolunteerController::class, 'tasks'])->name('volunteer.tasks');
-    // Add more volunteer-specific routes here
-});
- */
+Route::get('/donor/home', [DonorController::class, 'index'])->name('donor.home');
+Route::get('/donor/prc-chapters', [DonorController::class, 'showChapters'])->name('prc-chapters');

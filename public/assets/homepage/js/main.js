@@ -8,28 +8,9 @@
 
        // Spinner
 var spinnerElement = document.getElementById("spinner");
-
 if (spinnerElement) {
-    // Initially hide the spinner
     spinnerElement.classList.remove("show");
 }
-
-// Attach event listener to all forms
-document.querySelectorAll("form").forEach(function (form) {
-    form.addEventListener("submit", function (e) {
-        // Check if the form is valid before showing the spinner
-        if (form.checkValidity()) {
-            if (spinnerElement) {
-                // Show the spinner when the form is valid
-                spinnerElement.classList.add("show");
-            }
-        } else {
-            // Prevent form submission if form is invalid
-            e.preventDefault();
-        }
-    });
-});
-
     
    //animation
 const wow = new WOW({
@@ -246,6 +227,76 @@ $('#organization').on('change', function () {
   // Hide the "Take a Photo" section for organizations with !important
   $('.take-photo-section').attr('style', 'display: none !important');
 });
+
+
+const $uploadOption = $('#uploadOption');
+const $cameraOption = $('#cameraOption');
+const $fileUploadSection = $('#fileUploadSection');
+const $cameraSection = $('#cameraSection');
+const $proofUpload = $('#proofUpload');
+const $captureBtn = $('#captureBtn');
+const $myCamera = $('#my_camera');
+const $capturedImageDiv = $('#capturedImage');
+
+// Toggle sections based on user selection
+$('input[name="photoOption"]').on('change', function () {
+    if ($uploadOption.is(':checked')) {
+        $fileUploadSection.show();
+        $cameraSection.hide();
+        $proofUpload.prop('required', true);
+    } else if ($cameraOption.is(':checked')) {
+        $fileUploadSection.hide();
+        $cameraSection.show();
+        $proofUpload.prop('required', false);
+
+        // Initialize Webcam
+        Webcam.set({
+            width: 300,
+            height: 250,
+            image_format: 'jpeg',
+            jpeg_quality: 90
+        });
+        Webcam.attach('#my_camera');
+    }
+});
+
+// Capture Photo and toggle between camera and captured image
+$captureBtn.on('click', function () {
+    if ($captureBtn.text() === "Capture Photo") {
+        Webcam.snap(function (dataUri) {
+            // Hide camera and show captured image
+            $myCamera.hide();
+            $capturedImageDiv.html('<img src="' + dataUri + '" style="width: 300px; height: 250px;"/>').show();
+            $captureBtn.text("Capture Again");
+
+            // Convert Base64 to Blob and create a File object
+            const blob = dataURItoBlob(dataUri);
+            const file = new File([blob], "captured_id.jpg", { type: "image/jpeg" });
+
+            // Populate the file input programmatically
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(file);
+            $proofUpload[0].files = dataTransfer.files;
+        });
+    } else {
+        // Reset to camera view
+        $myCamera.show();
+        $capturedImageDiv.hide();
+        $captureBtn.text("Capture Photo");
+    }
+});
+
+// Helper function: Convert Base64 to Blob
+function dataURItoBlob(dataURI) {
+    const byteString = atob(dataURI.split(',')[1]);
+    const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+    const ab = new ArrayBuffer(byteString.length);
+    const ia = new Uint8Array(ab);
+    for (let i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+    }
+    return new Blob([ab], { type: mimeString });
+}
 
 
 
@@ -625,61 +676,89 @@ $('.toggle-password').on('click', function () {
 
 
   function previewImage(input, targetImg) {
-        if (input.files && input.files[0]) {
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                $(targetImg).attr('src', e.target.result);
-            };
-            reader.readAsDataURL(input.files[0]);
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            $(targetImg).attr('src', e.target.result);
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+// Event listeners for file inputs
+$('input[name="id_image"]').on('change', function () {
+    previewImage(this, '#reviewIdImage');
+});
+
+// Webcam capture logic
+$('#captureBtn').click(function () {
+    // Capture the image using WebcamJS
+    Webcam.snap(function (dataUri) {
+        // Set the preview image in the modal
+        $('#reviewIdImage').attr('src', dataUri);
+
+        // Optional: Set the captured image data as the file input value
+        // This is needed if you want to submit the captured image as part of the form
+        const blob = dataURItoBlob(dataUri);
+        const file = new File([blob], "captured-id.jpg", { type: "image/jpeg" });
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(file);
+        $('input[name="id_image"]')[0].files = dataTransfer.files;
+    });
+});
+
+// Helper function to convert base64 data URI to Blob
+function dataURItoBlob(dataURI) {
+    const byteString = atob(dataURI.split(',')[1]);
+    const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+    const ab = new ArrayBuffer(byteString.length);
+    const ia = new Uint8Array(ab);
+    for (let i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+    }
+    return new Blob([ab], { type: mimeString });
+}
+
+// Validate inputs and show/hide Confirm button
+function validateInputs() {
+    let isValid = true;
+
+    // Check each required input field
+    $('input, select').each(function () {
+        if ($(this).prop('required') && !$(this).val()) {
+            isValid = false;
         }
-    }
-
-    // Event listeners for file inputs
-    $('input[name="id_image"]').on('change', function () {
-        previewImage(this, '#reviewIdImage');
     });
 
+    // Show Confirm button if all inputs are valid
+    $('#confirmBtn').toggle(isValid);
+}
 
-    // Validate inputs and show/hide Confirm button
-    function validateInputs() {
-        let isValid = true;
+// Validate on keyup, change, or file select
+$('input, select').on('keyup change', function () {
+    validateInputs();
+});
 
-        // Check each required input field
-        $('input, select').each(function () {
-            if ($(this).prop('required') && !$(this).val()) {
-                isValid = false;
-            }
-        });
+// Populate modal on Review and Confirm button click
+$('[data-bs-target="#staticBackdrop"]').click(function () {
+    validateInputs(); // Validate before showing modal
 
-        // Show Confirm button if all inputs are valid
-        $('#confirmBtn').toggle(isValid);
-    }
+    $('#reviewAccountType').text($('input[name="accountType"]:checked').val());
+    $('#reviewUsername').text($('input[name="username"]').val());
+    $('#reviewEmail').text($('input[name="email"]').val());
+    $('#reviewPassword').text($('input[name="password"]').val());
+    $('#reviewFname').text($('input[name="fname"]').val());
+    $('#reviewLname').text($('input[name="lname"]').val());
+    $('#reviewContactNumber').text($('input[name="contact_number"]').val());
+    $('#reviewGender').text($('select[name="gender"]').val());
+    $('#reviewRegion').text($('select[name="region"] option:selected').text());
+    $('#reviewProvince').text($('select[name="province"] option:selected').text());
+    $('#reviewCity').text($('select[name="city"] option:selected').text());
+    $('#reviewBarangay').text($('select[name="barangay"] option:selected').text());
+    $('#reviewFullAddress').text($('input[name="full_address"]').val());
+    $('#reviewIdType').text($('select[name="id_type"] option:selected').text());
 
-    // Validate on keyup, change, or file select
-    $('input, select').on('keyup change', function () {
-        validateInputs();
-    });
-
-    // Populate modal on Review and Confirm button click
-    $('[data-bs-target="#staticBackdrop"]').click(function () {
-        validateInputs(); // Validate before showing modal
-
-        $('#reviewAccountType').text($('input[name="accountType"]:checked').val());
-        $('#reviewUsername').text($('input[name="username"]').val());
-        $('#reviewEmail').text($('input[name="email"]').val());
-        $('#reviewPassword').text($('input[name="password"]').val());
-        $('#reviewFname').text($('input[name="fname"]').val());
-        $('#reviewLname').text($('input[name="lname"]').val());
-        $('#reviewContactNumber').text($('input[name="contact_number"]').val());
-        $('#reviewGender').text($('select[name="gender"]').val());
-        $('#reviewRegion').text($('select[name="region"] option:selected').text());
-        $('#reviewProvince').text($('select[name="province"] option:selected').text());
-        $('#reviewCity').text($('select[name="city"] option:selected').text());
-        $('#reviewBarangay').text($('select[name="barangay"] option:selected').text());
-        $('#reviewFullAddress').text($('input[name="full_address"]').val());
-        $('#reviewIdType').text($('select[name="id_type"] option:selected').text());
-
-        // Education & Profession
+    // Education & Profession
     $('#reviewEducation').text($('select[name="educ_prof"]  option:selected').val());
     $('#reviewStudying').text($('input[name="studying"]:checked').val());
     $('#reviewEmployed').text($('input[name="employed"]:checked').val());
@@ -688,15 +767,14 @@ $('.toggle-password').on('click', function () {
     $('#reviewPreferredService').text($('select[name="pref_services"]  option:selected').val());
     $('#reviewAvailability').text($('select[name="availability"]  option:selected').val());
     $('#reviewAvailabilityTime').text($('select[name="availability_time"]  option:selected').val());
-    
-    });
+});
 
-    // Confirm button logic
-    $('#confirmBtn').click(function () {
-        $('#staticBackdrop').modal('hide'); // Close the modal
-        $('[data-bs-target="#staticBackdrop"]').hide(); // Hide trigger button
-        $('#register').show(); // Show register button
-    });
+// Confirm button logic
+$('#confirmBtn').click(function () {
+    $('#staticBackdrop').modal('hide'); // Close the modal
+    $('[data-bs-target="#staticBackdrop"]').hide(); // Hide trigger button
+    $('#register').show(); // Show register button
+});
 
 
 

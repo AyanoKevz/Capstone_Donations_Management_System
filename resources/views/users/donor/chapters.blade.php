@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>UniAid - Donor Portal</title>
+    <title>UniAid - Donor Portal | Chapters</title>
     <link rel="icon" href="{{ asset ('assets/img/systemLogo.png') }}" type="image/png">
     <!-- Google Font-->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,8 +14,11 @@
         rel="stylesheet">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="{{ asset('lib/bootstrap/css/bootstrap.min.css') }}">
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="{{ asset('lib/leaflet/leaflet.css') }}">
+    </link>
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{ asset('assets/users/css/home_donor.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/users/css/chapter.css') }}">
 </head>
 
 <body class="hold-transition sidebar-collapse layout-top-nav">
@@ -40,10 +43,10 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active rounded-pill" aria-current="page" href="{{route('donor.home')}}">Home</a>
+                            <a class="nav-link " aria-current="page" href="{{route('donor.home')}}">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link " aria-current="page" href="{{route('prc-chapters')}}">Chapters</a>
+                            <a class="nav-link active rounded-pill " aria-current="page" href="{{route('prc-chapters')}}">Chapters</a>
                         </li>
                     </ul>
                 </div>
@@ -222,15 +225,33 @@
 
             <!-- Main content -->
             <div class="content">
-                <div class="container">
+                <div class="container-fluid py-2">
                     <div class="row">
-
+                        <div class="col-6 col-md-7">
+                            <div id="map"></div>
+                            <button class="btn-zoom" type="button">Zoom Out (view all)</button>
+                        </div>
+                        <div class="col-6 col-md-5" id="infoSidebar">
+                            <div id="chapterInfo">
+                                <h2>Philippine Red Cross Chapters</h2>
+                                <p>Explore the Philippine Red Cross chapters across the country with this interactive map. Each marker
+                                    provides key details
+                                    about the chapter, including its address, contact information, and leadership.</p>
+                                <hr>
+                                <!-- Search Bar -->
+                                <div class="mb-3">
+                                    <input type="text" id="searchChapter" class="form-control" placeholder="Search for a Chapter...">
+                                </div>
+                                <h4 class="text-center">You can Search and Zoom in and click on a Chapter for more information.</h4>
+                                <div class="d-flex justify-content-center mt-2">
+                                    <img src="{{ asset('assets/img/PRC_logo.png') }}" alt="" style="max-width: 100%; height: auto;">
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                 </div>
-
             </div>
-
         </div>
         <!-- /.content wrapper -->
 
@@ -250,6 +271,17 @@
     <script src="{{ asset('lib/fontawesome/all.js') }}"></script>
     <!-- User JS -->
     <script src="{{ asset('assets/users/js/user.js') }}"></script>
+    <!-- Leaflet -->
+    <script src="{{ asset('lib/leaflet/leaflet.js') }}"></script>
+    <script>
+        var prcIconUrl = "{{ asset('assets/img/PRC_logo.png') }}";
+        /*         var userIconUrl = "{{ asset('assets/img/leaflet/marker-icon.png') }}";
+                var shadow = "{{ asset('assets/img/leaflet/marker-shadow.png') }}"; */
+        var chaptersGeoJsonUrl = "{{ asset('lib/leaflet/chapters.geojson') }}";
+        var baseImageUrl = "{{ asset('') }}";
+    </script>
+    <!-- PH MAP JS -->
+    <script src="{{ asset('assets/users/js/ph-map.js') }}"></script>
 </body>
 
 </html>

@@ -4,8 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class UserAccount extends Model
+class UserAccount extends Authenticatable
 {
     use HasFactory;
 
@@ -19,6 +20,7 @@ class UserAccount extends Model
         'is_verified',
     ];
 
+
     // Relationships
     public function roles()
     {
@@ -30,11 +32,6 @@ class UserAccount extends Model
         return $this->hasOne(Donor::class, 'user_id');
     }
 
-    public function donee()
-    {
-        return $this->hasOne(Donee::class, 'user_id');
-    }
-
     public function volunteer()
     {
         return $this->hasOne(Volunteer::class, 'user_id');
@@ -43,5 +40,10 @@ class UserAccount extends Model
     public function location()
     {
         return $this->hasOne(Location::class, 'user_id');
+    }
+
+    public function getRoleNameAttribute()
+    {
+        return $this->roles->first()?->role_name ?? 'No Role';
     }
 }

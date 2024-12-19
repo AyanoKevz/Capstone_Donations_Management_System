@@ -143,22 +143,6 @@
                 <div class="col-md-6 col-lg-4">
                     <div class="service-item">
                         <div class="service-img">
-                            <img src="{{ asset ('assets/img/r-donee.jpg') }}" class="img-fluid rounded-top w-100 h-100" alt="Image">
-                        </div>
-                        <div class="rounded-bottom p-2 d-flex flex-column align-items-center text-center">
-                            <h4 class="d-inline-block my-2">Recipient Registration</h4>
-                            <p class="mb-2">
-                                If you're in need of assistance, register as a recipient with UniAid. Our platform
-                                connects you with donors and resources to support you through difficult times.
-                            </p>
-                            <a class="btn btn-primary rounded-pill py-2 px-4 my-2" href="{{ route('donee.register') }}">Register</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-6 col-lg-4">
-                    <div class="service-item">
-                        <div class="service-img">
                             <img src="{{ asset ('assets/img/r-volunteer.jpg') }}" class="img-fluid rounded-top w-100 h-100"
                                 alt="Image">
                         </div>
