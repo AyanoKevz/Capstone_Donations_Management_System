@@ -63,7 +63,7 @@ class UserRegistrationController extends Controller
             'username' => $validated['username'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
-            'account_type' => 'individual', // Volunteers are always individuals
+            'account_type' => 'Individual', // Volunteers are always individuals
         ]);
 
         $role = Role::where('role_name', 'Volunteer')->first();
@@ -92,7 +92,7 @@ class UserRegistrationController extends Controller
             'username' => 'required|string|max:100|unique:user_account',
             'email' => 'required|email|max:100|unique:user_account',
             'password' => 'required|confirmed|min:8',
-            'accountType' => 'required|string|in:individual,organization',
+            'accountType' => 'required|string|in:Individual,Organization',
             'fname' => 'required|string|max:100',
             'lname' => 'required|string|max:100',
             'contact_number' => [
