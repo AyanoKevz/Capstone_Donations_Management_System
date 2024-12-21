@@ -39,6 +39,7 @@ class UserRegistrationController extends Controller
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
             'account_type' => $validated['accountType'],
+            'is_verified' => true, // Automatically verified for donors
         ]);
 
         $role = Role::where('role_name', 'Donor')->first();
@@ -63,7 +64,7 @@ class UserRegistrationController extends Controller
             'username' => $validated['username'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
-            'account_type' => 'individual', // Volunteers are always individuals
+            'account_type' => 'Individual', // Volunteers are always individuals
         ]);
 
         $role = Role::where('role_name', 'Volunteer')->first();
@@ -76,9 +77,6 @@ class UserRegistrationController extends Controller
             'pref_services' => $validated['pref_services'],
             'availability' => $validated['availability'],
             'availability_time' => $validated['availability_time'],
-            'educ_prof' => $validated['educ_prof'],
-            'studying' => $validated['studying'],
-            'employed' => $validated['employed'],
         ]));
 
         Mail::to($userAccount->email)->send(new RegistrationEmail($userAccount->username, 'Volunteer'));
@@ -92,35 +90,28 @@ class UserRegistrationController extends Controller
             'username' => 'required|string|max:100|unique:user_account',
             'email' => 'required|email|max:100|unique:user_account',
             'password' => 'required|confirmed|min:8',
-            'accountType' => 'required|string|in:individual,organization',
+            'accountType' => 'required|string|in:Individual,Organization',
             'fname' => 'required|string|max:100',
-            'lname' => 'required|string|max:100',
+            'lname' => 'nullable|string|max:100',
             'contact_number' => [
                 'required',
                 'string',
                 'max:15',
                 Rule::unique($role === 'Donor' ? 'donor' : 'volunteer', 'contact'),
             ],
-            'bday' => 'required|date',
-            'gender' => 'required|string',
             'region' => 'required|string',
             'province' => 'required|string',
             'city' => 'required|string',
             'barangay' => 'required|string',
             'full_address' => 'required|string|max:255',
-            'id_type' => 'required|string',
-            'id_image' => 'required|file|mimes:jpeg,jpg,png|max:5120',
             'user_photo' => 'required|file|mimes:jpeg,jpg,png|max:5120',
         ];
 
         if ($role === 'Volunteer') {
             $rules = array_merge($rules, [
-                'pref_services' => 'required|string|in:collect_donations,distribute_donations,provide_support',
-                'availability' => 'required|string|in:weekday,weekend,holiday,disasters',
-                'availability_time' => 'required|string|in:morning,afternoon,night,on_call,whole_day',
-                'educ_prof' => 'required|string|in:grade_school_graduate,high_school_graduate,vocational_short_courses_graduate,college_graduate,masters_degree_holder,doctorate_degree_holder',
-                'studying' => 'required|string|in:Yes,No',
-                'employed' => 'required|string|in:Yes,No',
+                'pref_services' => 'required|string|in:collect_donations,relief_operation,health_welfare,emergency_response,general',
+                'availability' => 'required|string|in:Weekday,Weekend,Holiday,In time of Disasters',
+                'availability_time' => 'required|string|in:Morning,Afternoon,Night,On-Call,Whole-Day',
             ]);
         }
 
@@ -142,13 +133,8 @@ class UserRegistrationController extends Controller
     {
         return [
             'first_name' => $request->fname,
-            'middle_name' => $request->mname,
             'last_name' => $request->lname,
             'contact' => $request->contact_number,
-            'birthday' => $request->bday,
-            'gender' => $request->gender,
-            'id_type' => $request->id_type,
-            'id_image' => $request->file('id_image')->store('id_images', 'public'),
             'user_photo' => $request->file('user_photo')->store('user_photos', 'public'),
         ];
     }

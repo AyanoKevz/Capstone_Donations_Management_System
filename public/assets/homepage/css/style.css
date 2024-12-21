@@ -1106,7 +1106,6 @@ input.is-invalid, select.is-invalid {
 }
 .input-field{
     display: flex;
-    width: calc(100% / 3 - 130px);
     flex-direction: column;
     margin: 4px 0;
      position: relative;
@@ -1136,7 +1135,7 @@ input.is-invalid, select.is-invalid {
     color: #333;
     border-radius: 5px;
     border: 1px solid #aaa;
-    padding: 0 40px 0 8px;
+    padding: 0 10px 0 8px;
     height: 42px;
     margin: 4px 0;;
     
@@ -1431,8 +1430,6 @@ input.is-invalid, select.is-invalid {
     border-color: #dc4a4d;
     background-color: #f25c5d;
     font-size: 18px;
-    position: absolute; 
-    
 }
 
 .alert-error ul {
@@ -1441,7 +1438,4 @@ input.is-invalid, select.is-invalid {
     margin: 0 0 0 5px;
     font-size: 18px;
 }
-
-
-
 

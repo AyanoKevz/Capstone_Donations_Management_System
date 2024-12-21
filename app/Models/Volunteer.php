@@ -14,20 +14,12 @@ class Volunteer extends Model
     protected $fillable = [
         'user_id',
         'first_name',
-        'middle_name',
         'last_name',
         'contact',
-        'birthday',
-        'gender',
-        'id_type',
-        'id_image',
         'user_photo',
         'pref_services',
         'availability',
         'availability_time',
-        'educ_prof',
-        'studying',
-        'employed',
     ];
 
     // Relationships

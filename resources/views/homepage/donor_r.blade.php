@@ -164,7 +164,7 @@
                                     <label for="password_confirmation">Confirm Password <span class="text-danger fs-6">*</span>
                                         <span class="icon-status"></span>
                                     </label>
-                                    <input type="password" class="r-input password-input" placeholder="Confirm your password" required name="password_confirmation">
+                                    <input type="password" class="r-input password-input" placeholder="Confirm password" required name="password_confirmation">
                                     <button type="button" class="toggle-password icon-toggle">
                                         <i class="fas fa-eye-slash toggle-password-icon"></i>
                                     </button>
@@ -192,16 +192,6 @@
                                     <input type="text" class="r-input" id="fname" placeholder="Enter your first name"
                                         required name="fname">
                                 </div>
-
-                                <!-- Middle Name -->
-                                <div class="input-field" id="middle-name">
-                                    <label for="mname">Middle Name
-                                        <span class="icon-status"></span>
-                                    </label>
-                                    <input type="text" class="r-input" placeholder="Enter your middle name"
-                                        name="mname">
-                                </div>
-
                                 <!-- Last Name -->
                                 <div class="input-field" id="last-name">
                                     <label for="lname">Last Name <span class="text-danger fs-6">*</span>
@@ -211,19 +201,9 @@
                                         name="lname">
                                 </div>
 
-                                <!-- Date of Birth -->
-                                <div class="input-field">
-                                    <label for="bday" id="birth-label">Date of Birth <span
-                                            class="text-danger fs-6">*</span>
-                                        <span class="icon-status"></span>
-                                    </label>
-                                    <input type="date" class="r-input" placeholder="Enter birth date" required
-                                        name="bday">
-                                </div>
-
                                 <!-- Mobile Number -->
                                 <div class="input-field">
-                                    <label>Mobile Number <span class="text-danger fs-6">*</span> <span
+                                    <label>Contact Number <span class="text-danger fs-6">*</span> <span
                                             style="font-size: small; color: #aaa;">(Must be Active)</span>
                                         <span class="icon-status"></span>
                                     </label>
@@ -231,18 +211,6 @@
                                         name="contact_number">
                                 </div>
 
-                                <!-- Gender Options -->
-                                <div class="input-field" id="gender-options">
-                                    <label>Gender <span class="text-danger fs-6">*</span>
-                                        <span class="icon-status"></span>
-                                    </label>
-                                    <select required name="gender">
-                                        <option disabled selected value="">Select gender</option>
-                                        <option value="Male">Male</option>
-                                        <option value="Female">Female</option>
-                                        <option value="Others">Others</option>
-                                    </select>
-                                </div>
                             </div>
                         </div>
 
@@ -301,147 +269,74 @@
 
                         <!-- Identity Details Section -->
                         <div class="details identity">
-                            <span class="title">Identity Details</span>
-                            <!-- Instructions for ID/Organization Proof Upload -->
-                            <h4 class="m-0">ID Submission Instructions: </h4>
-                            <div class="d-flex justify-content-around align-items-center flex-wrap-reverse">
-                                <div>
-                                    <ul id="upload-instructions">
-                                        <li>
-                                            <p>Upload a valid ID (Passport, Driver's License, etc.).</p>
-                                        </li>
-                                        <li>
-                                            <p>Ensure the ID is clear, visible, and legible.</p>
-                                        </li>
-                                        <li>
-                                            <p>Accepted formats: JPG, JPEG, PNG (max size 5 MB).</p>
-                                        </li>
-                                        <li>
-                                            <p>No edits or alterations to the ID.</p>
-                                        </li>
-                                        <li>
-                                            <p>Use good lighting and avoid glare.</p>
-                                        </li>
-                                        <li>
-                                            <p>Select if upload the image or take photo of the ID.</p>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="d-flex justify-content-center">
-                                    <img src="{{ asset ('assets/img/Id.png') }}" id="ins-photo" alt="" class="w-50">
-                                </div>
-                            </div>
-
-                            <div class="fields mb-5">
-                                <!-- Select ID Type -->
-                                <div class="input-field" id="id-select">
-                                    <label for="proofOfIdentity" class="fw-medium">
-                                        Select ID Type <span class="text-danger fs-6">*</span>
-                                        <span class="icon-status"></span>
-                                    </label>
-                                    <select id="validID" name="id_type" required>
-                                        <option disabled selected value="">Select ID</option>
-                                        <option value="Philippine Passport">Philippine Passport</option>
-                                        <option value="Driver's License">Driver's License</option>
-                                        <option value="SSS ID">SSS ID</option>
-                                        <option value="UMID">UMID</option>
-                                        <option value="PhilHealth ID">PhilHealth ID</option>
-                                        <option value="Voter's ID">Voter's ID</option>
-                                        <option value="PRC ID">PRC ID</option>
-                                        <option value="Postal ID">Postal ID</option>
-                                        <option value="TIN ID">TIN ID</option>
-                                        <option value="Barangay ID">Barangay ID</option>
-                                    </select>
-                                </div>
-
-                                <!-- Upload or Take Photo Option -->
-                                <div class="input-field">
-                                    <label class="fw-medium">Select Option:</label>
-                                    <div>
-                                        <input type="radio" id="uploadOption" name="photoOption" value="upload" checked>
-                                        <label for="uploadOption">Upload File</label>
-                                        <input type="radio" id="cameraOption" name="photoOption" value="camera">
-                                        <label for="cameraOption">Take Photo</label>
-                                    </div>
-                                </div>
-
-                                <!-- File Upload -->
-                                <div class="input-field" id="fileUploadSection">
-                                    <label for="proofUpload" id="proofUpload-label" class="fw-medium">
-                                        Upload Selected ID <span class="text-danger fs-6">*</span>
-                                    </label>
-                                    <input type="file" id="proofUpload" name="id_image" required>
-                                </div>
-
-                                <!-- Webcam Section (Hidden by Default) -->
-                                <div id="cameraSection" style="display: none; text-align: center;">
-                                    <div id="my_camera" style="width: 300px; height: 250px; margin: 0 auto; "></div>
-                                    <div id="capturedImage" style=" text-align: center; display: none;"></div>
-                                    <br>
-                                    <div class="d-flex justify-content-center align-items-center">
-                                        <button type="button" id="captureBtn" class="btn btn-secondary btn-sm m-0">Capture Photo</button>
-                                    </div>
-                                </div>
-
-
-                            </div>
-
-                            <!-- Take a Photo Section -->
+                            <span class="title">User Image Submission</span>
+                            <!-- Instructions for Individual/Organization Image Upload -->
                             <div class="d-flex flex-column align-items-around take-photo-section">
-
-                                <h4 class="m-0">Take Photo of Yourself Instructions: </h4>
+                                <h4 class="m-0">Instructions: </h4>
                                 <div class="d-flex justify-content-around align-items-center flex-wrap-reverse">
                                     <div>
-                                        <ul id="upload-instructions">
+                                        <ul id="instructions" class="mt-2">
                                             <li>
-                                                <p>Ensure your face is clear, centered, and well-lit.</p>
+                                                <p>Ensure your face is clear, centered, and well-lit for photo capture.</p>
                                             </li>
                                             <li>
-                                                <p>Avoid accessories like sunglasses or hats that obstruct your face.</p>
+                                                <p>Avoid accessories like sunglasses or hats that block your face.</p>
                                             </li>
                                             <li>
-                                                <p>The system detects your face and starts a 3-second timer.</p>
+                                                <p>If uploading, make sure the image is clear and not blurry.</p>
                                             </li>
                                             <li>
-                                                <p>Keep a neutral expression throughout the process.</p>
+                                                <p>Accepted formats for uploads: JPG, JPEG, PNG (max size 5 MB).</p>
                                             </li>
                                             <li>
-                                                <p>Ensure your face fills most of the frame for accurate capture.</p>
+                                                <p>Ensure the image is properly oriented and unaltered.</p>
                                             </li>
                                         </ul>
-
                                     </div>
                                     <div class="d-flex justify-content-center">
-                                        <img src="{{ asset ('assets/img/phototake.jpg') }}" id="ins-photo" alt="" class="w-50">
+                                        <img src="{{ asset('assets/img/phototake.jpg') }}" id="ins-photo" alt="" class="w-50">
                                     </div>
                                 </div>
-                                <p class="text-center fw-semibold">Take a photo</p>
-                                <div class="d-flex justify-content-around flex-wrap">
+
+                                <!-- Photo Option Radio Buttons -->
+                                <div class="photo-option mb-3 d-flex justify-content-center">
+                                    <!-- Photo Option Selection -->
+                                    <label for="uploadPhotoOption" class="mx-2">
+                                        <input type="radio" name="photoOption" id="uploadPhotoOption" value="uploadPhoto" checked> Upload Photo
+                                    </label>
+                                    <label for="takePhotoOption">
+                                        <input type="radio" name="photoOption" id="takePhotoOption" value="takePhoto"> Take Photo
+                                    </label>
+                                </div>
+
+                                <!-- Take a Photo Section -->
+                                <div id="photoCapture" class="d-flex justify-content-around flex-wrap">
                                     <div class="d-flex flex-column align-items-center">
                                         <div class="video-container">
                                             <video id="video" autoplay muted></video>
                                             <canvas id="overlay"></canvas>
                                             <div id="timer"></div>
                                         </div>
-                                        <button class="btn btn-secondary btn-sm my-3" type="button"
-                                            id="toggleCameraBtn">Turn On Camera</button>
+                                        <button class="btn btn-secondary btn-sm my-3" type="button" id="toggleCameraBtn">Turn On Camera</button>
                                     </div>
-                                    <input type="file" id="imageFile" name="user_photo" class="preview-file"
-                                        style="display: none;" required>
+                                    <!-- Preview of The Captured Photo -->
                                     <div id="preview" style="box-sizing: content-box;">
-                                        <img src="{{ asset ('assets/img/no_profile.png') }}" style="width: 300px; height:250px;"
-                                            alt="">
+                                        <img src="{{ asset('assets/img/no_profile.png') }}" style="width: 300px; height:250px;" alt="">
                                     </div>
                                 </div>
+
+                                <!-- File Input Section -->
+                                <div id="fileInputSection" style="display: none;" class="d-flex justify-content-center align-items-center">
+                                    <input type="file" id="imageFile" name="user_photo" class="preview-file" required>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-end mt-3">
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                    Review and Confirm
+                                </button>
+                                <button type="submit" name="register" id="register" class="btn btn-success" style="display: none;">Register</button>
                             </div>
                         </div>
-                        <div class="d-flex justify-content-end mt-3">
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                                Review and Confirm
-                            </button>
-                            <button type="submit" name="register" id="register" class="btn btn-success" style="display: none;">Register</button>
-                        </div>
-
                     </div>
                 </form>
 
@@ -461,31 +356,34 @@
                 </div>
                 <div class="modal-body">
                     <h5>Account Details</h5>
-                    <p><strong>Account Type:</strong> <span id="reviewAccountType"></span></p>
-                    <p><strong>Username:</strong> <span id="reviewUsername"></span></p>
-                    <p><strong>Email:</strong> <span id="reviewEmail"></span></p>
-                    <p><strong>Password:</strong> <span id="reviewPassword"></span></p>
+                    <div class="ms-3">
+                        <p><strong>Account Type:</strong> <span id="reviewAccountType"></span></p>
+                        <p><strong>Username:</strong> <span id="reviewUsername"></span></p>
+                        <p><strong>Email:</strong> <span id="reviewEmail"></span></p>
+                        <p><strong>Password:</strong> <span id="reviewPassword"></span></p>
+                    </div>
                     <hr />
                     <h5>Person Details</h5>
-                    <p><strong>First Name:</strong> <span id="reviewFname"></span></p>
-                    <p><strong>Last Name:</strong> <span id="reviewLname"></span></p>
-                    <p><strong>Mobile Number:</strong> <span id="reviewContactNumber"></span></p>
-                    <p><strong>Gender:</strong> <span id="reviewGender"></span></p>
+                    <div class="ms-3">
+                        <p><strong>First Name:</strong> <span id="reviewFname"></span></p>
+                        <p><strong>Last Name:</strong> <span id="reviewLname"></span></p>
+                        <p><strong>Contact Number:</strong> <span id="reviewContactNumber"></span></p>
+                    </div>
                     <hr>
                     <h5>Address Details</h5>
-                    <p><strong>Region:</strong> <span id="reviewRegion"></span></p>
-                    <p><strong>Province:</strong> <span id="reviewProvince"></span></p>
-                    <p><strong>City:</strong> <span id="reviewCity"></span></p>
-                    <p><strong>Barangay:</strong> <span id="reviewBarangay"></span></p>
-                    <p><strong>Full Address:</strong> <span id="reviewFullAddress"></span></p>
+                    <div class="ms-3">
+                        <p><strong>Region:</strong> <span id="reviewRegion"></span></p>
+                        <p><strong>Province:</strong> <span id="reviewProvince"></span></p>
+                        <p><strong>City:</strong> <span id="reviewCity"></span></p>
+                        <p><strong>Barangay:</strong> <span id="reviewBarangay"></span></p>
+                        <p><strong>Full Address:</strong> <span id="reviewFullAddress"></span></p>
+                    </div>
                     <hr>
-                    <h5>Identity Details</h5>
-                    <p><strong>ID Type:</strong> <span id="reviewIdType"></span></p>
-                    <p><strong>ID Image:</strong></p>
-                    <img id="reviewIdImage" class="border border-secondary" src="{{ asset ('assets/img/no_image.jpg') }}" alt="ID Image" style="width: 200px; height:200px; margin-bottom: 16px;" />
-                    <p><strong>User Image:</strong></p>
-                    <img id="reviewUserImage" class="border border-secondary" src="{{ asset ('assets/img/no_image.jpg') }}" alt="User Image" style="width: 200px; height:200px;" />
-
+                    <h5>User Image Submission</h5>
+                    <div class="ms-3">
+                        <p><strong>User Image:</strong></p>
+                        <img id="reviewUserImage" class="border border-secondary" src="{{ asset ('assets/img/no_image.jpg') }}" alt="User Image" style="width: 200px; height:200px;" />
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Edit</button>

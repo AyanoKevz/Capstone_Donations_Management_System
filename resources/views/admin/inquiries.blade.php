@@ -96,19 +96,22 @@
                 <p>Username</p>
               </div>
             </div>
+
             <!-- Nav Links -->
-            <a class="nav-link" href="{{ route ('admin.dashboard')}}" title="Dashboard">
+            <a class="nav-link" href="{{ route('admin.dashboard') }}" title="Dashboard">
               <div class="sb-nav-link-icon">
                 <i class="fas fa-tachometer-alt"></i>
               </div>
               <span>Dashboard</span>
             </a>
+
+            <!-- Admin Settings -->
             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#admin"
-              aria-expanded="false" aria-controls="admin" title="Manage Admin">
+              aria-expanded="false" aria-controls="admin" title="Admin Settings">
               <div class="sb-nav-link-icon">
                 <i class="fas fa-user"></i>
               </div>
-              <span>Admin Settings </span>
+              <span>Admin Settings</span>
               <div class="sb-sidenav-collapse-arrow">
                 <i class="fas fa-angle-down"></i>
               </div>
@@ -130,8 +133,9 @@
               </nav>
             </div>
 
+            <!-- Manage Users -->
             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#user"
-              aria-expanded="false" aria-controls="user" title="Manage User">
+              aria-expanded="false" aria-controls="user" title="Manage Users">
               <div class="sb-nav-link-icon">
                 <i class="fas fa-users"></i>
               </div>
@@ -148,26 +152,22 @@
                   </div>
                   <span>Donors</span>
                 </a>
-                <a class="nav-link" href="#" title="Donee">
+                <a class="nav-link" href="#" title="Volunteers">
                   <div class="sb-nav-link-icon">
                     <i class="far fa-circle nav-icon"></i>
                   </div>
-                  <span>Donee</span>
+                  <span>Volunteers</span>
                 </a>
-                <a class="nav-link" href="#" title="Volunteer">
+                <a class="nav-link" href="{{route ('verify_account')}}" title="Verify Accounts">
                   <div class="sb-nav-link-icon">
                     <i class="far fa-circle nav-icon"></i>
                   </div>
-                  <span>Volunteer</span>
+                  <span>Activate Volunteer</span>
                 </a>
               </nav>
-              <a class="nav-link" href="#" title="Verify Accounts">
-                <div class="sb-nav-link-icon">
-                  <i class="far fa-circle nav-icon"></i>
-                </div>
-                <span>Verify Accounts</span>
-              </a>
             </div>
+
+            <!-- Manage Resources -->
             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#resources"
               aria-expanded="false" aria-controls="resources" title="Manage Resources">
               <div class="sb-nav-link-icon">
@@ -194,12 +194,14 @@
                 </a>
               </nav>
             </div>
+
+            <!-- Manage Donations -->
             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#donation"
-              aria-expanded="false" aria-controls="donation" title="Manage Donation">
+              aria-expanded="false" aria-controls="donation" title="Manage Donations">
               <div class="sb-nav-link-icon">
                 <i class="fas fa-hand-holding-heart"></i>
               </div>
-              <span>Manage Donation</span>
+              <span>Manage Donations</span>
               <div class="sb-sidenav-collapse-arrow">
                 <i class="fas fa-angle-down"></i>
               </div>
@@ -212,20 +214,22 @@
                   </div>
                   <span>Quick Donations</span>
                 </a>
-                <a class="nav-link" href="#" title="Donee Selections">
+                <a class="nav-link" href="#" title="Specific Requests">
                   <div class="sb-nav-link-icon">
                     <i class="far fa-circle nav-icon"></i>
                   </div>
-                  <span>Donee Selection</span>
+                  <span>Specific Requests</span>
                 </a>
               </nav>
             </div>
+
+            <!-- Manage Requests -->
             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#request"
-              aria-expanded="false" aria-controls="request" title="Verify Donee Request">
+              aria-expanded="false" aria-controls="request" title="Manage Requests">
               <div class="sb-nav-link-icon">
-                <i class="fas fa-handshake"></i>
+                <i class="fas fa-clipboard-list"></i>
               </div>
-              <span>Verify Donee Request</span>
+              <span>Manage Requests</span>
               <div class="sb-sidenav-collapse-arrow">
                 <i class="fas fa-angle-down"></i>
               </div>
@@ -238,17 +242,19 @@
                   </div>
                   <span>Available Resources</span>
                 </a>
-                <a class="nav-link" href="#" title="Post A Request">
+                <a class="nav-link" href="#" title="Post a Request">
                   <div class="sb-nav-link-icon">
                     <i class="far fa-circle nav-icon"></i>
                   </div>
-                  <span>Post A Request</span>
+                  <span>Submitted Posts</span>
                 </a>
               </nav>
             </div>
-            <a class="nav-link active" href="{{ route ('admin.inquiries')}}" title="Inquiries">
+
+            <!-- Additional Links -->
+            <a class="nav-link active" href="{{ route('admin.inquiries') }}" title="Inquiries">
               <div class="sb-nav-link-icon">
-                <i class="fas fa-message"></i>
+                <i class="fas fa-envelope"></i>
               </div>
               <span>Inquiries</span>
             </a>
@@ -257,6 +263,12 @@
                 <i class="fas fa-newspaper"></i>
               </div>
               <span>News</span>
+            </a>
+            <a class="nav-link" href="#" title="Reports">
+              <div class="sb-nav-link-icon">
+                <i class="fas fa-chart-bar"></i>
+              </div>
+              <span>Reports</span>
             </a>
           </div>
         </div>

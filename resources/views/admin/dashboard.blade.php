@@ -119,10 +119,16 @@
             <div class="collapse" id="admin" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
               <nav class="sb-sidenav-menu-nested nav">
                 <a class="nav-link" href="#" title="Admin Profile">
-                  <i class="far fa-circle nav-icon"></i> Admin Profile
+                  <div class="sb-nav-link-icon">
+                    <i class="far fa-circle nav-icon"></i>
+                  </div>
+                  <span>Admin Profile</span>
                 </a>
                 <a class="nav-link" href="#" title="Admin Accounts">
-                  <i class="far fa-circle nav-icon"></i> Admin Accounts
+                  <div class="sb-nav-link-icon">
+                    <i class="far fa-circle nav-icon"></i>
+                  </div>
+                  <span>Admin Accounts</span>
                 </a>
               </nav>
             </div>
@@ -141,10 +147,22 @@
             <div class="collapse" id="user" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
               <nav class="sb-sidenav-menu-nested nav">
                 <a class="nav-link" href="#" title="Donors">
-                  <i class="far fa-circle nav-icon"></i> Donors
+                  <div class="sb-nav-link-icon">
+                    <i class="far fa-circle nav-icon"></i>
+                  </div>
+                  <span>Donors</span>
                 </a>
                 <a class="nav-link" href="#" title="Volunteers">
-                  <i class="far fa-circle nav-icon"></i> Volunteers
+                  <div class="sb-nav-link-icon">
+                    <i class="far fa-circle nav-icon"></i>
+                  </div>
+                  <span>Volunteers</span>
+                </a>
+                <a class="nav-link" href="{{route ('verify_account')}}" title="Verify Accounts">
+                  <div class="sb-nav-link-icon">
+                    <i class="far fa-circle nav-icon"></i>
+                  </div>
+                  <span>Activate Volunteer</span>
                 </a>
               </nav>
             </div>
@@ -163,10 +181,16 @@
             <div class="collapse" id="resources" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
               <nav class="sb-sidenav-menu-nested nav">
                 <a class="nav-link" href="#" title="Donated Resources">
-                  <i class="far fa-circle nav-icon"></i> Donated Resources
+                  <div class="sb-nav-link-icon">
+                    <i class="far fa-circle nav-icon"></i>
+                  </div>
+                  <span>Donated Resources</span>
                 </a>
                 <a class="nav-link" href="#" title="Distributed Resources">
-                  <i class="far fa-circle nav-icon"></i> Distributed Resources
+                  <div class="sb-nav-link-icon">
+                    <i class="far fa-circle nav-icon"></i>
+                  </div>
+                  <span>Distributed Resources</span>
                 </a>
               </nav>
             </div>
@@ -185,10 +209,16 @@
             <div class="collapse" id="donation" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
               <nav class="sb-sidenav-menu-nested nav">
                 <a class="nav-link" href="#" title="Quick Donations">
-                  <i class="far fa-circle nav-icon"></i> Quick Donations
+                  <div class="sb-nav-link-icon">
+                    <i class="far fa-circle nav-icon"></i>
+                  </div>
+                  <span>Quick Donations</span>
                 </a>
                 <a class="nav-link" href="#" title="Specific Requests">
-                  <i class="far fa-circle nav-icon"></i> Specific Requests
+                  <div class="sb-nav-link-icon">
+                    <i class="far fa-circle nav-icon"></i>
+                  </div>
+                  <span>Specific Requests</span>
                 </a>
               </nav>
             </div>
@@ -207,10 +237,16 @@
             <div class="collapse" id="request" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
               <nav class="sb-sidenav-menu-nested nav">
                 <a class="nav-link" href="#" title="Available Resources">
-                  <i class="far fa-circle nav-icon"></i> Available Resources
+                  <div class="sb-nav-link-icon">
+                    <i class="far fa-circle nav-icon"></i>
+                  </div>
+                  <span>Available Resources</span>
                 </a>
                 <a class="nav-link" href="#" title="Post a Request">
-                  <i class="far fa-circle nav-icon"></i> Submitted Posts
+                  <div class="sb-nav-link-icon">
+                    <i class="far fa-circle nav-icon"></i>
+                  </div>
+                  <span>Submitted Posts</span>
                 </a>
               </nav>
             </div>
@@ -235,7 +271,6 @@
               <span>Reports</span>
             </a>
           </div>
-
         </div>
         <div class="sb-sidenav-footer bg-logo1">
           <div>Admin Menu</div>
@@ -251,6 +286,98 @@
           </ol>
           <h1 class="my-2">Dashboard</h1>
           <!-- /.DITO IINSERT CONTENT -->
+          <div class="row">
+            <!-- Inquiries -->
+            <div class="col-lg-4 col-md-6 col-12">
+              <div class="small-box bg-info" style="background-color: #17a2b8!important;">
+                <div class="inner">
+                  <h3>150</h3>
+                  <p>Inquiries</p>
+                </div>
+                <div class="icon">
+                  <i class="ion ion-bag"></i>
+                </div>
+                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              </div>
+            </div>
+            <!-- ./col -->
+
+            <!-- Inactive Accounts -->
+            <div class="col-lg-4 col-md-6 col-12">
+              <div class="small-box bg-success">
+                <div class="inner">
+                  <h3>53</h3>
+                  <p>Inactive Accounts</p>
+                </div>
+                <div class="icon">
+                  <i class="ion ion-stats-bars"></i>
+                </div>
+                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              </div>
+            </div>
+            <!-- ./col -->
+
+            <!-- Registered Donor -->
+            <div class="col-lg-4 col-md-6 col-12">
+              <div class="small-box bg-warning">
+                <div class="inner">
+                  <h3>5</h3>
+                  <p>Registered Donor</p>
+                </div>
+                <div class="icon">
+                  <i class="ion ion-person-add"></i>
+                </div>
+                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              </div>
+            </div>
+            <!-- ./col -->
+
+            <!-- Registered Volunteer -->
+            <div class="col-lg-4 col-md-6 col-12">
+              <div class="small-box bg-warning">
+                <div class="inner">
+                  <h3>5</h3>
+                  <p>Registered Volunteer</p>
+                </div>
+                <div class="icon">
+                  <i class="ion ion-person-add"></i>
+                </div>
+                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              </div>
+            </div>
+            <!-- ./col -->
+
+            <!-- Total Users -->
+            <div class="col-lg-4 col-md-6 col-12">
+              <div class="small-box bg-danger">
+                <div class="inner">
+                  <h3>5</h3>
+                  <p>Total Users</p>
+                </div>
+                <div class="icon">
+                  <i class="ion ion-pie-graph"></i>
+                </div>
+                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              </div>
+            </div>
+            <!-- ./col -->
+
+            <!-- Pending Donations -->
+            <div class="col-lg-4 col-md-6 col-12">
+              <div class="small-box bg-danger">
+                <div class="inner">
+                  <h3>5</h3>
+                  <p>Pending Donations</p>
+                </div>
+                <div class="icon">
+                  <i class="ion ion-pie-graph"></i>
+                </div>
+                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              </div>
+            </div>
+            <!-- ./col -->
+          </div>
+
         </div>
       </main>
       <footer class="py-3 bg-dark mt-3">

@@ -72,15 +72,15 @@ Route::middleware('admin')->prefix('admin')->group(function () {
     Route::post('/inquiry-sendreply', [InquiryController::class, 'sendReply'])->name('inquiries.sendReply');
 
     // Admin verifiy
-    Route::get('/verify_account', [VerifyAcct::class, 'showInactiveAccounts'])->name('verify_account');
+
     Route::get('/verify_account/view_details/{id}', [VerifyAcct::class, 'viewDetails'])->name('view_details');
     Route::post('/verify_account/{id}', [VerifyAcct::class, 'processVerification'])->name('process_verification');
 });
 
 // Admin Logout
 Route::post('/admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
-
-
+Route::get('/verify_account', [VerifyAcct::class, 'showInactiveAccounts'])->name('verify_account');
+Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 
 // POST route for handling login
 Route::post('/', [userLoginController::class, 'login'])->name('login');
@@ -89,7 +89,7 @@ Route::post('/', [userLoginController::class, 'login'])->name('login');
 Route::middleware(['auth'])->prefix('user')->group(function () {
     Route::get('/donor/home', [DonorController::class, 'index'])->name('donor.home')->middleware('role:Donor');
     Route::get('/volunteer/home', [VolunteerController::class, 'index'])->name('volunteer.home')->middleware('role:Volunteer');
+    Route::get('/donor/home', [DonorController::class, 'index'])->name('donor.home');
 });
 
-Route::get('/donor/home', [DonorController::class, 'index'])->name('donor.home');
 Route::get('/donor/prc-chapters', [DonorController::class, 'showChapters'])->name('prc-chapters');

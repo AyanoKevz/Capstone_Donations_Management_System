@@ -97,19 +97,22 @@
                 <p>Username</p>
               </div>
             </div>
+
             <!-- Nav Links -->
-            <a class="nav-link" href="{{ route ('admin.dashboard')}}" title="Dashboard">
+            <a class="nav-link" href="{{ route('admin.dashboard') }}" title="Dashboard">
               <div class="sb-nav-link-icon">
                 <i class="fas fa-tachometer-alt"></i>
               </div>
               <span>Dashboard</span>
             </a>
+
+            <!-- Admin Settings -->
             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#admin"
-              aria-expanded="false" aria-controls="admin" title="Manage Admin">
+              aria-expanded="false" aria-controls="admin" title="Admin Settings">
               <div class="sb-nav-link-icon">
                 <i class="fas fa-user"></i>
               </div>
-              <span>Admin Settings </span>
+              <span>Admin Settings</span>
               <div class="sb-sidenav-collapse-arrow">
                 <i class="fas fa-angle-down"></i>
               </div>
@@ -131,8 +134,9 @@
               </nav>
             </div>
 
-            <a class="nav-link collapsed active" href="#" data-bs-toggle="collapse" data-bs-target="#user"
-              aria-expanded="false" aria-controls="user" title="Manage User">
+            <!-- Manage Users -->
+            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#user"
+              aria-expanded="false" aria-controls="user" title="Manage Users">
               <div class="sb-nav-link-icon">
                 <i class="fas fa-users"></i>
               </div>
@@ -149,26 +153,22 @@
                   </div>
                   <span>Donors</span>
                 </a>
-                <a class="nav-link" href="#" title="Donee">
+                <a class="nav-link" href="#" title="Volunteers">
                   <div class="sb-nav-link-icon">
                     <i class="far fa-circle nav-icon"></i>
                   </div>
-                  <span>Donee</span>
+                  <span>Volunteers</span>
                 </a>
-                <a class="nav-link" href="#" title="Volunteer">
+                <a class="nav-link active" href="{{route ('verify_account')}}" title="Verify Accounts">
                   <div class="sb-nav-link-icon">
-                    <i class="far fa-circle nav-icon"></i>
+                    <i class="fas fa-circle nav-icon"></i>
                   </div>
-                  <span>Volunteer</span>
+                  <span>Activate Volunteer</span>
                 </a>
               </nav>
-              <a class="nav-link active" href="{{route ('verify_account')}}" title="Verify Accounts">
-                <div class="sb-nav-link-icon">
-                  <i class="fas fa-circle nav-icon"></i>
-                </div>
-                <span>Verify Accounts</span>
-              </a>
             </div>
+
+            <!-- Manage Resources -->
             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#resources"
               aria-expanded="false" aria-controls="resources" title="Manage Resources">
               <div class="sb-nav-link-icon">
@@ -195,12 +195,14 @@
                 </a>
               </nav>
             </div>
+
+            <!-- Manage Donations -->
             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#donation"
-              aria-expanded="false" aria-controls="donation" title="Manage Donation">
+              aria-expanded="false" aria-controls="donation" title="Manage Donations">
               <div class="sb-nav-link-icon">
                 <i class="fas fa-hand-holding-heart"></i>
               </div>
-              <span>Manage Donation</span>
+              <span>Manage Donations</span>
               <div class="sb-sidenav-collapse-arrow">
                 <i class="fas fa-angle-down"></i>
               </div>
@@ -213,20 +215,22 @@
                   </div>
                   <span>Quick Donations</span>
                 </a>
-                <a class="nav-link" href="#" title="Donee Selections">
+                <a class="nav-link" href="#" title="Specific Requests">
                   <div class="sb-nav-link-icon">
                     <i class="far fa-circle nav-icon"></i>
                   </div>
-                  <span>Donee Selection</span>
+                  <span>Specific Requests</span>
                 </a>
               </nav>
             </div>
+
+            <!-- Manage Requests -->
             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#request"
-              aria-expanded="false" aria-controls="request" title="Verify Donee Request">
+              aria-expanded="false" aria-controls="request" title="Manage Requests">
               <div class="sb-nav-link-icon">
-                <i class="fas fa-handshake"></i>
+                <i class="fas fa-clipboard-list"></i>
               </div>
-              <span>Verify Donee Request</span>
+              <span>Manage Requests</span>
               <div class="sb-sidenav-collapse-arrow">
                 <i class="fas fa-angle-down"></i>
               </div>
@@ -239,17 +243,19 @@
                   </div>
                   <span>Available Resources</span>
                 </a>
-                <a class="nav-link" href="#" title="Post A Request">
+                <a class="nav-link" href="#" title="Post a Request">
                   <div class="sb-nav-link-icon">
                     <i class="far fa-circle nav-icon"></i>
                   </div>
-                  <span>Post A Request</span>
+                  <span>Submitted Posts</span>
                 </a>
               </nav>
             </div>
-            <a class="nav-link " href="{{ route ('admin.inquiries')}}" title="Inquiries">
+
+            <!-- Additional Links -->
+            <a class="nav-link" href="{{ route('admin.inquiries') }}" title="Inquiries">
               <div class="sb-nav-link-icon">
-                <i class="fas fa-message"></i>
+                <i class="fas fa-envelope"></i>
               </div>
               <span>Inquiries</span>
             </a>
@@ -258,6 +264,12 @@
                 <i class="fas fa-newspaper"></i>
               </div>
               <span>News</span>
+            </a>
+            <a class="nav-link" href="#" title="Reports">
+              <div class="sb-nav-link-icon">
+                <i class="fas fa-chart-bar"></i>
+              </div>
+              <span>Reports</span>
             </a>
           </div>
         </div>
@@ -274,7 +286,7 @@
             <li class="breadcrumb-item active">Dashboard</li>
           </ol>
 
-          <h1 class="my-2">Verify Accounts</h1>
+          <h1 class="my-2">Activate Volunteer Accounts</h1>
           @if(session('success'))
           <div id="alert-success" class="alert alert-success">
             <i class="fa-solid fa-circle-check fa-xl me-3"></i>{{ session('success') }}
@@ -286,27 +298,9 @@
             <i class="fa-solid fa-circle-xmark fa-xl me-3"></i>{{ session('error') }}
           </div>
           @endif
-          <div class="d-flex justify-content-end  mb-1">
-            <a href="{{ route('verify_account', ['role_name' => 'all']) }}"
-              class="btn table-btn btn-sm {{ $filter === 'all' ? 'custom-active' : '' }}">
-              All
-            </a>
-            <a href="{{ route('verify_account', ['role_name' => 'Donor']) }}"
-              class="btn table-btn btn-sm {{ $filter === 'Donor' ? 'custom-active' : '' }}">
-              Donor
-            </a>
-            <a href="{{ route('verify_account', ['role_name' => 'Donee']) }}"
-              class="btn table-btn btn-sm {{ $filter === 'Donee' ? 'custom-active' : '' }}">
-              Donee
-            </a>
-            <a href="{{ route('verify_account', ['role_name' => 'Volunteer']) }}"
-              class="btn table-btn btn-sm {{ $filter === 'Volunteer' ? 'custom-active' : '' }}">
-              Volunteer
-            </a>
-          </div>
           <div class="card">
             <div class="card-header">
-              <h3 class="card-title">All Inactive Accounts</h3>
+              <h3 class="card-title">All Inactive Volunteer Accounts</h3>
             </div>
             <!-- /.card-header -->
             <div class="card-body">
@@ -314,7 +308,6 @@
                 <thead>
                   <tr>
                     <th>Username</th>
-                    <th>Account Type</th>
                     <th>Role</th>
                     <th>Status</th>
                     <th>Details</th>
@@ -324,22 +317,18 @@
                   @forelse($inactiveAccounts as $account)
                   <tr>
                     <td>{{ $account->username }}</td>
-                    <td>{{ ucfirst($account->account_type) }}</td>
-                    <td>
-                      {{ $account->roles->first()->role_name }}
-                    </td>
+                    <td>{{ $account->roles->first()->role_name }}</td>
                     <td>
                       <p class="bg-dark-subtle text-dark-emphasis m-0 p-1 fw-bold">Not Active</p>
                     </td>
-                    <td><a href="{{ route('view_details', $account->id) }}">View</a></td>
+                    <td><a class="btn btn-success" href="{{ route('view_details', $account->id) }}">View</a></td>
                   </tr>
                   @empty
                   <tr>
-                    <td colspan="5" class="text-center">No inactive accounts found</td>
+                    <td colspan="4" class="text-center">No inactive accounts found</td>
                   </tr>
                   @endforelse
                 </tbody>
-
               </table>
             </div>
             <!-- /.card-body -->

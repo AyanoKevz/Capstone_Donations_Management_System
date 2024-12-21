@@ -160,143 +160,85 @@ $(window).on('scroll', function () {
     });
 });
 
+// Handle Photo Option Change
+ function setDisplayWithImportant(element, displayValue) {
+        $(element).attr('style', `display: ${displayValue} !important;`);
+    }
+
+    // Handle Photo Option Change
+    $('input[name="photoOption"]').on('change', function () {
+        if ($('#takePhotoOption').is(':checked')) {
+            // Show Take a Photo Section and hide File Input Section
+            setDisplayWithImportant('#photoCapture', 'flex');
+            setDisplayWithImportant('#fileInputSection', 'none');
+        } else if ($('#uploadPhotoOption').is(':checked')) {
+            // Show File Input Section and hide Take a Photo Section
+            setDisplayWithImportant('#photoCapture', 'none');
+            setDisplayWithImportant('#fileInputSection', 'flex');
+        }
+    });
+
+    // Set initial visibility based on the default selected option
+    if ($('#takePhotoOption').is(':checked')) {
+        setDisplayWithImportant('#photoCapture', 'flex');
+        setDisplayWithImportant('#fileInputSection', 'none');
+    } else if ($('#uploadPhotoOption').is(':checked')) {
+        setDisplayWithImportant('#photoCapture', 'none');
+        setDisplayWithImportant('#fileInputSection', 'flex');
+    }
+
 // Radio button change for individual/organization selection
 $('#individual').on('change', function () {
-  $('#info-title').text('Personal Details');
-  $('#fname-label').html('First Name <span class="text-danger fs-6">*</span>');
-  $('#fname').attr('placeholder', 'Enter your first name');
-  $('#middle-name, #last-name, #gender-options').css('display', 'flex');
-  $('#birth-label').html('Date of Birth <span class="text-danger fs-6">*</span>');
-  $('#validID').html(`
-    <option disabled selected value="">Select ID</option>
-    <option value="Philippine Passport">Philippine Passport</option>
-    <option value="Driver's License">Driver's License</option>
-    <option value="SSS ID">SSS ID</option>
-    <option value="UMID">UMID</option>
-    <option value="PhilHealth ID">PhilHealth ID</option>
-    <option value="Voter's ID">Voter's ID</option>
-    <option value="PRC ID">PRC ID</option>
-    <option value="Postal ID">Postal ID</option>
-    <option value="TIN ID">TIN ID</option>
-    <option value="Barangay ID">Barangay ID</option>
-  `);
-  $('#proofUpload-label').html('Upload Selected ID <span class="text-danger fs-6">*</span>');
-  
-  // Show individual ID upload instructions and image
-  $('#ins-photo').attr('src', '../assets/img/Id.png');
-  $('#upload-instructions').html(`
-      <li><p>Upload a valid ID (Passport, Driver's License, etc.).</p></li>
-      <li><p>Ensure the ID is clear, visible, and legible.</p></li>
-      <li><p>Accepted formats: JPG, JPEG, PNG (max size 5 MB).</p></li>
-      <li><p>No edits or alterations to the ID.</p></li>
-      <li><p>Use good lighting and avoid glare.</p></li>
-  `);
+    $('#info-title').text('Personal Details');
+    $('#fname-label').html('First Name <span class="text-danger fs-6">*</span>');
+    $('#fname').attr('placeholder', 'Enter your first name');
+    $('#last-name').css('display', 'flex');
+    $('#birth-label').html('Date of Birth <span class="text-danger fs-6">*</span>');
 
-  // Show the "Take a Photo" section for individuals
-  $('.take-photo-section').attr('style', 'display: block !important');
+    // Show instructions for individuals
+    $('#ins-photo').attr('src', '../assets/img/phototake.jpg');
+    $('#instructions').html(`
+        <li><p>Ensure your face is clear, centered, and well-lit for photo capture.</p></li>
+<li><p>Avoid accessories like sunglasses or hats that block your face.</p></li>
+<li><p>If uploading, make sure the image is clear and not blurry.</p></li>
+<li><p>Accepted formats for uploads: JPG, JPEG, PNG (max size 5 MB).</p></li>
+<li><p>Ensure the image is properly oriented and unaltered.</p></li>
+
+    `);
+
+    // Enable both options for individuals
+    $('#takePhotoOption').prop('disabled', false);  // Enable Take Photo
+    $('#uploadPhotoOption').prop('disabled', false); // Enable Upload Photo
+
+    // Show the Take Photo section and hide the File Input section
+    setDisplayWithImportant('#photoCapture', 'flex');
+    setDisplayWithImportant('#fileInputSection', 'none');
 });
 
 $('#organization').on('change', function () {
-  $('#info-title').text('Organization Details');
-  $('#fname-label').html('Organization Name <span class="text-danger fs-6">*</span>');
-  $('#birth-label').html('Established Date <span class="text-danger fs-6">*</span>');
-  $('#fname').attr('placeholder', 'Enter organization name');
-  $('#middle-name, #last-name, #gender-options').css('display', 'none');
-  
-  // Change to organization proof instructions and image
-  $('#validID').html(`
-    <option disabled selected value="">Select Proof Document</option>
-    <option value="SEC Certificate of Registration">SEC Certificate of Registration</option>
-    <option value="Mayor's Permit">Mayor's Permit</option>
-    <option value="BIR 2303 Form">BIR 2303 Form</option>
-    <option value="DTI Certificate">DTI Certificate</option>
-    <option value="Articles of Incorporation">Articles of Incorporation</option>
-    <option value="Organizational Letterhead">Organizational Letterhead</option>
-  `);
-  
-  $('#proofUpload-label').html('Upload Selected Organization Document <span class="text-danger fs-6">*</span>');
-  $('#ins-photo').attr('src', '../assets/img/document.png'); // Change image to document image
-  $('#upload-instructions').html(`
-      <li><p>Upload proof of organization (Certificate of Incorporation, Business Permit, etc.).</p></li>
-      <li><p>Ensure the document is clear and legible.</p></li>
-      <li><p>Accepted formats: PDF, JPG, JPEG, PNG (max size 10 MB).</p></li>
-      <li><p>No edits or alterations to the document.</p></li>
-      <li><p>Use good lighting and avoid glare if taking a photo of the document.</p></li>
-  `);
+    $('#info-title').text('Organization Details');
+    $('#fname-label').html('Organization Name <span class="text-danger fs-6">*</span>');
+    $('#birth-label').html('Established Date <span class="text-danger fs-6">*</span>');
+    $('#fname').attr('placeholder', 'Enter organization name');
+    $('#middle-name, #last-name, #gender-options').css('display', 'none');
 
-  // Hide the "Take a Photo" section for organizations with !important
-  $('.take-photo-section').attr('style', 'display: none !important');
+    // Show instructions for organizations
+    $('#ins-photo').attr('src', '../assets/img/upload.png');
+    $('#instructions').html(`
+        <li><p>Upload a clear image of your organization’s logo</p></li>
+        <li><p>Ensure the image is clear, well-lit, and not blurry.</p></li>
+        <li><p>Accepted formats: JPG, JPEG, PNG (max size 5 MB).</p></li>
+        <li><p>No edits or alterations to the image.</p></li>
+    `);
+
+    // Disable Take Photo option and only allow Upload Photo for organizations
+    $('#takePhotoOption').prop('disabled', true);  // Disable Take Photo
+    $('#uploadPhotoOption').prop('checked', true); // Ensure Upload Photo is selected
+
+    // Hide the Take Photo section and show the File Input section
+    setDisplayWithImportant('#photoCapture', 'none');
+    setDisplayWithImportant('#fileInputSection', 'flex');
 });
-
-
-const $uploadOption = $('#uploadOption');
-const $cameraOption = $('#cameraOption');
-const $fileUploadSection = $('#fileUploadSection');
-const $cameraSection = $('#cameraSection');
-const $proofUpload = $('#proofUpload');
-const $captureBtn = $('#captureBtn');
-const $myCamera = $('#my_camera');
-const $capturedImageDiv = $('#capturedImage');
-
-// Toggle sections based on user selection
-$('input[name="photoOption"]').on('change', function () {
-    if ($uploadOption.is(':checked')) {
-        $fileUploadSection.show();
-        $cameraSection.hide();
-        $proofUpload.prop('required', true);
-    } else if ($cameraOption.is(':checked')) {
-        $fileUploadSection.hide();
-        $cameraSection.show();
-        $proofUpload.prop('required', false);
-
-        // Initialize Webcam
-        Webcam.set({
-            width: 300,
-            height: 250,
-            image_format: 'jpeg',
-            jpeg_quality: 90
-        });
-        Webcam.attach('#my_camera');
-    }
-});
-
-// Capture Photo and toggle between camera and captured image
-$captureBtn.on('click', function () {
-    if ($captureBtn.text() === "Capture Photo") {
-        Webcam.snap(function (dataUri) {
-            // Hide camera and show captured image
-            $myCamera.hide();
-            $capturedImageDiv.html('<img src="' + dataUri + '" style="width: 300px; height: 250px;"/>').show();
-            $captureBtn.text("Capture Again");
-
-            // Convert Base64 to Blob and create a File object
-            const blob = dataURItoBlob(dataUri);
-            const file = new File([blob], "captured_id.jpg", { type: "image/jpeg" });
-
-            // Populate the file input programmatically
-            const dataTransfer = new DataTransfer();
-            dataTransfer.items.add(file);
-            $proofUpload[0].files = dataTransfer.files;
-        });
-    } else {
-        // Reset to camera view
-        $myCamera.show();
-        $capturedImageDiv.hide();
-        $captureBtn.text("Capture Photo");
-    }
-});
-
-// Helper function: Convert Base64 to Blob
-function dataURItoBlob(dataURI) {
-    const byteString = atob(dataURI.split(',')[1]);
-    const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
-    const ab = new ArrayBuffer(byteString.length);
-    const ia = new Uint8Array(ab);
-    for (let i = 0; i < byteString.length; i++) {
-        ia[i] = byteString.charCodeAt(i);
-    }
-    return new Blob([ab], { type: mimeString });
-}
 
 
 
@@ -675,64 +617,48 @@ $('.toggle-password').on('click', function () {
 });
 
 
-  function previewImage(input, targetImg) {
-    if (input.files && input.files[0]) {
+$('#imageFile').on('change', function (event) {
+    const file = event.target.files[0];
+
+    if (file) {
         const reader = new FileReader();
+
+        // When the file is loaded, update the src attribute
         reader.onload = function (e) {
-            $(targetImg).attr('src', e.target.result);
+            $('#reviewUserImage').attr('src', e.target.result);
         };
-        reader.readAsDataURL(input.files[0]);
+
+        // Read the file as a Data URL
+        reader.readAsDataURL(file);
+    } else {
+        // If no file is selected, revert to the default image
+        $('#reviewUserImage').attr('src', '{{ asset("assets/img/no_image.jpg") }}');
     }
-}
-
-// Event listeners for file inputs
-$('input[name="id_image"]').on('change', function () {
-    previewImage(this, '#reviewIdImage');
 });
-
-// Webcam capture logic
-$('#captureBtn').click(function () {
-    // Capture the image using WebcamJS
-    Webcam.snap(function (dataUri) {
-        // Set the preview image in the modal
-        $('#reviewIdImage').attr('src', dataUri);
-
-        // Optional: Set the captured image data as the file input value
-        // This is needed if you want to submit the captured image as part of the form
-        const blob = dataURItoBlob(dataUri);
-        const file = new File([blob], "captured-id.jpg", { type: "image/jpeg" });
-        const dataTransfer = new DataTransfer();
-        dataTransfer.items.add(file);
-        $('input[name="id_image"]')[0].files = dataTransfer.files;
-    });
-});
-
-// Helper function to convert base64 data URI to Blob
-function dataURItoBlob(dataURI) {
-    const byteString = atob(dataURI.split(',')[1]);
-    const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
-    const ab = new ArrayBuffer(byteString.length);
-    const ia = new Uint8Array(ab);
-    for (let i = 0; i < byteString.length; i++) {
-        ia[i] = byteString.charCodeAt(i);
-    }
-    return new Blob([ab], { type: mimeString });
-}
 
 // Validate inputs and show/hide Confirm button
 function validateInputs() {
     let isValid = true;
 
-    // Check each required input field
+    const accountType = $('input[name="accountType"]:checked').val();
+
     $('input, select').each(function () {
+        // Skip validation for fields not required for the selected account type
+        if (accountType === 'Organization') {
+            if ($(this).attr('name') === 'lname') {
+                return; // Skip validation for these fields
+            }
+        }
+
         if ($(this).prop('required') && !$(this).val()) {
             isValid = false;
         }
     });
 
-    // Show Confirm button if all inputs are valid
+    // Toggle the "Confirm" button visibility based on validation
     $('#confirmBtn').toggle(isValid);
 }
+
 
 // Validate on keyup, change, or file select
 $('input, select').on('keyup change', function () {
@@ -741,41 +667,45 @@ $('input, select').on('keyup change', function () {
 
 // Populate modal on Review and Confirm button click
 $('[data-bs-target="#staticBackdrop"]').click(function () {
-    validateInputs(); // Validate before showing modal
+    validateInputs();
 
-    $('#reviewAccountType').text($('input[name="accountType"]:checked').val());
+    const accountType = $('input[name="accountType"]:checked').val();
+    $('#reviewAccountType').text(accountType);
     $('#reviewUsername').text($('input[name="username"]').val());
     $('#reviewEmail').text($('input[name="email"]').val());
     $('#reviewPassword').text($('input[name="password"]').val());
     $('#reviewFname').text($('input[name="fname"]').val());
     $('#reviewLname').text($('input[name="lname"]').val());
     $('#reviewContactNumber').text($('input[name="contact_number"]').val());
-    $('#reviewGender').text($('select[name="gender"]').val());
     $('#reviewRegion').text($('select[name="region"] option:selected').text());
     $('#reviewProvince').text($('select[name="province"] option:selected').text());
     $('#reviewCity').text($('select[name="city"] option:selected').text());
     $('#reviewBarangay').text($('select[name="barangay"] option:selected').text());
     $('#reviewFullAddress').text($('input[name="full_address"]').val());
-    $('#reviewIdType').text($('select[name="id_type"] option:selected').text());
 
-    // Education & Profession
-    $('#reviewEducation').text($('select[name="educ_prof"]  option:selected').val());
-    $('#reviewStudying').text($('input[name="studying"]:checked').val());
-    $('#reviewEmployed').text($('input[name="employed"]:checked').val());
 
-    // Volunteering Details
-    $('#reviewPreferredService').text($('select[name="pref_services"]  option:selected').val());
-    $('#reviewAvailability').text($('select[name="availability"]  option:selected').val());
-    $('#reviewAvailabilityTime').text($('select[name="availability_time"]  option:selected').val());
+    // Volunteering Details (VOLUNTEER ONLY PART IN REGISTRATION)
+    $('#reviewPreferredService').text($('select[name="pref_services"] option:selected').val());
+    $('#reviewAvailability').text($('select[name="availability"] option:selected').val());
+    $('#reviewAvailabilityTime').text($('select[name="availability_time"] option:selected').val());
+
+    // Handle visibility of other fields based on account type
+    if (accountType === 'Organization') {
+        $('#reviewLname').closest('p').hide();
+        $('#reviewFname').prev('strong').text('Organization Name:');
+    } else {
+        $('#reviewLname').closest('p').show();
+        $('#reviewFname').prev('strong').text('First Name:');
+    }
 });
+
 
 // Confirm button logic
 $('#confirmBtn').click(function () {
-    $('#staticBackdrop').modal('hide'); // Close the modal
-    $('[data-bs-target="#staticBackdrop"]').hide(); // Hide trigger button
-    $('#register').show(); // Show register button
+    $('#staticBackdrop').modal('hide');
+    $('[data-bs-target="#staticBackdrop"]').hide();
+    $('#register').show();
 });
-
 
 
 })(jQuery);

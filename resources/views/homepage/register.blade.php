@@ -101,7 +101,7 @@
     <!-- Navbar & Hero End -->
 
     <!-- Register Start -->
-    <div class="container-fluid service py-3">
+    <div class="container-fluid service py-3 offer-section">
         <div class="container pb-3">
             @if(session('success'))
             <div id="alert-success" class="alert alert-success wow fadeInLeft">
@@ -124,35 +124,46 @@
                 </p>
             </div>
 
-            <div class="row g-4 wow bounceInLeft">
-                <div class="col-md-6 col-lg-4">
-                    <div class="service-item">
-                        <div class="service-img">
-                            <img src="{{ asset ('assets/img/r-donor.jpg') }}" class="img-fluid rounded-top w-100 h-100" alt="Image">
-                        </div>
-                        <div class="rounded-bottom p-2 d-flex flex-column align-items-center text-center">
-                            <h4 class="d-inline-block my-2"> Donor Registration</h4>
-                            <p class="mb-2">
-                                Become a UniAid donor and make a difference in the lives of individuals and communities
-                                in need. Register now to contribute essential resources.
-                            </p>
-                            <a class="btn btn-primary rounded-pill py-2 px-4 my-2" href="{{ route('donor.register') }}">Register</a>
-                        </div>
+            <div class="row g-5 align-items-center">
+                <div class="col-xl-5 wow fadeInLeft" data-wow-delay="0.2s">
+                    <div class="nav nav-pills bg-light rounded p-4" style="border: #ff1f1f 4px solid red !important;">
+                        <a class="accordion-link p-4 active mb-2" data-bs-toggle="pill" href="#collapseOne">
+                            <h5 class="mb-0">Register As Donor</h5>
+                        </a>
+                        <a class="accordion-link p-4 mb-2" data-bs-toggle="pill" href="#collapseTwo">
+                            <h5 class="mb-0">Register As Volunteer</h5>
+                        </a>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="service-item">
-                        <div class="service-img">
-                            <img src="{{ asset ('assets/img/r-volunteer.jpg') }}" class="img-fluid rounded-top w-100 h-100"
-                                alt="Image">
+                <div class="col-xl-7 wow fadeInRight" data-wow-delay="0.4s">
+                    <div class="tab-content">
+                        <div id="collapseOne" class="tab-pane fade show p-0 active">
+                            <div class="row g-4">
+                                <div class="col-md-7">
+                                    <img src="{{ asset ('assets/img/r-donor.jpg') }}" class="img-fluid w-100 rounded" alt="">
+                                </div>
+                                <div class="col-md-5">
+                                    <h1 class="display-5 mb-2">Donor Registration</h1>
+                                    <p class="mb-2"> Become a UniAid donor and make a difference in the lives of individuals and communities
+                                        in need. Register now to contribute essential resources.
+                                    </p>
+                                    <a class="btn btn-primary rounded-pill py-2 px-4 my-2" href="{{ route('donor.register') }}">Register</a>
+                                </div>
+                            </div>
                         </div>
-                        <div class="rounded-bottom p-2 d-flex flex-column align-items-center text-center">
-                            <h4 class="d-inline-block my-2">Volunteer Registration</h4>
-                            <p class="mb-2">
-                                Join UniAid as a volunteer and offer your time and skills to help those in need. Uour
-                                involvement can make a lasting impact on communities across the Philippines.
-                            </p>
-                            <a class="btn btn-primary rounded-pill py-2 px-4 my-2" href="{{ route('vol.register') }}">Register</a>
+                        <div id="collapseTwo" class="tab-pane fade show p-0">
+                            <div class="row g-4">
+                                <div class="col-md-7">
+                                    <img src="{{ asset ('assets/img/r-volunteer.jpg') }}" class=" img-fluid w-100 rounded" alt="">
+                                </div>
+                                <div class="col-md-5">
+                                    <h1 class="display-5 mb-2">Volunteer Registration</h1>
+                                    <p class="mb-2">Join UniAid as a volunteer and offer your time and skills to help those in need. Your
+                                        involvement can make a lasting impact on communities across the Philippines.
+                                    </p>
+                                    <a class="btn btn-primary rounded-pill py-2 px-4 my-2" href="{{ route('vol.register') }}">Register</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

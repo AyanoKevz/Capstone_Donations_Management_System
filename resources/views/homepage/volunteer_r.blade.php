@@ -121,14 +121,29 @@
                 <form method="POST" action="{{ route ('register.vol') }}" enctype="multipart/form-data">
                     @csrf
                     <div class="form">
+                        <div class="details type" style="display: none;">
+                            <span class="title">Account Type</span>
+                            <div class="fields">
+                                <p class="fw-semibold m-0">Register As:</p>
+                                <div class="input-field">
+                                    <label>
+                                        <input type="radio" name="accountType" id="individual" value="Individual"
+                                            checked>
+                                        Individual
+                                    </label>
+                                    <span class="icon-status"></span>
+                                </div>
+                            </div>
+                        </div>
                         <div class="details acct">
                             <span class="title">Account Details</span>
                             <div class="fields">
                                 <div class="input-field">
-                                    <label for="uname">Username <span class="text-danger fs-6">*</span> <span
-                                            class="icon-status"></span> </label>
-                                    <input type="text" class="r-input" placeholder="Enter username" name="username"
-                                        autocomplete="off">
+                                    <label for="fname">Username <span class="text-danger fs-6">*</span>
+                                        <span class="icon-status"></span>
+                                    </label>
+                                    <input type="text" class="r-input" placeholder="Enter username" required
+                                        name="username">
                                 </div>
                                 <div class="input-field">
                                     <label for="password">Password <span class="text-danger fs-6">*</span>
@@ -143,171 +158,53 @@
                                     <label for="password_confirmation">Confirm Password <span class="text-danger fs-6">*</span>
                                         <span class="icon-status"></span>
                                     </label>
-                                    <input type="password" class="r-input password-input" placeholder="Confirm your password" required name="password_confirmation">
+                                    <input type="password" class="r-input password-input" placeholder="Confirm password" required name="password_confirmation">
                                     <button type="button" class="toggle-password icon-toggle">
                                         <i class="fas fa-eye-slash toggle-password-icon"></i>
                                     </button>
                                 </div>
                                 <div class="input-field">
-                                    <label for="email">Email <span class="text-danger fs-6">* </span> <span
-                                            style="font-size: small; color: #aaa;">(Must Active)</span> <span
-                                            class="icon-status"></span> </label>
-                                    <input type="email" class="r-input" id="email" placeholder="Enter your email"
+                                    <label>Email <span class="text-danger fs-6">*</span> <span
+                                            style="font-size: small; color: #aaa;">(Must be Active)</span>
+                                        <span class="icon-status"></span>
+                                    </label>
+                                    <input type="email" class="r-input" placeholder="Enter your email" required
                                         name="email">
                                 </div>
                             </div>
                         </div>
-                        <!-- Personal -->
+                        <!-- Personal/Organization Details -->
                         <div class="details personal">
                             <span class="title" id="info-title">Personal Details</span>
                             <div class="fields">
                                 <!-- First Name / Organization Name -->
                                 <div class="input-field">
-                                    <label for="fname" id="fname-label">First Name <span class="text-danger fs-6">*
-                                        </span> <span class="icon-status"></span></label>
+                                    <label for="fname" id="fname-label">First Name <span
+                                            class="text-danger fs-6">*</span>
+                                        <span class="icon-status"></span>
+                                    </label>
                                     <input type="text" class="r-input" id="fname" placeholder="Enter your first name"
-                                        name="fname">
+                                        required name="fname">
                                 </div>
-
-                                <!-- Middle Name -->
-                                <div class="input-field" id="middle-name">
-                                    <label for="mname">Middle Name <span class="icon-status"></span> </label>
-                                    <input type="text" class="r-input" id="mname" placeholder="Enter your middle name"
-                                        name="mname" autocomplete="off">
-                                </div>
-
                                 <!-- Last Name -->
                                 <div class="input-field" id="last-name">
-                                    <label for="lname">Last Name <span class="text-danger fs-6">*</span> <span
-                                            class="icon-status"></span></label>
-                                    <input type="text" class="r-input" placeholder="Enter your last name" name="lname">
+                                    <label for="lname">Last Name <span class="text-danger fs-6">*</span>
+                                        <span class="icon-status"></span>
+                                    </label>
+                                    <input type="text" class="r-input" placeholder="Enter your last name" required
+                                        name="lname">
                                 </div>
 
-                                <!-- Date of Birth -->
+                                <!-- Mobile Number -->
                                 <div class="input-field">
-                                    <label for="bday" id="birth-label">Date of Birth <span
-                                            class="text-danger fs-6">*</span> <span class="icon-status"></span></label>
-                                    <input type="date" class="r-input" placeholder="Enter birth date" name="bday">
+                                    <label>Contact Number <span class="text-danger fs-6">*</span> <span
+                                            style="font-size: small; color: #aaa;">(Must be Active)</span>
+                                        <span class="icon-status"></span>
+                                    </label>
+                                    <input type="number" class="r-input" placeholder="Enter mobile number" required
+                                        name="contact_number">
                                 </div>
 
-                                <!-- Gender Options -->
-                                <div class="input-field" id="gender-options">
-                                    <label>Gender <span class="text-danger fs-6">*</span> <span
-                                            class="icon-status"></span></label>
-                                    <select name="gender">
-                                        <option disabled selected value="">Select gender</option>
-                                        <option value="Male">Male</option>
-                                        <option value="Female">Female</option>
-                                        <option value="Others">Others</option>
-                                    </select>
-                                </div>
-                                <!-- Contact -->
-                                <div class="input-field">
-                                    <label>Mobile Number <span class="text-danger fs-6">*</span> <span
-                                            style="font-size: small; color: #aaa;">(Must Active)</span> <span
-                                            class="icon-status"></span></label>
-                                    <input type="number" class="r-input" placeholder="Enter mobile number (09xxxxx)"
-                                        name="number">
-                                </div>
-
-                            </div>
-                        </div>
-
-                        <div class="details educ">
-                            <span class="title" id="info-title">Education & Profession</span>
-                            <div class="fields">
-                                <!-- Highest Educational Attainment -->
-                                <div class="input-field">
-                                    <label>Highest Educational Attainment <span class="text-danger fs-6">*</span>
-                                        <span class="icon-status"></span> <!-- Icon placeholder -->
-                                    </label>
-                                    <select id="educ_prof" name="educ_prof">
-                                        <option disabled selected value="">Select</option>
-                                        <option value="Grade School graduate">Grade School graduate</option>
-                                        <option value="High School graduate">High School graduate</option>
-                                        <option value="Vocational/Short Courses
-                                            graduate">Vocational/Short Courses
-                                            graduate</option>
-                                        <option value="College graduate">College graduate</option>
-                                        <option value="Master's degree holder">Master's degree holder</option>
-                                        <option value="Doctorate degree holder">Doctorate degree holder</option>
-                                    </select>
-                                </div>
-
-                                <div class="input-field">
-                                    <p class="fw-semibold my-2">Are you still studying? <span
-                                            class="text-danger fs-6">*</span></p>
-                                    <label>
-                                        <input type="radio" name="studying" value="Yes" checked> Yes
-                                    </label>
-                                    <label>
-                                        <input type="radio" name="studying" value="No"> No
-                                    </label>
-                                    <span class="icon-status"></span> <!-- Icon placeholder -->
-                                </div>
-
-                                <div class="input-field">
-                                    <p class="fw-semibold my-2">Are you employed? <span
-                                            class="text-danger fs-6">*</span></p>
-                                    <label>
-                                        <input type="radio" name="employed" value="Yes" checked> Yes
-                                    </label>
-                                    <label>
-                                        <input type="radio" name="employed" value="No"> No
-                                    </label>
-                                    <span class="icon-status"></span> <!-- Icon placeholder -->
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="details volunteering">
-                            <span class="title" id="info-title">Volunteering Details</span>
-                            <div class="fields">
-                                <div class="input-field" id="gender-options">
-                                    <label>Most preferred services would you like to be involved with? <span
-                                            class="text-danger fs-6">*</span>
-                                        <span class="icon-status"></span> <!-- Icon placeholder -->
-                                    </label>
-                                    <select name="pref_services">
-                                        <option disabled selected value="">Select preferred services</option>
-                                        <option value="Collect Donations">Collect Donations</option>
-                                        <option value="Distribute Donations">Distribute Donations</option>
-                                        <option value="Provide Recipient Support">Provide Recipient Support</option>
-                                    </select>
-                                </div>
-
-                                <div class="input-field" id="availability-options">
-                                    <label>When are you usually available as a volunteer? <span
-                                            class="text-danger fs-6">*</span>
-                                        <span class="icon-status"></span> <!-- Icon placeholder -->
-                                    </label>
-                                    <select name="availability">
-                                        <option disabled selected value="">Select your availability</option>
-                                        <option value="Weekday">Weekday</option>
-                                        <option value="Weekend">Weekend</option>
-                                        <option value="Holiday">Holiday</option>
-                                        <option value="In time of Disasters">In time of disasters</option>
-                                    </select>
-                                </div>
-
-                                <div class="input-field" id="availability-time-options">
-                                    <label>What time of the day are you usually available as a Volunteer? <span
-                                            class="text-danger fs-6">*</span>
-                                        <span class="icon-status"></span> <!-- Icon placeholder -->
-                                    </label>
-                                    <select name="availability_time">
-                                        <option disabled selected value="">Select your availability time</option>
-                                        <option value="Morning" title="Typically between 6 AM to 12 PM">Morning</option>
-                                        <option value="Afternoon" title="Typically between 12 PM to 6 PM">Afternoon
-                                        </option>
-                                        <option value="Night" title="Typically between 6 PM to 12 AM">Night</option>
-                                        <option value="On-Call"
-                                            title="Available as needed, potentially outside regular hours">On-Call
-                                        </option>
-                                        <option value="Whole Day" title="Available throughout the entire day">Whole Day
-                                        </option>
-                                    </select>
-                                </div>
                             </div>
                         </div>
 
@@ -364,93 +261,127 @@
                             </div>
                         </div>
 
-                        <!-- Identity Details Section -->
-                        <div class="details identity">
-                            <span class="title">Identity Details</span>
+                        <div class="details volunteering">
+                            <span class="title" id="info-title">Volunteering Details</span>
                             <div class="fields">
-                                <!-- Select ID Type -->
-                                <div class="input-field" id="id-select">
-                                    <label for="proofOfIdentity" class="fw-medium">Select ID Type <span
+                                <div class="input-field" id="services-option">
+                                    <label>Most preferred services would you like to be involved with? <span
                                             class="text-danger fs-6">*</span>
-                                        <span class="icon-status"></span>
+                                        <span class="icon-status"></span> <!-- Icon placeholder -->
                                     </label>
-                                    <select id="validID" name="id_type" required>
-                                        <option disabled selected value="">Select ID</option>
-                                        <option value="Philippine Passport">Philippine Passport</option>
-                                        <option value="Driver's License">Driver's License</option>
-                                        <option value="SSS ID">SSS ID</option>
-                                        <option value="UMID">UMID</option>
-                                        <option value="PhilHealth ID">PhilHealth ID</option>
-                                        <option value="Voter's ID">Voter's ID</option>
-                                        <option value="PRC ID">PRC ID</option>
-                                        <option value="Postal ID">Postal ID</option>
-                                        <option value="TIN ID">TIN ID</option>
-                                        <option value="Barangay ID">Barangay ID</option>
+                                    <select name="pref_services">
+                                        <option disabled selected value="">Select preferred services</option>
+                                        <option value="collect_donations">General</option>
+                                        <option value="collect_donations">Collect Donations</option>
+                                        <option value="relief_operation">Relief Operations</option>
+                                        <option value="health_welfare">Health Welfare</option>
+                                        <option value="emergency_response">Emergency Response</option>
                                     </select>
                                 </div>
 
-                                <!-- File Upload -->
-                                <div class="input-field">
-                                    <label for="proofUpload" id="proofUpload-label" class="fw-medium">Upload Selected ID
-                                        <span class="text-danger fs-6">*</span>
-                                        <span class="icon-status"></span>
+                                <div class="input-field" id="availability-options">
+                                    <label>When are you usually available as a volunteer? <span
+                                            class="text-danger fs-6">*</span>
+                                        <span class="icon-status"></span> <!-- Icon placeholder -->
                                     </label>
-                                    <input type="file" id="proofUpload" name="id_image" required>
+                                    <select name="availability">
+                                        <option disabled selected value="">Select your availability</option>
+                                        <option value="Weekday">Weekday</option>
+                                        <option value="Weekend">Weekend</option>
+                                        <option value="Holiday">Holiday</option>
+                                        <option value="In time of Disasters">In time of disasters</option>
+                                    </select>
                                 </div>
-                            </div>
 
-                            <!-- Instructions for ID/Organization Proof Upload -->
-                            <div class="d-flex justify-content-around align-items-center my-3 flex-wrap-reverse">
-                                <div>
-                                    <ul id="upload-instructions">
-                                        <li>
-                                            <p>Upload a valid ID (Passport, Driver's License, etc.).</p>
-                                        </li>
-                                        <li>
-                                            <p>Ensure the ID is clear, visible, and legible.</p>
-                                        </li>
-                                        <li>
-                                            <p>Accepted formats: JPG, JPEG, PNG (max size 5 MB).</p>
-                                        </li>
-                                        <li>
-                                            <p>No edits or alterations to the ID.</p>
-                                        </li>
-                                        <li>
-                                            <p>Use good lighting and avoid glare.</p>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="d-flex justify-content-center">
-                                    <img src="{{ asset ('assets/img/Id.png') }}" id="ins-photo" alt="" class="w-50">
+                                <div class="input-field" id="availability-time-options">
+                                    <label>What time of the day are you usually available as a Volunteer? <span
+                                            class="text-danger fs-6">*</span>
+                                        <span class="icon-status"></span> <!-- Icon placeholder -->
+                                    </label>
+                                    <select name="availability_time">
+                                        <option disabled selected value="">Select your availability time</option>
+                                        <option value="Morning" title="Typically between 6 AM to 12 PM">Morning</option>
+                                        <option value="Afternoon" title="Typically between 12 PM to 6 PM">Afternoon
+                                        </option>
+                                        <option value="Night" title="Typically between 6 PM to 12 AM">Night</option>
+                                        <option value="On-Call"
+                                            title="Available as needed, potentially outside regular hours">On-Call
+                                        </option>
+                                        <option value="Whole-Day" title="Available throughout the entire day">Whole-Day
+                                        </option>
+                                    </select>
                                 </div>
                             </div>
-                            <!-- Take a Photo Section -->
+                        </div>
+                        <!-- Identity Details Section -->
+                        <div class="details identity">
+                            <span class="title">User Image Submission</span>
+                            <!-- Instructions for Individual/Organization Image Upload -->
                             <div class="d-flex flex-column align-items-around take-photo-section">
-                                <p class="text-center fw-semibold">Take a photo</p>
-                                <div class="d-flex justify-content-around flex-wrap">
+                                <h4 class="m-0">Instructions: </h4>
+                                <div class="d-flex justify-content-around align-items-center flex-wrap-reverse">
+                                    <div>
+                                        <ul id="instructions" class="mt-2">
+                                            <li>
+                                                <p>Ensure your face is clear, centered, and well-lit for photo capture.</p>
+                                            </li>
+                                            <li>
+                                                <p>Avoid accessories like sunglasses or hats that block your face.</p>
+                                            </li>
+                                            <li>
+                                                <p>If uploading, make sure the image is clear and not blurry.</p>
+                                            </li>
+                                            <li>
+                                                <p>Accepted formats for uploads: JPG, JPEG, PNG (max size 5 MB).</p>
+                                            </li>
+                                            <li>
+                                                <p>Ensure the image is properly oriented and unaltered.</p>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="d-flex justify-content-center">
+                                        <img src="{{ asset('assets/img/phototake.jpg') }}" id="ins-photo" alt="" class="w-50">
+                                    </div>
+                                </div>
+
+                                <!-- Photo Option Radio Buttons -->
+                                <div class="photo-option mb-3 d-flex justify-content-center">
+                                    <!-- Photo Option Selection -->
+                                    <label for="uploadPhotoOption" class="mx-2">
+                                        <input type="radio" name="photoOption" id="uploadPhotoOption" value="uploadPhoto" checked> Upload Photo
+                                    </label>
+                                    <label for="takePhotoOption">
+                                        <input type="radio" name="photoOption" id="takePhotoOption" value="takePhoto"> Take Photo
+                                    </label>
+                                </div>
+
+                                <!-- Take a Photo Section -->
+                                <div id="photoCapture" class="d-flex justify-content-around flex-wrap">
                                     <div class="d-flex flex-column align-items-center">
                                         <div class="video-container">
                                             <video id="video" autoplay muted></video>
                                             <canvas id="overlay"></canvas>
                                             <div id="timer"></div>
                                         </div>
-                                        <button class="btn btn-secondary btn-sm my-3" type="button"
-                                            id="toggleCameraBtn">Turn On Camera</button>
+                                        <button class="btn btn-secondary btn-sm my-3" type="button" id="toggleCameraBtn">Turn On Camera</button>
                                     </div>
-                                    <input type="file" id="imageFile" name="user_photo" class="preview-file"
-                                        style="display: none;" required>
+                                    <!-- Preview of The Captured Photo -->
                                     <div id="preview" style="box-sizing: content-box;">
-                                        <img src="{{ asset ('assets/img/no_profile.png') }}" style="width: 300px; height:250px;"
-                                            alt="">
+                                        <img src="{{ asset('assets/img/no_profile.png') }}" style="width: 300px; height:250px;" alt="">
                                     </div>
                                 </div>
+
+                                <!-- File Input Section -->
+                                <div id="fileInputSection" style="display: none;" class="d-flex justify-content-center align-items-center">
+                                    <input type="file" id="imageFile" name="user_photo" class="preview-file" required>
+                                </div>
                             </div>
-                        </div>
-                        <div class="d-flex justify-content-end mt-3">
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                                Review and Confirm
-                            </button>
-                            <button type="submit" name="register" id="register" class="btn btn-success" style="display: none;">Register</button>
+                            <div class="d-flex justify-content-end mt-3">
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                    Review and Confirm
+                                </button>
+                                <button type="submit" name="register" id="register" class="btn btn-success" style="display: none;">Register</button>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -469,40 +400,41 @@
                 </div>
                 <div class="modal-body">
                     <h5>Account Details</h5>
-                    <p><strong>Account Type:</strong> <span id="reviewAccountType"></span></p>
-                    <p><strong>Username:</strong> <span id="reviewUsername"></span></p>
-                    <p><strong>Email:</strong> <span id="reviewEmail"></span></p>
-                    <p><strong>Password:</strong> <span id="reviewPassword"></span></p>
+                    <div class="ms-3">
+                        <p><strong>Account Type:</strong> <span id="reviewAccountType"></span></p>
+                        <p><strong>Username:</strong> <span id="reviewUsername"></span></p>
+                        <p><strong>Email:</strong> <span id="reviewEmail"></span></p>
+                        <p><strong>Password:</strong> <span id="reviewPassword"></span></p>
+                    </div>
                     <hr />
-                    <h5>Account Details</h5>
-                    <p><strong>First Name:</strong> <span id="reviewFname"></span></p>
-                    <p><strong>Last Name:</strong> <span id="reviewLname"></span></p>
-                    <p><strong>Mobile Number:</strong> <span id="reviewContactNumber"></span></p>
-                    <p><strong>Gender:</strong> <span id="reviewGender"></span></p>
-                    <hr>
-                    <h5>Education & Profession</h5> <!--  for volunteer only -->
-                    <p><strong>Highest Educational Attainment:</strong> <span id="reviewEducation"></span></p>
-                    <p><strong>Still Studying:</strong> <span id="reviewStudying"></span></p>
-                    <p><strong>Employed:</strong> <span id="reviewEmployed"></span></p>
-                    <hr />
-                    <h5>Volunteering Details</h5> <!--  for volunteer only -->
-                    <p><strong>Preferred Services:</strong> <span id="reviewPreferredService"></span></p>
-                    <p><strong>Availability:</strong> <span id="reviewAvailability"></span></p>
-                    <p><strong>Availability Time:</strong> <span id="reviewAvailabilityTime"></span></p>
+                    <h5>Person Details</h5>
+                    <div class="ms-3">
+                        <p><strong>First Name:</strong> <span id="reviewFname"></span></p>
+                        <p><strong>Last Name:</strong> <span id="reviewLname"></span></p>
+                        <p><strong>Contact Number:</strong> <span id="reviewContactNumber"></span></p>
+                    </div>
                     <hr>
                     <h5>Address Details</h5>
-                    <p><strong>Region:</strong> <span id="reviewRegion"></span></p>
-                    <p><strong>Province:</strong> <span id="reviewProvince"></span></p>
-                    <p><strong>City:</strong> <span id="reviewCity"></span></p>
-                    <p><strong>Barangay:</strong> <span id="reviewBarangay"></span></p>
-                    <p><strong>Full Address:</strong> <span id="reviewFullAddress"></span></p>
+                    <div class="ms-3">
+                        <p><strong>Region:</strong> <span id="reviewRegion"></span></p>
+                        <p><strong>Province:</strong> <span id="reviewProvince"></span></p>
+                        <p><strong>City:</strong> <span id="reviewCity"></span></p>
+                        <p><strong>Barangay:</strong> <span id="reviewBarangay"></span></p>
+                        <p><strong>Full Address:</strong> <span id="reviewFullAddress"></span></p>
+                    </div>
                     <hr>
-                    <h5>Identity Details</h5>
-                    <p><strong>ID Type:</strong> <span id="reviewIdType"></span></p>
-                    <p><strong>ID Image:</strong></p>
-                    <img id="reviewIdImage" class="border border-secondary" src="{{ asset ('assets/img/no_image.jpg') }}" alt="ID Image" style="width: 200px; height:200px; margin-bottom: 16px;" />
-                    <p><strong>User Image:</strong></p>
-                    <img id="reviewUserImage" class="border border-secondary" src="{{ asset ('assets/img/no_image.jpg') }}" alt="User Image" style="width: 200px; height:200px;" />
+                    <h5>Volunteering Details</h5> <!--  for volunteer only -->
+                    <div class="ms-3">
+                        <p><strong>Preferred Services:</strong> <span id="reviewPreferredService"></span></p>
+                        <p><strong>Availability:</strong> <span id="reviewAvailability"></span></p>
+                        <p><strong>Availability Time:</strong> <span id="reviewAvailabilityTime"></span></p>
+                    </div>
+                    <hr>
+                    <h5>User Image Submission</h5>
+                    <div class="ms-3">
+                        <p><strong>User Image:</strong></p>
+                        <img id="reviewUserImage" class="border border-secondary" src="{{ asset ('assets/img/no_image.jpg') }}" alt="User Image" style="width: 200px; height:200px;" />
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Edit</button>
