@@ -58,6 +58,9 @@ return new class extends Migration
             $table->string('first_name', 100);
             $table->string('last_name', 100)->nullable();
             $table->string('contact', 15)->unique();
+            $table->string('gender', 10);
+            $table->string('id_type', 50);
+            $table->string('id_image', 255);
             $table->string('user_photo', 255);
             $table->timestamps();
         });
@@ -69,6 +72,9 @@ return new class extends Migration
             $table->string('first_name', 100);
             $table->string('last_name', 100);
             $table->string('contact', 15)->unique();
+            $table->string('gender', 10);
+            $table->string('id_type', 50);
+            $table->string('id_image', 255);
             $table->string('user_photo', 255);
             $table->enum('pref_services', ['collect_donations', 'relief_operation', 'health_welfare', 'emergency_response', 'general'])->nullable();;
             $table->enum('availability', ['weekday', 'weekend', 'holiday', 'disasters']);

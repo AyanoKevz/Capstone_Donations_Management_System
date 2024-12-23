@@ -1102,7 +1102,7 @@ input.is-invalid, select.is-invalid {
     align-items: center;
     justify-content: space-evenly;
     flex-wrap: wrap;
-    margin: 10px auto;
+    margin: 20px auto;
 }
 .input-field{
     display: flex;

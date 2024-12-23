@@ -210,6 +210,18 @@
                                     <input type="number" class="r-input" placeholder="Enter mobile number" required
                                         name="contact_number">
                                 </div>
+                                <!-- Gender -->
+                                <div class="input-field" id="gender-options">
+                                    <label>Gender <span class="text-danger fs-6">*</span>
+                                        <span class="icon-status"></span>
+                                    </label>
+                                    <select required name="gender">
+                                        <option disabled selected value="">Select gender</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                        <option value="Others">Others</option>
+                                    </select>
+                                </div>
 
                             </div>
                         </div>
@@ -269,10 +281,90 @@
 
                         <!-- Identity Details Section -->
                         <div class="details identity">
+
+                            <span class="title">Identity Details</span>
+                            <!-- Instructions for ID/Organization Proof Upload -->
+                            <h4 class="m-0">ID Submission Instructions: </h4>
+                            <div class="d-flex justify-content-around align-items-center flex-wrap-reverse">
+                                <div>
+                                    <ul id="upload-instructions" class="mt-2">
+                                        <li>
+                                            <p>Upload a valid ID (Passport, Driver's License, etc.).</p>
+                                        </li>
+                                        <li>
+                                            <p>Ensure the ID is clear, visible, and legible.</p>
+                                        </li>
+                                        <li>
+                                            <p>Accepted formats: JPG, JPEG, PNG (max size 5 MB).</p>
+                                        </li>
+                                        <li>
+                                            <p>No edits or alterations to the ID.</p>
+                                        </li>
+                                        <li>
+                                            <p>Use good lighting and avoid glare.</p>
+                                        </li>
+                                        <li>
+                                            <p>Select if upload the image or take photo of the ID.</p>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="d-flex justify-content-center">
+                                    <img src="{{ asset ('assets/img/Id.png') }}" id="proof-photo" alt="" class="w-50">
+                                </div>
+                            </div>
+                            <div class="fields mb-5">
+                                <!-- Select ID Type -->
+                                <div class="input-field" id="id-select">
+                                    <label for="proofOfIdentity" class="fw-medium">
+                                        Select ID Type <span class="text-danger fs-6">*</span>
+                                        <span class="icon-status"></span>
+                                    </label>
+                                    <select id="validID" name="id_type" required>
+                                        <option disabled selected value="">Select ID</option>
+                                        <option value="Philippine Passport">Philippine Passport</option>
+                                        <option value="Driver's License">Driver's License</option>
+                                        <option value="SSS ID">SSS ID</option>
+                                        <option value="UMID">UMID</option>
+                                        <option value="PhilHealth ID">PhilHealth ID</option>
+                                        <option value="Voter's ID">Voter's ID</option>
+                                        <option value="PRC ID">PRC ID</option>
+                                        <option value="Postal ID">Postal ID</option>
+                                        <option value="TIN ID">TIN ID</option>
+                                        <option value="Barangay ID">Barangay ID</option>
+                                    </select>
+                                </div>
+                                <!-- Upload or Take Photo Option -->
+                                <div class="input-field">
+                                    <label class="fw-medium">Select Option:</label>
+                                    <div>
+                                        <input type="radio" id="uploadOption" name="photoOption" value="upload" checked>
+                                        <label for="uploadOption">Upload File</label>
+                                        <input type="radio" id="cameraOption" name="photoOption" value="camera">
+                                        <label for="cameraOption">Take Photo</label>
+                                    </div>
+                                </div>
+                                <!-- File Upload -->
+                                <div class="input-field" id="fileUploadSection">
+                                    <label for="proofUpload" id="proofUpload-label" class="fw-medium">
+                                        Upload Selected ID <span class="text-danger fs-6">*</span>
+                                    </label>
+                                    <input type="file" id="proofUpload" name="id_image" required>
+                                </div>
+                                <!-- Webcam Section (Hidden by Default) -->
+                                <div id="cameraSection" style="display: none; text-align: center;">
+                                    <div id="my_camera" style="width: 300px; height: 250px; margin: 0 auto; "></div>
+                                    <div id="capturedImage" style=" text-align: center; display: none;"></div>
+                                    <br>
+                                    <div class="d-flex justify-content-center align-items-center">
+                                        <button type="button" id="captureBtn" class="btn btn-secondary btn-sm m-0">Capture Photo</button>
+                                    </div>
+                                </div>
+                            </div>
+
                             <span class="title">User Image Submission</span>
                             <!-- Instructions for Individual/Organization Image Upload -->
                             <div class="d-flex flex-column align-items-around take-photo-section">
-                                <h4 class="m-0">Instructions: </h4>
+                                <h4 class="m-0">Photo Submission Instructions: </h4>
                                 <div class="d-flex justify-content-around align-items-center flex-wrap-reverse">
                                     <div>
                                         <ul id="instructions" class="mt-2">
@@ -368,6 +460,7 @@
                         <p><strong>First Name:</strong> <span id="reviewFname"></span></p>
                         <p><strong>Last Name:</strong> <span id="reviewLname"></span></p>
                         <p><strong>Contact Number:</strong> <span id="reviewContactNumber"></span></p>
+                        <p><strong>Gender:</strong> <span id="reviewGender"></span></p>
                     </div>
                     <hr>
                     <h5>Address Details</h5>
@@ -379,7 +472,13 @@
                         <p><strong>Full Address:</strong> <span id="reviewFullAddress"></span></p>
                     </div>
                     <hr>
-                    <h5>User Image Submission</h5>
+                    <h5>Identity Details</h5>
+                    <div class="ms-3">
+                        <p><strong>ID Type:</strong> <span id="reviewIdType"></span></p>
+                        <p><strong>ID Image:</strong></p>
+                        <img id="reviewIdImage" class="border border-secondary" src="{{ asset ('assets/img/no_image.jpg') }}" alt="ID Image" style="width: 200px; height:200px; margin-bottom: 16px;" />
+                    </div>
+
                     <div class="ms-3">
                         <p><strong>User Image:</strong></p>
                         <img id="reviewUserImage" class="border border-secondary" src="{{ asset ('assets/img/no_image.jpg') }}" alt="User Image" style="width: 200px; height:200px;" />

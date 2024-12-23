@@ -33,10 +33,8 @@ class RegistrationEmail extends Mailable
     public function build()
     {
         $logoPath = public_path('assets/img/systemLogo.png');
-        $view = $this->role === 'Donor' ? 'emails.registrationDonor' : 'emails.registrationVolunteer';
-
         return $this->subject('Thank You for Registering!')
-            ->view($view)
+            ->view('emails.registration')
             ->with([
                 'username' => $this->username,
                 'role' => $this->role,

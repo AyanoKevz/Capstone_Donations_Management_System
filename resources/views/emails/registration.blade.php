@@ -105,7 +105,7 @@
         <div class="card">
           <h1>Welcome to UniAid, {{ $username }}!</h1>
           <p>Thank you for registering as a <b>{{ $role }}</b>. We're thrilled to have you as part of our community!</p>
-          <p><b>Take Note:</b> Your account is Inactive. You need first to attend the orienttation and you’ll be able to login.</p>
+          <p><b>Take Note:</b> Your account is currently under review for verification. Once approved, you'll receive an email notification, and you’ll be able to login.</p>
         </div>
       </div>
 

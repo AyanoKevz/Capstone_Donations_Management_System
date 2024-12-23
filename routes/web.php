@@ -36,7 +36,6 @@ Route::get('/register/volunteer', [UserRegistrationController::class, 'showVolun
 
 // Register Submit route
 Route::post('/register/donor', [UserRegistrationController::class, 'registerDonor'])->name('register.donor');
-Route::post('/register/donee', [UserRegistrationController::class, 'registerDonee'])->name('register.donee');
 Route::post('/register/volunteer', [UserRegistrationController::class, 'registerVolunteer'])->name('register.vol');
 
 //LOGIN ROUTES: 
@@ -79,6 +78,8 @@ Route::middleware('admin')->prefix('admin')->group(function () {
 
 // Admin Logout
 Route::post('/admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
+
+
 Route::get('/verify_account', [VerifyAcct::class, 'showInactiveAccounts'])->name('verify_account');
 Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 

@@ -16,6 +16,9 @@ class Donor extends Model
         'first_name',
         'last_name',
         'contact',
+        'gender',
+        'id_type',
+        'id_image',
         'user_photo',
     ];
 

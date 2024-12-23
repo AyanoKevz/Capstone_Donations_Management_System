@@ -39,7 +39,6 @@ class UserRegistrationController extends Controller
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
             'account_type' => $validated['accountType'],
-            'is_verified' => true, // Automatically verified for donors
         ]);
 
         $role = Role::where('role_name', 'Donor')->first();
@@ -93,6 +92,7 @@ class UserRegistrationController extends Controller
             'accountType' => 'required|string|in:Individual,Organization',
             'fname' => 'required|string|max:100',
             'lname' => 'nullable|string|max:100',
+            'gender' => 'nullable|string',
             'contact_number' => [
                 'required',
                 'string',
@@ -104,6 +104,8 @@ class UserRegistrationController extends Controller
             'city' => 'required|string',
             'barangay' => 'required|string',
             'full_address' => 'required|string|max:255',
+            'id_type' => 'required|string',
+            'id_image' => 'required|file|mimes:jpeg,jpg,png|max:5120',
             'user_photo' => 'required|file|mimes:jpeg,jpg,png|max:5120',
         ];
 
@@ -135,6 +137,9 @@ class UserRegistrationController extends Controller
             'first_name' => $request->fname,
             'last_name' => $request->lname,
             'contact' => $request->contact_number,
+            'gender' => $request->gender,
+            'id_type' => $request->id_type,
+            'id_image' => $request->file('id_image')->store('id_images', 'public'),
             'user_photo' => $request->file('user_photo')->store('user_photos', 'public'),
         ];
     }

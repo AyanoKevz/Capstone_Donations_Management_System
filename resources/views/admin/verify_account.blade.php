@@ -298,9 +298,23 @@
             <i class="fa-solid fa-circle-xmark fa-xl me-3"></i>{{ session('error') }}
           </div>
           @endif
+          <div class="d-flex justify-content-end  mb-1">
+            <a href="{{ route('verify_account', ['role_name' => 'all']) }}"
+              class="btn table-btn btn-sm {{ $filter === 'all' ? 'custom-active' : '' }}">
+              All
+            </a>
+            <a href="{{ route('verify_account', ['role_name' => 'Donor']) }}"
+              class="btn table-btn btn-sm {{ $filter === 'Donor' ? 'custom-active' : '' }}">
+              Donor
+            </a>
+            <a href="{{ route('verify_account', ['role_name' => 'Volunteer']) }}"
+              class="btn table-btn btn-sm {{ $filter === 'Volunteer' ? 'custom-active' : '' }}">
+              Volunteer
+            </a>
+          </div>
           <div class="card">
             <div class="card-header">
-              <h3 class="card-title">All Inactive Volunteer Accounts</h3>
+              <h3 class="card-title">All Inactive Accounts</h3>
             </div>
             <!-- /.card-header -->
             <div class="card-body">
@@ -308,6 +322,7 @@
                 <thead>
                   <tr>
                     <th>Username</th>
+                    <th>Account Type</th>
                     <th>Role</th>
                     <th>Status</th>
                     <th>Details</th>
@@ -317,6 +332,7 @@
                   @forelse($inactiveAccounts as $account)
                   <tr>
                     <td>{{ $account->username }}</td>
+                    <td>{{ ucfirst($account->account_type) }}</td>
                     <td>{{ $account->roles->first()->role_name }}</td>
                     <td>
                       <p class="bg-dark-subtle text-dark-emphasis m-0 p-1 fw-bold">Not Active</p>
@@ -325,7 +341,7 @@
                   </tr>
                   @empty
                   <tr>
-                    <td colspan="4" class="text-center">No inactive accounts found</td>
+                    <td colspan="5" class="text-center">No inactive accounts found</td>
                   </tr>
                   @endforelse
                 </tbody>

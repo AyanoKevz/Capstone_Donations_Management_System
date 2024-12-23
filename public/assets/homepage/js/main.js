@@ -11,6 +11,16 @@ var spinnerElement = document.getElementById("spinner");
 if (spinnerElement) {
     spinnerElement.classList.remove("show");
 }
+
+// Show spinner on form submission
+document.querySelectorAll("form").forEach(function (form) {
+    form.addEventListener("submit", function () {
+        if (spinnerElement) {
+            spinnerElement.classList.add("show");
+        }
+    });
+});
+
     
    //animation
 const wow = new WOW({
@@ -192,8 +202,29 @@ $('#individual').on('change', function () {
     $('#info-title').text('Personal Details');
     $('#fname-label').html('First Name <span class="text-danger fs-6">*</span>');
     $('#fname').attr('placeholder', 'Enter your first name');
-    $('#last-name').css('display', 'flex');
-    $('#birth-label').html('Date of Birth <span class="text-danger fs-6">*</span>');
+    $('#last-name,  #gender-options').css('display', 'flex');
+      $('#validID').html(`
+    <option disabled selected value="">Select ID</option>
+    <option value="Philippine Passport">Philippine Passport</option>
+    <option value="Driver's License">Driver's License</option>
+    <option value="SSS ID">SSS ID</option>
+    <option value="UMID">UMID</option>
+    <option value="PhilHealth ID">PhilHealth ID</option>
+    <option value="Voter's ID">Voter's ID</option>
+    <option value="PRC ID">PRC ID</option>
+    <option value="Postal ID">Postal ID</option>
+    <option value="TIN ID">TIN ID</option>
+    <option value="Barangay ID">Barangay ID</option>
+  `);
+  $('#proofUpload-label').html('Upload Selected ID <span class="text-danger fs-6">*</span>');
+    $('#proof-photo').attr('src', '../assets/img/Id.png');
+  $('#upload-instructions').html(`
+      <li><p>Upload a valid ID (Passport, Driver's License, etc.).</p></li>
+      <li><p>Ensure the ID is clear, visible, and legible.</p></li>
+      <li><p>Accepted formats: JPG, JPEG, PNG (max size 5 MB).</p></li>
+      <li><p>No edits or alterations to the ID.</p></li>
+      <li><p>Use good lighting and avoid glare.</p></li>
+  `);
 
     // Show instructions for individuals
     $('#ins-photo').attr('src', '../assets/img/phototake.jpg');
@@ -218,9 +249,27 @@ $('#individual').on('change', function () {
 $('#organization').on('change', function () {
     $('#info-title').text('Organization Details');
     $('#fname-label').html('Organization Name <span class="text-danger fs-6">*</span>');
-    $('#birth-label').html('Established Date <span class="text-danger fs-6">*</span>');
     $('#fname').attr('placeholder', 'Enter organization name');
-    $('#middle-name, #last-name, #gender-options').css('display', 'none');
+    $('#last-name, #gender-options').css('display', 'none');
+      $('#validID').html(`
+    <option disabled selected value="">Select Proof Document</option>
+    <option value="SEC Certificate of Registration">SEC Certificate of Registration</option>
+    <option value="Mayor's Permit">Mayor's Permit</option>
+    <option value="BIR 2303 Form">BIR 2303 Form</option>
+    <option value="DTI Certificate">DTI Certificate</option>
+    <option value="Articles of Incorporation">Articles of Incorporation</option>
+    <option value="Organizational Letterhead">Organizational Letterhead</option>
+  `);
+  
+  $('#proofUpload-label').html('Upload Selected Organization Document <span class="text-danger fs-6">*</span>');
+  $('#proof-photo').attr('src', '../assets/img/document.png'); // Change image to document image
+  $('#upload-instructions').html(`
+      <li><p>Upload proof of organization (Certificate of Incorporation, Business Permit, etc.).</p></li>
+      <li><p>Ensure the document is clear and legible.</p></li>
+      <li><p>Accepted formats: PDF, JPG, JPEG, PNG (max size 10 MB).</p></li>
+      <li><p>No edits or alterations to the document.</p></li>
+      <li><p>Use good lighting and avoid glare if taking a photo of the document.</p></li>
+  `);
 
     // Show instructions for organizations
     $('#ins-photo').attr('src', '../assets/img/upload.png');
@@ -594,13 +643,25 @@ $("#login-form").validate({
     }
 });
 
-// Prevent modal form from submitting if validation fails
-$('#login-form').on('submit', function(event) {
-    if (!$(this).valid()) { // Check if the form is valid
-        event.preventDefault(); // Prevent form submission if validation fails
-    }
-});
+   $('#login-form').on('submit', function (e) {
+        // Get the values of the username and password fields
+        const username = $('#username').val().trim();
+        const password = $('.password-input').val().trim();
 
+        // Prevent submission and hide spinner if validation fails
+        if (username.length < 5 || password.length < 8) {
+            e.preventDefault(); // Stop form submission
+            if (spinnerElement) {
+                spinnerElement.classList.remove("show"); // Ensure spinner is hidden
+            }
+            return; // Exit the function
+        }
+
+        // If validation passes, show the spinner
+        if (spinnerElement) {
+            spinnerElement.classList.add("show");
+        }
+    });
 
 $('.toggle-password').on('click', function () {
     const passwordInput = $('.password-input'); // Target the password input
@@ -615,6 +676,90 @@ $('.toggle-password').on('click', function () {
         toggleIcon.removeClass('fa-eye').addClass('fa-eye-slash'); // Change icon to 'eye-slash'
     }
 });
+
+// Elements
+const $uploadOption = $('#uploadOption');
+const $cameraOption = $('#cameraOption');
+const $fileUploadSection = $('#fileUploadSection');
+const $cameraSection = $('#cameraSection');
+const $proofUpload = $('#proofUpload');
+const $captureBtn = $('#captureBtn');
+const $myCamera = $('#my_camera');
+const $capturedImageDiv = $('#capturedImage');
+const $reviewIdImage = $('#reviewIdImage');
+
+// Toggle sections based on user selection
+$('input[name="photoOption"]').on('change', function () {
+    if ($uploadOption.is(':checked')) {
+        $fileUploadSection.show();
+        $cameraSection.hide();
+        $proofUpload.prop('required', true);
+    } else if ($cameraOption.is(':checked')) {
+        $fileUploadSection.hide();
+        $cameraSection.show();
+        $proofUpload.prop('required', false);
+        // Initialize Webcam
+        Webcam.set({
+            width: 300,
+            height: 250,
+            image_format: 'jpeg',
+            jpeg_quality: 90
+        });
+        Webcam.attach('#my_camera');
+    }
+});
+
+// Update review image when a file is uploaded
+$proofUpload.on('change', function () {
+    if (this.files && this.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            $reviewIdImage.attr('src', e.target.result);
+        };
+        reader.readAsDataURL(this.files[0]);
+    }
+});
+
+// Capture Photo and toggle between camera and captured image
+$captureBtn.on('click', function () {
+    if ($captureBtn.text() === "Capture Photo") {
+        Webcam.snap(function (dataUri) {
+            // Hide camera and show captured image
+            $myCamera.hide();
+            $capturedImageDiv.html('<img src="' + dataUri + '" style="width: 300px; height: 250px;"/>').show();
+            $captureBtn.text("Capture Again");
+
+            // Update review image
+            $reviewIdImage.attr('src', dataUri);
+
+            // Convert Base64 to Blob and create a File object
+            const blob = dataURItoBlob(dataUri);
+            const file = new File([blob], "captured_id.jpg", { type: "image/jpeg" });
+
+            // Populate the file input programmatically
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(file);
+            $proofUpload[0].files = dataTransfer.files;
+        });
+    } else {
+        // Reset to camera view
+        $myCamera.show();
+        $capturedImageDiv.hide();
+        $captureBtn.text("Capture Photo");
+    }
+});
+
+// Convert Base64 to Blob
+function dataURItoBlob(dataURI) {
+    const byteString = atob(dataURI.split(',')[1]);
+    const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+    const ab = new ArrayBuffer(byteString.length);
+    const ia = new Uint8Array(ab);
+    for (let i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+    }
+    return new Blob([ab], { type: mimeString });
+}
 
 
 $('#imageFile').on('change', function (event) {
@@ -646,6 +791,9 @@ function validateInputs() {
         // Skip validation for fields not required for the selected account type
         if (accountType === 'Organization') {
             if ($(this).attr('name') === 'lname') {
+                return; // Skip validation for these fields
+            }
+            if ($(this).attr('name') === 'gender') {
                 return; // Skip validation for these fields
             }
         }
@@ -682,6 +830,7 @@ $('[data-bs-target="#staticBackdrop"]').click(function () {
     $('#reviewCity').text($('select[name="city"] option:selected').text());
     $('#reviewBarangay').text($('select[name="barangay"] option:selected').text());
     $('#reviewFullAddress').text($('input[name="full_address"]').val());
+    $('#reviewIdType').text($('select[name="id_type"] option:selected').text());
 
 
     // Volunteering Details (VOLUNTEER ONLY PART IN REGISTRATION)
@@ -693,9 +842,11 @@ $('[data-bs-target="#staticBackdrop"]').click(function () {
     if (accountType === 'Organization') {
         $('#reviewLname').closest('p').hide();
         $('#reviewFname').prev('strong').text('Organization Name:');
+        $('#reviewGender').hide();
     } else {
         $('#reviewLname').closest('p').show();
         $('#reviewFname').prev('strong').text('First Name:');
+        $('#reviewGender').text($('select[name="gender"]').val());
     }
 });
 
