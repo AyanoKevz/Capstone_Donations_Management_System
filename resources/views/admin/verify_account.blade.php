@@ -283,9 +283,8 @@
       <main>
         <div class="container-fluid px-3 py-2">
           <ol class="breadcrumb mb-4">
-            <li class="breadcrumb-item active">Dashboard</li>
+            <li class="breadcrumb-item active"></li>
           </ol>
-
           <h1 class="my-2">Activate Volunteer Accounts</h1>
           @if(session('success'))
           <div id="alert-success" class="alert alert-success">

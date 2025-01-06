@@ -56,7 +56,6 @@
             </a>
             <div class="dropdown-menu m-0">
               <a href="{{ route ('more_donor')}}" class="dropdown-item">Donation</a>
-              <a href="{{ route ('more_recipient')}}" class="dropdown-item">Recipient</a>
               <a href="{{ route ('more_volunteer')}}" class="dropdown-item">Volunteer</a>
             </div>
           </div>

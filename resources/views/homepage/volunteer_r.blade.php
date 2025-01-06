@@ -60,7 +60,6 @@
                         </a>
                         <div class="dropdown-menu m-0">
                             <a href="{{ route ('more_donor')}}" class="dropdown-item">Donation</a>
-                            <a href="{{ route ('more_recipient')}}" class="dropdown-item">Recipient</a>
                             <a href="{{ route ('more_volunteer')}}" class="dropdown-item">Volunteer</a>
                         </div>
                     </div>
@@ -113,7 +112,7 @@
                 <div class="alert alert-error">
                     <ul>
                         @foreach ($errors->all() as $error)
-                        <li><i class="fa-solid fa-circle-xmark fa-xl"></i>{{ $error }}</li>
+                        <li><i class="fa-solid fa-circle-xmark fa-xl"></i> {{ $error }}</li>
                         @endforeach
                     </ul>
                 </div>
@@ -277,27 +276,27 @@
                             <span class="title" id="info-title">Volunteering Details</span>
                             <div class="fields">
                                 <div class="input-field" id="services-option">
-                                    <label>Most preferred services would you like to be involved with? <span
+                                    <label>Most preferred services<span
                                             class="text-danger fs-6">*</span>
                                         <span class="icon-status"></span> <!-- Icon placeholder -->
                                     </label>
                                     <select name="pref_services">
-                                        <option disabled selected value="">Select preferred services</option>
-                                        <option value="collect_donations">General</option>
-                                        <option value="collect_donations">Collect Donations</option>
-                                        <option value="relief_operation">Relief Operations</option>
-                                        <option value="health_welfare">Health Welfare</option>
-                                        <option value="emergency_response">Emergency Response</option>
+                                        <option disabled selected value="">Select Services</option>
+                                        <option value="General">General</option>
+                                        <option value="Collect Donations">Collect Donations</option>
+                                        <option value="Relief Operations">Relief Operations</option>
+                                        <option value="Health Welfare">Health Welfare</option>
+                                        <option value="Emergency Response">Emergency Response</option>
                                     </select>
                                 </div>
 
                                 <div class="input-field" id="availability-options">
-                                    <label>When are you usually available as a volunteer? <span
+                                    <label>When available as a volunteer? <span
                                             class="text-danger fs-6">*</span>
                                         <span class="icon-status"></span> <!-- Icon placeholder -->
                                     </label>
                                     <select name="availability">
-                                        <option disabled selected value="">Select your availability</option>
+                                        <option disabled selected value="">Select Availability</option>
                                         <option value="Weekday">Weekday</option>
                                         <option value="Weekend">Weekend</option>
                                         <option value="Holiday">Holiday</option>
@@ -306,12 +305,12 @@
                                 </div>
 
                                 <div class="input-field" id="availability-time-options">
-                                    <label>What time of the day are you usually available as a Volunteer? <span
+                                    <label>What time available as a Volunteer? <span
                                             class="text-danger fs-6">*</span>
                                         <span class="icon-status"></span> <!-- Icon placeholder -->
                                     </label>
                                     <select name="availability_time">
-                                        <option disabled selected value="">Select your availability time</option>
+                                        <option disabled selected value="">Select Availability Time</option>
                                         <option value="Morning" title="Typically between 6 AM to 12 PM">Morning</option>
                                         <option value="Afternoon" title="Typically between 12 PM to 6 PM">Afternoon
                                         </option>
@@ -321,6 +320,18 @@
                                         </option>
                                         <option value="Whole-Day" title="Available throughout the entire day">Whole-Day
                                         </option>
+                                    </select>
+                                </div>
+
+                                <div class="input-field" id="chapter-options">
+                                    <label>Select Chapter <span class="text-danger fs-6">*</span>
+                                        <span class="icon-status"></span>
+                                    </label>
+                                    <select name="chapter" required>
+                                        <option disabled selected value="">Select Chapter</option>
+                                        @foreach ($chapters as $chapter)
+                                        <option value="{{ $chapter->id }}">{{ $chapter->chapter_name }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
@@ -440,10 +451,10 @@
                                 <div class="photo-option mb-3 d-flex justify-content-center">
                                     <!-- Photo Option Selection -->
                                     <label for="uploadPhotoOption" class="mx-2">
-                                        <input type="radio" name="photoOption" id="uploadPhotoOption" value="uploadPhoto" checked> Upload Photo
+                                        <input type="radio" name="userPhotoOption" id="uploadPhotoOption" value="uploadPhoto" checked> Upload Photo
                                     </label>
                                     <label for="takePhotoOption">
-                                        <input type="radio" name="photoOption" id="takePhotoOption" value="takePhoto"> Take Photo
+                                        <input type="radio" name="userPhotoOption" id="takePhotoOption" value="takePhoto"> Take Photo
                                     </label>
                                 </div>
 
@@ -520,6 +531,7 @@
                         <p><strong>Preferred Services:</strong> <span id="reviewPreferredService"></span></p>
                         <p><strong>Availability:</strong> <span id="reviewAvailability"></span></p>
                         <p><strong>Availability Time:</strong> <span id="reviewAvailabilityTime"></span></p>
+                        <p><strong>Chapter:</strong> <span id="reviewChapter"></span></p>
                     </div>
                     <hr>
                     <h5>Identity Details</h5>
@@ -631,6 +643,7 @@
     <script src="../lib/fontawesome/all.js"></script>
     <!-- My Javascript -->
     <script src="../lib/jquery/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js"></script>
     <script src="../assets/homepage/js/main.js"></script>
 
 </body>

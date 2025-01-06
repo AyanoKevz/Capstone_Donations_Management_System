@@ -723,6 +723,8 @@ body.sb-sidenav-toggled .sb-sidenav .nav-link span {
   color: #fff;
   border-color: #539753;
   background-color: #8fbf2f;
+  font-weight: 700;
+  font-size: 22px;
 }
 
 
@@ -730,4 +732,6 @@ body.sb-sidenav-toggled .sb-sidenav .nav-link span {
   color: #fff;
   border-color: #dc4a4d;
   background-color: #f25c5d;
+  font-weight: 700;
+  font-size: 22px;
 }

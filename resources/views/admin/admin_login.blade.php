@@ -43,6 +43,12 @@
                       @endforeach
                     </div>
                     @endif
+
+                    @if (session('success'))
+                    <div id="alert-success" class="alert alert-success">
+                      <i class="fa-solid fa-circle-check me-2"></i> {{ session('success') }}
+                    </div>
+                    @endif
                     <div class="input-group mb-4">
                       <input type="text" name="username" autocomplete="off" class="input" id="username" required>
                       <label class="user-label" for="username">Username</label>

@@ -5,8 +5,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="csrf-token" content="{{ csrf_token() }}">
-  <title>Admin | Read Inquiries</title>
+  <title>Admin | Chapter</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -17,7 +16,7 @@
   <link rel="icon" href="{{ asset ('assets/img/systemLogo.png') }}" type="image/png">
   <link rel="stylesheet" href="{{ asset('lib/bootstrap/css/bootstrap.min.css') }}">
   <link rel="stylesheet" href="{{ asset('lib/datatables/datatables.min.css') }}">
-  <link rel="stylesheet" href="{{ asset ('assets/admin/css/verify.css') }}">
+  <link rel="stylesheet" href="{{ asset ('assets/admin/css/admin_profile.css') }}">
 
 </head>
 
@@ -56,7 +55,7 @@
                 <span class="availability-status online"></span>
               </div>
               <div class="nav-profile-text ms-2">
-                {{ $Admin->name }}
+                {{$Admin->name}}
               </div>
             </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
@@ -88,7 +87,6 @@
       <nav class="sb-sidenav accordion bg-logo2" id="sidenavAccordion">
         <div class="sb-sidenav-menu">
           <div class="nav">
-
             <div class="d-flex justify-content-center align-items-center py-4 border-bottom border-light nav-profile">
               <div class="nav-profile-img">
                 <img src="{{ asset('storage/' . $Admin->profile_image) }}" alt="image">
@@ -120,7 +118,7 @@
             </a>
             <div class="collapse" id="admin-settings" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
               <nav class="sb-sidenav-menu-nested nav">
-                <a class="nav-link" href="" title="Admin Profile">
+                <a class="nav-link active" href="" title="Admin Profile">
                   <div class="sb-nav-link-icon">
                     <i class="far fa-circle nav-icon"></i>
                   </div>
@@ -136,7 +134,7 @@
             </div>
 
             <!-- Manage Users -->
-            <a class="nav-link collapsed active" href="#" data-bs-toggle="collapse" data-bs-target="#manage-users"
+            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#manage-users"
               aria-expanded="false" aria-controls="manage-users" title="Manage Users">
               <div class="sb-nav-link-icon">
                 <i class="fas fa-users"></i>
@@ -160,7 +158,7 @@
                   </div>
                   <span>Volunteers</span>
                 </a>
-                <a class="nav-link active" href="{{ route('verify_account') }}" title="Verify Accounts">
+                <a class="nav-link" href="{{ route('verify_account') }}" title="Verify Accounts">
                   <div class="sb-nav-link-icon">
                     <i class="far fa-circle nav-icon"></i>
                   </div>
@@ -226,7 +224,7 @@
             </div>
 
             <!-- Volunteer Appointments -->
-            <a class="nav-link" href="{{ route('admin.appointments') }}" title="Volunteer Appointments">
+            <a class="nav-link" href="" title="Volunteer Appointments">
               <div class="sb-nav-link-icon">
                 <i class="fas fa-calendar-alt"></i>
               </div>
@@ -234,7 +232,7 @@
             </a>
 
             <!-- Chapters -->
-            <a class="nav-link " href="{{ route('admin.chapters') }}" title="Chapters">
+            <a class="nav-link" href="{{ route('admin.chapters') }}" title="Chapters">
               <div class="sb-nav-link-icon">
                 <i class="fas fa-map-marker-alt"></i>
               </div>
@@ -272,252 +270,158 @@
       </nav>
     </div>
     <!-- Content -->
-    <div id="layoutSidenav_content" class="student-profile">
+    <div id="layoutSidenav_content">
       <main>
         @if(session('success'))
         <div id="alert-success" class="alert alert-success" style="position: absolute; right: 10px; top: 40px;">
           <i class="fa-solid fa-circle-check fa-xl me-3"></i>{{ session('success') }}
         </div>
         @endif
+        @if(session('error'))
+        <div id="alert-error" class="alert alert-danger" style=" position: absolute; right: 10px; top: 40px;">
+          <i class=" fa-solid fa-circle-xmark fa-xl me-3"></i>{{ session('error') }}
+        </div>
+        @endif
         <div class="container-fluid px-3 py-2">
           <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item active"></li>
           </ol>
-          <h1 class="my-2">User Information</h1>
-          <div class="row">
-            <div class="col-lg-4">
-              <div class="card shadow-sm">
-                <div class="card-header bg-transparent text-center">
-                  <img src="{{ asset('storage/' . $details->user_photo) }}" class="profile_img" alt="User Photo">
-                  <h3>Username: {{ $user->username }}</h3>
+          <h1 class="my-2">Appointments</h1>
+          <!-- Profile 1 - Bootstrap Brain Component -->
+          <section class="bg-light py-3 py-md-5 py-xl-8">
+            <div class="container">
+              <div class="row gy-4 gy-lg-0">
+                <div class="col-12 col-lg-4 col-xl-3">
+                  <div class="row gy-4">
+                    <div class="col-12">
+                      <div class="card widget-card border-light shadow-sm">
+                        <div class="card-header">Welcome, {{$Admin -> name}}</div>
+                        <div class="card-body">
+                          <div class="text-center mb-3">
+                            <img src="{{ asset('storage/' . $Admin->profile_image) }}" class="img-fluid rounded-circle w-50" alt="Luna John">
+                          </div>
+                          <h5 class="text-center mb-1">Ethan Leo</h5>
+                          <p class="text-center text-secondary mb-4">Admin</p>
+                          <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                              <h6 class="m-0">Username:</h6>
+                              <span>{{$Admin -> username}}</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                              <h6 class="m-0">Email:</h6>
+                              <span>{{$Admin -> email}}</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                              <h6 class="m-0">Account Type:</h6>
+                              <span>Admin</span>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div class="card-body">
-                  <p class="mb-0"><strong class="">Account Type:</strong> {{$user->account_type}}</p>
-                  <p class="mb-0"><strong class="">Role:</strong> {{ $role }}</p>
-                  <p class="mb-0"><strong class="">Email:</strong> {{ $user->email }}</p>
+                <div class="col-12 col-lg-8 col-xl-9">
+                  <div class="card widget-card border-light shadow-sm">
+                    <div class="card-body p-4">
+                      <ul class="nav nav-tabs" id="profileTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                          <button class="nav-link profile_tab active" id="overview-tab" data-bs-toggle="tab" data-bs-target="#overview-tab-pane" type="button" role="tab" aria-controls="overview-tab-pane" aria-selected="true">Overview</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                          <button class="nav-link profile_tab" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Profile</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                          <button class="nav-link profile_tab" id="password-tab" data-bs-toggle="tab" data-bs-target="#password-tab-pane" type="button" role="tab" aria-controls="password-tab-pane" aria-selected="false">Account</button>
+                        </li>
+                      </ul>
+                      <div class="tab-content pt-4" id="profileTabContent">
+                        <div class="tab-pane fade show active" id="overview-tab-pane" role="tabpanel" aria-labelledby="overview-tab" tabindex="0">
+                          <h5 class="mb-3">Profile</h5>
+                          <div class="row g-0">
+                            <div class="col-5 col-md-3 bg-light border-bottom border-white border-3">
+                              <div class="p-2"><strong>Full Name</strong> </div>
+                            </div>
+                            <div class="col-7 col-md-9 bg-light border-start border-bottom border-white border-3">
+                              <div class="p-2">{{$Admin -> name}}</div>
+                            </div>
+                            <div class="col-5 col-md-3 bg-light border-bottom border-white border-3">
+                              <div class="p-2"><strong>Email</strong> </div>
+                            </div>
+                            <div class="col-7 col-md-9 bg-light border-start border-bottom border-white border-3">
+                              <div class="p-2">{{$Admin ->email}}</div>
+                            </div>
+                          </div>
+
+                        </div>
+                        <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+                          <form method="POST" action="#" class="row gy-3 gy-xxl-4" enctype="multipart/form-data" id="admin_profile_form">
+                            <div class="col-12">
+                              <div class="row gy-2 justify-content-center align-items-center">
+                                <label class="col-12 form-label m-0 text-center"><strong> Profile Image </strong></label>
+                                <img id="imagePreview" src="{{ asset('storage/' . $Admin->profile_image) }}" class="img-fluid rounded w-25" alt="Profile Image">
+                                <div class="form">
+                                  <span class="form-title">Upload your file</span>
+                                  <p class="form-paragraph">
+                                    File should be an image
+                                  </p>
+                                  <label for="file-input" class="drop-container">
+                                    <input type="file" accept="" required="" id="file-input" name="profile_image">
+                                  </label>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                              <label for="inputFirstName" class="form-label">Name</label>
+                              <input type="text" class="form-control" id="inputFirstName" name="name" value="{{$Admin -> name}}">
+                            </div>
+                            <div class="col-12 col-md-6">
+                              <label for="inputLastName" class="form-label">Email</label>
+                              <input type="text" class="form-control" id="email" name="email" value="{{$Admin -> email}}">
+                            </div>
+                            <div class="col-12">
+                              <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                          </form>
+                        </div>
+                        <div class="tab-pane fade" id="password-tab-pane" role="tabpanel" aria-labelledby="password-tab" tabindex="0">
+                          <form method="POST" action="#" id="admin_acount_form">
+                            <div class="row gy-3 gy-xxl-4">
+                              <div class="col-12">
+                                <label for="confirmPassword" class="form-label">Username</label>
+                                <input type="text" class="form-control" name="username" id="username" value="{{$Admin -> username}}">
+                              </div>
+                              <div class="input-group col-12">
+                                <input type="password" class="form-control" placeholder="Current Password" aria-label="Recipient's username" name="oldPassword" id="oldPassword" aria-describedby="button-addon2">
+                                <button class="btn btn-outline-secondary" type="button" id="toggle-opassword">
+                                  <i class="fas fa-eye" id="toggle-opassword-icon"></i></button>
+                              </div>
+                              <div class="input-group col-12">
+                                <input type="password" class="form-control" placeholder="New Password" aria-label="Recipient's username" name="password" id="password" aria-describedby="button-addon2">
+                                <button class="btn btn-outline-secondary" type="button" id="toggle-password">
+                                  <i class="fas fa-eye" id="toggle-password-icon"></i></button>
+                              </div>
+                              <div class="input-group col-12">
+                                <input type="password" class="form-control" placeholder="Confirm Password" aria-label="Recipient's username" name="cpassword" id="cpassword" aria-describedby="button-addon2">
+                                <button class="btn btn-outline-secondary" type="button" id="toggle-cpassword">
+                                  <i class="fas fa-eye" id="toggle-password-icon"></i></button>
+                              </div>
+                              <div class="col-12">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                              </div>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-            <div class="col-lg-8">
-              <div class="card shadow-sm">
-                <div class="card-header bg-transparent border-0">
-                  <h3 class="mb-0"><i class="far fa-clone pr-1"></i> Personal Information</h3>
-                </div>
-                <div class="card-body pt-0">
-                  <table class="table table-bordered">
-                    <tr>
-                      @if($user->account_type === 'Individual')
-                      <th width="30%">First Name</th>
-                      @else
-                      <th width="30%">Organization Name</th>
-                      @endif
-                      <td width="2%">:</td>
-                      <td>{{ $details->first_name }}</td>
-                    </tr>
-                    @if($user->account_type === 'Individual')
-                    <tr>
-                      <th width="30%">Last Name </th>
-                      <td width="2%">:</td>
-                      <td>{{ $details->last_name }}</td>
-                    </tr>
-                    <tr>
-                      <th width="30%">Gender</th>
-                      <td width="2%">:</td>
-                      <td>{{ $details->gender }}</td>
-                    </tr>
-                    @endif
-                    <tr>
-                      <th width="30%">Contact Number</th>
-                      <td width="2%">:</td>
-                      <td>{{ $details->contact }}</td>
-                    </tr>
-                  </table>
-                  <div class="card-header bg-transparent border-0">
-                    <h3 class="mb-0"><i class="far fa-clone pr-1"></i> Address Information</h3>
-                  </div>
-                  <table class="table table-bordered">
-                    <tr>
-                      <th width="30%">Region</th>
-                      <td width="2%">:</td>
-                      <td>{{ $user->location->region }}</td>
-                    </tr>
-                    <tr>
-                      <th width="30%">Province </th>
-                      <td width="2%">:</td>
-                      <td>{{ $user->location->province }}</td>
-                    </tr>
-                    <tr>
-                      <th width="30%">City</th>
-                      <td width="2%">:</td>
-                      <td>{{ $user->location->city_municipality }}</td>
-                    </tr>
-                    <tr>
-                      <th width="30%">Barangay</th>
-                      <td width="2%">:</td>
-                      <td>{{ $user->location->barangay }}</td>
-                    </tr>
-                    <tr>
-                      <th width="30%">Full Address</th>
-                      <td width="2%">:</td>
-                      <td>{{ $user->location->full_address }}</td>
-                    </tr>
-                  </table>
-                  @if($role === 'Volunteer')
-                  <div class="card-header bg-transparent border-0">
-                    <h3 class="mb-0"><i class="far fa-clone pr-1"></i> Volunteering Details</h3>
-                  </div>
-                  <table class="table table-bordered">
-                    <tr>
-                      <th width="30%">Chapter</th>
-                      <td width="2%">:</td>
-                      <td>{{ $details->chapter->chapter_name}}</td>
-                    </tr>
-                    <tr>
-                      <th width="30%">Preferred Services </th>
-                      <td width="2%">:</td>
-                      <td>{{ $details->pref_services }}</td>
-                    </tr>
-                    <tr>
-                      <th width="30%">Availability</th>
-                      <td width="2%">:</td>
-                      <td>{{ $details->availability }}</td>
-                    </tr>
-                    <tr>
-                      <th width="30%">Availability Time</th>
-                      <td width="2%">:</td>
-                      <td>{{ $details->availability_time }}</td>
-                    </tr>
-                  </table>
-                  @endif
-                </div>
-              </div>
-              <div class="card shadow-sm">
-                <div class="card-header bg-transparent border-0">
-                  @if($user->account_type === 'Individual')
-                  <h3 class="mb-0"><i class="far fa-clone pr-1"></i> ID Submmited</h3>
-                  @else
-                  <h3 class="mb-0"><i class="far fa-clone pr-1"></i> Document Submitted</h3>
-                  @endif
-                </div>
-                <div class="card-body pt-0">
-                  @if($user->account_type === 'Individual')
-                  <p><strong>ID Type Submitted:</strong> {{ $details->id_type}}</p>
-                  @else
-                  <p><strong>Document Type Submitted:</strong> {{ $details->id_type}}</p>
-                  @endif
-                  <div class="image-container mx-auto d-flex align-items-center justify-content-center">
-                    <img src="{{ asset('storage/' . $details->id_image) }}" alt="User Photo">
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row mt-4">
-            <div class="col text-center">
-              @if($role === 'Donor')
-              <!-- Show Verify button for Donors -->
-              <button type="button" class="btn btn-success me-3" data-bs-toggle="modal" data-bs-target="#verify" data-user-id="{{ $user->id }}">
-                Verify
-              </button>
-              @elseif($role === 'Volunteer')
-              @if($appointmentExists)
-              <!-- Show Verify button if Volunteer already has an appointment -->
-              <button type="button" class="btn btn-success me-3" data-bs-toggle="modal" data-bs-target="#verify" data-user-id="{{ $user->id }}">
-                Verify
-              </button>
-              @else
-              <!-- Show Set an Appointment button if Volunteer doesn't have an appointment -->
-              <button type="button" class="btn btn-success me-3" data-bs-toggle="modal" data-bs-target="#appointment" data-user-id="{{ $user->id }}">
-                Set an Appointment
-              </button>
-              @endif
-              @endif
-              <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#unverify" data-user-id="{{ $user->id }}">
-                Not Verify
-              </button>
-            </div>
-          </div>
+
+          </section>
         </div>
       </main>
-
-      <!-- Verify Modal -->
-      <div class="modal fade" id="verify" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h1 class="modal-title fs-4">Do you want to verify?</h1>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body text-center">
-              <p class="m-0">Verify this account? This account will be active.</p>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-              <!-- Traditional Form for Verify -->
-              <form action="{{ route('process_verification', $user->id) }}" method="POST">
-                @csrf
-                <input type="hidden" name="action" value="verify">
-                <button type="submit" class="btn btn-success">Yes</button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Appointment Modal -->
-      <div class="modal fade" id="appointment" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h1 class="modal-title fs-4">Set Appointment for Orientation</h1>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form action="{{ route('create.appointment', $details->id) }}" method="POST">
-              <div class="modal-body text-center">
-                @csrf
-                <div class="form-group mb-3">
-                  <label for="appointment_date">Appointment Date</label>
-                  <input type="date" class="form-control" id="appointment_date" name="appointment_date" required>
-                </div>
-                <div class="form-group mb-3">
-                  <label for="appointment_time">Appointment Time</label>
-                  <input type="time" class="form-control" id="appointment_time" name="appointment_time" required>
-                </div>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="submit" class="btn btn-success">Set Appointment</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-
-      <!-- Unverify Modal -->
-      <div class="modal fade" id="unverify" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-          <div class="modal-content">
-            <div class="modal-header text-center">
-              <h1 class="modal-title fs-4">Do you want to unverify?</h1>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body text-center">
-              <p class="m-0">Unverify this account? This account will be unused and removed from the account list.</p>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-
-              <!-- Traditional Form for Not Verify -->
-              <form action="{{ route('process_verification', $user->id) }}" method="POST">
-                @csrf
-                <input type="hidden" name="action" value="not_verify">
-                <button type="submit" class="btn btn-danger">Yes</button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-
 
       <footer class="py-3 bg-dark mt-3">
         <div class="container-fluid ps-4">
@@ -534,8 +438,12 @@
   <script src="{{ asset('lib/fontawesome/all.js') }}"></script>
   <script src="{{ asset('lib/jquery/jquery.min.js') }}"></script>
   <script src="{{ asset('lib/datatables/datatables.min.js') }}"></script>
+  <script src="{{ asset('lib/jquery/jquery.validate.min.js') }}"></script>
   <script src="{{ asset('assets/admin/js/admin.js') }}"></script>
 
+  <script>
+
+  </script>
 </body>
 
 </html>

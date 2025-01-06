@@ -157,6 +157,22 @@ document.querySelectorAll("form").forEach(function (form) {
             $('#alert-error').fadeOut();
         }, 3000);
         
+
+     // Toggle visibility for the "current password" field
+$('#toggle-opassword').on('click', function () {
+  const oldpasswordInput = $('#oldPassword');
+  const toggleIcon = $('#toggle-opassword-icon');
+
+  // Toggle password type between 'password' and 'text'
+  if (oldpasswordInput.attr('type') === 'password') {
+    oldpasswordInput.attr('type', 'text'); // Show password
+    toggleIcon.removeClass('fa-eye').addClass('fa-eye-slash'); // Change icon to eye-slash
+  } else {
+    oldpasswordInput.attr('type', 'password'); // Hide password
+    toggleIcon.removeClass('fa-eye-slash').addClass('fa-eye'); // Change icon to eye
+  }
+});
+        
         
      // Toggle visibility for the "password" field
 $('#toggle-password').on('click', function () {
@@ -188,6 +204,112 @@ $('#toggle-cpassword').on('click', function () {
   }
 });
 
+
+$("#admin_acount_form").validate({
+            rules: {
+                username: {
+                    required: true,
+                    minlength: 8
+                },
+                 oldPassword: {
+                    required: true,
+                    minlength: 8
+                },
+                password: {
+                    required: true,
+                    minlength: 8
+                },
+                cpassword: {
+                    required: true,
+                    equalTo: "#password"
+                },
+                email: {
+                    required: true,
+                    email: true
+                }
+            },
+            messages: {
+                username: {
+                    required: "Please enter a username",
+                    minlength: "Your username must be at least 8 characters long"
+                },
+                oldPassword: {
+                    required: "Please enter your old password",
+                    minlength: "Your password must be at least 8 characters long"
+                },
+                password: {
+                    required: "Please enter a password",
+                    minlength: "Your password must be at least 8 characters long"
+                },
+                cpassword: {
+                    required: "Please confirm your password",
+                    equalTo: "Passwords do not match"
+                },
+                email: {
+                    required: "Please enter a valid email address",
+                    email: "Please enter a valid email address"
+                }
+            },
+            highlight: function (element) {
+                $(element).addClass('is-invalid').removeClass('is-valid');
+            },
+            unhighlight: function (element) {
+                $(element).addClass('is-valid').removeClass('is-invalid');
+            },
+            errorPlacement: function (error, element) {
+                error.insertAfter(element);
+            },
+            submitHandler: function (form) {
+                form.submit();
+            }
+        });
+
+
+        $("#admin_profile_form").validate({
+            rules: {
+                profile_image: {
+            required: true,
+            extension: "jpg|jpeg|png"
+            },
+                email: {
+                    required: true,
+                    email: true
+                }
+            },
+            messages: {
+                profile_image: {
+                     required: "Please upload your ID",
+                    extension: "Please upload a valid image (jpg, jpeg, png)"
+                },
+                email: {
+                    required: "Please enter a valid email address",
+                    email: "Please enter a valid email address"
+                }
+            },
+            highlight: function (element) {
+                $(element).addClass('is-invalid').removeClass('is-valid');
+            },
+            unhighlight: function (element) {
+                $(element).addClass('is-valid').removeClass('is-invalid');
+            },
+            errorPlacement: function (error, element) {
+                error.insertAfter(element);
+            },
+            submitHandler: function (form) {
+                form.submit();
+            }
+        });
+
+$('#file-input').change(function (event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                $('#imagePreview').attr('src', e.target.result);
+            };
+            reader.readAsDataURL(file);
+        }
+    });
 
 });
 

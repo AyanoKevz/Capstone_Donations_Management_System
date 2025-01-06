@@ -57,7 +57,6 @@
                         </a>
                         <div class="dropdown-menu m-0">
                             <a href="{{ route ('more_donor')}}" class="dropdown-item">Donation</a>
-                            <a href="{{ route ('more_recipient')}}" class="dropdown-item">Recipient</a>
                             <a href="{{ route ('more_volunteer')}}" class="dropdown-item">Volunteer</a>
                         </div>
                     </div>
@@ -347,6 +346,10 @@
             <div id="alert-error" class="alert alert-error wow fadeInLeft">
                 <i class="fa-solid fa-circle-xmark me-3"></i>{{ session('error') }}
             </div>
+            @elseif (session('success'))
+            <div id="alert-success" class="alert alert-success wow fadeInLeft">
+                <i class="fa-solid fa-circle-check me-3"></i>{{ session('success') }}
+            </div>
             @endif
             <div class="text-center mx-auto pb-5" style="max-width: 800px;">
                 <h2 class="section-header">Portals</h2>
@@ -356,7 +359,7 @@
             </div>
             <div class="row g-4 align-items-center">
                 <div class="col-md-5">
-                    <img src="{{asset('assets/img/portal.gif') }}" class="img-fluid w-100 rounded border border-dark" alt="">
+                    <img src="{{asset('assets/img/portal.gif') }}" class="img-fluid w-100 rounded border border-4 border-danger" alt="">
                 </div>
                 <div class="col-md-7">
                     <h1 class="display-5 mb-4">Access Your Portal</h1>
@@ -602,22 +605,6 @@
                                     2) <b>Donee Selection. </b>
                                     - Donors can browse through requests and select which resources to donate based on donee needs displayed on the platform. <br>
                                     <a href="{{ route ('more_donor')}}">Learn More.</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="flush-headingTwo">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#flush-collapseTwo" aria-expanded="false"
-                                    aria-controls="flush-collapseTwo">
-                                    How to post for donations?
-                                </button>
-                            </h2>
-                            <div id="flush-collapseTwo" class="accordion-collapse collapse"
-                                aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushSection">
-                                <div class="accordion-body"> donee can post a request for specific resources they require, including descriptions, quantity,
-                                    and urgency, and submit a proof of need.
-                                    <a href="{{ route ('more_recipient')}}">Learn More.</a>
                                 </div>
                             </div>
                         </div>

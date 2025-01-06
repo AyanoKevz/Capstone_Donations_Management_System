@@ -12,6 +12,8 @@ class AdminMiddleware
     {
         // Check if user is authenticated via the admin guard
         if (Auth::guard('admin')->check()) {
+            view()->share('Admin', Auth::guard('admin')->user());
+
             return $next($request);
         }
 

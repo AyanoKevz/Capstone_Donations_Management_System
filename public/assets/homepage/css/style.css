@@ -1419,9 +1419,10 @@ input.is-invalid, select.is-invalid {
 
 .alert-success {
     color: #fff;
-     border-color: #539753;
+    border-color: #539753;
     background-color: #8fbf2f;
-    font-size: 18px;
+    font-weight: 700;
+    font-size: 22px;
 }
 
 
@@ -1429,7 +1430,9 @@ input.is-invalid, select.is-invalid {
     color: #fff;
     border-color: #dc4a4d;
     background-color: #f25c5d;
-    font-size: 18px;
+    font-weight: 700;
+    font-size: 22px;
+    
 }
 
 .alert-error ul {

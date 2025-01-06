@@ -59,7 +59,6 @@
                         </a>
                         <div class="dropdown-menu m-0">
                             <a href="{{ route ('more_donor')}}" class="dropdown-item">Donation</a>
-                            <a href="{{ route ('more_recipient')}}" class="dropdown-item">Recipient</a>
                             <a href="{{ route ('more_volunteer')}}" class="dropdown-item">Volunteer</a>
                         </div>
                     </div>
@@ -394,10 +393,10 @@
                                 <div class="photo-option mb-3 d-flex justify-content-center">
                                     <!-- Photo Option Selection -->
                                     <label for="uploadPhotoOption" class="mx-2">
-                                        <input type="radio" name="photoOption" id="uploadPhotoOption" value="uploadPhoto" checked> Upload Photo
+                                        <input type="radio" name="userPhotoOption" id="uploadPhotoOption" value="uploadPhoto" checked> Upload Photo
                                     </label>
                                     <label for="takePhotoOption">
-                                        <input type="radio" name="photoOption" id="takePhotoOption" value="takePhoto"> Take Photo
+                                        <input type="radio" name="userPhotoOption" id="takePhotoOption" value="takePhoto"> Take Photo
                                     </label>
                                 </div>
 
@@ -581,7 +580,6 @@
     <script src="{{ asset('lib/fontawesome/all.js') }}"></script>
     <script src="{{ asset('lib/jquery/jquery.validate.min.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js"></script>
-    <!-- Template Javascript -->
     <script src="{{ asset('assets/homepage/js/main.js') }}"></script>
 </body>
 

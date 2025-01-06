@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\RegistrationEmail;
 use Illuminate\Support\Facades\Mail;
 use App\Models\UserAccount;
+use App\Models\Chapter;
 use App\Models\Donor;
 use App\Models\Volunteer;
 use App\Models\Role;
@@ -27,7 +28,8 @@ class UserRegistrationController extends Controller
 
     public function showVolunteerForm()
     {
-        return view('homepage.volunteer_r');
+        $chapters = Chapter::all();
+        return view('homepage.volunteer_r', compact('chapters'));
     }
 
     public function registerDonor(Request $request)
@@ -63,7 +65,7 @@ class UserRegistrationController extends Controller
             'username' => $validated['username'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
-            'account_type' => 'Individual', // Volunteers are always individuals
+            'account_type' => 'Individual',
         ]);
 
         $role = Role::where('role_name', 'Volunteer')->first();
@@ -76,7 +78,9 @@ class UserRegistrationController extends Controller
             'pref_services' => $validated['pref_services'],
             'availability' => $validated['availability'],
             'availability_time' => $validated['availability_time'],
+            'chapter_id' => $validated['chapter'], // Save the chapter ID
         ]));
+
 
         Mail::to($userAccount->email)->send(new RegistrationEmail($userAccount->username, 'Volunteer'));
 
@@ -111,9 +115,10 @@ class UserRegistrationController extends Controller
 
         if ($role === 'Volunteer') {
             $rules = array_merge($rules, [
-                'pref_services' => 'required|string|in:collect_donations,relief_operation,health_welfare,emergency_response,general',
+                'pref_services' => 'required|string|in:Emergency Response,Health Welfare,Relief Operations,Collect Donations,General',
                 'availability' => 'required|string|in:Weekday,Weekend,Holiday,In time of Disasters',
                 'availability_time' => 'required|string|in:Morning,Afternoon,Night,On-Call,Whole-Day',
+                'chapter' => 'required|exists:chapter,id',
             ]);
         }
 
@@ -123,10 +128,10 @@ class UserRegistrationController extends Controller
     private function mapLocationData(Request $request)
     {
         return [
-            'region' => $request->region,
-            'province' => $request->province,
-            'city_municipality' => $request->city,
-            'barangay' => $request->barangay,
+            'region' => $request->region_name,
+            'province' => $request->province_name,
+            'city_municipality' => $request->city_name,
+            'barangay' => $request->barangay_name,
             'full_address' => $request->full_address,
         ];
     }

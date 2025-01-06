@@ -58,7 +58,7 @@ return new class extends Migration
             $table->string('first_name', 100);
             $table->string('last_name', 100)->nullable();
             $table->string('contact', 15)->unique();
-            $table->string('gender', 10);
+            $table->enum('gender', ['male', 'female', 'other'])->nullable();
             $table->string('id_type', 50);
             $table->string('id_image', 255);
             $table->string('user_photo', 255);
@@ -72,13 +72,22 @@ return new class extends Migration
             $table->string('first_name', 100);
             $table->string('last_name', 100);
             $table->string('contact', 15)->unique();
-            $table->string('gender', 10);
+            $table->enum('gender', ['male', 'female', 'other']);
             $table->string('id_type', 50);
             $table->string('id_image', 255);
             $table->string('user_photo', 255);
-            $table->enum('pref_services', ['collect_donations', 'relief_operation', 'health_welfare', 'emergency_response', 'general'])->nullable();;
-            $table->enum('availability', ['weekday', 'weekend', 'holiday', 'disasters']);
-            $table->enum('availability_time', ['morning', 'afternoon', 'night', 'on_call', 'whole_day']);
+            $table->foreignId('chapter_id')->nullable()->constrained('chapter')->onDelete('set null');
+            $table->enum('pref_services', ['Collect Donations', 'Relief Operations', 'Health Welfware', 'Emergency Response', 'General'])->nullable();
+            $table->enum('availability', ['Weekday', 'Weekend', 'Holiday', 'In time of Disasters']);
+            $table->enum('availability_time', ['Morning', 'Afternoon', 'Night', 'On-Call', 'Whole-Day']);
+            $table->timestamps();
+        });
+
+        Schema::create('volunteer_appointment', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('volunteer_id')->constrained('volunteer')->onDelete('cascade');
+            $table->date('appointment_date');
+            $table->time('appointment_time');
             $table->timestamps();
         });
 
@@ -103,5 +112,6 @@ return new class extends Migration
         Schema::dropIfExists('user_roles');
         Schema::dropIfExists('roles');
         Schema::dropIfExists('user_account');
+        Schema::dropIfExists('volunteer_appointment');
     }
 };

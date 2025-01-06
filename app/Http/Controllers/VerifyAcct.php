@@ -5,7 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\AccountVerifiedMail;
 use App\Mail\AccountRejectedMail;
+use App\Mail\AppointmentMail;
+
 use App\Models\UserAccount;
+use App\Models\Appointment;
+use App\Models\Volunteer;
 use Illuminate\Http\Request;
 
 class VerifyAcct extends Controller
@@ -28,22 +32,20 @@ class VerifyAcct extends Controller
 
     public function viewDetails($id)
     {
-        // Retrieve the user along with roles and location
         $user = UserAccount::with(['roles', 'location'])->findOrFail($id);
-
         $details = null;
-
-        // Check the first role assigned to the user
-        $role = $user->roles->first()->role_name ?? null;
+        $role = $user->role_name;
 
         if ($role === 'Donor') {
             $details = $user->donor;
         } elseif ($role === 'Volunteer') {
-            $details = $user->volunteer;
+            $details = $user->volunteer()->with('chapter')->first();
+            $appointmentExists = Appointment::where('volunteer_id', $user->id)->exists();
         }
 
-        return view('admin.view_details', compact('user', 'details', 'role'));
+        return view('admin.view_details', compact('user', 'details', 'role', 'appointmentExists'));
     }
+
 
     public function processVerification(Request $request, $id)
     {
@@ -53,18 +55,45 @@ class VerifyAcct extends Controller
             $user->is_verified = true;
             $user->save();
 
-            // Send verification email with embedded logo
             Mail::to($user->email)->send(new AccountVerifiedMail($user->username, $user->roles->first()->role_name));
 
             return redirect()->route('verify_account')->with('success', 'Account Activated Successfully.');
         } elseif ($request->action === 'not_verify') {
-            // Send account rejection email
-            Mail::to($user->email)->send(new AccountRejectedMail());
 
-            // Delete the user account
+            Mail::to($user->email)->send(new AccountRejectedMail());
             $user->delete();
 
             return redirect()->route('verify_account')->with('error', 'Account Inactive and deleted.');
         }
+    }
+
+
+    public function create_appointment(Request $request, $id)
+    {
+        $request->validate([
+            'appointment_date' => 'required|date|after_or_equal:today',
+            'appointment_time' => 'required',
+        ]);
+
+        $volunteer = Volunteer::with('chapter', 'user')->findOrFail($id);
+
+        // Create the appointment
+        Appointment::create([
+            'volunteer_id' => $volunteer->id,
+            'appointment_date' => $request->appointment_date,
+            'appointment_time' => $request->appointment_time,
+        ]);
+
+        // Send email notification
+        Mail::to($volunteer->user->email)->send(new AppointmentMail(
+            $volunteer->first_name,
+            $volunteer->last_name,
+            $request->appointment_date,
+            $request->appointment_time,
+            $volunteer->chapter->chapter_name
+        ));
+
+        // Redirect with a success message
+        return redirect()->route('admin.appointments')->with('success', 'Appointment set successfully and email sent.');
     }
 }

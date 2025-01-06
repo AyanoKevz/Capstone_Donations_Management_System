@@ -37,13 +37,13 @@ class UserAccount extends Authenticatable
         return $this->hasOne(Volunteer::class, 'user_id');
     }
 
-    public function location()
-    {
-        return $this->hasOne(Location::class, 'user_id');
-    }
-
     public function getRoleNameAttribute()
     {
         return $this->roles->first()?->role_name ?? 'No Role';
+    }
+
+    public function location()
+    {
+        return $this->hasOne(Location::class, 'user_id');
     }
 }

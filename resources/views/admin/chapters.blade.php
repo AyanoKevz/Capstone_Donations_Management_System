@@ -5,8 +5,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="csrf-token" content="{{ csrf_token() }}">
-  <title>Admin | Read Inquiries</title>
+  <title>Admin | Chapter</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -17,7 +16,7 @@
   <link rel="icon" href="{{ asset ('assets/img/systemLogo.png') }}" type="image/png">
   <link rel="stylesheet" href="{{ asset('lib/bootstrap/css/bootstrap.min.css') }}">
   <link rel="stylesheet" href="{{ asset('lib/datatables/datatables.min.css') }}">
-  <link rel="stylesheet" href="{{ asset ('assets/admin/css/verify.css') }}">
+  <link rel="stylesheet" href="{{ asset ('assets/admin/css/chapters.css') }}">
 
 </head>
 
@@ -56,7 +55,7 @@
                 <span class="availability-status online"></span>
               </div>
               <div class="nav-profile-text ms-2">
-                {{ $Admin->name }}
+                {{$Admin->name}}
               </div>
             </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
@@ -136,7 +135,7 @@
             </div>
 
             <!-- Manage Users -->
-            <a class="nav-link collapsed active" href="#" data-bs-toggle="collapse" data-bs-target="#manage-users"
+            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#manage-users"
               aria-expanded="false" aria-controls="manage-users" title="Manage Users">
               <div class="sb-nav-link-icon">
                 <i class="fas fa-users"></i>
@@ -160,7 +159,7 @@
                   </div>
                   <span>Volunteers</span>
                 </a>
-                <a class="nav-link active" href="{{ route('verify_account') }}" title="Verify Accounts">
+                <a class="nav-link" href="{{ route('verify_account') }}" title="Verify Accounts">
                   <div class="sb-nav-link-icon">
                     <i class="far fa-circle nav-icon"></i>
                   </div>
@@ -234,7 +233,7 @@
             </a>
 
             <!-- Chapters -->
-            <a class="nav-link " href="{{ route('admin.chapters') }}" title="Chapters">
+            <a class="nav-link active" href="{{ route('admin.chapters') }}" title="Chapters">
               <div class="sb-nav-link-icon">
                 <i class="fas fa-map-marker-alt"></i>
               </div>
@@ -265,6 +264,7 @@
               <span>Reports</span>
             </a>
           </div>
+
         </div>
         <div class="sb-sidenav-footer bg-logo1">
           <div>Admin Menu</div>
@@ -272,252 +272,180 @@
       </nav>
     </div>
     <!-- Content -->
-    <div id="layoutSidenav_content" class="student-profile">
+    <div id="layoutSidenav_content">
       <main>
         @if(session('success'))
         <div id="alert-success" class="alert alert-success" style="position: absolute; right: 10px; top: 40px;">
           <i class="fa-solid fa-circle-check fa-xl me-3"></i>{{ session('success') }}
         </div>
         @endif
+        @if(session('error'))
+        <div id="alert-error" class="alert alert-danger" style=" position: absolute; right: 10px; top: 40px;">
+          <i class=" fa-solid fa-circle-xmark fa-xl me-3"></i>{{ session('error') }}
+        </div>
+        @endif
         <div class="container-fluid px-3 py-2">
           <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item active"></li>
           </ol>
-          <h1 class="my-2">User Information</h1>
-          <div class="row">
-            <div class="col-lg-4">
-              <div class="card shadow-sm">
-                <div class="card-header bg-transparent text-center">
-                  <img src="{{ asset('storage/' . $details->user_photo) }}" class="profile_img" alt="User Photo">
-                  <h3>Username: {{ $user->username }}</h3>
-                </div>
-                <div class="card-body">
-                  <p class="mb-0"><strong class="">Account Type:</strong> {{$user->account_type}}</p>
-                  <p class="mb-0"><strong class="">Role:</strong> {{ $role }}</p>
-                  <p class="mb-0"><strong class="">Email:</strong> {{ $user->email }}</p>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-8">
-              <div class="card shadow-sm">
-                <div class="card-header bg-transparent border-0">
-                  <h3 class="mb-0"><i class="far fa-clone pr-1"></i> Personal Information</h3>
-                </div>
-                <div class="card-body pt-0">
-                  <table class="table table-bordered">
-                    <tr>
-                      @if($user->account_type === 'Individual')
-                      <th width="30%">First Name</th>
-                      @else
-                      <th width="30%">Organization Name</th>
-                      @endif
-                      <td width="2%">:</td>
-                      <td>{{ $details->first_name }}</td>
-                    </tr>
-                    @if($user->account_type === 'Individual')
-                    <tr>
-                      <th width="30%">Last Name </th>
-                      <td width="2%">:</td>
-                      <td>{{ $details->last_name }}</td>
-                    </tr>
-                    <tr>
-                      <th width="30%">Gender</th>
-                      <td width="2%">:</td>
-                      <td>{{ $details->gender }}</td>
-                    </tr>
-                    @endif
-                    <tr>
-                      <th width="30%">Contact Number</th>
-                      <td width="2%">:</td>
-                      <td>{{ $details->contact }}</td>
-                    </tr>
-                  </table>
-                  <div class="card-header bg-transparent border-0">
-                    <h3 class="mb-0"><i class="far fa-clone pr-1"></i> Address Information</h3>
-                  </div>
-                  <table class="table table-bordered">
-                    <tr>
-                      <th width="30%">Region</th>
-                      <td width="2%">:</td>
-                      <td>{{ $user->location->region }}</td>
-                    </tr>
-                    <tr>
-                      <th width="30%">Province </th>
-                      <td width="2%">:</td>
-                      <td>{{ $user->location->province }}</td>
-                    </tr>
-                    <tr>
-                      <th width="30%">City</th>
-                      <td width="2%">:</td>
-                      <td>{{ $user->location->city_municipality }}</td>
-                    </tr>
-                    <tr>
-                      <th width="30%">Barangay</th>
-                      <td width="2%">:</td>
-                      <td>{{ $user->location->barangay }}</td>
-                    </tr>
-                    <tr>
-                      <th width="30%">Full Address</th>
-                      <td width="2%">:</td>
-                      <td>{{ $user->location->full_address }}</td>
-                    </tr>
-                  </table>
-                  @if($role === 'Volunteer')
-                  <div class="card-header bg-transparent border-0">
-                    <h3 class="mb-0"><i class="far fa-clone pr-1"></i> Volunteering Details</h3>
-                  </div>
-                  <table class="table table-bordered">
-                    <tr>
-                      <th width="30%">Chapter</th>
-                      <td width="2%">:</td>
-                      <td>{{ $details->chapter->chapter_name}}</td>
-                    </tr>
-                    <tr>
-                      <th width="30%">Preferred Services </th>
-                      <td width="2%">:</td>
-                      <td>{{ $details->pref_services }}</td>
-                    </tr>
-                    <tr>
-                      <th width="30%">Availability</th>
-                      <td width="2%">:</td>
-                      <td>{{ $details->availability }}</td>
-                    </tr>
-                    <tr>
-                      <th width="30%">Availability Time</th>
-                      <td width="2%">:</td>
-                      <td>{{ $details->availability_time }}</td>
-                    </tr>
-                  </table>
-                  @endif
-                </div>
-              </div>
-              <div class="card shadow-sm">
-                <div class="card-header bg-transparent border-0">
-                  @if($user->account_type === 'Individual')
-                  <h3 class="mb-0"><i class="far fa-clone pr-1"></i> ID Submmited</h3>
-                  @else
-                  <h3 class="mb-0"><i class="far fa-clone pr-1"></i> Document Submitted</h3>
-                  @endif
-                </div>
-                <div class="card-body pt-0">
-                  @if($user->account_type === 'Individual')
-                  <p><strong>ID Type Submitted:</strong> {{ $details->id_type}}</p>
-                  @else
-                  <p><strong>Document Type Submitted:</strong> {{ $details->id_type}}</p>
-                  @endif
-                  <div class="image-container mx-auto d-flex align-items-center justify-content-center">
-                    <img src="{{ asset('storage/' . $details->id_image) }}" alt="User Photo">
-                  </div>
-                </div>
-              </div>
-            </div>
+          <h1 class="my-2">Red Cross Chapters</h1>
+          <div class="d-flex justify-content-end mb-1">
+            <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#add"><i class="fas fa-pen-to-square fa-1x" style="color:white;"></i>Add</button>
           </div>
-          <div class="row mt-4">
-            <div class="col text-center">
-              @if($role === 'Donor')
-              <!-- Show Verify button for Donors -->
-              <button type="button" class="btn btn-success me-3" data-bs-toggle="modal" data-bs-target="#verify" data-user-id="{{ $user->id }}">
-                Verify
-              </button>
-              @elseif($role === 'Volunteer')
-              @if($appointmentExists)
-              <!-- Show Verify button if Volunteer already has an appointment -->
-              <button type="button" class="btn btn-success me-3" data-bs-toggle="modal" data-bs-target="#verify" data-user-id="{{ $user->id }}">
-                Verify
-              </button>
-              @else
-              <!-- Show Set an Appointment button if Volunteer doesn't have an appointment -->
-              <button type="button" class="btn btn-success me-3" data-bs-toggle="modal" data-bs-target="#appointment" data-user-id="{{ $user->id }}">
-                Set an Appointment
-              </button>
-              @endif
-              @endif
-              <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#unverify" data-user-id="{{ $user->id }}">
-                Not Verify
-              </button>
+          <div class="card card-primary card-outline">
+            <div class="card-header">
+              <h3 class="card-title">Red Cross Chapters</h3>
             </div>
+            <div class="card-body">
+              <table id="example1" class="table table-bordered table-hover table-striped">
+                <thead>
+                  <tr>
+                    <th>Chapter</th>
+                    <th>Region</th>
+                    <th>Address</th>
+                    <th>Latitude</th>
+                    <th>Longitude</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @forelse($chapters as $chapter)
+                  <tr>
+                    <td>{{ $chapter->chapter_name }}</td>
+                    <td>{{ $chapter->region }}</td>
+                    <td>{{ $chapter->address }}</td>
+                    <td>{{ $chapter->latitude }}</td>
+                    <td>{{ $chapter->longitude }}</td>
+                    <td>
+                      <!-- Delete Button -->
+                      <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $chapter->id }}" title="Delete">
+                        <i class="fas fa-remove fa-1x" style="color:white;"></i>
+                      </button>
+
+                      <!-- Edit Button -->
+                      <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#editModal{{ $chapter->id }}" title="Edit">
+                        <i class="fas fa-pen-to-square fa-1x" style="color:white;"></i>
+                      </button>
+                    </td>
+                  </tr>
+
+                  <!-- Edit Modal -->
+                  <div class="modal fade" id="editModal{{ $chapter->id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h1 class="modal-title fs-4">Edit Chapter</h1>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form action="{{ route('chapters.update', $chapter->id) }}" method="POST">
+                          @csrf
+                          <div class="modal-body">
+                            <div class="form-group mb-3">
+                              <label for="chapter_name">Chapter Name</label>
+                              <input type="text" class="form-control" name="chapter_name" value="{{ $chapter->chapter_name }}" required>
+                            </div>
+                            <div class="form-group mb-3">
+                              <label for="address">Address</label>
+                              <input type="text" class="form-control" name="address" value="{{ $chapter->address }}" required>
+                            </div>
+                            <div class="form-group mb-3">
+                              <label for="region">Region</label>
+                              <input type="text" class="form-control" name="region" value="{{ $chapter->region }}" required>
+                            </div>
+                            <div class="form-group mb-3">
+                              <label for="latitude">Latitude</label>
+                              <input type="text" class="form-control" name="latitude" value="{{ $chapter->latitude }}" required>
+                            </div>
+                            <div class="form-group mb-3">
+                              <label for="longitude">Longitude</label>
+                              <input type="text" class="form-control" name="longitude" value="{{ $chapter->longitude }}" required>
+                            </div>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-success">Save Changes</button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Delete Modal -->
+                  <div class="modal fade" id="deleteModal{{ $chapter->id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                      <div class="modal-content">
+                        <div class="modal-header text-center">
+                          <h1 class="modal-title fs-4">Delete Chapter</h1>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body text-center">
+                          <p class="m-0">Are you sure you want to delete the chapter "{{ $chapter->chapter_name }}"?</p>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                          <form action="{{ route('chapters.destroy', $chapter->id) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  @empty
+                  <tr>
+                    <td colspan="6" class="text-center">No Chapters Available</td>
+                  </tr>
+                  @endforelse
+                </tbody>
+              </table>
+
+            </div>
+
           </div>
         </div>
       </main>
 
-      <!-- Verify Modal -->
-      <div class="modal fade" id="verify" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+      <!-- Create Chapter Modal -->
+      <div class="modal fade" id="add" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
           <div class="modal-content">
             <div class="modal-header">
-              <h1 class="modal-title fs-4">Do you want to verify?</h1>
+              <h1 class="modal-title fs-4">Create New Chapter</h1>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body text-center">
-              <p class="m-0">Verify this account? This account will be active.</p>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-              <!-- Traditional Form for Verify -->
-              <form action="{{ route('process_verification', $user->id) }}" method="POST">
+            <form action="{{ route('chapters.store') }}" method="POST">
+              <div class="modal-body">
                 @csrf
-                <input type="hidden" name="action" value="verify">
-                <button type="submit" class="btn btn-success">Yes</button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
+                <div class="form-group mb-3">
+                  <label for="chapter_name">Chapter Name</label>
+                  <input type="text" class="form-control" id="chapter_name" name="chapter_name" placeholder="e.g., Caloocan" required>
+                </div>
+                <div class="form-group mb-3">
+                  <label for="address">Address</label>
+                  <input type="text" class="form-control" id="address" name="address" placeholder="e.g., 123 Main Street, City" required>
+                </div>
+                <div class="form-group mb-3">
+                  <label for="region">Region</label>
+                  <input type="text" class="form-control" id="region" name="region" placeholder="e.g., NCR" required>
+                </div>
+                <div class="form-group mb-3">
+                  <label for="latitude">Latitude</label>
+                  <input type="text" class="form-control" id="latitude" name="latitude" placeholder="e.g., 14.5995" required>
+                </div>
+                <div class="form-group mb-3">
+                  <label for="longitude">Longitude</label>
+                  <input type="text" class="form-control" id="longitude" name="longitude" placeholder="e.g., 120.9842" required>
+                </div>
 
-      <!-- Appointment Modal -->
-      <div class="modal fade" id="appointment" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h1 class="modal-title fs-4">Set Appointment for Orientation</h1>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form action="{{ route('create.appointment', $details->id) }}" method="POST">
-              <div class="modal-body text-center">
-                @csrf
-                <div class="form-group mb-3">
-                  <label for="appointment_date">Appointment Date</label>
-                  <input type="date" class="form-control" id="appointment_date" name="appointment_date" required>
-                </div>
-                <div class="form-group mb-3">
-                  <label for="appointment_time">Appointment Time</label>
-                  <input type="time" class="form-control" id="appointment_time" name="appointment_time" required>
-                </div>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="submit" class="btn btn-success">Set Appointment</button>
+                <button type="submit" class="btn btn-success">Create</button>
               </div>
             </form>
           </div>
         </div>
       </div>
-
-      <!-- Unverify Modal -->
-      <div class="modal fade" id="unverify" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-          <div class="modal-content">
-            <div class="modal-header text-center">
-              <h1 class="modal-title fs-4">Do you want to unverify?</h1>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body text-center">
-              <p class="m-0">Unverify this account? This account will be unused and removed from the account list.</p>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-
-              <!-- Traditional Form for Not Verify -->
-              <form action="{{ route('process_verification', $user->id) }}" method="POST">
-                @csrf
-                <input type="hidden" name="action" value="not_verify">
-                <button type="submit" class="btn btn-danger">Yes</button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-
 
       <footer class="py-3 bg-dark mt-3">
         <div class="container-fluid ps-4">
@@ -536,6 +464,9 @@
   <script src="{{ asset('lib/datatables/datatables.min.js') }}"></script>
   <script src="{{ asset('assets/admin/js/admin.js') }}"></script>
 
+  <script>
+
+  </script>
 </body>
 
 </html>

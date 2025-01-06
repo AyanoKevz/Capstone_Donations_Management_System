@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Inquiry;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\InquiryReply;
 use Illuminate\Support\Facades\Auth;
@@ -30,12 +29,9 @@ class InquiryController extends Controller
         $validated['submitted_at'] = now();
 
         try {
-            // Insert the data into the inquiry table
             Inquiry::create($validated);
             session()->flash('success', 'Your inquiry was successfully submitted.');
-            session()->flash('success', 'Your inquiry was successfully submitted.');
         } catch (\Exception $e) {
-            Log::error('Inquiry insert error: ' . $e->getMessage());
             session()->flash('error', 'An error occurred while submitting your inquiry.');
         }
 

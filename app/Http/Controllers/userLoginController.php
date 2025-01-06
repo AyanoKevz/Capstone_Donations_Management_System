@@ -24,7 +24,6 @@ class userLoginController extends Controller
                     ->header('Location', route('home') . '#portals');
             }
 
-
             switch ($user->role_name) {
                 case 'Donor':
                     return redirect()->route('donor.home');
@@ -43,6 +42,18 @@ class userLoginController extends Controller
         return redirect()->route('home')
             ->with('error', 'Invalid username or password.')
             ->withInput()
+            ->header('Location', route('home') . '#portals');
+    }
+
+    public function logout()
+    {
+        Auth::logout();
+        session()->invalidate();
+        session()->regenerateToken();
+
+        // Redirect to the homepage with a success message and anchor to the portals section
+        return redirect()->route('home')
+            ->with('success', 'You have been logged out successfully.')
             ->header('Location', route('home') . '#portals');
     }
 }

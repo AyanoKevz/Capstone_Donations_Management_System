@@ -176,7 +176,7 @@ $(window).on('scroll', function () {
     }
 
     // Handle Photo Option Change
-    $('input[name="photoOption"]').on('change', function () {
+    $('input[name="userPhotoOption"]').on('change', function () {
         if ($('#takePhotoOption').is(':checked')) {
             // Show Take a Photo Section and hide File Input Section
             setDisplayWithImportant('#photoCapture', 'flex');
@@ -834,9 +834,10 @@ $('[data-bs-target="#staticBackdrop"]').click(function () {
 
 
     // Volunteering Details (VOLUNTEER ONLY PART IN REGISTRATION)
-    $('#reviewPreferredService').text($('select[name="pref_services"] option:selected').val());
-    $('#reviewAvailability').text($('select[name="availability"] option:selected').val());
-    $('#reviewAvailabilityTime').text($('select[name="availability_time"] option:selected').val());
+    $('#reviewPreferredService').text($('select[name="pref_services"] option:selected').text());
+    $('#reviewAvailability').text($('select[name="availability"] option:selected').text());
+    $('#reviewAvailabilityTime').text($('select[name="availability_time"] option:selected').text());
+    $('#reviewChapter').text($('select[name="chapter"] option:selected').text());
 
     // Handle visibility of other fields based on account type
     if (accountType === 'Organization') {

@@ -55,7 +55,6 @@
                         </a>
                         <div class="dropdown-menu m-0">
                             <a href="{{ route ('more_donor')}}" class="dropdown-item">Donation</a>
-                            <a href="{{ route ('more_recipient')}}" class="dropdown-item">Recipient</a>
                             <a href="{{ route ('more_volunteer')}}" class="dropdown-item active">Volunteer</a>
                         </div>
                     </div>
@@ -110,7 +109,7 @@
                     <h2>Become A Volunteer</h2>
                     <div class="our-story">
                         <h3>Donations Details</h3>
-                        <p>Join our community of dedicated individuals and make a positive impact! By registering as a volunteer, you will contribute your time and skills to support our mission. 
+                        <p>Join our community of dedicated individuals and make a positive impact! By registering as a volunteer, you will contribute your time and skills to support our mission.
                             Whether you're helping at an event, supporting programs, or providing valuable assistance, your participation is vital to our success.</p>
                         <ul>
                             <li><i class="fas fa-handshake me-2" style="color: #ff1f1f;"></i> <span>Task and Event Participation</span></li>
@@ -136,8 +135,8 @@
                 <h4 class="section-header"> Volunteer Service FAQs</h4>
                 <h1 class="display-5 mb-4">Become A UniAid Volunteer</h1>
                 <p class="mb-0">
-                The Volunteer Service Office manages programs to encourage people to volunteer for the Philippine Red Cross (PRC), offering their time and resources to alleviate human suffering.
-                It oversees volunteer recruitment, development, and mobilization both locally and nationwide.
+                    The Volunteer Service Office manages programs to encourage people to volunteer for the Philippine Red Cross (PRC), offering their time and resources to alleviate human suffering.
+                    It oversees volunteer recruitment, development, and mobilization both locally and nationwide.
             </div>
             <div class="row g-5 align-items-center">
                 <div class="col-xl-5 wow fadeInLeft" data-wow-delay="0.2s">
@@ -149,7 +148,7 @@
                             <h5 class="mb-0">What are the requirements?</h5>
                         </a>
                         <a class="accordion-link p-4 mb-4" data-bs-toggle="pill" href="#collapseThree">
-                            <h5 class="mb-0">Is there  any age requirement?</h5>
+                            <h5 class="mb-0">Is there any age requirement?</h5>
                         </a>
                         <a class="accordion-link p-4 mb-0" data-bs-toggle="pill" href="#collapseFour">
                             <h5 class="mb-0">Where exactly are located?</h5>
@@ -182,7 +181,7 @@
                                 <div class="col-md-5">
                                     <h1 class="display-5 mb-4">What are the requirements?</h1>
                                     <p class="mb-4">After filling out of the application form online, wait for an invitation to be sent in your email address and know your schedule of orientation.
-                                        You will be required to attend the Basic Volunteer Orientation Course (BVOC). 
+                                        You will be required to attend the Basic Volunteer Orientation Course (BVOC).
                                         Other requirements include: <br>
                                         <br>a. PRC membership known as Membership with Accident Assistance Benefit (MAAB)
                                         <br>b. Photocopy of two valid IDs
@@ -199,7 +198,7 @@
                                     <img src="{{asset('assets/img/ab3.jpg') }}" class="img-fluid w-100  h-100 rounded" alt="">
                                 </div>
                                 <div class="col-md-5">
-                                    <h1 class="display-5 mb-4">Is there  any age requirement?</h1>
+                                    <h1 class="display-5 mb-4">Is there any age requirement?</h1>
                                     <p class="mb-4">We have youth programs involving school-based Red Cross Youth volunteers in elementary, high school and college and young professionals in the community.
                                         We do not have a maximum age limit in place.As long as you are physically and mentally healthy, and willing to serve, you are welcome.
                                     </p>

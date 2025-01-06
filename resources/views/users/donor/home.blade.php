@@ -72,10 +72,13 @@
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                         <li>
-                            <a class="dropdown-item d-flex justify-content-center align-items-center"
-                                href="logout.php">Logout
-                                <i class="fas fa-right-from-bracket ms-2"></i>
-                            </a>
+                            <form action="{{ route('user.logout') }}" method="POST" id="logout-form">
+                                @csrf
+                                <button type="submit" class="dropdown-item d-flex justify-content-center align-items-center">
+                                    Logout
+                                    <i class="fas fa-right-from-bracket ms-2"></i>
+                                </button>
+                            </form>
                         </li>
                         <li>
                             <a class="dropdown-item d-flex justify-content-center align-items-center"

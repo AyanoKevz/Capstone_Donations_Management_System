@@ -14,12 +14,15 @@ class Volunteer extends Model
     protected $fillable = [
         'user_id',
         'first_name',
+        'middle_name',
         'last_name',
         'contact',
+        'birthday',
         'gender',
         'id_type',
         'id_image',
         'user_photo',
+        'chapter_id',
         'pref_services',
         'availability',
         'availability_time',
@@ -29,5 +32,15 @@ class Volunteer extends Model
     public function user()
     {
         return $this->belongsTo(UserAccount::class, 'user_id');
+    }
+
+    public function chapter()
+    {
+        return $this->belongsTo(Chapter::class, 'chapter_id');
+    }
+
+    public function appointments()
+    {
+        return $this->hasMany(Appointment::class, 'volunteer_id');
     }
 }

@@ -56,7 +56,6 @@
                         </a>
                         <div class="dropdown-menu m-0">
                             <a href="{{ route ('more_donor')}}" class="dropdown-item">Donation</a>
-                            <a href="{{ route ('more_recipient')}}" class="dropdown-item">Recipient</a>
                             <a href="{{ route ('more_volunteer')}}" class="dropdown-item">Volunteer</a>
                         </div>
                     </div>
@@ -101,7 +100,7 @@
     <!-- Navbar & Hero End -->
 
     <!-- Register Start -->
-    <div class="container-fluid service py-3 offer-section">
+    <div class="container-fluid service mb-4 offer-section">
         <div class="container pb-3">
             @if(session('success'))
             <div id="alert-success" class="alert alert-success wow fadeInLeft">
@@ -126,7 +125,7 @@
 
             <div class="row g-5 align-items-center">
                 <div class="col-xl-5 wow fadeInLeft" data-wow-delay="0.2s">
-                    <div class="nav nav-pills bg-light rounded p-4" style="border: #ff1f1f 4px solid red !important;">
+                    <div class="nav nav-pills bg-light rounded border border-2 border-danger p-4">
                         <a class="accordion-link p-4 active mb-2" data-bs-toggle="pill" href="#collapseOne">
                             <h5 class="mb-0">Register As Donor</h5>
                         </a>
