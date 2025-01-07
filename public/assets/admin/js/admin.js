@@ -1,19 +1,18 @@
 document.addEventListener("DOMContentLoaded", function () {
 
 var spinnerElement = document.getElementById("spinner");
-if (spinnerElement) {
-    spinnerElement.classList.remove("show");
-}
 
-// Show spinner on form submission
-document.querySelectorAll("form").forEach(function (form) {
-    form.addEventListener("submit", function () {
-        if (spinnerElement) {
+    if (spinnerElement) {
+        // Show the spinner when the page starts loading or reloading
+        window.addEventListener("beforeunload", function () {
             spinnerElement.classList.add("show");
-        }
-    });
-});
+        });
 
+        // Remove the spinner after the page has fully loaded
+        window.addEventListener("load", function () {
+            spinnerElement.classList.remove("show");
+        });
+    }
 
   // Initialize tooltips for nav links with a title attribute
   var tooltipTriggerList = [].slice.call(
@@ -155,6 +154,7 @@ document.querySelectorAll("form").forEach(function (form) {
         setTimeout(() => {
             $('#alert-success').fadeOut();
             $('#alert-error').fadeOut();
+             $('#alert-info').fadeOut();
         }, 3000);
         
 
@@ -219,7 +219,7 @@ $("#admin_acount_form").validate({
                     required: true,
                     minlength: 8
                 },
-                cpassword: {
+                password_confirmation: {
                     required: true,
                     equalTo: "#password"
                 },
@@ -241,7 +241,7 @@ $("#admin_acount_form").validate({
                     required: "Please enter a password",
                     minlength: "Your password must be at least 8 characters long"
                 },
-                cpassword: {
+                password_confirmation: {
                     required: "Please confirm your password",
                     equalTo: "Passwords do not match"
                 },
@@ -268,8 +268,7 @@ $("#admin_acount_form").validate({
         $("#admin_profile_form").validate({
             rules: {
                 profile_image: {
-            required: true,
-            extension: "jpg|jpeg|png"
+                extension: "jpg|jpeg|png"
             },
                 email: {
                     required: true,
@@ -278,7 +277,6 @@ $("#admin_acount_form").validate({
             },
             messages: {
                 profile_image: {
-                     required: "Please upload your ID",
                     extension: "Please upload a valid image (jpg, jpeg, png)"
                 },
                 email: {
@@ -311,6 +309,11 @@ $('#file-input').change(function (event) {
         }
     });
 
+     $('#toggle-password-section').click(function () {
+            $('#password-section').toggle();
+        });
+
+    
 });
 
 

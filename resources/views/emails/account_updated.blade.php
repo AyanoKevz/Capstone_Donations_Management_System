@@ -122,17 +122,16 @@
         <img src="{{ $message->embed($logoPath) }}" alt="System Logo">
         <h1>UniAid</h1>
       </div>
-
       <!-- Card Body -->
       <div class="card">
-        <h1>Dear Volunteer {{ $firstName }} {{ $lastName }}, </h1>
-        <p>Your appointment has been scheduled for orientation as follows:</p>
+        <h1>Hello {{ $details['username'] }},</h1>
+        <p>Your account details have been updated:</p>
         <ul>
-          <li><strong>Date:</strong> {{ \Carbon\Carbon::parse($appointmentDate)->format('F j, Y') }}</li>
-          <li><strong>Time:</strong> {{ \Carbon\Carbon::parse($appointmentTime)->format('g:i A') }}</li>
-          <li><strong>Chapter:</strong> {{ $chapterName }}</li>
+          @foreach ($details['changes'] as $change)
+          <li><strong>{{ ucfirst($change) }} was updated. </strong></li>
+          @endforeach
         </ul>
-        <p>Thank you for your commitment!</p>
+        <p>If you did not make these changes, please contact support immediately.</p>
       </div>
       <!-- Footer -->
       <div class="footer">

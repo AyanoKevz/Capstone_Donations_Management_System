@@ -8,8 +8,9 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\Chapter;
 use App\Models\Appointment;
 use App\Models\Admin;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\AccountUpdated;
+use Illuminate\Support\Facades\Log;
 
 class AdminController extends Controller
 {
@@ -163,24 +164,56 @@ class AdminController extends Controller
     }
 
 
-
     public function updateAccount(Request $request, $id)
     {
         $admin = Admin::findOrFail($id);
 
         $request->validate([
-            'username' => 'required|unique:admin,username,' . $id,
-            'oldPassword' => 'required',
-            'password' => 'required|confirmed|min:8',
+            'username' => 'required',
+            'password' => 'nullable|confirmed|min:8', // Make password optional
         ]);
 
-        if (!Hash::check($request->input('oldPassword'), $admin->password)) {
-            return back()->withErrors(['oldPassword' => 'Current password is incorrect.']);
+        // Check if the username is already in use by another admin
+        $existingAdmin = Admin::where('username', $request->input('username'))
+            ->where('id', '!=', $id)
+            ->first();
+
+        if ($existingAdmin) {
+            return back()->with('error', 'The username is already in use by another account.');
         }
 
-        $admin->username = $request->input('username');
-        $admin->password = Hash::make($request->input('password'));
+        $changes = [];
+
+        // Update username if it has changed
+        if ($admin->username !== $request->input('username')) {
+            $changes[] = 'username';
+            $admin->username = $request->input('username');
+        }
+
+        // Update password if provided
+        if ($request->filled('password')) {
+            // Check if the current password matches
+            if (!Hash::check($request->input('oldPassword'), $admin->password)) {
+                return back()->with('error', 'Current password is incorrect.');
+            }
+
+            // Update the password
+            $changes[] = 'password';
+            $admin->password = Hash::make($request->input('password'));
+        }
+
+        if (empty($changes)) {
+            return back()->with('info', 'No changes were made to your account.');
+        }
+
         $admin->save();
+
+        // Send email notification about the changes
+        $details = [
+            'changes' => $changes,
+            'username' => $admin->username,
+        ];
+        Mail::to($admin->email)->send(new AccountUpdated($details));
 
         return back()->with('success', 'Account updated successfully.');
     }

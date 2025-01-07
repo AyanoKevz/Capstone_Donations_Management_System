@@ -278,10 +278,16 @@
         </div>
         @endif
         @if(session('error'))
-        <div id="alert-error" class="alert alert-danger" style=" position: absolute; right: 10px; top: 40px;">
+        <div id="alert-error" class="alert alert-error" style=" position: absolute; right: 10px; top: 40px;">
           <i class=" fa-solid fa-circle-xmark fa-xl me-3"></i>{{ session('error') }}
         </div>
         @endif
+        @if(session('info'))
+        <div id="alert-info" class="alert alert-info" style=" position: absolute; right: 10px; top: 40px;">
+          {{ session('info') }}
+        </div>
+        @endif
+
         <div class="container-fluid px-3 py-2">
           <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item active"></li>
@@ -355,29 +361,28 @@
 
                         </div>
                         <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
-                          <form method="POST" action="#" class="row gy-3 gy-xxl-4" enctype="multipart/form-data" id="admin_profile_form">
+                          <form method="POST" action="{{ route('admin.updateProfile', $Admin->id) }}" class="row gy-3 gy-xxl-4" enctype="multipart/form-data" id="admin_profile_form">
+                            @csrf
                             <div class="col-12">
-                              <div class="row gy-2 justify-content-center align-items-center">
+                              <div class="row gy-2 justify-content-around align-items-center">
                                 <label class="col-12 form-label m-0 text-center"><strong> Profile Image </strong></label>
-                                <img id="imagePreview" src="{{ asset('storage/' . $Admin->profile_image) }}" class="img-fluid rounded w-25" alt="Profile Image">
+                                <img id="imagePreview" src="{{ asset('storage/' . $Admin->profile_image) }}" class="rounded w-25 border border-dark-subtle p-0" alt="Profile Image">
                                 <div class="form">
                                   <span class="form-title">Upload your file</span>
-                                  <p class="form-paragraph">
-                                    File should be an image
-                                  </p>
+                                  <p class="form-paragraph">File should be an image</p>
                                   <label for="file-input" class="drop-container">
-                                    <input type="file" accept="" required="" id="file-input" name="profile_image">
+                                    <input type="file" accept="image/*" id="file-input" name="profile_image">
                                   </label>
                                 </div>
                               </div>
                             </div>
                             <div class="col-12 col-md-6">
                               <label for="inputFirstName" class="form-label">Name</label>
-                              <input type="text" class="form-control" id="inputFirstName" name="name" value="{{$Admin -> name}}">
+                              <input type="text" class="form-control" id="inputFirstName" name="name" value="{{ $Admin->name }}">
                             </div>
                             <div class="col-12 col-md-6">
                               <label for="inputLastName" class="form-label">Email</label>
-                              <input type="text" class="form-control" id="email" name="email" value="{{$Admin -> email}}">
+                              <input type="text" class="form-control" id="email" name="email" value="{{ $Admin->email }}">
                             </div>
                             <div class="col-12">
                               <button type="submit" class="btn btn-primary">Submit</button>
@@ -385,28 +390,40 @@
                           </form>
                         </div>
                         <div class="tab-pane fade" id="password-tab-pane" role="tabpanel" aria-labelledby="password-tab" tabindex="0">
-                          <form method="POST" action="#" id="admin_acount_form">
+                          <form method="POST" action="{{ route('admin.updateAccount', $Admin->id) }}" id="admin_acount_form">
+                            @csrf
                             <div class="row gy-3 gy-xxl-4">
                               <div class="col-12">
-                                <label for="confirmPassword" class="form-label">Username</label>
-                                <input type="text" class="form-control" name="username" id="username" value="{{$Admin -> username}}">
+                                <label for="username" class="form-label">Username</label>
+                                <input type="text" class="form-control" name="username" id="username" value="{{ $Admin->username }}">
                               </div>
-                              <div class="input-group col-12">
-                                <input type="password" class="form-control" placeholder="Current Password" aria-label="Recipient's username" name="oldPassword" id="oldPassword" aria-describedby="button-addon2">
-                                <button class="btn btn-outline-secondary" type="button" id="toggle-opassword">
-                                  <i class="fas fa-eye" id="toggle-opassword-icon"></i></button>
-                              </div>
-                              <div class="input-group col-12">
-                                <input type="password" class="form-control" placeholder="New Password" aria-label="Recipient's username" name="password" id="password" aria-describedby="button-addon2">
-                                <button class="btn btn-outline-secondary" type="button" id="toggle-password">
-                                  <i class="fas fa-eye" id="toggle-password-icon"></i></button>
-                              </div>
-                              <div class="input-group col-12">
-                                <input type="password" class="form-control" placeholder="Confirm Password" aria-label="Recipient's username" name="cpassword" id="cpassword" aria-describedby="button-addon2">
-                                <button class="btn btn-outline-secondary" type="button" id="toggle-cpassword">
-                                  <i class="fas fa-eye" id="toggle-password-icon"></i></button>
-                              </div>
+
                               <div class="col-12">
+                                <button type="button" class="btn btn-secondary" id="toggle-password-section">Change Password</button>
+                              </div>
+
+                              <div id="password-section" style="display: none;">
+                                <p>Change Password</p>
+                                <div class="input-group col-12 mt-3">
+                                  <input type="password" class="form-control" placeholder="Current Password" name="oldPassword" id="oldPassword">
+                                  <button class="btn btn-outline-secondary" type="button" id="toggle-opassword">
+                                    <i class="fas fa-eye" id="toggle-opassword-icon"></i>
+                                  </button>
+                                </div>
+                                <div class="input-group col-12 mt-3">
+                                  <input type="password" class="form-control" placeholder="New Password" name="password" id="password">
+                                  <button class="btn btn-outline-secondary" type="button" id="toggle-password">
+                                    <i class="fas fa-eye" id="toggle-password-icon"></i>
+                                  </button>
+                                </div>
+                                <div class="input-group col-12 mt-3">
+                                  <input type="password" class="form-control" placeholder="Confirm Password" name="password_confirmation" id="cpassword">
+                                  <button class="btn btn-outline-secondary" type="button" id="toggle-cpassword">
+                                    <i class="fas fa-eye" id="toggle-cpassword-icon"></i>
+                                  </button>
+                                </div>
+                              </div>
+                              <div class="col-12 mt-3">
                                 <button type="submit" class="btn btn-primary">Submit</button>
                               </div>
                             </div>
