@@ -15,7 +15,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="{{ asset('lib/bootstrap/css/bootstrap.min.css') }}">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{ asset('assets/users/css/home_donor.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/users/css/volunteer/home_volunteer.css') }}">
 </head>
 
 <body class="hold-transition sidebar-collapse layout-top-nav">

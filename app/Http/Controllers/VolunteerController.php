@@ -9,6 +9,6 @@ class VolunteerController extends Controller
 {
     public function index()
     {
-        return view('users.donee.home');
+        return view('users.volunteer.home_volunteer');
     }
 }

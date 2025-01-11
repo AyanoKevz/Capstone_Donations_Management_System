@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InquiryController;
 use App\Http\Controllers\VerifyAcct;
 use App\Http\Controllers\UserRegistrationController;
@@ -13,7 +14,7 @@ use App\Http\Controllers\VolunteerController;
 //  HOMEPAGE ROUTES:
 
 //Homepage Route
-Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home')->middleware('prevent-back-button');
 // About page route
 Route::view('/about', 'homepage.about')->name('about');
 // Donation (Donor) page route
@@ -36,7 +37,7 @@ Route::post('/register/donor', [UserRegistrationController::class, 'registerDono
 Route::post('/register/volunteer', [UserRegistrationController::class, 'registerVolunteer'])->name('register.vol');
 
 //User login route
-Route::post('/', [userLoginController::class, 'login'])->name('login');
+Route::post('/user-login', [userLoginController::class, 'login'])->name('login');
 Route::post('/logout', [userLoginController::class, 'logout'])->name('user.logout');
 
 
@@ -66,8 +67,19 @@ Route::middleware(['admin', 'prevent-back-button'])->prefix('admin')->group(func
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 
     Route::get('/profile', [AdminController::class, 'admin_profile'])->name('admin.profile');
-    Route::post('/admin/profile/{id}', [AdminController::class, 'updateProfile'])->name('admin.updateProfile');
-    Route::post('/admin/account/{id}', [AdminController::class, 'updateAccount'])->name('admin.updateAccount');
+    Route::post('/profile/{id}', [AdminController::class, 'updateProfile'])->name('admin.updateProfile');
+    Route::post('/account/{id}', [AdminController::class, 'updateAccount'])->name('admin.updateAccount');
+
+    Route::get('/active-donors', [AdminController::class, 'allDonors'])->name('admin.donorList');
+    Route::post('/active-donors/{userId}', [AdminController::class, 'deleteDonor'])->name('donors.delete');
+
+    Route::get('/active-volunteer', [AdminController::class, 'allVolunteers'])->name('admin.volunteerList');
+    Route::post('/volunteers/delete/{id}', [AdminController::class, 'deleteVolunteer'])->name('volunteers.delete');
+
+
+
+
+
 
     // Admin Inquiries
     Route::get('/inquiries', [InquiryController::class, 'inbox'])->name('admin.inquiries');
@@ -95,10 +107,10 @@ Route::middleware(['admin', 'prevent-back-button'])->prefix('admin')->group(func
 
 // Middleware-protected routes for user
 Route::middleware(['auth', 'prevent-back-button'])->prefix('user')->group(function () {
-
     // Middleware-protected routes for Donor
     Route::middleware('role:Donor')->prefix('donor')->group(function () {
         Route::get('/home', [DonorController::class, 'index'])->name('donor.home');
+        Route::get('/prc-chapters', [DonorController::class, 'showChapters'])->name('prc-chapters');
     });
 
     // Middleware-protected routes for Volunteer
@@ -106,6 +118,3 @@ Route::middleware(['auth', 'prevent-back-button'])->prefix('user')->group(functi
         Route::get('/home', [VolunteerController::class, 'index'])->name('volunteer.home');
     });
 });
-
-
-Route::get('/donor/prc-chapters', [DonorController::class, 'showChapters'])->name('prc-chapters');

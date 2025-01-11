@@ -1,4 +1,24 @@
 !(function (e, t) {
+
+
+var spinnerElement = document.getElementById("spinner");
+
+    if (spinnerElement) {
+        window.addEventListener("beforeunload", function () {
+            spinnerElement.classList.add("show");
+        });
+
+        window.addEventListener("load", function () {
+            spinnerElement.classList.remove("show");
+        });
+    }
+
+        setTimeout(() => {
+        $('#alert-success').fadeOut();
+        $('#alert-error').fadeOut();
+          $('#alert-info').fadeOut();
+    }, 3000);
+
   "object" == typeof exports && "undefined" != typeof module
     ? t(exports, require("jquery"))
     : "function" == typeof define && define.amd
@@ -2077,4 +2097,7 @@
     (e.TodoList = Lt),
     (e.Treeview = $t),
     Object.defineProperty(e, "__esModule", { value: !0 });
+
+
+    
 });

@@ -12,12 +12,24 @@ class UserMiddleware
     {
         // Check if the user has the required role (if needed)
         if (Auth::user()->role_name !== $role) {
-            return redirect()->route('home')
-                ->with('error', 'Unauthorized access.')
-                ->withInput()
-                ->header('Location', route('home') . '#portals');
+            switch (Auth::user()->role_name) {
+                case 'Donor':
+                    return redirect()->route('donor.home')
+                        ->with('error', 'Unauthorized access.');
+                case 'Volunteer':
+                    return redirect()->route('volunteer.home')
+                        ->with('error', 'Unauthorized access.');
+                default:
+                    Auth::logout();
+                    return redirect()->route('home')
+                        ->with('error', 'Invalid user role.')
+                        ->withInput()
+                        ->header('Location', route('home') . '#portals');
+            }
         }
 
+        // Share the authenticated user globally with views
+        view()->share('User', Auth::user());
         return $next($request);
     }
 }

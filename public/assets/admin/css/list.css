@@ -672,3 +672,23 @@ body.sb-sidenav-toggled .sb-sidenav .nav-link span {
   font-weight: 700;
   font-size: 22px;
 }
+
+.table-btn {
+ background-color: #f8f9fa;
+    border-color: #ddd;
+    color: #444;
+}
+.table-btn:hover {
+ background-color: #d4d4d4;
+}
+
+.custom-active {
+    background-color: #007bff;
+    color: white;
+    border-color: #0056b3;
+}
+
+.custom-active:hover {
+    background-color: #0056b3;
+    color: white;
+}

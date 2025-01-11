@@ -27,14 +27,17 @@
 <body>
 
     <!-- Spinner Start -->
-    <div id="spinner"
-        class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+    <div id="spinner" class="show bg-white position-fixed w-100 vh-100 d-flex flex-column align-items-center justify-content-center">
+        <div class="text-center mb-4">
+            <h1 class="m-0 fw-bold" style="color: #ff1f1f; font-size:50px;">
+                <img src="{{ asset('assets/img/systemLogo.png') }}" class="me-3 w-25" alt="Logo">UniAid
+            </h1>
+        </div>
         <div class="loader">
             <span class="loader-text">Loading...</span>
         </div>
     </div>
     <!-- Spinner End -->
-
 
     <!-- Navbar & Hero Start -->
     <div class="container-fluid position-relative p-0">
@@ -343,12 +346,12 @@
     <div class="container-fluid service py-5 portals" id="portals">
         <div class="container pb-5 wow zoomIn" data-wow-delay="0.3s">
             @if (session('error'))
-            <div id="alert-error" class="alert alert-error wow fadeInLeft">
-                <i class="fa-solid fa-circle-xmark me-3"></i>{{ session('error') }}
+            <div id="alert-error" class="alert alert-error wow fadeInLeft" style="position: absolute;">
+                <i class=" fa-solid fa-circle-xmark me-3"></i>{{ session('error') }}
             </div>
             @elseif (session('success'))
-            <div id="alert-success" class="alert alert-success wow fadeInLeft">
-                <i class="fa-solid fa-circle-check me-3"></i>{{ session('success') }}
+            <div id="alert-success" class="alert alert-success wow fadeInLeft" style="position: absolute;">
+                <i class=" fa-solid fa-circle-check me-3"></i>{{ session('success') }}
             </div>
             @endif
             <div class="text-center mx-auto pb-5" style="max-width: 800px;">

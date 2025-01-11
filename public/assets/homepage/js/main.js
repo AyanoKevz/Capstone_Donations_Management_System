@@ -1,27 +1,23 @@
 (function ($) {
     "use strict";
 
-     setTimeout(() => {
+    setTimeout(() => {
             $('#alert-success').fadeOut();
             $('#alert-error').fadeOut();
         },3000);
 
        // Spinner
 var spinnerElement = document.getElementById("spinner");
-if (spinnerElement) {
-    spinnerElement.classList.remove("show");
-}
 
-// Show spinner on form submission
-document.querySelectorAll("form").forEach(function (form) {
-    form.addEventListener("submit", function () {
-        if (spinnerElement) {
+    if (spinnerElement) {
+        window.addEventListener("beforeunload", function () {
             spinnerElement.classList.add("show");
-        }
-    });
-});
+        });
 
-    
+        window.addEventListener("load", function () {
+            spinnerElement.classList.remove("show");
+        });
+    }
    //animation
 const wow = new WOW({
     boxClass: 'wow',
@@ -843,7 +839,7 @@ $('[data-bs-target="#staticBackdrop"]').click(function () {
     if (accountType === 'Organization') {
         $('#reviewLname').closest('p').hide();
         $('#reviewFname').prev('strong').text('Organization Name:');
-        $('#reviewGender').hide();
+        $('#reviewGender').prev('strong').hide();
     } else {
         $('#reviewLname').closest('p').show();
         $('#reviewFname').prev('strong').text('First Name:');

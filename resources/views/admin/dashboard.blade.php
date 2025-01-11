@@ -20,8 +20,12 @@
 </head>
 
 <!-- Spinner Start -->
-<div id="spinner"
-  class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+<div id="spinner" class="show bg-white position-fixed w-100 vh-100 d-flex flex-column align-items-center justify-content-center">
+  <div class="text-center mb-4">
+    <h1 class="m-0 fw-bold" style="color: #ff1f1f; font-size:50px;">
+      <img src="{{ asset('assets/img/systemLogo.png') }}" class="me-3 w-25" alt="Logo">UniAid
+    </h1>
+  </div>
   <div class="loading">
     <div class="d1"></div>
     <div class="d2"></div>
@@ -50,7 +54,7 @@
               data-bs-toggle="dropdown" aria-expanded="false">
 
               <div class="nav-profile-img">
-                <img src="{{ asset ('assets/img/no_profile.png') }}" alt="image">
+                <img src="{{ asset('storage/' . $Admin->profile_image) }}" alt="image">
                 <span class="availability-status online"></span>
               </div>
               <div class="nav-profile-text ms-2">
@@ -86,6 +90,7 @@
       <nav class="sb-sidenav accordion bg-logo2" id="sidenavAccordion">
         <div class="sb-sidenav-menu">
           <div class="nav">
+
             <div class="d-flex justify-content-center align-items-center py-4 border-bottom border-light nav-profile">
               <div class="nav-profile-img">
                 <img src="{{ asset('storage/' . $Admin->profile_image) }}" alt="image">
@@ -145,13 +150,13 @@
             </a>
             <div class="collapse" id="manage-users" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
               <nav class="sb-sidenav-menu-nested nav">
-                <a class="nav-link" href="" title="Donors">
+                <a class="nav-link" href="{{ route('admin.donorList') }}" title="Donors">
                   <div class="sb-nav-link-icon">
                     <i class="far fa-circle nav-icon"></i>
                   </div>
                   <span>Donors</span>
                 </a>
-                <a class="nav-link" href="" title="Volunteers">
+                <a class="nav-link" href="{{ route('admin.volunteerList') }}" title="Volunteers">
                   <div class="sb-nav-link-icon">
                     <i class="far fa-circle nav-icon"></i>
                   </div>
@@ -223,7 +228,7 @@
             </div>
 
             <!-- Volunteer Appointments -->
-            <a class="nav-link " href="" title="Volunteer Appointments">
+            <a class="nav-link" href="{{ route('admin.appointments') }}" title="Volunteer Appointments">
               <div class="sb-nav-link-icon">
                 <i class="fas fa-calendar-alt"></i>
               </div>
@@ -231,7 +236,7 @@
             </a>
 
             <!-- Chapters -->
-            <a class="nav-link" href="{{ route('admin.chapters') }}" title="Chapters">
+            <a class="nav-link " href="{{ route('admin.chapters') }}" title="Chapters">
               <div class="sb-nav-link-icon">
                 <i class="fas fa-map-marker-alt"></i>
               </div>

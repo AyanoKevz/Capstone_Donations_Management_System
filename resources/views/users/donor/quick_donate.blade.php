@@ -15,7 +15,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="{{ asset('lib/bootstrap/css/bootstrap.min.css') }}">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{ asset('assets/users/css/home_donor.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/users/css/donor/home_donor.css') }}">
 </head>
 
 <body class="hold-transition sidebar-collapse layout-top-nav">
@@ -214,12 +214,12 @@
                         <div class="col-5 d-flex justify-content-end align-items-center">
                             <ol class="breadcrumb mb-0">
                                 <li class="breadcrumb-item">
-                                    <a href="home.html">Home</a>
+                                    <a href="{{ route('donor.home') }}">Home</a>
                                 </li>
                                 <li class="breadcrumb-item">
                                     Make A Donations
                                 </li>
-                                <li class="breadcrumb-item active">Qucik Donation</li>
+                                <li class="breadcrumb-item active">Quick Donation</li>
                             </ol>
                         </div>
                     </div>

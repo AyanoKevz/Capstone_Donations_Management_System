@@ -3,12 +3,10 @@ document.addEventListener("DOMContentLoaded", function () {
 var spinnerElement = document.getElementById("spinner");
 
     if (spinnerElement) {
-        // Show the spinner when the page starts loading or reloading
         window.addEventListener("beforeunload", function () {
             spinnerElement.classList.add("show");
         });
 
-        // Remove the spinner after the page has fully loaded
         window.addEventListener("load", function () {
             spinnerElement.classList.remove("show");
         });
@@ -151,12 +149,12 @@ var spinnerElement = document.getElementById("spinner");
     checkboxes.prop('checked', allChecked);
     });
 
-        setTimeout(() => {
-            $('#alert-success').fadeOut();
-            $('#alert-error').fadeOut();
-             $('#alert-info').fadeOut();
-        }, 3000);
-        
+    setTimeout(() => {
+        $('#alert-success').fadeOut();
+        $('#alert-error').fadeOut();
+          $('#alert-info').fadeOut();
+    }, 3000);
+    
 
      // Toggle visibility for the "current password" field
 $('#toggle-opassword').on('click', function () {

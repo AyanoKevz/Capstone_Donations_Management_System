@@ -35,6 +35,7 @@ class VerifyAcct extends Controller
         $user = UserAccount::with(['roles', 'location'])->findOrFail($id);
         $details = null;
         $role = $user->role_name;
+        $appointmentExists = false;
 
         if ($role === 'Donor') {
             $details = $user->donor;
@@ -45,7 +46,6 @@ class VerifyAcct extends Controller
 
         return view('admin.view_details', compact('user', 'details', 'role', 'appointmentExists'));
     }
-
 
     public function processVerification(Request $request, $id)
     {

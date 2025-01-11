@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Admin | Inquiries</title>
+  <title>Admin | All Volunteers</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -15,7 +15,8 @@
     href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <link rel="icon" href="{{ asset ('assets/img/systemLogo.png') }}" type="image/png">
   <link rel="stylesheet" href="{{ asset('lib/bootstrap/css/bootstrap.min.css') }}">
-  <link rel="stylesheet" href="{{ asset ('assets/admin/css/inquiries.css') }}">
+  <link rel="stylesheet" href="{{ asset('lib/datatables/datatables.min.css') }}">
+  <link rel="stylesheet" href="{{ asset ('assets/admin/css/list.css') }}">
 
 </head>
 
@@ -138,7 +139,7 @@
             </div>
 
             <!-- Manage Users -->
-            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#manage-users"
+            <a class="nav-link collapsed active" href="#" data-bs-toggle="collapse" data-bs-target="#manage-users"
               aria-expanded="false" aria-controls="manage-users" title="Manage Users">
               <div class="sb-nav-link-icon">
                 <i class="fas fa-users"></i>
@@ -156,7 +157,7 @@
                   </div>
                   <span>Donors</span>
                 </a>
-                <a class="nav-link" href="{{ route('admin.volunteerList') }}" title="Volunteers">
+                <a class="nav-link active" href="{{ route('admin.volunteerList') }}" title="Volunteers">
                   <div class="sb-nav-link-icon">
                     <i class="far fa-circle nav-icon"></i>
                   </div>
@@ -244,7 +245,7 @@
             </a>
 
             <!-- Inquiries -->
-            <a class="nav-link active" href="{{ route('admin.inquiries') }}" title="Inquiries">
+            <a class="nav-link" href="{{ route('admin.inquiries') }}" title="Inquiries">
               <div class="sb-nav-link-icon">
                 <i class="fas fa-envelope"></i>
               </div>
@@ -276,97 +277,89 @@
     <!-- Content -->
     <div id="layoutSidenav_content">
       <main>
+        @if(session('success'))
+        <div id="alert-success" class="alert alert-success" style="position: absolute; right: 10px; top: 40px;">
+          <i class="fa-solid fa-circle-check fa-xl me-3"></i>{{ session('success') }}
+        </div>
+        @endif
+        @if(session('error'))
+        <div id="alert-error" class="alert alert-danger" style=" position: absolute; right: 10px; top: 40px;">
+          <i class=" fa-solid fa-circle-xmark fa-xl me-3"></i>{{ session('error') }}
+        </div>
+        @endif
         <div class="container-fluid px-3 py-2">
           <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item active"></li>
           </ol>
-          @if (session('success'))
-          <div id="alert-success" class="alert alert-success wow fadeInLeft">
-            <i class="fa-solid fa-circle-check me-3"></i>{{ session('success') }}
-          </div>
-          @endif
-
-          @if (session('error'))
-          <div id="alert-error" class="alert alert-error wow fadeInLeft">
-            <i class="fa-solid fa-circle-xmark me-3"></i>{{ session('error') }}
-          </div>
-          @endif
-          <h1 class="my-2">Inquiries Inbox</h1>
-          <!-- /. CONTENT -->
-          <section class="content mb-2">
-            <div class="container-fluid ps-0">
-              <div class="card card-primary card-outline">
-                <div class="card-header">
-                  <h3 class="card-title">Inbox</h3>
-                </div>
-                <div class="card-body p-0">
-                  <form method="POST" action="{{ route('inquiries.delete') }}">
-                    @csrf
-                    <div class="mailbox-controls d-flex justify-content-between align-items-center border-bottom border-secondary-subtle border-2">
-                      <div>
-                        <button type="button" class="btn email-btn btn-sm checkbox-toggle" title="Check All">
-                          <i class="far fa-square"></i>
-                        </button>
-                        <button type="submit" class="btn email-btn btn-sm" title="Delete">
-                          <i class="far fa-trash-alt"></i>
-                        </button>
-                      </div>
-                      <div>
-                        <a href="{{ route('admin.inquiries', ['status' => 'all']) }}"
-                          class="btn email-btn btn-sm {{ $status === 'all' ? 'custom-active' : '' }}">
-                          All
-                        </a>
-                        <a href="{{ route('admin.inquiries', ['status' => 'unread']) }}"
-                          class="btn email-btn btn-sm {{ $status === 'unread' ? 'custom-active' : '' }}">
-                          Unread
-                        </a>
-                        <a href="{{ route('admin.inquiries', ['status' => 'read']) }}"
-                          class="btn email-btn btn-sm {{ $status === 'read' ? 'custom-active' : '' }}">
-                          Read
-                        </a>
-                      </div>
-                    </div>
-                    <div class="table-responsive mailbox-messages">
-                      <table class="table table-hover table-striped">
-                        <tbody>
-                          @forelse($inquiries as $inquiry)
-                          <tr>
-                            <td>
-                              <div class="icheck-primary">
-                                <input type="checkbox" name="selected[]" value="{{ $inquiry->id }}" id="check{{ $inquiry->id }}">
-                                <label for="check{{ $inquiry->id }}"></label>
-                              </div>
-                            </td>
-                            <td class="mailbox-name">
-                              <a href="{{ route('inquiries.read', $inquiry->id) }}" class="{{ $inquiry->status === 'unread' ? 'fw-bold' : 'text-secondary' }}">{{ $inquiry->name }}</a>
-                            </td>
-                            <td class="mailbox-subject {{ $inquiry->status === 'unread' ? 'fw-bold' : 'text-secondary' }}">{{ $inquiry->subject }}</td>
-                            <td class="mailbox-date">{{ $inquiry->submitted_at->format('d M Y h:i A') }}</td>
-                            <td class="{{ $inquiry->status === 'unread' ? 'fw-bold' : 'text-secondary' }}">
-                              {{ ucfirst($inquiry->status) }}
-                            </td>
-                          </tr>
-                          @empty
-                          <tr>
-                            <td colspan="6" class="text-center">No inquiries available for {{ ucfirst($status ?? 'All') }}.</td>
-                          </tr>
-                          @endforelse
-                        </tbody>
-                      </table>
-                    </div>
-                  </form>
-                </div>
-                <div class="card-footer px-2">
-                  <div class="mailbox-controls d-flex justify-content-between align-items-center">
-                    Total Inquiries: {{ $total }}
-                    <div class="mt-2"> {{ $inquiries->links() }}</div>
-                  </div>
-                </div>
-              </div>
+          <h1 class="my-2">Our Volunteer</h1>
+          <div class="card card-primary card-outline">
+            <div class="card-header">
+              <h3 class="card-title">Currently Active Volunteer</h3>
             </div>
-          </section>
+            <div class="card-body">
+              <table id="example1" class="table table-bordered table-hover table-striped">
+                <thead>
+                  <tr>
+                    <th>Role</th>
+                    <th>Username</th>
+                    <th>Chapter</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @forelse($activeVolunteers as $volunteer)
+                  <tr>
+                    <td>{{ $volunteer->role_name }}</td>
+                    <td>{{ $volunteer->username }}</td>
+                    <td>{{ $volunteer->volunteer->chapter->chapter_name ?? 'No Chapter' }}</td>
+                    <td>
+                      <p class="bg-success-subtle text-success-emphasis m-0 p-1 fw-bold">Active</p>
+                    </td>
+                    <td>
+                      <!-- Action Buttons -->
+                      <button type="button" class="btn btn-success btn-sm" title="View Details">
+                        <a href="{{ route('view_details', $volunteer->id) }}" style="color: white; text-decoration:none;">View</a>
+                      </button>
+                      <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $volunteer->id }}" title="Delete">
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+
+                  <!-- Delete Modal -->
+                  <div class="modal fade" id="deleteModal{{ $volunteer->id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                      <div class="modal-content">
+                        <form action="{{ route('volunteers.delete', $volunteer->id) }}" method="POST">
+                          @csrf
+                          <div class="modal-header">
+                            <h5 class="modal-title">Delete Volunteer</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body text-center">
+                            Are you sure you want to delete this volunteer?
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                  @empty
+                  <tr>
+                    <td colspan="5" class="text-center">No Active Volunteers Available</td>
+                  </tr>
+                  @endforelse
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </main>
+
       <footer class="py-3 bg-dark mt-3">
         <div class="container-fluid ps-4">
           <div class="d-flex align-items-center justify-content-between">
@@ -381,6 +374,7 @@
   <script src="{{ asset('lib/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
   <script src="{{ asset('lib/fontawesome/all.js') }}"></script>
   <script src="{{ asset('lib/jquery/jquery.min.js') }}"></script>
+  <script src="{{ asset('lib/datatables/datatables.min.js') }}"></script>
   <script src="{{ asset('assets/admin/js/admin.js') }}"></script>
 
   <script>

@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="{{ asset('lib/leaflet/leaflet.css') }}">
     </link>
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{ asset('assets/users/css/chapter.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/users/css/donor/chapter.css') }}">
 </head>
 
 <body class="hold-transition sidebar-collapse layout-top-nav">
@@ -66,11 +66,11 @@
                         role="button" data-bs-toggle="dropdown" aria-expanded="false">
 
                         <div class="nav-profile-img">
-                            <img src="{{ asset('assets/img/no_profile.png') }}" alt="image">
+                            <img src="{{ asset('storage/' . $User->donor->user_photo) }}" alt="image">
                             <span class="availability-status online"></span>
                         </div>
                         <div class="nav-profile-text">
-                            <span>Username</span>
+                            <span>{{ $User->donor->first_name . ' ' . $User->donor->last_name }}</span>
                         </div>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
@@ -104,10 +104,10 @@
                 <!-- Sidebar user (optional) -->
                 <div class="user-panel my-3 pb-3  d-flex justify-content-center">
                     <div class="image">
-                        <img src="{{ asset('assets/img/no_profile.png') }}" class="img-circle elevation-2" alt="User Image">
+                        <img src="{{ asset('storage/' . $User->donor->user_photo) }}" class="img-circle elevation-2" alt="User Image">
                     </div>
                     <div class="info">
-                        <a href="#" class="d-block">Username</a>
+                        <a href="#" class="d-block">{{ $User->username}}</a>
                     </div>
                 </div>
                 <!-- SidebarSearch Form -->
@@ -213,9 +213,18 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-6 d-flex align-items-center ms-3">
+                            <img src="{{ asset('assets/img/donorbanner.png') }}" alt="" class="banner-img img-fluid mx-2">
                             <h1 class="m-0">
                                 Donor Portal
                             </h1>
+                        </div>
+                        <div class="col-5 d-flex justify-content-end align-items-center">
+                            <ol class="breadcrumb mb-0">
+                                <li class="breadcrumb-item">
+                                    <a href="{{ route('donor.home') }}">Home</a>
+                                </li>
+                                <li class="breadcrumb-item active">Chapters</li>
+                            </ol>
                         </div>
                     </div>
                 </div>

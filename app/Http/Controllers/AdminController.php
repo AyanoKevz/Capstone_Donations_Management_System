@@ -6,11 +6,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Chapter;
+use App\Models\UserAccount;
+use App\Models\Donor;
 use App\Models\Appointment;
 use App\Models\Admin;
+use App\Models\Volunteer;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\AccountUpdated;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
 {
@@ -21,7 +25,6 @@ class AdminController extends Controller
         if (Auth::guard('admin')->check()) {
             return redirect()->route('admin.dashboard');
         }
-
         return view('admin.admin_login');
     }
 
@@ -135,7 +138,6 @@ class AdminController extends Controller
     }
 
 
-    // Admin Profile
     public function admin_profile()
     {
         return view('admin.admin_profile');
@@ -151,18 +153,38 @@ class AdminController extends Controller
             'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
+        $changes = [];
+
         if ($request->hasFile('profile_image')) {
-            $imagePath = $request->file('profile_image')->store('profile_images', 'public');
-            $admin->profile_image = $imagePath;
+            if ($admin->profile_image && Storage::disk('public')->exists($admin->profile_image)) {
+                Storage::disk('public')->delete($admin->profile_image);
+            }
+            $imagePath = $request->file('profile_image')->store('admin_photos', 'public');
+            if ($admin->profile_image !== $imagePath) {
+                $changes[] = 'profile_image';
+                $admin->profile_image = $imagePath;
+            }
         }
 
-        $admin->name = $request->input('name');
-        $admin->email = $request->input('email');
+        if ($admin->name !== $request->input('name')) {
+            $changes[] = 'name';
+            $admin->name = $request->input('name');
+        }
+
+        if ($admin->email !== $request->input('email')) {
+            $changes[] = 'email';
+            $admin->email = $request->input('email');
+        }
+
+        if (empty($changes)) {
+            return back()->with('info', 'No changes were made to your profile.');
+        }
+
+        // Save changes
         $admin->save();
 
         return back()->with('success', 'Profile updated successfully.');
     }
-
 
     public function updateAccount(Request $request, $id)
     {
@@ -170,10 +192,8 @@ class AdminController extends Controller
 
         $request->validate([
             'username' => 'required',
-            'password' => 'nullable|confirmed|min:8', // Make password optional
+            'password' => 'nullable|confirmed|min:8',
         ]);
-
-        // Check if the username is already in use by another admin
         $existingAdmin = Admin::where('username', $request->input('username'))
             ->where('id', '!=', $id)
             ->first();
@@ -216,5 +236,92 @@ class AdminController extends Controller
         Mail::to($admin->email)->send(new AccountUpdated($details));
 
         return back()->with('success', 'Account updated successfully.');
+    }
+
+    public function allDonors(Request $request)
+    {
+        // Get the filter from the request (default is 'all')
+        $filter = $request->input('account_type', 'all');
+
+        // Fetch active donors based on the filter
+        $activeDonors = UserAccount::with(['roles', 'donor'])
+            ->whereHas('roles', function ($query) {
+                $query->where('role_name', 'Donor');
+            })
+            ->where('is_verified', true)
+            ->when($filter !== 'all', function ($query) use ($filter) {
+                $query->where('account_type', $filter);
+            })
+            ->get();
+
+        return view('admin.donor_list', compact('activeDonors', 'filter'));
+    }
+
+
+    public function deleteDonor($userId)
+    {
+        // Find the donor via user_id
+        $donor = Donor::where('user_id', $userId)->firstOrFail();
+
+        // Delete the donor's ID image if it exists
+        if ($donor->id_image && Storage::disk('public')->exists($donor->id_image)) {
+            Storage::disk('public')->delete($donor->id_image);
+        }
+
+        // Delete the donor's user photo if it exists
+        if ($donor->user_photo && Storage::disk('public')->exists($donor->user_photo)) {
+            Storage::disk('public')->delete($donor->user_photo);
+        }
+
+        $donor->delete();
+
+        $user = UserAccount::find($userId);
+        if ($user) {
+            $user->delete();
+        }
+
+        return redirect()->route('admin.donorList')->with('success', 'Donor account deleted successfully!');
+    }
+
+    public function allVolunteers()
+    {
+        // Fetch active volunteers (is_verified = true)
+        $activeVolunteers = UserAccount::with(['roles', 'volunteer.chapter'])
+            ->whereHas('roles', function ($query) {
+                $query->where('role_name', 'Volunteer');
+            })
+            ->where('is_verified', true)
+            ->get();
+
+        return view('admin.volunteer_list', compact('activeVolunteers'));
+    }
+
+    public function deleteVolunteer($userId)
+    {
+        // Find the volunteer via user_id
+        $volunteer = Volunteer::where('user_id', $userId)->firstOrFail();
+
+        // Delete the volunteer's ID image if it exists
+        if (
+            $volunteer->id_image && Storage::disk('public')->exists($volunteer->id_image)
+        ) {
+            Storage::disk('public')->delete($volunteer->id_image);
+        }
+
+        // Delete the volunteer's user photo if it exists
+        if ($volunteer->user_photo && Storage::disk('public')->exists($volunteer->user_photo)) {
+            Storage::disk('public')->delete($volunteer->user_photo);
+        }
+
+        // Delete the volunteer record
+        $volunteer->delete();
+
+        // Optionally delete the associated user account
+        $user = UserAccount::find($userId);
+        if ($user) {
+            $user->delete();
+        }
+
+        return redirect()->route('admin.volunteerList')->with('success', 'Volunteer account deleted successfully!');
     }
 }

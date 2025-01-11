@@ -50,8 +50,6 @@ class userLoginController extends Controller
         Auth::logout();
         session()->invalidate();
         session()->regenerateToken();
-
-        // Redirect to the homepage with a success message and anchor to the portals section
         return redirect()->route('home')
             ->with('success', 'You have been logged out successfully.')
             ->header('Location', route('home') . '#portals');

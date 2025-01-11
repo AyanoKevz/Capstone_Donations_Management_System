@@ -15,8 +15,32 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="{{ asset('lib/bootstrap/css/bootstrap.min.css') }}">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{ asset('assets/users/css/home_donor.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/users/css/donor/home_donor.css') }}">
 </head>
+
+<!-- Spinner Start -->
+<div id="spinner" class="show bg-white position-fixed w-100 vh-100 d-flex flex-column align-items-center justify-content-center">
+    <div class="text-center mb-4">
+        <h1 class="m-0 fw-bold" style="color: #ff1f1f; font-size:50px;">
+            <img src="{{ asset('assets/img/systemLogo.png') }}" class="me-3 w-25" alt="Logo">UniAid
+        </h1>
+    </div>
+
+    <div class="cssload-main">
+        <div class="cssload-heart">
+            <span class="cssload-heartL"></span>
+            <span class="cssload-heartR"></span>
+            <span class="cssload-square"></span>
+        </div>
+        <div class="cssload-shadow"></div>
+    </div>
+    <div class="loading-text mt-4">
+        <p class="text-center fw-bold" style="color: #ff1f1f; font-size: 20px; margin: 0; position: absolute; bottom: 160px; left: 50%; transform: translateX(-50%); ">
+            Loading....
+        </p>
+    </div>
+</div>
+<!-- Spinner End -->
 
 <body class="hold-transition sidebar-collapse layout-top-nav">
     <div class="wrapper">
@@ -63,11 +87,11 @@
                         role="button" data-bs-toggle="dropdown" aria-expanded="false">
 
                         <div class="nav-profile-img">
-                            <img src="{{ asset('assets/img/no_profile.png') }}" alt="image">
+                            <img src="{{ asset('storage/' . $User->donor->user_photo) }}" alt="image">
                             <span class="availability-status online"></span>
                         </div>
                         <div class="nav-profile-text">
-                            <span>Username</span>
+                            <span>{{ $User->donor->first_name . ' ' . $User->donor->last_name }}</span>
                         </div>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
@@ -104,10 +128,10 @@
                 <!-- Sidebar user (optional) -->
                 <div class="user-panel my-3 pb-3  d-flex justify-content-center">
                     <div class="image">
-                        <img src="{{ asset('assets/img/no_profile.png') }}" class="img-circle elevation-2" alt="User Image">
+                        <img src="{{ asset('storage/' . $User->donor->user_photo) }}" class="img-circle elevation-2" alt="User Image">
                     </div>
                     <div class="info">
-                        <a href="#" class="d-block">Username</a>
+                        <a href="#" class="d-block">{{ $User->username}}</a>
                     </div>
                 </div>
                 <!-- SidebarSearch Form -->
@@ -213,12 +237,18 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-6 d-flex align-items-center ms-3">
+                            <img src="{{ asset('assets/img/donorbanner.png') }}" alt="" class="banner-img img-fluid mx-2">
                             <h1 class="m-0">
                                 Donor Portal
                             </h1>
                         </div>
                     </div>
                 </div>
+                @if(session('error'))
+                <div id="alert-error" class="alert alert-error" style=" position: absolute; ; right: 10px; top: 90px;">
+                    <i class=" fa-solid fa-circle-xmark fa-xl me-3"></i>{{ session('error') }}
+                </div>
+                @endif
             </div>
 
             <!-- End content-header -->

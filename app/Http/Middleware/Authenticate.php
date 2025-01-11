@@ -22,7 +22,7 @@ class Authenticate
                 ->withInput()
                 ->header('Location', route('home') . '#portals');
         }
-
+        view()->share('User', Auth::user());
         return $next($request);
     }
 }

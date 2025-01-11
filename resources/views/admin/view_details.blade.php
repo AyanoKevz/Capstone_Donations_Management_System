@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="csrf-token" content="{{ csrf_token() }}">
-  <title>Admin | Read Inquiries</title>
+  <title>Admin | User Details</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -22,8 +22,12 @@
 </head>
 
 <!-- Spinner Start -->
-<div id="spinner"
-  class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+<div id="spinner" class="show bg-white position-fixed w-100 vh-100 d-flex flex-column align-items-center justify-content-center">
+  <div class="text-center mb-4">
+    <h1 class="m-0 fw-bold" style="color: #ff1f1f; font-size:50px;">
+      <img src="{{ asset('assets/img/systemLogo.png') }}" class="me-3 w-25" alt="Logo">UniAid
+    </h1>
+  </div>
   <div class="loading">
     <div class="d1"></div>
     <div class="d2"></div>
@@ -120,7 +124,7 @@
             </a>
             <div class="collapse" id="admin-settings" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
               <nav class="sb-sidenav-menu-nested nav">
-                <a class="nav-link" href="" title="Admin Profile">
+                <a class="nav-link" href="{{route('admin.profile')}}" title="Admin Profile">
                   <div class="sb-nav-link-icon">
                     <i class="far fa-circle nav-icon"></i>
                   </div>
@@ -148,19 +152,19 @@
             </a>
             <div class="collapse" id="manage-users" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
               <nav class="sb-sidenav-menu-nested nav">
-                <a class="nav-link" href="" title="Donors">
+                <a class="nav-link" href="{{ route('admin.donorList') }}" title="Donors">
                   <div class="sb-nav-link-icon">
                     <i class="far fa-circle nav-icon"></i>
                   </div>
                   <span>Donors</span>
                 </a>
-                <a class="nav-link" href="" title="Volunteers">
+                <a class="nav-link" href="{{ route('admin.volunteerList') }}" title="Volunteers">
                   <div class="sb-nav-link-icon">
                     <i class="far fa-circle nav-icon"></i>
                   </div>
                   <span>Volunteers</span>
                 </a>
-                <a class="nav-link active" href="{{ route('verify_account') }}" title="Verify Accounts">
+                <a class="nav-link " href="{{ route('verify_account') }}" title="Verify Accounts">
                   <div class="sb-nav-link-icon">
                     <i class="far fa-circle nav-icon"></i>
                   </div>
@@ -412,21 +416,19 @@
               </div>
             </div>
           </div>
+          @if($user->is_verified === 0)
           <div class="row mt-4">
             <div class="col text-center">
               @if($role === 'Donor')
-              <!-- Show Verify button for Donors -->
               <button type="button" class="btn btn-success me-3" data-bs-toggle="modal" data-bs-target="#verify" data-user-id="{{ $user->id }}">
                 Verify
               </button>
               @elseif($role === 'Volunteer')
               @if($appointmentExists)
-              <!-- Show Verify button if Volunteer already has an appointment -->
               <button type="button" class="btn btn-success me-3" data-bs-toggle="modal" data-bs-target="#verify" data-user-id="{{ $user->id }}">
                 Verify
               </button>
               @else
-              <!-- Show Set an Appointment button if Volunteer doesn't have an appointment -->
               <button type="button" class="btn btn-success me-3" data-bs-toggle="modal" data-bs-target="#appointment" data-user-id="{{ $user->id }}">
                 Set an Appointment
               </button>
@@ -437,6 +439,7 @@
               </button>
             </div>
           </div>
+          @endif
         </div>
       </main>
 
