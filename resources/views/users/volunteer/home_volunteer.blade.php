@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>UniAid - Donee Portal</title>
+    <title>UniAid - Volunteer Portal</title>
     <link rel="icon" href="{{ asset ('assets/img/systemLogo.png') }}" type="image/png">
     <!-- Google Font-->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,6 +17,30 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('assets/users/css/volunteer/home_volunteer.css') }}">
 </head>
+
+<!-- Spinner Start -->
+<div id="spinner" class="show bg-white position-fixed w-100 vh-100 d-flex flex-column align-items-center justify-content-center">
+    <div class="text-center mb-4">
+        <h1 class="m-0 fw-bold" style="color: #ff1f1f; font-size:50px;">
+            <img src="{{ asset('assets/img/systemLogo.png') }}" class="me-3 w-25" alt="Logo">UniAid
+        </h1>
+    </div>
+
+    <div class="cssload-main">
+        <div class="cssload-heart">
+            <span class="cssload-heartL"></span>
+            <span class="cssload-heartR"></span>
+            <span class="cssload-square"></span>
+        </div>
+        <div class="cssload-shadow"></div>
+    </div>
+    <div class="loading-text mt-4">
+        <p class="text-center fw-bold" style="color: #ff1f1f; font-size: 20px; margin: 0; position: absolute; bottom: 160px; left: 50%; transform: translateX(-50%); ">
+            Loading....
+        </p>
+    </div>
+</div>
+<!-- Spinner End -->
 
 <body class="hold-transition sidebar-collapse layout-top-nav">
     <div class="wrapper">
@@ -40,7 +64,10 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="home.html">Home</a>
+                            <a class="nav-link active rounded-pill" aria-current="page" href="{{route('volunteer.home')}}">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link " aria-current="page" href="{{route('prc-chapters')}}">Chapters</a>
                         </li>
                     </ul>
                 </div>
@@ -60,19 +87,22 @@
                         role="button" data-bs-toggle="dropdown" aria-expanded="false">
 
                         <div class="nav-profile-img">
-                            <img src="{{ asset('assets/img/no_profile.png') }}" alt="image">
+                            <img src="{{ asset('storage/' . $User->volunteer->user_photo) }}" alt="image">
                             <span class="availability-status online"></span>
                         </div>
                         <div class="nav-profile-text">
-                            <span>Username</span>
+                            <span>{{ $User->volunteer->first_name . ' ' . $User->volunteer->last_name }}</span>
                         </div>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                         <li>
-                            <a class="dropdown-item d-flex justify-content-center align-items-center"
-                                href="logout.php">Logout
-                                <i class="fas fa-right-from-bracket ms-2"></i>
-                            </a>
+                            <form action="{{ route('user.logout') }}" method="POST" id="logout-form">
+                                @csrf
+                                <button type="submit" class="dropdown-item d-flex justify-content-center align-items-center">
+                                    Logout
+                                    <i class="fas fa-right-from-bracket ms-2"></i>
+                                </button>
+                            </form>
                         </li>
                         <li>
                             <a class="dropdown-item d-flex justify-content-center align-items-center"
@@ -98,10 +128,10 @@
                 <!-- Sidebar user (optional) -->
                 <div class="user-panel my-3 pb-3  d-flex justify-content-center">
                     <div class="image">
-                        <img src="{{ asset('assets/img/no_profile.png') }}" class="img-circle elevation-2" alt="User Image">
+                        <img src="{{ asset('storage/' . $User->volunteer->user_photo) }}" class="img-circle elevation-2" alt="User Image">
                     </div>
                     <div class="info">
-                        <a href="#" class="d-block">Username</a>
+                        <a href="#" class="d-block">{{ $User->username}}</a>
                     </div>
                 </div>
                 <!-- SidebarSearch Form -->
@@ -118,86 +148,78 @@
                 </div>
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
-                        data-accordion="false">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                        <!-- Home -->
                         <li class="nav-item">
-                            <a href="home.html" class="nav-link  active">
+                            <a href="{{ route('volunteer.home') }}" class="nav-link active">
                                 <i class="nav-icon fas fa-house"></i>
-                                <p>
-                                    Home
-                                </p>
+                                <p>Home</p>
                             </a>
                         </li>
+
+                        <!-- My Profile -->
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{ route('volunteer.profile') }}" class="nav-link">
                                 <i class="nav-icon fas fa-user"></i>
-                                <p>
-                                    My Profile
-                                </p>
+                                <p>My Profile</p>
                             </a>
                         </li>
+
+                        <!-- Make A Donation -->
                         <li class="nav-item">
                             <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-handshake-angle"></i>
+                                <i class="nav-icon fas fa-hand-holding-heart"></i>
                                 <p>
-                                    Submit a Request
+                                    Make A Donation
                                     <i class="right fas fa-angle-left"></i>
-                                    <span class="badge badge-info right">2</span>
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="quick_donate.html" class="nav-link">
+                                    <a href="#" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Post A Request</p>
+                                        <p>Quick Donation</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="#" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Request on RedCross</p>
+                                        <p>Browse Requests</p>
                                     </a>
                                 </li>
                             </ul>
                         </li>
+
+                        <!-- Track Donations -->
                         <li class="nav-item">
                             <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-chart-column"></i>
+                                <i class="nav-icon fas fa-chart-line"></i>
                                 <p>
-                                    Track Requests
+                                    Track Donations
                                     <i class="fas fa-angle-left right"></i>
-                                    <span class="badge badge-info right">2</span>
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
                                     <a href="#" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>My Request</p>
+                                        <p>Donation Status</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="#" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Submitted Requests</p>
+                                        <p>Donation History</p>
                                     </a>
                                 </li>
                             </ul>
                         </li>
+
+                        <!-- Feedback and Support -->
                         <li class="nav-item">
                             <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-hand-holding-hand"></i>
-                                <p>
-                                    Donations Received
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-face-smile"></i>
-                                <p>
-                                    Support / Rate Us!
-                                </p>
+                                <i class="nav-icon fas fa-comments"></i>
+                                <p>Feedback / Support</p>
                             </a>
                         </li>
                     </ul>
@@ -215,12 +237,18 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-6 d-flex align-items-center ms-3">
+                            <img src="{{ asset('assets/img/volunteerbanner.png') }}" alt="" class="banner-img img-fluid mx-2">
                             <h1 class="m-0">
-                                Donee Portal
+                                Volunteer Portal
                             </h1>
                         </div>
                     </div>
                 </div>
+                @if(session('error'))
+                <div id="alert-error" class="alert alert-error" style=" position: absolute; ; right: 10px; top: 90px;">
+                    <i class=" fa-solid fa-circle-xmark fa-xl me-3"></i>{{ session('error') }}
+                </div>
+                @endif
             </div>
 
             <!-- End content-header -->

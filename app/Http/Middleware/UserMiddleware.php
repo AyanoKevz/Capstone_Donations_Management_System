@@ -28,7 +28,6 @@ class UserMiddleware
             }
         }
 
-        // Share the authenticated user globally with views
         view()->share('User', Auth::user());
         return $next($request);
     }

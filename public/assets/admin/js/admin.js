@@ -221,10 +221,7 @@ $("#admin_acount_form").validate({
                     required: true,
                     equalTo: "#password"
                 },
-                email: {
-                    required: true,
-                    email: true
-                }
+            
             },
             messages: {
                 username: {
@@ -243,10 +240,6 @@ $("#admin_acount_form").validate({
                     required: "Please confirm your password",
                     equalTo: "Passwords do not match"
                 },
-                email: {
-                    required: "Please enter a valid email address",
-                    email: "Please enter a valid email address"
-                }
             },
             highlight: function (element) {
                 $(element).addClass('is-invalid').removeClass('is-valid');

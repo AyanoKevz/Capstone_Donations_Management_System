@@ -9,6 +9,7 @@ use App\Http\Controllers\UserRegistrationController;
 use App\Http\Controllers\DonorController;
 use App\Http\Controllers\userLoginController;
 use App\Http\Controllers\VolunteerController;
+use App\Http\Controllers\user_profileController;
 
 
 //  HOMEPAGE ROUTES:
@@ -66,6 +67,7 @@ Route::middleware(['admin', 'prevent-back-button'])->prefix('admin')->group(func
     // Admin Dashboard
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 
+    // Admin Profile
     Route::get('/profile', [AdminController::class, 'admin_profile'])->name('admin.profile');
     Route::post('/profile/{id}', [AdminController::class, 'updateProfile'])->name('admin.updateProfile');
     Route::post('/account/{id}', [AdminController::class, 'updateAccount'])->name('admin.updateAccount');
@@ -75,10 +77,6 @@ Route::middleware(['admin', 'prevent-back-button'])->prefix('admin')->group(func
 
     Route::get('/active-volunteer', [AdminController::class, 'allVolunteers'])->name('admin.volunteerList');
     Route::post('/volunteers/delete/{id}', [AdminController::class, 'deleteVolunteer'])->name('volunteers.delete');
-
-
-
-
 
 
     // Admin Inquiries
@@ -107,14 +105,20 @@ Route::middleware(['admin', 'prevent-back-button'])->prefix('admin')->group(func
 
 // Middleware-protected routes for user
 Route::middleware(['auth', 'prevent-back-button'])->prefix('user')->group(function () {
+
+    Route::post('/user/account/{id}', [user_profileController::class, 'updateUserAccount'])->name('user.updateAccount');
     // Middleware-protected routes for Donor
     Route::middleware('role:Donor')->prefix('donor')->group(function () {
         Route::get('/home', [DonorController::class, 'index'])->name('donor.home');
+        Route::get('/donor-profile', [user_profileController::class, 'DonorProfile'])->name('donor.profile');
         Route::get('/prc-chapters', [DonorController::class, 'showChapters'])->name('prc-chapters');
+        Route::post('/donor/update/{id}', [user_profileController::class, 'updateDonorProfile'])->name('donor.updateProfile');
     });
 
     // Middleware-protected routes for Volunteer
     Route::middleware('role:Volunteer')->prefix('volunteer')->group(function () {
         Route::get('/home', [VolunteerController::class, 'index'])->name('volunteer.home');
+        Route::get('/volunteer-profile', [user_profileController::class, 'VolunteerProfile'])->name('volunteer.profile');
+        Route::post('/volunteer/update/{id}', [user_profileController::class, 'updateVolunteerProfile'])->name('volunteer.updateProfile');
     });
 });

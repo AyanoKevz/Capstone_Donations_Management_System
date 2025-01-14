@@ -287,11 +287,11 @@
           <i class=" fa-solid fa-circle-xmark fa-xl me-3"></i>{{ session('error') }}
         </div>
         @endif
-        <h1 class="my-2">Our Donors</h1>
         <div class="container-fluid px-3 py-2">
           <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item active"></li>
           </ol>
+          <h1 class="my-2">Our Donors</h1>
           <div class="d-flex justify-content-end mb-1">
             <a href="{{ route('admin.donorList', ['account_type' => 'all']) }}"
               class="btn table-btn btn-sm {{ $filter === 'all' ? 'custom-active' : '' }}">

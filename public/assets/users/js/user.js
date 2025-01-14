@@ -19,6 +19,380 @@ var spinnerElement = document.getElementById("spinner");
           $('#alert-info').fadeOut();
     }, 3000);
 
+
+   if ($("#user_profile_form").length) {
+    
+        $.validator.addMethod("mobilePH", function (value, element) {
+            return this.optional(element) || /^09\d{9}$/.test(value);
+        });
+
+        $("#user_profile_form").validate({
+            rules: {
+                user_photo: {
+                    extension: "jpg|jpeg|png"
+                },
+                email: {
+                    required: true,
+                    email: true
+                },
+                fname: {
+                    required: true
+                },
+                lname: {
+                    required: true
+                },
+                contact: {
+                    required: true,
+                    digits: true,
+                    mobilePH: true,
+                    maxlength: 11
+                },
+                full_address: {
+                    required: true
+                },
+            },
+            messages: {
+                user_photo: {
+                    extension: "Please upload a valid image (jpg, jpeg, png)"
+                },
+                email: {
+                    required: "Please enter a valid email address",
+                    email: "Please enter a valid email address"
+                },
+                contact: {
+                    required: "Please enter your mobile number",
+                    digits: "Please enter only digits",
+                    mobilePH: "Invalid Format (09xxxxxxxxx)"
+                },
+            },
+            highlight: function (element) {
+                $(element).addClass('is-invalid').removeClass('is-valid');
+            },
+            unhighlight: function (element) {
+                $(element).addClass('is-valid').removeClass('is-invalid');
+            },
+            errorPlacement: function (error, element) {
+                error.insertAfter(element);
+            },
+            submitHandler: function (form) {
+                form.submit();
+            }
+        });
+    }
+
+    if ($("#user_account_form").length) {
+
+      $("#user_account_form").validate({
+              rules: {
+                  username: {
+                      required: true,
+                      minlength: 8
+                  },
+                  oldPassword: {
+                      required: true,
+                      minlength: 8
+                  },
+                  password: {
+                      required: true,
+                      minlength: 8
+                  },
+                  password_confirmation: {
+                      required: true,
+                      equalTo: "#password"
+                  },
+                  email: {
+                      required: true,
+                      email: true
+                  }
+              },
+              messages: {
+                  username: {
+                      required: "Please enter a username",
+                      minlength: "Your username must be at least 8 characters long"
+                  },
+                  oldPassword: {
+                      required: "Please enter your old password",
+                      minlength: "Your password must be at least 8 characters long"
+                  },
+                  password: {
+                      required: "Please enter a password",
+                      minlength: "Your password must be at least 8 characters long"
+                  },
+                  password_confirmation: {
+                      required: "Please confirm your password",
+                      equalTo: "Passwords do not match"
+                  },
+                  email: {
+                      required: "Please enter a valid email address",
+                      email: "Please enter a valid email address"
+                  }
+              },
+              highlight: function (element) {
+                  $(element).addClass('is-invalid').removeClass('is-valid');
+              },
+              unhighlight: function (element) {
+                  $(element).addClass('is-valid').removeClass('is-invalid');
+              },
+              errorPlacement: function (error, element) {
+                  error.insertAfter(element);
+              },
+              submitHandler: function (form) {
+                  form.submit();
+              }
+          });
+      }
+
+    // Check if the toggle password section exists on the page
+    if ($('#toggle-password-section').length) {
+        $('#toggle-password-section').click(function () {
+            $('#password-section').toggle();
+        });
+    }
+
+        // Toggle visibility for the "password" field
+$('#toggle-password').on('click', function () {
+  const passwordInput = $('#password');
+  const toggleIcon = $('#toggle-password-icon');
+
+  // Toggle password type between 'password' and 'text'
+  if (passwordInput.attr('type') === 'password') {
+    passwordInput.attr('type', 'text'); // Show password
+    toggleIcon.removeClass('fa-eye').addClass('fa-eye-slash'); // Change icon to eye-slash
+  } else {
+    passwordInput.attr('type', 'password'); // Hide password
+    toggleIcon.removeClass('fa-eye-slash').addClass('fa-eye'); // Change icon to eye
+  }
+});
+
+// Toggle visibility for the "confirm password" field
+$('#toggle-cpassword').on('click', function () {
+  const cpasswordInput = $('#cpassword');
+  const toggleIcon = $('#toggle-cpassword-icon');
+
+  // Toggle password type between 'password' and 'text'
+  if (cpasswordInput.attr('type') === 'password') {
+    cpasswordInput.attr('type', 'text'); // Show password
+    toggleIcon.removeClass('fa-eye').addClass('fa-eye-slash'); // Change icon to eye-slash
+  } else {
+    cpasswordInput.attr('type', 'password'); // Hide password
+    toggleIcon.removeClass('fa-eye-slash').addClass('fa-eye'); // Change icon to eye
+  }
+});
+
+
+
+    const API_BASE_URL = "https://psgc.gitlab.io/api";
+
+initializeRegionDropdown();
+$('#region').on('change', handleRegionChange);
+$('#province').on('change', handleProvinceChange);
+$('#city').on('change', handleCityChange);
+$('#barangay').on('change', handleBarangayChange);
+
+/**
+ * Initialize the Region dropdown by fetching data from the PSGC API.
+ */
+function initializeRegionDropdown() {
+    $.getJSON(`${API_BASE_URL}/regions/`, function(data) {
+        const regionDropdown = $('#region');
+        data.forEach(region => {
+            regionDropdown.append(`<option value="${region.code}" data-name="${region.name}">${region.name}</option>`);
+        });
+    }).fail(function() {
+        console.error("Failed to load regions.");
+    });
+}
+
+/**
+ * Handle region selection and load corresponding provinces or cities directly for NCR.
+ */
+function handleRegionChange() {
+    const regionCode = this.value;  // Get the selected region code
+    const regionName = $('option:selected', this).text(); // Get the name from the selected option
+    
+    if (!regionCode) return;  // Exit if no region is selected
+
+    // Store the region name in a hidden input field
+    $('#region-name').val(regionName);  // Assuming you have a hidden input field with id="region-name"
+    
+    // Special handling for NCR (no provinces)
+    if (regionCode === "130000000") { // NCR region code
+        handleNCRRegion();
+    } else {
+        loadProvinces(regionCode);  // Use the region code to load provinces
+    }
+}
+
+/**
+ * Handle NCR region by skipping the province dropdown and directly loading cities.
+ */
+function handleNCRRegion() {
+    // Set "N/A" for province dropdown
+    $('#province').empty().append('<option selected value="N/A">N/A</option>');
+    
+    // Set the hidden input to "N/A"
+    $('#province-name').val('N/A');
+    
+    // Load cities directly for NCR
+    loadCitiesForRegion("130000000");
+}
+
+/**
+ * Load provinces for the selected region.
+ * @param {string} regionCode - The region code for which to fetch provinces.
+ */
+function loadProvinces(regionCode) {
+    $.getJSON(`${API_BASE_URL}/regions/${regionCode}/provinces/`, function(data) {
+        const provinceDropdown = $('#province');
+        if (data.length > 0) {
+            data.forEach(province => {
+                provinceDropdown.append(`<option value="${province.code}" data-name="${province.name}">${province.name}</option>`);
+            });
+        } else {
+            console.warn('No provinces found for this region.');
+            provinceDropdown.append('<option disabled selected value="">N/A</option>');
+        }
+
+        resetDropdown('#city', 'Select City');
+        resetDropdown('#barangay', 'Select Barangay');
+    }).fail(function() {
+        console.error("Failed to load provinces for the selected region.");
+    });
+}
+
+/**
+ * Handle province selection and load corresponding cities/municipalities.
+ */
+function handleProvinceChange() {
+    const provinceCode = this.value;
+    const provinceName = $('option:selected', this).text(); // Get the name from the selected option
+    
+    if (provinceCode) {
+        $('#province-name').val(provinceName);  // Store the province name in the hidden input field
+        loadCitiesForProvince(provinceCode);  // Load cities for the selected province
+    }
+}
+
+/**
+ * Load cities/municipalities for the selected province.
+ * @param {string} provinceCode - The province code for which to fetch cities.
+ */
+function loadCitiesForProvince(provinceCode) {
+    $.getJSON(`${API_BASE_URL}/provinces/${provinceCode}/cities-municipalities/`, function(data) {
+        const cityDropdown = $('#city');
+        if (data.length > 0) {
+            data.forEach(city => {
+                cityDropdown.append(`<option value="${city.code}" data-name="${city.name}">${city.name}</option>`);
+            });
+        } else {
+            console.warn('No cities found for this province.');
+        }
+
+        resetDropdown('#barangay', 'Select Barangay');
+    }).fail(function() {
+        console.error("Failed to load cities for the selected province.");
+    });
+}
+
+/**
+ * Load cities/municipalities for regions like NCR that don't have provinces.
+ * @param {string} regionCode - The region code for which to fetch cities.
+ */
+function loadCitiesForRegion(regionCode) {
+    $.getJSON(`${API_BASE_URL}/regions/${regionCode}/cities-municipalities/`, function(data) {
+        const cityDropdown = $('#city');
+        if (data.length > 0) {
+            data.forEach(city => {
+                cityDropdown.append(`<option value="${city.code}" data-name="${city.name}">${city.name}</option>`);
+            });
+        } else {
+            console.warn('No cities found for this region.');
+        }
+
+        resetDropdown('#barangay', 'Select Barangay');
+    }).fail(function() {
+        console.error("Failed to load cities for the selected region.");
+    });
+}
+
+/**
+ * Handle city/municipality selection and load corresponding barangays.
+ */
+function handleCityChange() {
+    const cityCode = this.value;
+    const cityName = $('option:selected', this).text(); // Get the name from the selected option
+    
+    if (cityCode) {
+        $('#city-name').val(cityName);  // Store the city name in the hidden input field
+        loadBarangays(cityCode);  // Load barangays for the selected city
+    }
+}
+
+/**
+ * Load barangays for the selected city/municipality.
+ * @param {string} cityCode - The city/municipality code for which to fetch barangays.
+ */
+function loadBarangays(cityCode) {
+    $.getJSON(`${API_BASE_URL}/cities-municipalities/${cityCode}/barangays/`, function(data) {
+        const barangayDropdown = $('#barangay');
+        barangayDropdown.empty().append('<option disabled selected value="">Select Barangay</option>');
+        if (data.length > 0) {
+            data.forEach(barangay => {
+                barangayDropdown.append(`<option value="${barangay.code}" data-name="${barangay.name}">${barangay.name}</option>`);
+            });
+        } else {
+            console.warn('No barangays found for this city.');
+        }
+    }).fail(function() {
+        console.error("Failed to load barangays for the selected city.");
+    });
+}
+
+/**
+ * Handle barangay selection and store the barangay name.
+ */
+function handleBarangayChange() {
+    const barangayCode = this.value;
+    const barangayName = $('option:selected', this).text(); // Get the name from the selected option
+    
+    if (barangayCode) {
+        $('#barangay-name').val(barangayName);  // Store the barangay name in the hidden input field
+    }
+}
+
+     // Toggle visibility for the "current password" field
+$('#toggle-opassword').on('click', function () {
+  const oldpasswordInput = $('#oldPassword');
+  const toggleIcon = $('#toggle-opassword-icon');
+
+  // Toggle password type between 'password' and 'text'
+  if (oldpasswordInput.attr('type') === 'password') {
+    oldpasswordInput.attr('type', 'text'); // Show password
+    toggleIcon.removeClass('fa-eye').addClass('fa-eye-slash'); // Change icon to eye-slash
+  } else {
+    oldpasswordInput.attr('type', 'password'); // Hide password
+    toggleIcon.removeClass('fa-eye-slash').addClass('fa-eye'); // Change icon to eye
+  }
+});
+        
+        
+ 
+
+$('#file-input').change(function (event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                $('#imagePreview').attr('src', e.target.result);
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+
+/* 
+ */
+
   "object" == typeof exports && "undefined" != typeof module
     ? t(exports, require("jquery"))
     : "function" == typeof define && define.amd
@@ -2099,5 +2473,8 @@ var spinnerElement = document.getElementById("spinner");
     Object.defineProperty(e, "__esModule", { value: !0 });
 
 
+
+
+    
     
 });

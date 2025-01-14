@@ -82,7 +82,7 @@
                         </li>
                         <li>
                             <a class="dropdown-item d-flex justify-content-center align-items-center"
-                                href="my_profile">My profile
+                                href="{{ route('donor.profile') }}">My profile
                                 <i class="fas fa-user ms-2"></i>
                             </a>
                         </li>
@@ -135,7 +135,7 @@
 
                         <!-- My Profile -->
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{ route('donor.profile') }}" class="nav-link">
                                 <i class="nav-icon fas fa-user"></i>
                                 <p>My Profile</p>
                             </a>

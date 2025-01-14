@@ -298,11 +298,10 @@
             <li class="breadcrumb-item active"></li>
           </ol>
           <h1 class="my-2">Appointments</h1>
-          <!-- Profile 1 - Bootstrap Brain Component -->
           <section class="bg-light py-3 py-md-5 py-xl-8">
             <div class="container">
               <div class="row gy-4 gy-lg-0">
-                <div class="col-12 col-lg-4 col-xl-3">
+                <div class="col-12 col-lg-5 col-xl-4">
                   <div class="row gy-4">
                     <div class="col-12">
                       <div class="card widget-card border-light shadow-sm">
@@ -311,7 +310,7 @@
                           <div class="text-center mb-3">
                             <img src="{{ asset('storage/' . $Admin->profile_image) }}" class="img-fluid rounded-circle w-50" alt="Luna John">
                           </div>
-                          <h5 class="text-center mb-1">Ethan Leo</h5>
+                          <h5 class="text-center mb-1">{{$Admin -> name}}</h5>
                           <p class="text-center text-secondary mb-4">Admin</p>
                           <ul class="list-group list-group-flush">
                             <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
@@ -332,7 +331,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-12 col-lg-8 col-xl-9">
+                <div class="col-12 col-lg-7 col-xl-8">
                   <div class="card widget-card border-light shadow-sm">
                     <div class="card-body p-4">
                       <ul class="nav nav-tabs" id="profileTab" role="tablist">
@@ -440,7 +439,6 @@
                 </div>
               </div>
             </div>
-
           </section>
         </div>
       </main>

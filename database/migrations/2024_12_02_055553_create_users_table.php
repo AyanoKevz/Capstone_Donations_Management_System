@@ -58,7 +58,7 @@ return new class extends Migration
             $table->string('first_name', 100);
             $table->string('last_name', 100)->nullable();
             $table->string('contact', 15)->unique();
-            $table->enum('gender', ['male', 'female', 'other'])->nullable();
+            $table->enum('gender', ['Male', 'Female'])->nullable();
             $table->string('id_type', 50);
             $table->string('id_image', 255);
             $table->string('user_photo', 255);
@@ -72,7 +72,7 @@ return new class extends Migration
             $table->string('first_name', 100);
             $table->string('last_name', 100);
             $table->string('contact', 15)->unique();
-            $table->enum('gender', ['male', 'female', 'other']);
+            $table->enum('gender', ['Male', 'Female']);
             $table->string('id_type', 50);
             $table->string('id_image', 255);
             $table->string('user_photo', 255);

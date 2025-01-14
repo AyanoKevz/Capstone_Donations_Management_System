@@ -489,7 +489,7 @@ $("form").validate({
     rules: {
         username: {
             required: true,
-            minlength: 5
+            minlength: 8
         },
         password: {
             required: true,
@@ -521,9 +521,6 @@ $("form").validate({
             digits: true,
             mobilePH: true, 
             maxlength: 11 
-        },
-        educ_prof:{
-            required: true
         },
         pref_services: {
             required: true
@@ -560,7 +557,7 @@ $("form").validate({
     messages: {
         username: {
             required: "Please enter a username",
-            minlength: "Your username must be at least 5 characters long"
+            minlength: "Your username must be at least 8 characters long"
         },
         password: {
             required: "Please provide a password",
@@ -608,7 +605,7 @@ $("#login-form").validate({
     rules: {
         username: {
             required: true,
-            minlength: 5
+            minlength: 8
         },
         password: {
             required: true,
@@ -618,7 +615,7 @@ $("#login-form").validate({
     messages: {
         username: {
             required: "Please enter a username",
-            minlength: "Your username must be at least 5 characters long"
+            minlength: "Your username must be at least 8 characters long"
         },
         password: {
             required: "Please provide a password",
