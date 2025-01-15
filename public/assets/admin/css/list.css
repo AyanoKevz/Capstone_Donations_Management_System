@@ -673,6 +673,14 @@ body.sb-sidenav-toggled .sb-sidenav .nav-link span {
   font-size: 22px;
 }
 
+.alert-error ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0 0 0 5px;
+    font-size: 18px;
+}
+
+
 .table-btn {
  background-color: #f8f9fa;
     border-color: #ddd;

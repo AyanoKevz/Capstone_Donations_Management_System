@@ -73,6 +73,11 @@ Route::middleware(['admin', 'prevent-back-button'])->prefix('admin')->group(func
     Route::get('/profile', [AdminController::class, 'admin_profile'])->name('admin.profile');
     Route::post('/profile/{id}', [AdminController::class, 'updateProfile'])->name('admin.updateProfile');
     Route::post('/account/{id}', [AdminController::class, 'updateAccount'])->name('admin.updateAccount');
+    //Manage Admin
+    Route::get('/active-admin', [AdminController::class, 'adminList'])->name('admin.list');
+    Route::post('/Admin-create', [AdminController::class, 'CreateAdmin'])->name('admin.store');
+    Route::post('/Admin-delete', [AdminController::class, 'deleteAdmin'])->name('admin.delete');
+
     // Admin Donor List
     Route::get('/active-donors', [AdminController::class, 'allDonors'])->name('admin.donorList');
     Route::post('/active-donors/{userId}', [AdminController::class, 'deleteDonor'])->name('donors.delete');
@@ -97,7 +102,7 @@ Route::middleware(['admin', 'prevent-back-button'])->prefix('admin')->group(func
     Route::post('/appointments/{id}/delete', [AdminController::class, 'delete_appointment'])->name('appointments.delete');
     // Admin chapter
     Route::get('/chapters', [AdminController::class, 'chapters'])->name('admin.chapters');
-    Route::post('/chapters', [AdminController::class, 'store'])->name('chapters.store');
+    Route::post('/chapters', [AdminController::class, 'CreateChapter'])->name('chapters.store');
     Route::post('/chapters/{id}/update', [AdminController::class, 'update'])->name('chapters.update');
     Route::post('/chapters/{id}/destroy', [AdminController::class, 'destroy'])->name('chapters.destroy');
     // Admin News

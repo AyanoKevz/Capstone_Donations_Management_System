@@ -46,4 +46,9 @@ class UserAccount extends Authenticatable
     {
         return $this->hasOne(Location::class, 'user_id');
     }
+
+    public function testimonials()
+    {
+        return $this->hasMany(Testimonial::class, 'user_id');
+    }
 }

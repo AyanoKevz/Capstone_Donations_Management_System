@@ -16,10 +16,11 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\AccountUpdated;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class AdminController extends Controller
 {
-    // Show the login form
+    // ADMIN LOGIN
     public function showLoginForm()
     {
         // If the admin is already logged in, redirect to the dashboard
@@ -29,8 +30,6 @@ class AdminController extends Controller
         return view('admin.admin_login');
     }
 
-
-    // login function
     public function login(Request $request)
     {
         $request->validate([
@@ -56,13 +55,13 @@ class AdminController extends Controller
     }
 
 
-    // Admin dashboard
+    // ADMIN DASHBOARD
     public function dashboard()
     {
         return view('admin.dashboard');
     }
 
-    // Admin chapters
+    // ADMIN CHAPTERS
     public function chapters()
     {
         $chapters = Chapter::all();
@@ -70,7 +69,7 @@ class AdminController extends Controller
     }
 
 
-    public function store(Request $request)
+    public function CreateChapter(Request $request)
     {
         $request->validate([
             'chapter_name' => 'required|string|max:100',
@@ -139,11 +138,11 @@ class AdminController extends Controller
     }
 
 
+    //ADMIN PRFOLIE
     public function admin_profile()
     {
         return view('admin.admin_profile');
     }
-
 
     public function updateProfile(Request $request, $id)
     {
@@ -239,6 +238,69 @@ class AdminController extends Controller
         return back()->with('success', 'Account updated successfully.');
     }
 
+
+    //All ADMIN
+    public function adminList()
+    {
+        $admins = Admin::all();
+        return view('admin.admin_list', compact('admins'));
+    }
+
+
+    public function deleteAdmin(Request $request)
+    {
+        $admin = Admin::find($request->id);
+
+        if ($admin) {
+            if ($admin->profile_image && Storage::disk('public')->exists($admin->profile_image)) {
+                Storage::disk('public')->delete($admin->profile_image);
+            }
+            $admin->delete();
+            return redirect()->back()->with('success', 'Admin deleted successfully.');
+        }
+
+        return redirect()->back()->with('error', 'Admin not found.');
+    }
+
+    public function CreateAdmin(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:admin,email',
+        ]);
+
+        // Generate credentials
+        $username = 'uniaid_admin' . rand(1000, 9999);
+        $password = explode('@', $request->email)[0] . rand(1000, 9999);
+
+        // Create admin
+        $admin = Admin::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'username' => $username,
+            'password' => bcrypt($password),
+            'profile_image' => 'admin_photos/no_profile.png',
+        ]);
+
+        // Email details
+        $details = [
+            'name' => $request->name,
+            'username' => $username,
+            'password' => $password,
+            'logoPath' => public_path('assets/img/systemLogo.png'),
+        ];
+
+        // Send email
+        Mail::send('emails.admin_credentials', $details, function ($message) use ($request) {
+            $message->to($request->email)
+                ->subject('Your UniAid Admin Account Credentials');
+        });
+
+        return redirect()->back()->with('success', 'Admin account created successfully, and credentials have been emailed.');
+    }
+
+
+    //Donor LIST
     public function allDonors(Request $request)
     {
         // Get the filter from the request (default is 'all')
@@ -284,6 +346,8 @@ class AdminController extends Controller
         return redirect()->route('admin.donorList')->with('success', 'Donor account deleted successfully!');
     }
 
+
+    //VOLUNTEERS LIST
     public function allVolunteers()
     {
         // Fetch active volunteers (is_verified = true)
@@ -299,25 +363,20 @@ class AdminController extends Controller
 
     public function deleteVolunteer($userId)
     {
-        // Find the volunteer via user_id
+
         $volunteer = Volunteer::where('user_id', $userId)->firstOrFail();
 
-        // Delete the volunteer's ID image if it exists
         if (
             $volunteer->id_image && Storage::disk('public')->exists($volunteer->id_image)
         ) {
             Storage::disk('public')->delete($volunteer->id_image);
         }
 
-        // Delete the volunteer's user photo if it exists
         if ($volunteer->user_photo && Storage::disk('public')->exists($volunteer->user_photo)) {
             Storage::disk('public')->delete($volunteer->user_photo);
         }
 
-        // Delete the volunteer record
         $volunteer->delete();
-
-        // Optionally delete the associated user account
         $user = UserAccount::find($userId);
         if ($user) {
             $user->delete();
@@ -325,6 +384,9 @@ class AdminController extends Controller
 
         return redirect()->route('admin.volunteerList')->with('success', 'Volunteer account deleted successfully!');
     }
+
+
+    //NEWS
 
     public function showNews()
     {

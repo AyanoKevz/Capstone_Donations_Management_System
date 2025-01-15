@@ -94,6 +94,7 @@ return new class extends Migration
         });
 
 
+        // Create testimonials Appointment
         Schema::create('testimonial', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('user_account')->onDelete('cascade');

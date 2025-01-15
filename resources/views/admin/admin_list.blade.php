@@ -283,112 +283,71 @@
           <i class="fa-solid fa-circle-check fa-xl me-3"></i>{{ session('success') }}
         </div>
         @endif
-        @if(session('error'))
+        @if($errors->any())
         <div id="alert-error" class="alert alert-error" style=" position: absolute; right: 10px; top: 40px;">
-          <i class=" fa-solid fa-circle-xmark fa-xl me-3"></i>{{ session('error') }}
+          <ul>
+            @foreach ($errors->all() as $error)
+            <li><i class="fa-solid fa-circle-xmark fa-xl"></i> {{ $error }}</li>
+            @endforeach
+          </ul>
         </div>
         @endif
         <div class="container-fluid px-3 py-2">
           <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item active"></li>
           </ol>
-          <h1 class="my-2">Red Cross Chapters</h1>
+          <h1 class="my-2">Admin List</h1>
           <div class="d-flex justify-content-end mb-1">
-            <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#add"><i class="fas fa-pen-to-square fa-1x" style="color:white;"></i>Add</button>
+            <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#create"><i class="fas fa-plus fa-1x me-1" style="color:white;"></i>Create Admin</button>
           </div>
           <div class="card card-primary card-outline">
             <div class="card-header">
-              <h3 class="card-title">Red Cross Chapters</h3>
+              <h3 class="card-title">UniAid Admins</h3>
             </div>
             <div class="card-body">
               <table id="example1" class="table table-bordered table-hover table-striped">
                 <thead>
                   <tr>
-                    <th>Chapter</th>
-                    <th>Region</th>
-                    <th>Address</th>
-                    <th>Latitude</th>
-                    <th>Longitude</th>
+                    <th>Username</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Profile Picture</th>
                     <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  @forelse($chapters as $chapter)
+                  @forelse($admins as $admin)
                   <tr>
-                    <td>{{ $chapter->chapter_name }}</td>
-                    <td>{{ $chapter->region }}</td>
-                    <td>{{ $chapter->address }}</td>
-                    <td>{{ $chapter->latitude }}</td>
-                    <td>{{ $chapter->longitude }}</td>
-                    <td>
+                    <td class="align-middle">{{ $admin->username }}</td>
+                    <td class="align-middle">{{ $admin->name }}</td>
+                    <td class="align-middle">{{ $admin->email }}</td>
+                    <td class="align-middle">
+                      <img src="{{ asset('storage/' . $admin->profile_image) }}" alt="Profile Picture" class="w-25 img-fluid border border-black bg-white">
+                    </td>
+                    <td class="align-middle">
                       <!-- Delete Button -->
-                      <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $chapter->id }}" title="Delete">
-                        <i class="fas fa-remove fa-1x" style="color:white;"></i>
-                      </button>
-
-                      <!-- Edit Button -->
-                      <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#editModal{{ $chapter->id }}" title="Edit">
-                        <i class="fas fa-pen-to-square fa-1x" style="color:white;"></i>
+                      <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $admin->id }}" title="Delete">
+                        <i class="fas fa-trash fa-1x" style="color:white;"></i>
                       </button>
                     </td>
                   </tr>
 
-                  <!-- Edit Modal -->
-                  <div class="modal fade" id="editModal{{ $chapter->id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
-                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h1 class="modal-title fs-4">Edit Chapter</h1>
-                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <form action="{{ route('chapters.update', $chapter->id) }}" method="POST">
-                          @csrf
-                          <div class="modal-body">
-                            <div class="form-group mb-3">
-                              <label for="chapter_name">Chapter Name</label>
-                              <input type="text" class="form-control" name="chapter_name" value="{{ $chapter->chapter_name }}" required>
-                            </div>
-                            <div class="form-group mb-3">
-                              <label for="address">Address</label>
-                              <input type="text" class="form-control" name="address" value="{{ $chapter->address }}" required>
-                            </div>
-                            <div class="form-group mb-3">
-                              <label for="region">Region</label>
-                              <input type="text" class="form-control" name="region" value="{{ $chapter->region }}" required>
-                            </div>
-                            <div class="form-group mb-3">
-                              <label for="latitude">Latitude</label>
-                              <input type="text" class="form-control" name="latitude" value="{{ $chapter->latitude }}" required>
-                            </div>
-                            <div class="form-group mb-3">
-                              <label for="longitude">Longitude</label>
-                              <input type="text" class="form-control" name="longitude" value="{{ $chapter->longitude }}" required>
-                            </div>
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-success">Save Changes</button>
-                          </div>
-                        </form>
-                      </div>
-                    </div>
-                  </div>
-
                   <!-- Delete Modal -->
-                  <div class="modal fade" id="deleteModal{{ $chapter->id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+                  <div class="modal fade" id="deleteModal{{ $admin->id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
                     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                       <div class="modal-content">
                         <div class="modal-header text-center">
-                          <h1 class="modal-title fs-4">Delete Chapter</h1>
+                          <h1 class="modal-title fs-4">Delete Admin</h1>
                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body text-center">
-                          <p class="m-0">Are you sure you want to delete the chapter "{{ $chapter->chapter_name }}"?</p>
+                          <p class="m-0">Are you sure you want to delete the admin "{{ $admin->name }}"?</p>
                         </div>
                         <div class="modal-footer">
                           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                          <form action="{{ route('chapters.destroy', $chapter->id) }}" method="POST">
+                          <form action="{{ route('admin.delete') }}" method="POST">
                             @csrf
+                            <input type="hidden" name="id" value="{{ $admin->id }}">
                             <button type="submit" class="btn btn-danger">Delete</button>
                           </form>
                         </div>
@@ -397,50 +356,35 @@
                   </div>
                   @empty
                   <tr>
-                    <td colspan="6" class="text-center">No Chapters Available</td>
+                    <td colspan="5" class="text-center">No Admin Available</td>
                   </tr>
                   @endforelse
                 </tbody>
               </table>
-
             </div>
-
           </div>
         </div>
       </main>
 
-      <!-- Create Chapter Modal -->
-      <div class="modal fade" id="add" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+      <!-- Create Admin Modal -->
+      <div class="modal fade" id="create" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
           <div class="modal-content">
             <div class="modal-header">
-              <h1 class="modal-title fs-4">Create New Chapter</h1>
+              <h1 class="modal-title fs-4">Create New Admin Account</h1>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="{{ route('chapters.store') }}" method="POST">
+            <form action="{{ route('admin.store') }}" method="POST">
+              @csrf
               <div class="modal-body">
-                @csrf
                 <div class="form-group mb-3">
-                  <label for="chapter_name">Chapter Name</label>
-                  <input type="text" class="form-control" id="chapter_name" name="chapter_name" placeholder="e.g., Caloocan" required>
+                  <label for="name">Admin Full Name <span class="text-danger fs-6">*</span></label>
+                  <input type="text" class="form-control" id="name" name="name" required>
                 </div>
-                <div class="form-group mb-3">
-                  <label for="address">Address</label>
-                  <input type="text" class="form-control" id="address" name="address" placeholder="e.g., 123 Main Street, City" required>
+                <div class="form-group mb-2">
+                  <label for="email">Email <span class="text-danger fs-6">*</span> <span style="font-size: small; color: #aaa;">(Must be active)</span></label>
+                  <input type="email" class="form-control" id="email" name="email" required>
                 </div>
-                <div class="form-group mb-3">
-                  <label for="region">Region</label>
-                  <input type="text" class="form-control" id="region" name="region" placeholder="e.g., NCR" required>
-                </div>
-                <div class="form-group mb-3">
-                  <label for="latitude">Latitude</label>
-                  <input type="text" class="form-control" id="latitude" name="latitude" placeholder="e.g., 14.5995" required>
-                </div>
-                <div class="form-group mb-3">
-                  <label for="longitude">Longitude</label>
-                  <input type="text" class="form-control" id="longitude" name="longitude" placeholder="e.g., 120.9842" required>
-                </div>
-
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
