@@ -17,6 +17,7 @@
   <link rel="stylesheet" href="{{ asset('lib/bootstrap/css/bootstrap.min.css') }}">
   <link rel="stylesheet" href="{{ asset('lib/datatables/datatables.min.css') }}">
   <link rel="stylesheet" href="{{ asset ('assets/admin/css/list.css') }}">
+  <link rel="stylesheet" href="{{ asset ('assets/admin/css/publish_news.css') }}">
 
 </head>
 
@@ -288,29 +289,81 @@
           <i class=" fa-solid fa-circle-xmark fa-xl me-3"></i>{{ session('error') }}
         </div>
         @endif
-        <div class="container-fluid px-3 py-2">
-          <ol class="breadcrumb mb-4">
-            <li class="breadcrumb-item active"></li>
-          </ol>
-          <h1 class="my-2">UniAid News</h1>
-          <div class="d-flex justify-content-end mb-1">
-            <a href="#" type="button" class="btn btn-success btn-sm"><i class="fas fa-pen-to-square fa-1x" style="color:white;"></i>Publish News</a>
-          </div>
-          <div class="card card-primary card-outline">
-            <div class="card-header">
-              <h3 class="card-title">News</h3>
+      <div class="container-fluid px-3 py-2">
+        <ol class="breadcrumb mb-4">
+          <li class="breadcrumb-item active"></li>
+       </ol>
+       <h1 class="my-2">UniAid News</h1>
+       <div class="d-flex justify-content-end mb-1">
+          <button type="button" class="btn btn-success btn-sm" onclick="openForm()">
+           <i class="fas fa-pen-to-square fa-1x" style="color:white;"></i>Publish News
+          </button>
+        </div>
+
+    <!-- Form Popup -->
+     <div class="overlay" id="formPopup" style="display:none;">
+         <div class="form-container">
+           <button class="close-btn" onclick="closeForm()">&times;</button>
+           <h2>Publish News</h2>
+          <form id="newsForm" method="POST" action="publish_news.php" enctype="multipart/form-data">
+             <div class="form-group">
+                <label for="admin_id">Admin ID:</label>
+               <input type="text" id="admin_id" name="admin_id" required>
+             </div>
+             <div class="form-group">
+              <label for="subtitle">Subtitle:</label>
+              <input type="text" id="subtitle" name="subtitle" required>
+             </div>
+             <div class="form-group">
+                <label for="title">Title:</label>
+                <input type="text" id="title" name="title" required>
             </div>
-            <div class="card-body">
-              <table id="example1" class="table table-bordered table-hover table-striped">
-                <thead>
-                  <tr>
-                    <th>Published By</th>
-                    <th>Title</th>
-                    <th>Subtitle</th>
-                    <th>Posted Date</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
+             <div class="form-group">
+               <label for="content">Content:</label>
+               <textarea id="content" name="content" required></textarea>
+             </div>
+             <div class="form-group">
+               <label for="image_url_1">Image 1:</label>
+               <input type="file" id="image_url_1" name="image_url_1">
+              </div>
+             <div class="form-group">
+              <label for="image_url_2">Image 2:</label>
+              <input type="file" id="image_url_2" name="image_url_2">
+            </div>
+             <div class="form-group">
+              <label for="posted_at">Posted At:</label>
+              <input type="date" id="posted_at" name="posted_at" required>
+            </div>
+             <button type="submit" class="submit-btn">Publish</button>
+           </form>
+         </div>
+      </div>
+
+        <script>
+          function openForm() {
+           document.getElementById('formPopup').style.display = 'block';
+          }
+
+         function closeForm() {
+           document.getElementById('formPopup').style.display = 'none';
+          }
+       </script>
+
+       <div class="card card-primary card-outline">
+        <div class="card-header">
+          <h3 class="card-title">News</h3>
+        </div>
+         <div class="card-body">
+           <table id="example1" class="table table-bordered table-hover table-striped">
+              <thead>
+                <tr>
+                <th>Published By</th>
+                <th>Title</th>
+                <th>Subtitle</th>
+                <th>Posted Date</th>
+                <th>Action</th>
+                </tr>
+             </thead>
                 <tbody>
                   @forelse($news as $item)
                   <tr>
