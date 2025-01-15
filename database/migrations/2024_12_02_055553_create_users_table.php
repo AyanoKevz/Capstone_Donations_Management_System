@@ -83,11 +83,23 @@ return new class extends Migration
             $table->timestamps();
         });
 
+
+        // Create volunteer Appointment
         Schema::create('volunteer_appointment', function (Blueprint $table) {
             $table->id();
             $table->foreignId('volunteer_id')->constrained('volunteer')->onDelete('cascade');
             $table->date('appointment_date');
             $table->time('appointment_time');
+            $table->timestamps();
+        });
+
+
+        Schema::create('testimonial', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id')->constrained('user_account')->onDelete('cascade');
+            $table->enum('user_type', ['donor', 'volunteer']);
+            $table->text('content');
+            $table->unsignedTinyInteger('rating');
             $table->timestamps();
         });
 
@@ -113,5 +125,6 @@ return new class extends Migration
         Schema::dropIfExists('roles');
         Schema::dropIfExists('user_account');
         Schema::dropIfExists('volunteer_appointment');
+        Schema::dropIfExists('testimonial');
     }
 };

@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Admin | Read Inquiries</title>
+  <title>Admin | News</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -15,7 +15,8 @@
     href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <link rel="icon" href="{{ asset ('assets/img/systemLogo.png') }}" type="image/png">
   <link rel="stylesheet" href="{{ asset('lib/bootstrap/css/bootstrap.min.css') }}">
-  <link rel="stylesheet" href="{{ asset ('assets/admin/css/inquiries.css') }}">
+  <link rel="stylesheet" href="{{ asset('lib/datatables/datatables.min.css') }}">
+  <link rel="stylesheet" href="{{ asset ('assets/admin/css/list.css') }}">
 
 </head>
 
@@ -236,7 +237,7 @@
             </a>
 
             <!-- Chapters -->
-            <a class="nav-link " href="{{ route('admin.chapters') }}" title="Chapters">
+            <a class="nav-link" href="{{ route('admin.chapters') }}" title="Chapters">
               <div class="sb-nav-link-icon">
                 <i class="fas fa-map-marker-alt"></i>
               </div>
@@ -244,7 +245,7 @@
             </a>
 
             <!-- Inquiries -->
-            <a class="nav-link " href="{{ route('admin.inquiries') }}" title="Inquiries">
+            <a class="nav-link" href="{{ route('admin.inquiries') }}" title="Inquiries">
               <div class="sb-nav-link-icon">
                 <i class="fas fa-envelope"></i>
               </div>
@@ -252,7 +253,7 @@
             </a>
 
             <!-- News -->
-            <a class="nav-link active" href="" title="News">
+            <a class="nav-link active" href="{{ route('admin.news') }}" title="News">
               <div class="sb-nav-link-icon">
                 <i class="fas fa-newspaper"></i>
               </div>
@@ -267,6 +268,7 @@
               <span>Reports</span>
             </a>
           </div>
+
         </div>
         <div class="sb-sidenav-footer bg-logo1">
           <div>Admin Menu</div>
@@ -276,16 +278,94 @@
     <!-- Content -->
     <div id="layoutSidenav_content">
       <main>
+        @if(session('success'))
+        <div id="alert-success" class="alert alert-success" style="position: absolute; right: 10px; top: 40px;">
+          <i class="fa-solid fa-circle-check fa-xl me-3"></i>{{ session('success') }}
+        </div>
+        @endif
+        @if(session('error'))
+        <div id="alert-error" class="alert alert-error" style=" position: absolute; right: 10px; top: 40px;">
+          <i class=" fa-solid fa-circle-xmark fa-xl me-3"></i>{{ session('error') }}
+        </div>
+        @endif
         <div class="container-fluid px-3 py-2">
           <ol class="breadcrumb mb-4">
-            <li class="breadcrumb-item active">Dashboard</li>
+            <li class="breadcrumb-item active"></li>
           </ol>
+          <h1 class="my-2">UniAid News</h1>
+          <div class="d-flex justify-content-end mb-1">
+            <a href="#" type="button" class="btn btn-success btn-sm"><i class="fas fa-pen-to-square fa-1x" style="color:white;"></i>Publish News</a>
+          </div>
+          <div class="card card-primary card-outline">
+            <div class="card-header">
+              <h3 class="card-title">News</h3>
+            </div>
+            <div class="card-body">
+              <table id="example1" class="table table-bordered table-hover table-striped">
+                <thead>
+                  <tr>
+                    <th>Published By</th>
+                    <th>Title</th>
+                    <th>Subtitle</th>
+                    <th>Posted Date</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @forelse($news as $item)
+                  <tr>
+                    <td>{{ $item->admin->name ?? 'Unknown' }}</td>
+                    <td>{{ $item->title }}</td>
+                    <td>{{ $item->subtitle }}</td>
+                    <td>{{ $item->posted_at }}</td>
+                    <td>
+                      <!-- Edit Link -->
+                      <a href="#" class="btn btn-info btn-sm" title="Edit">
+                        <i class="fas fa-pen-to-square fa-1x" style="color:white;"></i>
+                      </a>
+                      <!-- Delete Button -->
+                      <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $item->id }}" title="Delete">
+                        <i class="fas fa-trash fa-1x" style="color:white;"></i>
+                      </button>
+                    </td>
+                  </tr>
 
-          <h1 class="my-2">Read Inquiries</h1>
-          <!-- /. CONTENT -->
+                  <!-- Delete Modal -->
+                  <div class="modal fade" id="deleteModal{{ $item->id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                      <div class="modal-content">
+                        <div class="modal-header text-center">
+                          <h1 class="modal-title fs-4">Delete News</h1>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body text-center">
+                          <p class="m-0">Are you sure you want to delete the news "{{ $item->title }}"?</p>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                          <form action="{{ route('news.delete') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="id" value="{{ $item->id }}">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  @empty
+                  <tr>
+                    <td colspan="5" class="text-center">No News Published Yet</td>
+                  </tr>
+                  @endforelse
+                </tbody>
+              </table>
+            </div>
 
+          </div>
         </div>
       </main>
+
+
       <footer class="py-3 bg-dark mt-3">
         <div class="container-fluid ps-4">
           <div class="d-flex align-items-center justify-content-between">
@@ -300,6 +380,7 @@
   <script src="{{ asset('lib/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
   <script src="{{ asset('lib/fontawesome/all.js') }}"></script>
   <script src="{{ asset('lib/jquery/jquery.min.js') }}"></script>
+  <script src="{{ asset('lib/datatables/datatables.min.js') }}"></script>
   <script src="{{ asset('assets/admin/js/admin.js') }}"></script>
 
   <script>

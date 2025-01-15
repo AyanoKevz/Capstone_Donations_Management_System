@@ -252,7 +252,7 @@
             </a>
 
             <!-- News -->
-            <a class="nav-link" href="" title="News">
+            <a class="nav-link" href="{{ route('admin.news') }}" title="News">
               <div class="sb-nav-link-icon">
                 <i class="fas fa-newspaper"></i>
               </div>

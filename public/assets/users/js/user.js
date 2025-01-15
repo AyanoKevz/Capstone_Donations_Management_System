@@ -390,8 +390,8 @@ $('#file-input').change(function (event) {
     });
 
 
-/* 
- */
+/*  END WAG NA MAG DECLARE SA BABA NG JAVASCRIPT FILE */
+ 
 
   "object" == typeof exports && "undefined" != typeof module
     ? t(exports, require("jquery"))

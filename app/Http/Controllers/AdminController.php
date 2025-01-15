@@ -11,6 +11,7 @@ use App\Models\Donor;
 use App\Models\Appointment;
 use App\Models\Admin;
 use App\Models\Volunteer;
+use App\Models\News;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\AccountUpdated;
 use Illuminate\Support\Facades\Log;
@@ -323,5 +324,23 @@ class AdminController extends Controller
         }
 
         return redirect()->route('admin.volunteerList')->with('success', 'Volunteer account deleted successfully!');
+    }
+
+    public function showNews()
+    {
+        $news = News::all();
+        return view('admin.news', compact('news'));
+    }
+
+    public function deleteNews(Request $request)
+    {
+        $news = News::find($request->id);
+
+        if ($news) {
+            $news->delete();
+            return redirect()->back()->with('success', 'News deleted successfully.');
+        }
+
+        return redirect()->back()->with('error', 'News not found.');
     }
 }
