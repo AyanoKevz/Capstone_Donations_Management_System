@@ -215,7 +215,6 @@
                             </ul>
                         </li>
 
-                    
                         <!-- Feedback and Support -->
                         <li class="nav-item">
                         <a href="{{ route('donor.review') }}" class="nav-link">
@@ -240,7 +239,7 @@
                         <div class="col-6 d-flex align-items-center ms-3">
                             <img src="{{ asset('assets/img/donorbanner.png') }}" alt="" class="banner-img img-fluid mx-2">
                             <h1 class="m-0">
-                                Donor Portal
+                                Donor Reviews
                             </h1>
                         </div>
                     </div>
@@ -256,14 +255,43 @@
 
             <!-- Main content -->
             <div class="content">
-                <div class="container">
-                    <div class="row">
-
+    <div class="container">
+        <div class="row justify-content-center">
+            <!-- Review Form -->
+            <div class="col-md-8">
+                <div class="card shadow-lg border-light rounded-3">
+                    <div class="card-body">
+                        <h2 class="text-center mb-4">Write a Review</h2>
+                        <form action="/submit_review" method="POST">
+                            
+                            <div class="mb-3">
+                                <label for="user_id" class="form-label">Name:</label>
+                                <input type="number" class="form-control shadow-sm" id="user_id" name="user_id" value="{{ auth()->user()->id ?? old('user_id') }}" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="rating" class="form-label">Rating</label>
+                                <select class="form-select shadow-sm" id="rating" name="rating" required>
+                                    <option value="1">1 - Poor</option>
+                                    <option value="2">2 - Fair</option>
+                                    <option value="3">3 - Good</option>
+                                    <option value="4">4 - Very Good</option>
+                                    <option value="5">5 - Excellent</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="content" class="form-label">Write your Review:</label>
+                                <textarea class="form-control shadow-sm" id="content" name="content" rows="4" required>{{ old('content') }}</textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100 py-2">Submit Review</button>
+                        </form>
                     </div>
-
                 </div>
-
             </div>
+        </div>
+    </div>
+</div>
+
 
         </div>
         <!-- /.content wrapper -->

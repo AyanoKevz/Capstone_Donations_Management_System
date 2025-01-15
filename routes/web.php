@@ -115,6 +115,7 @@ Route::middleware(['auth', 'prevent-back-button'])->prefix('user')->group(functi
     // Middleware-protected routes for Donor
     Route::middleware('role:Donor')->prefix('donor')->group(function () {
         Route::get('/home', [DonorController::class, 'index'])->name('donor.home');
+        Route::get('/donor-review', [DonorController::class, 'review'])->name('donor.review');
         Route::get('/donor-profile', [user_profileController::class, 'DonorProfile'])->name('donor.profile');
         Route::get('/prc-chapters', [DonorController::class, 'showChapters'])->name('prc-chapters');
         Route::post('/donor/update/{id}', [user_profileController::class, 'updateDonorProfile'])->name('donor.updateProfile');

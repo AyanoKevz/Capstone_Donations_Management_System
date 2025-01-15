@@ -16,4 +16,9 @@ class DonorController extends Controller
     {
         return view('users.donor.chapters');
     }
+    public function review()
+    {
+        return view('users.donor.review');
+    }
+    
 }
