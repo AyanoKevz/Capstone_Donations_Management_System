@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\News;
+use App\Models\Testimonial;
 use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
@@ -33,4 +34,12 @@ class HomeController extends Controller
         $news = News::findOrFail($id);
         return view('homepage.more_news', compact('news'));
     }
+    public function showTestimonials()
+{
+    // Fetch all testimonials and eager load the related user data
+    $testimonials = Testimonial::with('user')->get();
+
+    // Pass the testimonials to the view
+    return view('your-view-name', compact('testimonials'));
+}
 }

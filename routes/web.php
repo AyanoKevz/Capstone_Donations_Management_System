@@ -119,6 +119,8 @@ Route::middleware(['auth', 'prevent-back-button'])->prefix('user')->group(functi
         Route::get('/donor-profile', [user_profileController::class, 'DonorProfile'])->name('donor.profile');
         Route::get('/prc-chapters', [DonorController::class, 'showChapters'])->name('prc-chapters');
         Route::post('/donor/update/{id}', [user_profileController::class, 'updateDonorProfile'])->name('donor.updateProfile');
+        Route::post('/testimonial/store', [DonorController::class, 'store'])->middleware('auth')->name('testimonial.store');
+
     });
 
     // Middleware-protected routes for Volunteer

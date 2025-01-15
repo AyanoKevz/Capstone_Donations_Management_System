@@ -258,36 +258,50 @@
     <div class="container">
         <div class="row justify-content-center">
             <!-- Review Form -->
-            <div class="col-md-8">
-                <div class="card shadow-lg border-light rounded-3">
-                    <div class="card-body">
-                        <h2 class="text-center mb-4">Write a Review</h2>
-                        <form action="/submit_review" method="POST">
-                            
-                            <div class="mb-3">
-                                <label for="user_id" class="form-label">Name:</label>
-                                <input type="number" class="form-control shadow-sm" id="user_id" name="user_id" value="{{ auth()->user()->id ?? old('user_id') }}" required>
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label for="rating" class="form-label">Rating</label>
-                                <select class="form-select shadow-sm" id="rating" name="rating" required>
-                                    <option value="1">1 - Poor</option>
-                                    <option value="2">2 - Fair</option>
-                                    <option value="3">3 - Good</option>
-                                    <option value="4">4 - Very Good</option>
-                                    <option value="5">5 - Excellent</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="content" class="form-label">Write your Review:</label>
-                                <textarea class="form-control shadow-sm" id="content" name="content" rows="4" required>{{ old('content') }}</textarea>
-                            </div>
-                            <button type="submit" class="btn btn-primary w-100 py-2">Submit Review</button>
-                        </form>
-                    </div>
+<div class="col-md-8">
+    <div class="card shadow-lg border-light rounded-3">
+        <div class="card-body">
+            <h2 class="text-center mb-4">Write a Review</h2>
+            <form action="{{ route('testimonial.store') }}" method="POST">
+                @csrf <!-- CSRF token for security -->
+
+                <!-- Content Field -->
+                <div class="mb-3">
+                    <textarea 
+                        class="form-control shadow-sm" 
+                        name="content" 
+                        placeholder="Write your review here..." 
+                        rows="4" 
+                        required>{{ old('content') }}</textarea>
+                    @error('content') <!-- Display validation error -->
+                    <small class="text-danger">{{ $message }}</small>
+                    @enderror
                 </div>
-            </div>
+
+                <!-- Rating Field -->
+                <div class="mb-3">
+                    <input 
+                        type="number" 
+                        class="form-control shadow-sm" 
+                        name="rating" 
+                        min="1" 
+                        max="5" 
+                        placeholder="Rate (1-5)" 
+                        required 
+                        value="{{ old('rating') }}">
+                    @error('rating') <!-- Display validation error -->
+                    <small class="text-danger">{{ $message }}</small>
+                    @enderror
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn btn-primary w-100 py-2">Submit Review</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
         </div>
     </div>
 </div>
