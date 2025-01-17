@@ -474,109 +474,42 @@
 
 
     <!-- Testimonial Start -->
-    <div class="container-fluid testimonial py-3 rev" id="testimonials">
-        <div class="container py-3 wow fadeInDown" data-wow-delay="0.3s">
-            <div class="text-center mx-auto pb-5" style="max-width: 800px;">
-                <h2 class="section-header">Testimonial</h>
-                    <h1 class="display-5 mb-4">What Our Users Say</h1>
-                    <p class="mb-0">
-                        Hear from our users—donors, recipients, and volunteers—about their experiences
-                        with UniAid. Discover how their involvement has impacted lives, strengthened communities,
-                        and brought people together through the power of giving and receiving.
-                    </p>
-            </div>
-            <div class="owl-carousel testimonial-carousel">
-                <div class="testimonial-item">
-                    <div class="testimonial-quote-left">
-                        <i class="fas fa-quote-left fa-2x"></i>
-                    </div>
-                    <div class="testimonial-img">
-                        <img src="{{asset('assets/img/no_profile.png') }}" class="img-fluid" alt="Image">
-                    </div>
-                    <div class="testimonial-text">
-                        <p> [CONTENT / MESSAGE OF THE REVIEW ]
-                        </p>
-                    </div>
-                    <div class="testimonial-title">
-                        <div>
-                            <h4 class="mb-0">USERNAME HERE</h4>
-                            <p class="mb-0">ROLE OF THE USER</p>
-                        </div>
-
-                    </div>
-                    <div class="testimonial-quote-right">
-                        <i class="fas fa-quote-right fa-2x"></i>
-                    </div>
+    <<div class="container-fluid testimonial py-3 rev" id="testimonials">
+    <div class="container py-3 wow slideInLeft" data-wow-delay="0.3s">
+        <div class="text-center mx-auto pb-5" style="max-width: 800px;">
+            <h2 class="section-header">Testimonial</h2>
+            <h1 class="display-5 mb-4">What Our Users Say</h1>
+            <p class="mb-0">
+                Hear from our users—donors, recipients, and volunteers—about their experiences with UniAid.
+            </p>
+        </div>
+        <div class="owl-carousel testimonial-carousel">
+            @forelse ($testimonials as $testimonial)
+            <div class="testimonial-item">
+                <div class="testimonial-quote-left">
+                    <i class="fas fa-quote-left fa-2x"></i>
                 </div>
-                <div class="testimonial-item">
-                    <div class="testimonial-quote-left">
-                        <i class="fas fa-quote-left fa-2x"></i>
-                    </div>
-                    <div class="testimonial-img">
-                        <img src="{{asset('assets/img/no_profile.png') }}" class="img-fluid" alt="Image">
-                    </div>
-                    <div class="testimonial-text">
-                        <p> [CONTENT / MESSAGE OF THE REVIEW ]
-                        </p>
-                    </div>
-                    <div class="testimonial-title">
-                        <div>
-                            <h4 class="mb-0">USERNAME HERE</h4>
-                            <p class="mb-0">ROLE OF THE USER</p>
-                        </div>
-
-                    </div>
-                    <div class="testimonial-quote-right">
-                        <i class="fas fa-quote-right fa-2x"></i>
-                    </div>
+                <div class="testimonial-img">
+                    <img src="{{ asset($testimonial->user->profile_image ?? 'assets/img/no_profile.png') }}" class="img-fluid" alt="Image">
                 </div>
-                <div class="testimonial-item">
-                    <div class="testimonial-quote-left">
-                        <i class="fas fa-quote-left fa-2x"></i>
-                    </div>
-                    <div class="testimonial-img">
-                        <img src="{{asset('assets/img/no_profile.png') }}" class="img-fluid" alt="Image">
-                    </div>
-                    <div class="testimonial-text">
-                        <p> [CONTENT / MESSAGE OF THE REVIEW ]
-                        </p>
-                    </div>
-                    <div class="testimonial-title">
-                        <div>
-                            <h4 class="mb-0">USERNAME HERE</h4>
-                            <p class="mb-0">ROLE OF THE USER</p>
-                        </div>
-
-                    </div>
-                    <div class="testimonial-quote-right">
-                        <i class="fas fa-quote-right fa-2x"></i>
-                    </div>
+                <div class="testimonial-text">
+                    <p>{{ $testimonial->content }}</p>
                 </div>
-                <div class="testimonial-item">
-                    <div class="testimonial-quote-left">
-                        <i class="fas fa-quote-left fa-2x"></i>
-                    </div>
-                    <div class="testimonial-img">
-                        <img src="{{asset('assets/img/no_profile.png') }}" class="img-fluid" alt="Image">
-                    </div>
-                    <div class="testimonial-text">
-                        <p> [CONTENT / MESSAGE OF THE REVIEW ]
-                        </p>
-                    </div>
-                    <div class="testimonial-title">
-                        <div>
-                            <h4 class="mb-0">USERNAME HERE</h4>
-                            <p class="mb-0">ROLE OF THE USER</p>
-                        </div>
-
-                    </div>
-                    <div class="testimonial-quote-right">
-                        <i class="fas fa-quote-right fa-2x"></i>
-                    </div>
+                <div class="testimonial-title">
+                    <h4>{{ $testimonial->user->username }}</h4>
+                    <p>{{ ucfirst($testimonial->user_type) }}</p>
+                </div>
+                <div class="testimonial-quote-right">
+                    <i class="fas fa-quote-right fa-2x"></i>
                 </div>
             </div>
+            @empty
+            <p>No testimonials available.</p>
+            @endforelse
         </div>
     </div>
+</div>
+
     <!-- Testimonial End -->
 
     <!-- FAQs Start -->

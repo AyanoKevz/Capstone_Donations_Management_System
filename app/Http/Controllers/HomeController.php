@@ -34,12 +34,17 @@ class HomeController extends Controller
         $news = News::findOrFail($id);
         return view('homepage.more_news', compact('news'));
     }
-    public function showTestimonials()
+   
+    public function showHomepage()
 {
-    // Fetch all testimonials and eager load the related user data
-    $testimonials = Testimonial::with('user')->get();
+    // Fetch testimonials
+    $testimonials = Testimonial::with('user')->latest()->get();
 
-    // Pass the testimonials to the view
-    return view('your-view-name', compact('testimonials'));
+    // Fetch news (if needed)
+    $news = News::all(); // Or use any specific query to get the news
+
+    // Pass both variables to the view
+    return view('homepage.index', compact('testimonials', 'news'));
 }
+
 }

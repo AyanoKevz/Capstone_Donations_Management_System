@@ -31,7 +31,16 @@ class DonorController extends Controller
 
     $user = Auth::user(); // Get the authenticated user
 
-    // Store testimonial with user_id, user_type (just the model name), content, and rating
+    // Check if the user already has a testimonial
+    $existingTestimonial = Testimonial::where('user_id', $user->id)
+        ->where('user_type', 'Donor') // Ensure we check for this user type
+        ->first();
+
+    if ($existingTestimonial) {
+        return redirect()->back()->with('error', 'You have already submitted a testimonial. You can edit or delete it.');
+    }
+
+    // Store testimonial if it doesn't exist
     Testimonial::create([
         'user_id' => $user->id,
         'user_type' => 'Donor', // Store only the model name, not the full class name

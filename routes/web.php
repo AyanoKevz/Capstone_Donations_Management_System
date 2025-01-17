@@ -41,6 +41,8 @@ Route::post('/register/volunteer', [UserRegistrationController::class, 'register
 Route::post('/user-login', [userLoginController::class, 'login'])->name('login');
 Route::post('/logout', [userLoginController::class, 'logout'])->name('user.logout');
 
+//testimonial in the homepage
+Route::get('/', [HomeController::class, 'showHomepage'])->name('home');
 
 
 
