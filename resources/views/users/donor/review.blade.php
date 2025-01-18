@@ -254,58 +254,78 @@
             <!-- End content-header -->
 
             <!-- Main content -->
-            <div class="content">
+<div class="content">
     <div class="container">
         <div class="row justify-content-center">
+            <!-- Success Message -->
+            @if (session('success'))
+                <div class="col-md-8">
+                    <div class="alert alert-success fade show" role="alert" id="successMessage">
+                        {{ session('success') }}
+                    </div>
+                </div>
+            @endif
+
             <!-- Review Form -->
-<div class="col-md-8">
-    <div class="card shadow-lg border-light rounded-3">
-        <div class="card-body">
-            <h2 class="text-center mb-4">Write a Review</h2>
-            <form action="{{ route('testimonial.store') }}" method="POST">
-                @csrf <!-- CSRF token for security -->
+            <div class="col-md-8">
+                <div class="card shadow-lg border-light rounded-3">
+                    <div class="card-body">
+                        <h2 class="text-center mb-4">Write a Review</h2>
+                        <form action="{{ route('testimonial.store') }}" method="POST">
+                            @csrf <!-- CSRF token for security -->
 
-                <!-- Content Field -->
-                <div class="mb-3">
-                    <textarea 
-                        class="form-control shadow-sm" 
-                        name="content" 
-                        placeholder="Write your review here..." 
-                        rows="4" 
-                        required>{{ old('content') }}</textarea>
-                    @error('content') <!-- Display validation error -->
-                    <small class="text-danger">{{ $message }}</small>
-                    @enderror
+                            <!-- Content Field -->
+                            <div class="mb-3">
+                                <textarea 
+                                    class="form-control shadow-sm" 
+                                    name="content" 
+                                    placeholder="Write your review here..." 
+                                    rows="4" 
+                                    required>{{ old('content') }}</textarea>
+                                @error('content') <!-- Display validation error -->
+                                <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <!-- Rating Field -->
+                            <div class="mb-3">
+                                <input 
+                                    type="number" 
+                                    class="form-control shadow-sm" 
+                                    name="rating" 
+                                    min="1" 
+                                    max="5" 
+                                    placeholder="Rate (1-5)" 
+                                    required 
+                                    value="{{ old('rating') }}">
+                                @error('rating') <!-- Display validation error -->
+                                <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <!-- Submit Button -->
+                            <button type="submit" class="btn btn-primary w-100 py-2">Submit Review</button>
+                        </form>
+                    </div>
                 </div>
+            </div>
 
-                <!-- Rating Field -->
-                <div class="mb-3">
-                    <input 
-                        type="number" 
-                        class="form-control shadow-sm" 
-                        name="rating" 
-                        min="1" 
-                        max="5" 
-                        placeholder="Rate (1-5)" 
-                        required 
-                        value="{{ old('rating') }}">
-                    @error('rating') <!-- Display validation error -->
-                    <small class="text-danger">{{ $message }}</small>
-                    @enderror
-                </div>
-
-                <!-- Submit Button -->
-                <button type="submit" class="btn btn-primary w-100 py-2">Submit Review</button>
-            </form>
         </div>
     </div>
 </div>
 
-
-        </div>
-    </div>
-</div>
-
+<!-- JavaScript to hide success message after a few seconds -->
+<script>
+    @if (session('success'))
+        setTimeout(function() {
+            let successMessage = document.getElementById('successMessage');
+            if (successMessage) {
+                successMessage.classList.remove('show');
+                successMessage.classList.add('fade');
+            }
+        }, 3000); // 3000ms = 3 seconds
+    @endif
+</script>
 
         </div>
         <!-- /.content wrapper -->
