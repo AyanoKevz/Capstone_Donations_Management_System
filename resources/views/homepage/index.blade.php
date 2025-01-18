@@ -497,7 +497,8 @@
                 </div>
                 <div class="testimonial-title">
                     <h4>{{ $testimonial->user->username }}</h4>
-                    <p>{{ ucfirst($testimonial->user_type) }}</p>
+                    <!-- <p>{{ ucfirst($testimonial->user_type) }}</p> -->
+                    <p class="testimonial-time">{{ \Carbon\Carbon::parse($testimonial->created_at)->format('F j, Y, g:i a') }}</p>
                 </div>
                 <div class="testimonial-quote-right">
                     <i class="fas fa-quote-right fa-2x"></i>
