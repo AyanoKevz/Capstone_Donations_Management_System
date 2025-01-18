@@ -480,7 +480,9 @@
             <h2 class="section-header">Testimonial</h2>
             <h1 class="display-5 mb-4">What Our Users Say</h1>
             <p class="mb-0">
-                Hear from our users—donors, recipients, and volunteers—about their experiences with UniAid.
+            Hear from our users—donors, recipients, and volunteers—about their experiences
+                        with UniAid. Discover how their involvement has impacted lives, strengthened communities,
+                        and brought people together through the power of giving and receiving.
             </p>
         </div>
         <div class="owl-carousel testimonial-carousel">
