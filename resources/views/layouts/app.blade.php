@@ -1,46 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>UniAid - Donor Portal</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@yield('title', 'Edit')</title>
     <link rel="icon" href="{{ asset ('assets/img/systemLogo.png') }}" type="image/png">
-    <!-- Google Font-->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+     <!-- Google Font-->
+     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Roboto:wght@400;500;700;900&display=swap"
         rel="stylesheet">
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="{{ asset('lib/bootstrap/css/bootstrap.min.css') }}">
+     <!-- Bootstrap CSS -->
+     <link rel="stylesheet" href="{{ asset('lib/bootstrap/css/bootstrap.min.css') }}">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('assets/users/css/donor/home_donor.css') }}">
+    
 </head>
-
-<!-- Spinner Start -->
-<div id="spinner" class="show bg-white position-fixed w-100 vh-100 d-flex flex-column align-items-center justify-content-center">
-    <div class="text-center mb-4">
-        <h1 class="m-0 fw-bold" style="color: #ff1f1f; font-size:50px;">
-            <img src="{{ asset('assets/img/systemLogo.png') }}" class="me-3 w-25" alt="Logo">UniAid
-        </h1>
-    </div>
-
-    <div class="cssload-main">
-        <div class="cssload-heart">
-            <span class="cssload-heartL"></span>
-            <span class="cssload-heartR"></span>
-            <span class="cssload-square"></span>
-        </div>
-        <div class="cssload-shadow"></div>
-    </div>
-    <div class="loading-text mt-4">
-        <p class="text-center fw-bold" style="color: #ff1f1f; font-size: 20px; margin: 0; position: absolute; bottom: 160px; left: 50%; transform: translateX(-50%); ">
-            Loading....
-        </p>
-    </div>
-</div>
-<!-- Spinner End -->
+<body>
+    
 
 <body class="hold-transition sidebar-collapse layout-top-nav">
     <div class="wrapper">
@@ -253,129 +231,18 @@
 
             <!-- End content-header -->
 
-           <!-- Main content -->
-<div class="content">
-    <div class="container">
-        <div class="row justify-content-center">
-            <!-- Success Message -->
-            @if (session('success'))
-                <div class="col-md-8">
-                    <div class="alert alert-success fade show" role="alert" id="successMessage">
-                        {{ session('success') }}
-                    </div>
-                </div>
-            @endif
+    <main>
+        @yield('content')  <!-- Main content of the page will be injected here -->
+    </main>
 
-            <!-- Error Message -->
-            @if (session('error'))
-                <div class="col-md-8">
-                    <div class="alert alert-danger fade show" role="alert">
-                        {{ session('error') }}
-                    </div>
-                </div>
-            @endif
-
-            <!-- Existing Testimonial -->
-            @if (isset($existingTestimonial) && $existingTestimonial)
-                <div class="col-md-8">
-                    <!-- Alert for Already Submitted Testimonial -->
-                    <div class="alert alert-info fade show" role="alert">
-                        You have already submitted a testimonial.
-                    </div>
-                    
-                    <div class="card shadow-lg border-light rounded-3 mb-4">
-                        <div class="card-body">
-                            <h2 class="text-center mb-4">Your Submitted Testimonial</h2>
-                            <p><strong>Content:</strong> {{ $existingTestimonial->content }}</p>
-                            <p><strong>Rating:</strong> {{ $existingTestimonial->rating }} / 5</p>
-                            <p><strong>Submitted on:</strong> {{ \Carbon\Carbon::parse($existingTestimonial->created_at)->format('F j, Y, g:i a') }}</p>
-                            <a href="{{ route('testimonials.edit', $existingTestimonial->id) }}" class="btn btn-primary w-100 mb-2">Edit Testimonial</a>
-                            <form action="{{ route('testimonials.destroy', $existingTestimonial->id) }}" method="POST" style="display: inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger w-100">Delete Testimonial</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            @else
-                <!-- Review Form -->
-                <div class="col-md-8">
-                    <div class="card shadow-lg border-light rounded-3">
-                        <div class="card-body">
-                            <h2 class="text-center mb-4">Write a Review</h2>
-                            <form action="{{ route('testimonials.store') }}" method="POST">
-                                @csrf <!-- CSRF token for security -->
-
-                                <!-- Content Field -->
-                                <div class="mb-3">
-                                    <textarea 
-                                        class="form-control shadow-sm" 
-                                        name="content" 
-                                        placeholder="Write your review here..." 
-                                        rows="4" 
-                                        required>{{ old('content') }}</textarea>
-                                    @error('content') <!-- Display validation error -->
-                                    <small class="text-danger">{{ $message }}</small>
-                                    @enderror
-                                </div>
-
-                                <!-- Rating Field -->
-                                <div class="mb-3">
-                                    <input 
-                                        type="number" 
-                                        class="form-control shadow-sm" 
-                                        name="rating" 
-                                        min="1" 
-                                        max="5" 
-                                        placeholder="Rate (1-5)" 
-                                        required 
-                                        value="{{ old('rating') }}">
-                                    @error('rating') <!-- Display validation error -->
-                                    <small class="text-danger">{{ $message }}</small>
-                                    @enderror
-                                </div>
-
-                                <!-- Submit Button -->
-                                <button type="submit" class="btn btn-primary w-100 py-2">Submit Review</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            @endif
-
-        </div>
-    </div>
-</div>
-
-<!-- JavaScript to hide success message after a few seconds -->
-<script>
-    @if (session('success'))
-        setTimeout(function() {
-            let successMessage = document.getElementById('successMessage');
-            if (successMessage) {
-                successMessage.classList.remove('show');
-                successMessage.classList.add('fade');
-            }
-        }, 3000); // 3000ms = 3 seconds
-    @endif
-</script>
-
-
-
-        </div>
-        <!-- /.content wrapper -->
-
-        <!-- Main Footer -->
+        <!-- Your footer content here 
         <footer class="main-footer">
             <strong>Copyright &copy; 2024 UniAid - Community Donations and Resource Distribution.</strong>
             All rights reserved.
-        </footer>
-    </div>
-    <!-- ./wrapper -->
+        </footer> -->
 
-    <!-- jQuery -->
-    <script src="{{ asset('lib/jquery/jquery.min.js') }}"></script>
+     <!-- jQuery -->
+     <script src="{{ asset('lib/jquery/jquery.min.js') }}"></script>
     <!-- Bootstrap 5 -->
     <script src="{{ asset('lib/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <!-- Fontawesome 6 -->
@@ -383,5 +250,4 @@
     <!-- User JS -->
     <script src="{{ asset('assets/users/js/user.js') }}"></script>
 </body>
-
 </html>

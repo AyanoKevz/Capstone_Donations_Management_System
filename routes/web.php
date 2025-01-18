@@ -122,6 +122,12 @@ Route::middleware(['auth', 'prevent-back-button'])->prefix('user')->group(functi
         Route::get('/prc-chapters', [DonorController::class, 'showChapters'])->name('prc-chapters');
         Route::post('/donor/update/{id}', [user_profileController::class, 'updateDonorProfile'])->name('donor.updateProfile');
         Route::post('/testimonial/store', [DonorController::class, 'store'])->middleware('auth')->name('testimonial.store');
+    // testimonial
+    Route::get('/testimonials/create', [DonorController::class, 'create'])->name('testimonials.create');
+    Route::post('/testimonials', [DonorController::class, 'store'])->name('testimonials.store');
+    Route::get('/testimonials/{id}/edit', [DonorController::class, 'edit'])->name('testimonials.edit');
+    Route::put('/testimonials/{id}', [DonorController::class, 'update'])->name('testimonials.update');
+    Route::delete('/testimonials/{id}', [DonorController::class, 'destroy'])->name('testimonials.destroy');
 
     });
 

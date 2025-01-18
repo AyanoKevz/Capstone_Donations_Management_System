@@ -37,7 +37,8 @@ class DonorController extends Controller
         ->first();
 
     if ($existingTestimonial) {
-        return redirect()->back()->with('error', 'You have already submitted a testimonial. You can edit or delete it.');
+        return view('users.donor.review', compact('existingTestimonial'));  
+                  
     }
 
     // Store testimonial if it doesn't exist
@@ -50,4 +51,38 @@ class DonorController extends Controller
 
     return redirect()->back()->with('success', 'Review submitted successfully!');
 }
+    // Show the edit form with the current testimonial data
+    public function edit($id)
+    {
+        $testimonial = Testimonial::findOrFail($id);
+        return view('users.donor.edit', compact('testimonial'));
+    }
+
+    // Handle the update of the testimonial
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'content' => 'required|string',
+            'rating' => 'required|integer|min:1|max:5',
+        ]);
+
+        $testimonial = Testimonial::findOrFail($id);
+        $testimonial->content = $request->input('content');
+        $testimonial->rating = $request->input('rating');
+        $testimonial->save();
+
+        return redirect()->route('donor.review')->with('success', 'Testimonial updated successfully!');
+    }
+
+    // Handle the deletion of the testimonial
+    public function destroy($id)
+    {
+        $testimonial = Testimonial::findOrFail($id);
+        $testimonial->delete();
+
+        return redirect()->route('donor.review')->with('success', 'Testimonial deleted successfully!');
+    }
+
+
+    
 }

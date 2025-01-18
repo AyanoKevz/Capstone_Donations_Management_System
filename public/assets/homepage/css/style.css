@@ -916,6 +916,7 @@ input.is-invalid, select.is-invalid {
 /*** Testimonial Start ***/
 .testimonial .testimonial-item {
     position: relative;
+    min-height: 300px; 
     margin-bottom: 30px;
     padding: 0 25px 25px 25px;
 }
