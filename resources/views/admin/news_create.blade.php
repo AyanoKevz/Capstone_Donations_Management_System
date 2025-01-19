@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Admin | Account Verification</title>
+  <title>Admin | News</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -15,8 +15,8 @@
     href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <link rel="icon" href="{{ asset ('assets/img/systemLogo.png') }}" type="image/png">
   <link rel="stylesheet" href="{{ asset('lib/bootstrap/css/bootstrap.min.css') }}">
-  <link rel="stylesheet" href="{{ asset('lib/datatables/datatables.min.css') }}">
-  <link rel="stylesheet" href="{{ asset ('assets/admin/css/verify.css') }}">
+  <link rel="stylesheet" href="{{ asset('lib/summernote/summernote-bs5.min.css') }}">
+  <link rel="stylesheet" href="{{ asset ('assets/admin/css/news.css') }}">
 
 </head>
 
@@ -123,13 +123,13 @@
             </a>
             <div class="collapse" id="admin-settings" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
               <nav class="sb-sidenav-menu-nested nav">
-                <a class="nav-link" href="{{route('admin.profile')}}" title="Admin Profile">
+                <a class="nav-link " href="{{route('admin.profile')}}" title="Admin Profile">
                   <div class="sb-nav-link-icon">
                     <i class="far fa-circle nav-icon"></i>
                   </div>
                   <span>Admin Profile</span>
                 </a>
-                <a class="nav-link" href="" title="Admin Accounts">
+                <a class="nav-link" href="{{ route('admin.list') }}" title="Admin Accounts">
                   <div class="sb-nav-link-icon">
                     <i class="far fa-circle nav-icon"></i>
                   </div>
@@ -139,7 +139,7 @@
             </div>
 
             <!-- Manage Users -->
-            <a class="nav-link collapsed active" href="#" data-bs-toggle="collapse" data-bs-target="#manage-users"
+            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#manage-users"
               aria-expanded="false" aria-controls="manage-users" title="Manage Users">
               <div class="sb-nav-link-icon">
                 <i class="fas fa-users"></i>
@@ -163,7 +163,7 @@
                   </div>
                   <span>Volunteers</span>
                 </a>
-                <a class="nav-link active" href="{{ route('verify_account') }}" title="Verify Accounts">
+                <a class="nav-link" href="{{ route('verify_account') }}" title="Verify Accounts">
                   <div class="sb-nav-link-icon">
                     <i class="far fa-circle nav-icon"></i>
                   </div>
@@ -253,7 +253,7 @@
             </a>
 
             <!-- News -->
-            <a class="nav-link" href="{{ route('admin.news') }}" title="News">
+            <a class="nav-link active" href="{{ route('admin.news') }}" title="News">
               <div class="sb-nav-link-icon">
                 <i class="fas fa-newspaper"></i>
               </div>
@@ -282,69 +282,109 @@
           <i class="fa-solid fa-circle-check fa-xl me-3"></i>{{ session('success') }}
         </div>
         @endif
-        @if(session('error'))
-        <div id="alert-error" class="alert alert-danger" style=" position: absolute; right: 10px; top: 40px;">
-          <i class=" fa-solid fa-circle-xmark fa-xl me-3"></i>{{ session('error') }}
+        @if($errors->any())
+        <div id="alert-error" class="alert alert-error" style="position: absolute; right: 10px; top: 40px;">
+          <ul>
+            @foreach ($errors->all() as $error)
+            <li><i class="fa-solid fa-circle-xmark fa-xl"></i> {{ $error }}</li>
+            @endforeach
+          </ul>
         </div>
         @endif
         <div class="container-fluid px-3 py-2">
           <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item active"></li>
           </ol>
-          <h1 class="my-2">Verify Accounts</h1>
-          <div class="d-flex justify-content-end  mb-1">
-            <a href="{{ route('verify_account', ['role_name' => 'all']) }}"
-              class="btn table-btn btn-sm {{ $filter === 'all' ? 'custom-active' : '' }}">
-              All
-            </a>
-            <a href="{{ route('verify_account', ['role_name' => 'Donor']) }}"
-              class="btn table-btn btn-sm {{ $filter === 'Donor' ? 'custom-active' : '' }}">
-              Donor
-            </a>
-            <a href="{{ route('verify_account', ['role_name' => 'Volunteer']) }}"
-              class="btn table-btn btn-sm {{ $filter === 'Volunteer' ? 'custom-active' : '' }}">
-              Volunteer
-            </a>
-          </div>
-          <div class="card card-primary card-outline">
-            <div class="card-header">
-              <h3 class="card-title">All Inactive Accounts</h3>
+          <h1 class="my-2">Write a News</h1>
+          <section class=" bg-body-tertiary py-md-5 py-xl-3">
+            <div class="container-fluid">
+              <form method="POST" action="{{ isset($news) ? route('admin.news.update', $news->id) : route('news.create') }}" enctype="multipart/form-data" id="{{ isset($news) ? 'news_form_update' : 'news_form' }}">
+                @csrf
+                @if(isset($news))
+                @method('POST')
+                @else
+                @method('POST')
+                @endif
+                <div class="row gy-4 gy-lg-0">
+                  <div class="col-12 col-lg-6 col-xl-7">
+                    <div class="row gy-4">
+                      <div class="col-12">
+                        <div class="card widget-card border-light shadow-sm">
+                          <div class="card-body">
+                            <div class="row">
+                              <div class="col-md-6 mb-3">
+                                <label for="subtitle" class="form-label">Subtitle</label>
+                                <input type="text" class="form-control" id="subtitle" name="subtitle" value="{{ old('subtitle', $news->subtitle ?? '') }}" required>
+                              </div>
+                              <div class="col-md-6 mb-3">
+                                <label for="title" class="form-label">Title</label>
+                                <input type="text" class="form-control" id="title" name="title" value="{{ old('title', $news->title ?? '') }}" required>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-12">
+                                <label for="compose-textarea" class="form-label">Content</label>
+                                <textarea id="compose-textarea" name="content" class="form-control" style="height: 300px" required>{{ old('content', $news->content ?? '') }}</textarea>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-12 col-lg-6 col-xl-5">
+                    <div class="card widget-card border-light shadow-sm">
+                      <div class="card-body p-4">
+                        <div class="col-12">
+                          <div class="row gy-2 justify-content-around align-items-center flex-column mb-2">
+                            <label class="col-12 form-label m-0 text-center"><strong>News Image One</strong></label>
+                            <img id="imagePreviewOne"
+                              src="{{ isset($news) && $news->image_url_1 ? asset('storage/' . $news->image_url_1) : asset('assets/img/no_image.jpg') }}"
+                              class="rounded w-50 border border-dark-subtle p-0"
+                              alt="News Image One">
+
+                            <div class="input-group mb-3">
+                              <label class="input-group-text" for="inputGroupFile01">Image One</label>
+                              <!-- The file input is not pre-filled with the previous image -->
+                              <input type="file" class="form-control" id="image1" name="image_url_1">
+                              <!-- Hidden field to store the old image URL -->
+                              <input type="hidden" name="old_image_url_1" value="{{ $news->image_url_1 ?? '' }}">
+                            </div>
+                          </div>
+
+                          <div class="row gy-2 justify-content-around align-items-center flex-column">
+                            <label class="col-12 form-label m-0 text-center"><strong>News Image Two</strong></label>
+                            <img id="imagePreviewTwo"
+                              src="{{ isset($news) && $news->image_url_2 ? asset('storage/' . $news->image_url_2) : asset('assets/img/no_image.jpg') }}"
+                              class="rounded w-50 border border-dark-subtle p-0"
+                              alt="News Image Two">
+
+                            <div class="input-group mb-3">
+                              <label class="input-group-text" for="inputGroupFile02">Image Two</label>
+                              <!-- The file input is not pre-filled with the previous image -->
+                              <input type="file" class="form-control" id="image2" name="image_url_2">
+                              <!-- Hidden field to store the old image URL -->
+                              <input type="hidden" name="old_image_url_2" value="{{ $news->image_url_2 ?? '' }}">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+                <div class="d-flex justify-content-center mt-3">
+                  <button type="submit" class="btn btn-primary">{{ isset($news) ? 'Update' : 'Submit' }} <i class="fas fa-paper-plane fa-1x" style="color:white;"></i></button>
+                </div>
+              </form>
+
             </div>
-            <!-- /.card-header -->
-            <div class="card-body">
-              <table id="example1" class="table table-bordered table-hover table-striped">
-                <thead>
-                  <tr>
-                    <th>Username</th>
-                    <th>Account Type</th>
-                    <th>Role</th>
-                    <th>Status</th>
-                    <th>Details</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  @forelse($inactiveAccounts as $account)
-                  <tr>
-                    <td>{{ $account->username }}</td>
-                    <td>{{ ucfirst($account->account_type) }}</td>
-                    <td>{{ $account->roles->first()->role_name }}</td>
-                    <td>
-                      <p class="bg-dark-subtle text-dark-emphasis m-0 p-1 fw-bold">Not Active</p>
-                    </td>
-                    <td><a class="btn btn-success" href="{{ route('view_details', $account->id) }}">View</a></td>
-                  </tr>
-                  @empty
-                  <tr>
-                    <td colspan="5" class="text-center">No inactive accounts found</td>
-                  </tr>
-                  @endforelse
-                </tbody>
-              </table>
-            </div>
-            <!-- /.card-body -->
-          </div>
+          </section>
         </div>
       </main>
+
       <footer class="py-3 bg-dark mt-3">
         <div class="container-fluid ps-4">
           <div class="d-flex align-items-center justify-content-between">
@@ -359,7 +399,8 @@
   <script src="{{ asset('lib/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
   <script src="{{ asset('lib/fontawesome/all.js') }}"></script>
   <script src="{{ asset('lib/jquery/jquery.min.js') }}"></script>
-  <script src="{{ asset('lib/datatables/datatables.min.js') }}"></script>
+  <script src="{{ asset('lib/jquery/jquery.validate.min.js') }}"></script>
+  <script src="{{ asset('lib/summernote/summernote-bs5.min.js') }}"></script>
   <script src="{{ asset('assets/admin/js/admin.js') }}"></script>
 
   <script>

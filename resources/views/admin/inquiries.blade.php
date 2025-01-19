@@ -276,21 +276,20 @@
     <!-- Content -->
     <div id="layoutSidenav_content">
       <main>
+        @if(session('success'))
+        <div id="alert-success" class="alert alert-success" style="position: absolute; right: 10px; top: 40px;">
+          <i class="fa-solid fa-circle-check fa-xl me-3"></i>{{ session('success') }}
+        </div>
+        @endif
+        @if(session('error'))
+        <div id="alert-error" class="alert alert-error" style=" position: absolute; right: 10px; top: 40px;">
+          <i class=" fa-solid fa-circle-xmark fa-xl me-3"></i>{{ session('error') }}
+        </div>
+        @endif
         <div class="container-fluid px-3 py-2">
           <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item active"></li>
           </ol>
-          @if (session('success'))
-          <div id="alert-success" class="alert alert-success wow fadeInLeft">
-            <i class="fa-solid fa-circle-check me-3"></i>{{ session('success') }}
-          </div>
-          @endif
-
-          @if (session('error'))
-          <div id="alert-error" class="alert alert-error wow fadeInLeft">
-            <i class="fa-solid fa-circle-xmark me-3"></i>{{ session('error') }}
-          </div>
-          @endif
           <h1 class="my-2">Inquiries Inbox</h1>
           <!-- /. CONTENT -->
           <section class="content mb-2">

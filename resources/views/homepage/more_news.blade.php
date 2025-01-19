@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Contact - UniAid</title>
+  <title>Read News</title>
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <meta content="" name="keywords">
   <meta content="" name="description">
@@ -63,7 +63,7 @@
               <a href="{{ route ('more_volunteer')}}" class="dropdown-item">Volunteer</a>
             </div>
           </div>
-          <a href="{{ route ('contact')}}" class="nav-item nav-link active">Contact Us</a>
+          <a href="{{ route ('contact')}}" class="nav-item nav-link">Contact Us</a>
           <a href="{{ route ('register')}}" class="nav-item nav-link">Register</a>
         </div>
         <a href="{{ route('home') }}#portals" class="btn btn-primary rounded-pill py-2 px-4 my-3 my-lg-0 flex-shrink-0">Portals</a>
@@ -110,51 +110,32 @@
       <div class="row g-5">
 
         <div class="col-lg-8">
-
           <article class="blog-details">
-
             <div class="post-img">
-              <img src="{{asset('assets/img/news.jpg') }}" alt="" class="img-fluid">
+              <!-- Displaying the image -->
+              <img src="{{ asset('storage/' . $news->image_url_1) }}" alt="" class="img-fluid">
             </div>
 
-            <h2 class="title">NEWS TITLE</h2>
+            <h2 class="title">{{ $news->title }}</h2>
 
             <div class="meta-top mt-2">
-              <ul class="d-flex">
-                <li class="d-flex align-items-center mx-1"><i class="far fa-user me-1"></i>John
-                  Doe</li>
-                <li class="d-flex align-items-center mx-1"><i class="far fa-calendar me-1"></i> Jan 1,
-                  2022</li>
+              <ul class="d-flex justify-content-center">
+                <!-- Displaying the admin's username -->
+                <li class="d-flex align-items-center mx-1"><i class="far fa-user me-1"></i>{{ $news->admin->username }}</li>
+                <!-- Displaying the creation date -->
+                <li class="d-flex align-items-center mx-1"><i class="far fa-calendar me-1"></i>{{ $news->created_at->format('F j, Y') }}</li>
               </ul>
             </div>
-
             <div class="content">
               <blockquote>
-                <p>
-                  SUB TITLE
-                </p>
+                <p>{{ $news->subtitle }}</p>
               </blockquote>
-              <p>
-                Similique neque nam consequuntur ad non maxime aliquam quas. Quibusdam animi praesentium. Aliquam et
-                laboriosam eius aut nostrum quidem aliquid dicta.
-                Et eveniet enim. Qui velit est ea dolorem doloremque deleniti aperiam unde soluta. Est cum et quod
-                quos aut ut et sit sunt. Voluptate porro consequatur assumenda perferendis dolore.
-              </p>
-
-              <img src="{{asset('assets/img/news.jpg') }}" class="img-fluid" alt="">
-
-              <p>
-                Dito ang continuation. Facilis nam porro amet nostrum. In assumenda quia quae
-                a id praesentium. Quos deleniti libero sed occaecati aut porro autem. Consectetur sed excepturi sint
-                non placeat quia repellat incidunt labore. Autem facilis hic dolorum dolores vel.
-                Consectetur quasi id et optio praesentium aut asperiores eaque aut. Explicabo omnis quibusdam esse. Ex
-                libero illum iusto totam et ut aut blanditiis. Veritatis numquam ut illum ut a quam vitae.
-              </p>
-
-            </div><!-- End post content -->
-
-          </article><!-- End blog post -->
-
+              <p>{{ $news->content }}</p>
+              <div class="d-flex justify-content-center">
+                <img src="{{ asset('storage/' . $news->image_url_2) }}" class="img-fluid" alt="">
+              </div>
+            </div>
+          </article>
         </div>
 
         <div class="col-lg-4">
@@ -165,52 +146,22 @@
               <h3 class="sidebar-title">Other News</h3>
 
               <div class="mt-3">
-
+                @if($otherNews->isEmpty())
+                <p>No other news available at the moment.</p>
+                @else
+                @foreach($otherNews as $item)
                 <div class="post-item mt-3">
-                  <img src="{{asset('assets/img/news.jpg') }}" alt="">
+                  <img src="{{ asset('storage/' . $item->image_url_2) }}" alt="">
                   <div>
-                    <h4><a href="blog-details.html">Title</a></h4>
-                    <time datetime="2020-01-01">Date</time>
+                    <h4><a href="{{ route('more-news', ['id' => $item->id]) }}">{{ $item->title }}</a></h4>
+                    <time datetime="{{ $item->created_at->format('Y-m-d') }}">{{ $item->created_at->format('F j, Y') }}</time>
                   </div>
-                </div><!-- End recent post item-->
-
-                <div class="post-item">
-                  <img src="{{asset('assets/img/news.jpg') }}" alt="">
-                  <div>
-                    <h4><a href="blog-details.html">Title</a></h4>
-                    <time datetime="2020-01-01">Date</time>
-                  </div>
-                </div><!-- End recent post item-->
-
-                <div class="post-item">
-                  <img src="{{asset('assets/img/news.jpg') }}" alt="">
-                  <div>
-                    <h4><a href="blog-details.html">Title</a></h4>
-                    <time datetime="2020-01-01">Date</time>
-                  </div>
-                </div><!-- End recent post item-->
-
-                <div class="post-item">
-                  <img src="{{asset('assets/img/news.jpg') }}" alt="">
-                  <div>
-                    <h4><a href="blog-details.html">Title</a></h4>
-                    <time datetime="2020-01-01">Date</time>
-                  </div>
-                </div><!-- End recent post item-->
-
-                <div class="post-item">
-                  <img src="{{asset('assets/img/news.jpg') }}" alt="">
-                  <div>
-                    <h4><a href="blog-details.html">Title</a></h4>
-                    <time datetime="2020-01-01">Date</time>
-                  </div>
-                </div><!-- End recent post item-->
-
+                </div>
+                @endforeach
+                @endif
               </div>
-
-            </div><!-- End sidebar recent posts-->
-
-          </div><!-- End Blog Sidebar -->
+            </div>
+          </div>
 
         </div>
       </div>

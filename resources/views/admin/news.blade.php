@@ -288,13 +288,18 @@
           <i class=" fa-solid fa-circle-xmark fa-xl me-3"></i>{{ session('error') }}
         </div>
         @endif
+        @if(session('info'))
+        <div id="alert-info" class="alert alert-info" style=" position: absolute; right: 10px; top: 40px;">
+          {{ session('info') }}
+        </div>
+        @endif
         <div class="container-fluid px-3 py-2">
           <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item active"></li>
           </ol>
           <h1 class="my-2">UniAid News</h1>
           <div class="d-flex justify-content-end mb-1">
-            <a href="#" type="button" class="btn btn-success btn-sm"><i class="fas fa-pen-to-square fa-1x" style="color:white;"></i>Publish News</a>
+            <a href="{{ route('admin.news.form') }}" class="btn btn-success btn-sm"><i class="fas fa-pen-to-square fa-1x" style="color:white;"></i>Publish News</a>
           </div>
           <div class="card card-primary card-outline">
             <div class="card-header">
@@ -307,7 +312,7 @@
                     <th>Published By</th>
                     <th>Title</th>
                     <th>Subtitle</th>
-                    <th>Posted Date</th>
+                    <th>Posted At</th>
                     <th>Action</th>
                   </tr>
                 </thead>
@@ -317,10 +322,10 @@
                     <td>{{ $item->admin->name ?? 'Unknown' }}</td>
                     <td>{{ $item->title }}</td>
                     <td>{{ $item->subtitle }}</td>
-                    <td>{{ $item->posted_at }}</td>
+                    <td>{{ $item->created_at }}</td>
                     <td>
                       <!-- Edit Link -->
-                      <a href="#" class="btn btn-info btn-sm" title="Edit">
+                      <a href="{{ route('admin.news.form.edit', $item->id) }}" class="btn btn-info btn-sm" title="Edit">
                         <i class="fas fa-pen-to-square fa-1x" style="color:white;"></i>
                       </a>
                       <!-- Delete Button -->

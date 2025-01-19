@@ -73,39 +73,42 @@ $(window).on('scroll', function () {
         loop: true,
     });
 
-
-    // attractions carousel
-    $(".blog-carousel").owlCarousel({
-        autoplay: true,
-        smartSpeed: 1500,
-        center: false,
-        dots: false,
-        loop: true,
-        margin: 25,
-        nav : true,
-        navText : [
-            '<i class="fa fa-angle-left"></i>',
-            '<i class="fa fa-angle-right"></i>'
-        ],
-        responsiveClass: true,
-        responsive: {
-            0:{
-                items:1
-            },
-            576:{
-                items:1
-            },
-            768:{
-                items:2
-            },
-            992:{
-                items:2
-            },
-            1200:{
-                items:3
-            }
+    // Blog carousel
+$(".blog-carousel").owlCarousel({
+    
+    autoplay: true, 
+    autoplayTimeout: 2000, 
+    autoplaySpeed: 1000, 
+    smartSpeed: 500, 
+    center: false,
+    dots: false,
+    loop: $(".blog-carousel .blog-item").length > 1, 
+    margin: 25,
+    nav: true,
+    navText: [
+        '<i class="fa fa-angle-left"></i>',
+        '<i class="fa fa-angle-right"></i>'
+    ],
+    responsiveClass: true,
+    responsive: {
+        0: {
+            items: 1
+        },
+        576: {
+            items: 1
+        },
+        768: {
+            items: 2
+        },
+        992: {
+            items: 2
+        },
+        1200: {
+            items: 3
         }
-    });
+    }
+});
+
 
 
     // testimonial carousel

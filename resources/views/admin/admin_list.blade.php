@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Admin | Chapter</title>
+  <title>Admin | Admin List</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -111,7 +111,7 @@
             </a>
 
             <!-- Admin Settings -->
-            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#admin-settings"
+            <a class="nav-link collapsed active" href="#" data-bs-toggle="collapse" data-bs-target="#admin-settings"
               aria-expanded="false" aria-controls="admin-settings" title="Admin Settings">
               <div class="sb-nav-link-icon">
                 <i class="fas fa-user-cog"></i>
@@ -129,9 +129,9 @@
                   </div>
                   <span>Admin Profile</span>
                 </a>
-                <a class="nav-link" href="{{ route('admin.list') }}" title="Admin Accounts">
+                <a class="nav-link active" href="{{ route('admin.list') }}" title="Admin Accounts">
                   <div class="sb-nav-link-icon">
-                    <i class="far fa-circle nav-icon"></i>
+                    <i class="fas fa-circle-arrow-right nav-icon"></i>
                   </div>
                   <span>Admin Accounts</span>
                 </a>
@@ -237,7 +237,7 @@
             </a>
 
             <!-- Chapters -->
-            <a class="nav-link active" href="{{ route('admin.chapters') }}" title="Chapters">
+            <a class="nav-link" href="{{ route('admin.chapters') }}" title="Chapters">
               <div class="sb-nav-link-icon">
                 <i class="fas fa-map-marker-alt"></i>
               </div>
@@ -309,7 +309,7 @@
                 <thead>
                   <tr>
                     <th>Username</th>
-                    <th>Name</th>
+                    <th>Full Name</th>
                     <th>Email</th>
                     <th>Profile Picture</th>
                     <th>Action</th>

@@ -31,6 +31,7 @@ class HomeController extends Controller
     public function moreNews($id)
     {
         $news = News::findOrFail($id);
-        return view('homepage.more_news', compact('news'));
+        $otherNews = News::where('id', '!=', $id)->latest()->get();
+        return view('homepage.more_news', compact('news', 'otherNews'));
     }
 }

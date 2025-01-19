@@ -101,14 +101,10 @@
             </a>
             <!-- Sidebar -->
             <div class="sidebar">
-                <!-- Sidebar user (optional) -->
-                <div class="user-panel my-3 pb-3  d-flex justify-content-center">
-                    <div class="image">
-                        <img src="{{ asset('storage/' . $User->donor->user_photo) }}" class="img-circle elevation-2" alt="User Image">
-                    </div>
-                    <div class="info">
-                        <a href="#" class="d-block">{{ $User->username}}</a>
-                    </div>
+                <div class="user-panel my-3 pb-3 d-flex flex-column align-items-center justify-content-center">
+                    <img src="{{ asset('storage/' . $User->donor->user_photo) }}" class="img-circle elevation-2" alt="User Image">
+                    <a href="{{route ('donor.profile') }}" class="d-block side-user mt-2" title="profile">{{ $User->username }}</a>
+                    <p class="text-white m-0 fs-6">Donor</p>
                 </div>
                 <!-- SidebarSearch Form -->
                 <div class="form-inline">
@@ -127,7 +123,7 @@
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <!-- Home -->
                         <li class="nav-item">
-                            <a href="{{ route('donor.home') }}" class="nav-link active">
+                            <a href="{{route ('donor.home') }}" class="nav-link">
                                 <i class="nav-icon fas fa-house"></i>
                                 <p>Home</p>
                             </a>
@@ -135,18 +131,18 @@
 
                         <!-- My Profile -->
                         <li class="nav-item">
-                            <a href="{{ route('donor.profile') }}" class="nav-link">
+                            <a href="{{route ('donor.profile') }}" class="nav-link">
                                 <i class="nav-icon fas fa-user"></i>
                                 <p>My Profile</p>
                             </a>
                         </li>
 
-                        <!-- Make A Donation -->
+                        <!-- Make a Donation -->
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-hand-holding-heart"></i>
                                 <p>
-                                    Make A Donation
+                                    Make a Donation
                                     <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>
@@ -160,19 +156,43 @@
                                 <li class="nav-item">
                                     <a href="#" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Browse Requests</p>
+                                        <p>Donation Requests</p>
                                     </a>
                                 </li>
                             </ul>
                         </li>
 
+                        <!-- Geo Map -->
+                        <li class="nav-item">
+                            <a href="#" class="nav-link active">
+                                <i class="nav-icon fas fa-map-marked-alt"></i>
+                                <p>
+                                    Geo-mapping
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Donation Request Map</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{route ('prc-chapters') }}" class="nav-link active">
+                                        <i class="fas fa-circle-arrow-right nav-icon"></i>
+                                        <p>PRC Chapters</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
                         <!-- Track Donations -->
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-chart-line"></i>
                                 <p>
                                     Track Donations
-                                    <i class="fas fa-angle-left right"></i>
+                                    <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
@@ -183,7 +203,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Donation History</p>
                                     </a>
@@ -191,11 +211,27 @@
                             </ul>
                         </li>
 
-                        <!-- Feedback and Support -->
+                        <!-- Learn About Causes -->
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="" class="nav-link">
+                                <i class="nav-icon fas fa-info-circle"></i>
+                                <p>Learn About Causes</p>
+                            </a>
+                        </li>
+
+                        <!-- Testimonials -->
+                        <li class="nav-item">
+                            <a href="{{route ('donor.testi_form') }}" class=" nav-link">
+                                <i class="nav-icon fas fa-star"></i>
+                                <p>Testimonials</p>
+                            </a>
+                        </li>
+
+                        <!-- Feedback / Support -->
+                        <li class="nav-item">
+                            <a href="{{route ('donor.contact_form') }}" class="nav-link">
                                 <i class="nav-icon fas fa-comments"></i>
-                                <p>Feedback / Support</p>
+                                <p>Contact / Support</p>
                             </a>
                         </li>
                     </ul>

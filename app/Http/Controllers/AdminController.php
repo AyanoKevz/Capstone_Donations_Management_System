@@ -124,7 +124,11 @@ class AdminController extends Controller
 
     public function showAppointments()
     {
-        $appointments = Appointment::with(['volunteer.user', 'volunteer.chapter'])->get();
+        $appointments = Appointment::with(['volunteer.user', 'volunteer.chapter'])
+            ->whereHas('volunteer.user', function ($query) {
+                $query->where('is_verified', false);
+            })
+            ->get();
 
         return view('admin.appointments', compact('appointments'));
     }
@@ -271,7 +275,12 @@ class AdminController extends Controller
 
         // Generate credentials
         $username = 'uniaid_admin' . rand(1000, 9999);
-        $password = explode('@', $request->email)[0] . rand(1000, 9999);
+        $password = strtoupper(Str::random(4)) . rand(1000, 9999);
+
+        // Upload default profile picture
+        $defaultImagePath = 'assets/img/PRC_logo.png';
+        $profileImagePath = 'admin_photos/' . Str::random(10) . '_PRC_logo.png';
+        Storage::disk('public')->put($profileImagePath, file_get_contents(public_path($defaultImagePath)));
 
         // Create admin
         $admin = Admin::create([
@@ -279,7 +288,7 @@ class AdminController extends Controller
             'email' => $request->email,
             'username' => $username,
             'password' => bcrypt($password),
-            'profile_image' => 'admin_photos/no_profile.png',
+            'profile_image' => $profileImagePath,
         ]);
 
         // Email details
@@ -325,13 +334,10 @@ class AdminController extends Controller
     {
         // Find the donor via user_id
         $donor = Donor::where('user_id', $userId)->firstOrFail();
-
-        // Delete the donor's ID image if it exists
         if ($donor->id_image && Storage::disk('public')->exists($donor->id_image)) {
             Storage::disk('public')->delete($donor->id_image);
         }
 
-        // Delete the donor's user photo if it exists
         if ($donor->user_photo && Storage::disk('public')->exists($donor->user_photo)) {
             Storage::disk('public')->delete($donor->user_photo);
         }
@@ -394,13 +400,136 @@ class AdminController extends Controller
         return view('admin.news', compact('news'));
     }
 
+    public function NewsForm()
+    {
+        return view('admin.news_create');
+    }
+
+    public function CreateNews(Request $request)
+    {
+        $validatedData = $request->validate([
+            'subtitle' => 'required|string|max:255',
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
+            'image_url_1' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image_url_2' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        try {
+            $imagePath1 = null;
+            $imagePath2 = null;
+
+            $admin = Auth::guard('admin')->user();
+
+            if ($request->hasFile('image_url_1')) {
+                $imagePath1 = $request->file('image_url_1')->store('news_photos', 'public');
+            }
+
+            if ($request->hasFile('image_url_2')) {
+                $imagePath2 = $request->file('image_url_2')->store('news_photos', 'public');
+            }
+            $content = strip_tags($validatedData['content']);
+
+            News::create([
+                'admin_id' => $admin->id,
+                'subtitle' => $validatedData['subtitle'],
+                'title' => $validatedData['title'],
+                'content' => $content,
+                'image_url_1' => $imagePath1,
+                'image_url_2' => $imagePath2,
+            ]);
+
+            return redirect()->route('admin.news')->with('success', 'News post created successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'An error occurred while creating the news. Please try again.');
+        }
+    }
+
+    // Edit News Form   
+    public function EditNewsForm($id)
+    {
+        $news = News::findOrFail($id);
+
+        return view('admin.news_create', compact('news'));
+    }
+
+    // Update News
+    public function UpdateNews(Request $request, $id)
+    {
+        $news = News::find($id);
+
+        // Validate input fields
+        $validatedData = $request->validate([
+            'subtitle' => 'required|string|max:255',
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
+            'image_url_1' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image_url_2' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        $changesMade = false;
+        if ($news->title !== $validatedData['title']) {
+            $news->title = $validatedData['title'];
+            $changesMade = true;
+        }
+
+        if (
+            $news->subtitle !== $validatedData['subtitle']
+        ) {
+            $news->subtitle = $validatedData['subtitle'];
+            $changesMade = true;
+        }
+
+        if (
+            $news->content !== strip_tags($validatedData['content'])
+        ) {
+            $news->content = strip_tags($validatedData['content']);
+            $changesMade = true;
+        }
+
+        if ($request->hasFile('image_url_1')) {
+            if ($news->image_url_1) {
+                Storage::disk('public')->delete($news->image_url_1);
+            }
+            $news->image_url_1 = $request->file('image_url_1')->store('news_photos', 'public');
+            $changesMade = true;
+        }
+        if ($request->hasFile('image_url_2')) {
+            if ($news->image_url_2) {
+                Storage::disk('public')->delete($news->image_url_2);
+            }
+
+            $news->image_url_2 = $request->file('image_url_2')->store('news_photos', 'public');
+            $changesMade = true;
+        }
+
+        if (!$changesMade) {
+            return redirect()->route('admin.news')->with('info', 'No changes were made to the news post.');
+        }
+
+        $news->save();
+
+        return redirect()->route('admin.news')->with('success', 'News updated successfully.');
+    }
+
+
     public function deleteNews(Request $request)
     {
         $news = News::find($request->id);
 
         if ($news) {
+
+            if ($news->image_url_1 && Storage::disk('public')->exists($news->image_url_1)) {
+                Storage::disk('public')->delete($news->image_url_1);
+            }
+
+            if ($news->image_url_2 && Storage::disk('public')->exists($news->image_url_2)) {
+                Storage::disk('public')->delete($news->image_url_2);
+            }
+
             $news->delete();
-            return redirect()->back()->with('success', 'News deleted successfully.');
+
+            return redirect()->back()->with('success', 'News deleted successfully along with associated images.');
         }
 
         return redirect()->back()->with('error', 'News not found.');

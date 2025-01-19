@@ -15,8 +15,32 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="{{ asset('lib/bootstrap/css/bootstrap.min.css') }}">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{ asset('assets/users/css/donor/home_donor.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/users/css/donor/contact_form.css') }}">
 </head>
+
+<!-- Spinner Start -->
+<div id="spinner" class="show bg-white position-fixed w-100 vh-100 d-flex flex-column align-items-center justify-content-center">
+    <div class="text-center mb-4">
+        <h1 class="m-0 fw-bold" style="color: #ff1f1f; font-size:50px;">
+            <img src="{{ asset('assets/img/systemLogo.png') }}" class="me-3 w-25" alt="Logo">UniAid
+        </h1>
+    </div>
+
+    <div class="cssload-main">
+        <div class="cssload-heart">
+            <span class="cssload-heartL"></span>
+            <span class="cssload-heartR"></span>
+            <span class="cssload-square"></span>
+        </div>
+        <div class="cssload-shadow"></div>
+    </div>
+    <div class="loading-text mt-4">
+        <p class="text-center fw-bold" style="color: #ff1f1f; font-size: 20px; margin: 0; position: absolute; bottom: 160px; left: 50%; transform: translateX(-50%); ">
+            Loading....
+        </p>
+    </div>
+</div>
+<!-- Spinner End -->
 
 <body class="hold-transition sidebar-collapse layout-top-nav">
     <div class="wrapper">
@@ -40,7 +64,10 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="home.html">Home</a>
+                            <a class="nav-link active rounded-pill" aria-current="page" href="{{route('donor.home')}}">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link " aria-current="page" href="{{route('prc-chapters')}}">Chapters</a>
                         </li>
                     </ul>
                 </div>
@@ -56,23 +83,26 @@
                     </div>
                 </form>
                 <div class="nav-item dropdown me-5 ms-2">
-                    <a class="nav-link dropdown-toggle d-flex align-items-center" id="navbarDropdown" href="#"
+                    <a class="nav-link dropdown-toggle d-flex align-items-center p-2" id="navbarDropdown" href="#"
                         role="button" data-bs-toggle="dropdown" aria-expanded="false">
 
                         <div class="nav-profile-img">
-                            <img src="{{ asset('assets/img/no_profile.png') }}" alt="image">
+                            <img src="{{ asset('storage/' . $User->donor->user_photo) }}" alt="image">
                             <span class="availability-status online"></span>
                         </div>
                         <div class="nav-profile-text">
-                            <span class="text-white">Username</span>
+                            <span>{{ $User->donor->first_name . ' ' . $User->donor->last_name }}</span>
                         </div>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                         <li>
-                            <a class="dropdown-item d-flex justify-content-center align-items-center"
-                                href="logout.php">Logout
-                                <i class="fas fa-right-from-bracket ms-2"></i>
-                            </a>
+                            <form action="{{ route('user.logout') }}" method="POST" id="logout-form">
+                                @csrf
+                                <button type="submit" class="dropdown-item d-flex justify-content-center align-items-center">
+                                    Logout
+                                    <i class="fas fa-right-from-bracket ms-2"></i>
+                                </button>
+                            </form>
                         </li>
                         <li>
                             <a class="dropdown-item d-flex justify-content-center align-items-center"
@@ -95,9 +125,10 @@
             </a>
             <!-- Sidebar -->
             <div class="sidebar">
+                <!-- Sidebar user (optional) -->
                 <div class="user-panel my-3 pb-3 d-flex flex-column align-items-center justify-content-center">
                     <img src="{{ asset('storage/' . $User->donor->user_photo) }}" class="img-circle elevation-2" alt="User Image">
-                    <a href="route{{'donor.profile'}}" class="d-block side-user mt-2" title="profile">{{ $User->username }}</a>
+                    <a href="{{route ('donor.profile') }}" class="d-block side-user mt-2" title="profile">{{ $User->username }}</a>
                     <p class="text-white m-0">Donor</p>
                 </div>
                 <!-- SidebarSearch Form -->
@@ -143,7 +174,7 @@
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
                                     <a href="#" class="nav-link">
-                                        <i class="fas fa-circle-arrow-right nav-icon"></i>
+                                        <i class="far fa-circle nav-icon"></i>
                                         <p>Quick Donation</p>
                                     </a>
                                 </li>
@@ -235,6 +266,7 @@
             <!-- /.sidebar -->
         </aside>
 
+
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
             <!-- Content Header (Page header) -->
@@ -242,9 +274,9 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-6 d-flex align-items-center ms-3">
+                            <img src="{{ asset('assets/img/donorbanner.png') }}" alt="" class="banner-img img-fluid mx-2">
                             <h1 class="m-0">
                                 Donor Portal
-
                             </h1>
                         </div>
                         <div class="col-5 d-flex justify-content-end align-items-center">
@@ -252,24 +284,124 @@
                                 <li class="breadcrumb-item">
                                     <a href="{{ route('donor.home') }}">Home</a>
                                 </li>
-                                <li class="breadcrumb-item">
-                                    Make A Donations
-                                </li>
-                                <li class="breadcrumb-item active">Quick Donation</li>
+                                <li class="breadcrumb-item active">Contact - Support</li>
                             </ol>
                         </div>
                     </div>
                 </div>
+                @if(session('error'))
+                <div id="alert-error" class="alert alert-error" style=" position: absolute; ; right: 10px; top: 90px;">
+                    <i class=" fa-solid fa-circle-xmark fa-xl me-3"></i>{{ session('error') }}
+                </div>
+                @endif
+                @if(session('success'))
+                <div id="alert-success" class="alert alert-success" style=" position: absolute; ; right: 10px; top: 90px;">
+                    <i class="fa-solid fa-circle-check fa-xl me-3"></i>{{ session('success') }}
+                </div>
+                @endif
             </div>
 
             <!-- End content-header -->
 
             <!-- Main content -->
             <div class="content">
-                <div class="container">
-                    <div class="row">
-
+                <div class="container py-3">
+                    <div class="row mb-3">
+                        <div class="col-md-3">
+                            <div class="dbox w-100 text-center">
+                                <div class="icon d-flex align-items-center justify-content-center">
+                                    <span class="fas fa-location-dot"></span>
+                                </div>
+                                <div class="text">
+                                    <p><span>Address: </span>37 EDSA corner Boni Avenue, Barangka-Ilaya, Mandaluyong City 1550</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="dbox w-100 text-center">
+                                <div class="icon d-flex align-items-center justify-content-center">
+                                    <span class="fas fa-phone"></span>
+                                </div>
+                                <div class="text">
+                                    <p><span>Phone: </span> (+632) 8790-2300</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="dbox w-100 text-center">
+                                <div class="icon d-flex align-items-center justify-content-center">
+                                    <span class="fas fa-hands-holding-child"></span>
+                                </div>
+                                <div class="text">
+                                    <p><span>Donation: </span>(+632) 8790-2410 / (+632) 8790-2413</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="dbox w-100 text-center">
+                                <div class="icon d-flex align-items-center justify-content-center">
+                                    <span class="fas fa-people-group"></span>
+                                </div>
+                                <div class="text">
+                                    <p><span>Volunteer: </span>(+632) 8790-2373</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
+                    <div class="row no-gutters flex-wrap-reverse shadow-sm">
+                        <div class="col-md-7">
+                            <div class="contact-wrap w-100 p-md-5 p-4">
+                                <h3 class="mb-4">Contact Us</h3>
+                                <form method="POST" id="contactForm" name="contactForm" class="contactForm" action="{{ route('user.submit_contact') }}">
+                                    @csrf
+                                    <div class="row ">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="label" for="name">Full Name</label>
+                                                <input type="text" class="form-control" name="name" id="name" placeholder="Name" required value="{{ $User->donor->first_name . ' ' . $User->donor->last_name }}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="label" for="email">Contact </label>
+                                                <input type="text" class="form-control" name="contact" id="contact" placeholder="contact" required value="{{ $User->donor->contact}}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="label" for="subject">Email Address</label>
+                                                <input type="email" class="form-control" name="email" id="email" placeholder="Email Address" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="label" for="subject">Subject</label>
+                                                <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="label" for="#">Message</label>
+                                                <textarea name="message" class="form-control" id="message" cols="30" rows="4" placeholder="Message" required></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <input type="submit" value="Send Message" class="btn primary_btn">
+                                                <div class="submitting"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="col-md-5 d-flex align-items-stretch">
+                            <div class="info-wrap w-100 p-5 contact-banner" style="background-image: url('{{ asset('assets/img/user-contact.jpg') }}');">
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
 
             </div>
@@ -279,13 +411,11 @@
 
         <!-- Main Footer -->
         <footer class="main-footer">
-
             <strong>Copyright &copy; 2024 UniAid - Community Donations and Resource Distribution.</strong>
             All rights reserved.
         </footer>
     </div>
     <!-- ./wrapper -->
-
 
     <!-- jQuery -->
     <script src="{{ asset('lib/jquery/jquery.min.js') }}"></script>
@@ -295,7 +425,6 @@
     <script src="{{ asset('lib/fontawesome/all.js') }}"></script>
     <!-- User JS -->
     <script src="{{ asset('assets/users/js/user.js') }}"></script>
-
 </body>
 
 </html>

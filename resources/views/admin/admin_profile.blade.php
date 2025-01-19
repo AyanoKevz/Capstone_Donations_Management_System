@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Admin | Chapter</title>
+  <title>Admin | My Profile</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -125,7 +125,7 @@
               <nav class="sb-sidenav-menu-nested nav">
                 <a class="nav-link active" href="{{route('admin.profile')}}" title="Admin Profile">
                   <div class="sb-nav-link-icon">
-                    <i class="far fa-circle nav-icon"></i>
+                    <i class="fas fa-circle-arrow-right nav-icon"></i>
                   </div>
                   <span>Admin Profile</span>
                 </a>
@@ -292,7 +292,6 @@
           {{ session('info') }}
         </div>
         @endif
-
         <div class="container-fluid px-3 py-2">
           <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item active"></li>

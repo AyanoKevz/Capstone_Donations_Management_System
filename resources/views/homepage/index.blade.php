@@ -85,11 +85,6 @@
                             <div class="col-xl-7 wow fadeInRight">
                                 <div class="text-sm-center text-md-end">
                                     <h3 class="carousel-header text-uppercase mb-4">Welcome To UniAid</h4>
-                                        <!-- @if (session('error'))
-                                        <div id="alert-error" class="alert alert-error wow fadeInLeft">
-                                            <i class="fa-solid fa-circle-xmark me-3"></i>{{ session('error') }}
-                                        </div>
-                                        @endif -->
                                         <h2 class="display-4 text-uppercase text-white mb-4">Community Donations and
                                             Resources Distribution</h2>
                                         <p class="mb-3 fs-5">UniAid is a platform that bridges the gap between donors
@@ -273,64 +268,64 @@
             </div>
             <div class="owl-carousel blog-carousel">
 
-                <div class="blog-item text-center">
-                    <div class="blog-img mb-2">
+                <div class="resources-item text-center">
+                    <div class="resources-img mb-2">
                         <img src="{{asset('assets/img/r1.jpg') }}" class="img-fluid w-100 rounded" alt="">
                     </div>
                     <h4 class="d-inline-block m-2">Canned Goods</h4>
                 </div>
 
-                <div class="blog-item text-center">
-                    <div class="blog-img mb-2">
+                <div class="resources-item text-center">
+                    <div class="resources-img mb-2">
                         <img src="{{asset('assets/img/r2.png') }}" class="img-fluid w-100 rounded" alt="">
                     </div>
                     <h4 class="d-inline-block m-2">Breads</h4>
                 </div>
 
-                <div class="blog-item text-center">
-                    <div class="blog-img mb-2">
+                <div class="resources-item text-center">
+                    <div class="resources-img mb-2">
                         <img src="{{asset('assets/img/r3.png') }}" class="img-fluid w-100 rounded" alt="">
                     </div>
                     <h4 class="d-inline-block m-2">Instant Noodles</h4>
                 </div>
 
-                <div class="blog-item text-center">
-                    <div class="blog-img mb-2">
+                <div class="resources-item text-center">
+                    <div class="resources-img mb-2">
                         <img src="{{asset('assets/img/r4.png') }}" class="img-fluid w-100 rounded" alt="">
                     </div>
                     <h4 class="d-inline-block m-2">Bottled Drinks</h4>
                 </div>
 
-                <div class="blog-item text-center">
-                    <div class="blog-img mb-2">
+                <div class="resources-item text-center">
+                    <div class="resources-img mb-2">
                         <img src="{{asset('assets/img/r5.png') }}" class="img-fluid w-100 rounded" alt="">
                     </div>
                     <h4 class="d-inline-block m-2">Rice</h4>
                 </div>
 
-                <div class="blog-item text-center">
-                    <div class="blog-img mb-2">
+                <div class="resources-item text-center">
+                    <div class="resources-img mb-2">
                         <img src="{{asset('assets/img/r6.png') }}" class="img-fluid w-100 rounded" alt="">
                     </div>
                     <h4 class="d-inline-block m-2">First Aid Kits</h4>
                 </div>
 
-                <div class="blog-item text-center">
-                    <div class="blog-img mb-2">
+                <div class="resources-item text-center">
+                    <div class="resources-img mb-2">
                         <img src="{{asset('assets/img/r7.png') }}" class="img-fluid w-100 rounded" alt="">
                     </div>
                     <h4 class="d-inline-block m-2">Medecines</h4>
                 </div>
 
-                <div class="blog-item text-center">
-                    <div class="blog-img mb-2">
+                <div class="resources-item text-center">
+                    <div class="resources-img mb-2">
                         <img src="{{asset('assets/img/r8.png') }}" class="img-fluid w-100 rounded" alt="">
                     </div>
                     <h4 class="d-inline-block m-2">Clothes</h4>
                 </div>
 
-                <div class="blog-item text-center">
-                    <div class="blog-img mb-2">
+                <div class="resources-item text-center">
+                    <div class="resources-img mb-2">
                         <img src="{{asset('assets/img/r9.png') }}" class="img-fluid w-100 rounded" alt="">
                     </div>
                     <h4 class="d-inline-block m-2">School Supplies</h4>
@@ -447,20 +442,19 @@
             <!-- MERON -->
             <div class="owl-carousel blog-carousel">
                 @foreach ($news as $item)
-                <div class="blog-item p-4">
+                <div class="blog-item p-3">
                     <div class="blog-img mb-4">
-                        <img src="{{ asset($item->image_url) }}"
+                        <img src="{{ asset('storage/' . $item->image_url_2) }}"
                             class="img-fluid w-100 rounded" alt="">
                     </div>
-                    <a href="{{ route('more-news', ['id' => $item->news_id]) }}"
-                        class="h4 d-inline-block mb-3">{{ $item->title }}</a>
+                    <p class="text-center mb-0"><a href="{{ route('more-news', ['id' => $item->id]) }}" class="h4 d-inline-block mb-2">{{ $item->title }}</a></p>
                     <p class="mb-4">{{ Str::limit($item->content, 150) }}</p>
                     <div class="d-flex align-items-center">
-                        <img src="{{ asset('assets/img/no_profile.png') }}"
+                        <img src="{{ asset('storage/' . $item->admin->profile_image) }}"
                             class="img-fluid rounded-circle" style="width: 60px; height: 60px;" alt="">
                         <div class="ms-3">
-                            <h5>Admin</h5>
-                            <p class="mb-0">{{ $item->posted_at->format('F j, Y') }}</p>
+                            <h5>{{$item->admin->username}} (Admin)</h5>
+                            <p class="mb-0">{{ $item->created_at->format('F j, Y') }}</p>
                         </div>
                     </div>
                 </div>

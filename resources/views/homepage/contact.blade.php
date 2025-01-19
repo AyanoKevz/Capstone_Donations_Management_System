@@ -141,7 +141,7 @@
                                         </div>
                                         <div>
                                             <h4>Volunteer</h4>
-                                            <p class="mb-0">(+63 2) 8790-2373</p>
+                                            <p class="mb-0">(+632) 8790-2373</p>
                                         </div>
                                     </div>
                                 </div>
@@ -152,7 +152,7 @@
                                         </div>
                                         <div>
                                             <h4>Telephone</h4>
-                                            <p class="mb-0">(+63 2) 8790-2300</p>
+                                            <p class="mb-0">(+632) 8790-2300</p>
                                         </div>
                                     </div>
                                 </div>
@@ -163,7 +163,7 @@
                                         </div>
                                         <div>
                                             <h4>Donations</h4>
-                                            <p class="mb-0">(+63 2) 8790-2410 / (+63 2) 8790-2413</p>
+                                            <p class="mb-0">(+632) 8790-2410 / (+632) 8790-2413</p>
                                         </div>
                                     </div>
                                 </div>

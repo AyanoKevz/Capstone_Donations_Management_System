@@ -1363,6 +1363,19 @@ body:not(.layout-fixed) .main-sidebar .sidebar {
   background: #0d45a5;
 }
 
+  .primary_btn {
+    background: #1b2a5f !important;
+    border-color: #1b2a5f !important;
+    color: #fff;
+}
+
+.primary_btn:hover {
+    border-color: #1b2a5f !important;
+    background: #fff !important;
+    color: #1b2a5f !important;
+}
+
+
 .error {
     color: red !important; 
     font-size: 12px !important; 

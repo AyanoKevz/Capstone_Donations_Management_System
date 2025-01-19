@@ -7,6 +7,7 @@ use App\Models\Inquiry;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\InquiryReply;
 use Illuminate\Support\Facades\Auth;
+use Exception;
 
 class InquiryController extends Controller
 {
@@ -31,7 +32,7 @@ class InquiryController extends Controller
         try {
             Inquiry::create($validated);
             session()->flash('success', 'Your inquiry was successfully submitted.');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             session()->flash('error', 'An error occurred while submitting your inquiry.');
         }
 
@@ -95,11 +96,12 @@ class InquiryController extends Controller
         Mail::to($request->input('to'))
             ->send(new InquiryReply($inquiry, $request->input('subject'), $request->input('message')));
 
-        return back()->with(
-            'success',
-            'Email sent successfully!'
-        );
+
+        return redirect()->route('admin.inquiries')->with('success', 'Email sent successfully!');
     }
+
+
+
 
     public function logout()
     {

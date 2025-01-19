@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Admin | Chapter</title>
+  <title>Admin | Appointments</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -317,7 +317,7 @@
                     <td>
                       <!-- Action Buttons -->
                       <button type="button" class="btn btn-success btn-sm" title="Verify">
-                        <a href="{{ route('view_details', $appointment->volunteer->id) }}" style="color: white; text-decoration:none;">Verify</a>
+                        <a href="{{ route('view_details', $appointment->volunteer->user_id) }}" style="color: white; text-decoration:none;">Verify</a>
                       </button>
                       <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $appointment->id }}" title="Delete">
                         Delete
