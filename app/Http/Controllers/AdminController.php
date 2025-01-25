@@ -16,10 +16,11 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\AccountUpdated;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class AdminController extends Controller
 {
-    // Show the login form
+    // ADMIN LOGIN
     public function showLoginForm()
     {
         // If the admin is already logged in, redirect to the dashboard
@@ -29,8 +30,6 @@ class AdminController extends Controller
         return view('admin.admin_login');
     }
 
-
-    // login function
     public function login(Request $request)
     {
         $request->validate([
@@ -56,13 +55,13 @@ class AdminController extends Controller
     }
 
 
-    // Admin dashboard
+    // ADMIN DASHBOARD
     public function dashboard()
     {
         return view('admin.dashboard');
     }
 
-    // Admin chapters
+    // ADMIN CHAPTERS
     public function chapters()
     {
         $chapters = Chapter::all();
@@ -70,7 +69,7 @@ class AdminController extends Controller
     }
 
 
-    public function store(Request $request)
+    public function CreateChapter(Request $request)
     {
         $request->validate([
             'chapter_name' => 'required|string|max:100',
@@ -125,7 +124,11 @@ class AdminController extends Controller
 
     public function showAppointments()
     {
-        $appointments = Appointment::with(['volunteer.user', 'volunteer.chapter'])->get();
+        $appointments = Appointment::with(['volunteer.user', 'volunteer.chapter'])
+            ->whereHas('volunteer.user', function ($query) {
+                $query->where('is_verified', false);
+            })
+            ->get();
 
         return view('admin.appointments', compact('appointments'));
     }
@@ -139,11 +142,11 @@ class AdminController extends Controller
     }
 
 
+    //ADMIN PRFOLIE
     public function admin_profile()
     {
         return view('admin.admin_profile');
     }
-
 
     public function updateProfile(Request $request, $id)
     {
@@ -239,6 +242,72 @@ class AdminController extends Controller
         return back()->with('success', 'Account updated successfully.');
     }
 
+
+    //All ADMIN
+    public function adminList()
+    {
+        $admins = Admin::all();
+        return view('admin.admin_list', compact('admins'));
+    }
+
+
+    public function deleteAdmin(Request $request)
+    {
+        $admin = Admin::find($request->id);
+
+        if ($admin) {
+            if ($admin->profile_image && Storage::disk('public')->exists($admin->profile_image)) {
+                Storage::disk('public')->delete($admin->profile_image);
+            }
+            $admin->delete();
+            return redirect()->back()->with('success', 'Admin deleted successfully.');
+        }
+
+        return redirect()->back()->with('error', 'Admin not found.');
+    }
+
+    public function CreateAdmin(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:admin,email',
+        ]);
+
+        // Generate credentials
+        $username = 'uniaid_admin' . rand(1000, 9999);
+        $password = strtoupper(Str::random(4)) . rand(1000, 9999);
+
+        // Upload default profile picture
+        $defaultImagePath = 'assets/img/PRC_logo.png';
+        $profileImagePath = 'admin_photos/' . Str::random(10) . '_PRC_logo.png';
+        Storage::disk('public')->put($profileImagePath, file_get_contents(public_path($defaultImagePath)));
+
+        $admin = Admin::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'username' => $username,
+            'password' => bcrypt($password),
+            'profile_image' => $profileImagePath,
+        ]);
+
+        $details = [
+            'name' => $request->name,
+            'username' => $username,
+            'password' => $password,
+            'logoPath' => public_path('assets/img/systemLogo.png'),
+        ];
+
+
+        Mail::send('emails.admin_credentials', $details, function ($message) use ($request) {
+            $message->to($request->email)
+                ->subject('Your UniAid Admin Account Credentials');
+        });
+
+        return redirect()->back()->with('success', 'Admin account created successfully, and credentials have been emailed.');
+    }
+
+
+    //Donor LIST
     public function allDonors(Request $request)
     {
         // Get the filter from the request (default is 'all')
@@ -263,13 +332,10 @@ class AdminController extends Controller
     {
         // Find the donor via user_id
         $donor = Donor::where('user_id', $userId)->firstOrFail();
-
-        // Delete the donor's ID image if it exists
         if ($donor->id_image && Storage::disk('public')->exists($donor->id_image)) {
             Storage::disk('public')->delete($donor->id_image);
         }
 
-        // Delete the donor's user photo if it exists
         if ($donor->user_photo && Storage::disk('public')->exists($donor->user_photo)) {
             Storage::disk('public')->delete($donor->user_photo);
         }
@@ -284,6 +350,8 @@ class AdminController extends Controller
         return redirect()->route('admin.donorList')->with('success', 'Donor account deleted successfully!');
     }
 
+
+    //VOLUNTEERS LIST
     public function allVolunteers()
     {
         // Fetch active volunteers (is_verified = true)
@@ -299,25 +367,20 @@ class AdminController extends Controller
 
     public function deleteVolunteer($userId)
     {
-        // Find the volunteer via user_id
+
         $volunteer = Volunteer::where('user_id', $userId)->firstOrFail();
 
-        // Delete the volunteer's ID image if it exists
         if (
             $volunteer->id_image && Storage::disk('public')->exists($volunteer->id_image)
         ) {
             Storage::disk('public')->delete($volunteer->id_image);
         }
 
-        // Delete the volunteer's user photo if it exists
         if ($volunteer->user_photo && Storage::disk('public')->exists($volunteer->user_photo)) {
             Storage::disk('public')->delete($volunteer->user_photo);
         }
 
-        // Delete the volunteer record
         $volunteer->delete();
-
-        // Optionally delete the associated user account
         $user = UserAccount::find($userId);
         if ($user) {
             $user->delete();
@@ -326,19 +389,145 @@ class AdminController extends Controller
         return redirect()->route('admin.volunteerList')->with('success', 'Volunteer account deleted successfully!');
     }
 
+
+    //NEWS
+
     public function showNews()
     {
         $news = News::all();
         return view('admin.news', compact('news'));
     }
 
+    public function NewsForm()
+    {
+        return view('admin.news_create');
+    }
+
+    public function CreateNews(Request $request)
+    {
+        $validatedData = $request->validate([
+            'subtitle' => 'required|string|max:255',
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
+            'image_url_1' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image_url_2' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        try {
+            $imagePath1 = null;
+            $imagePath2 = null;
+
+            $admin = Auth::guard('admin')->user();
+
+            if ($request->hasFile('image_url_1')) {
+                $imagePath1 = $request->file('image_url_1')->store('news_photos', 'public');
+            }
+
+            if ($request->hasFile('image_url_2')) {
+                $imagePath2 = $request->file('image_url_2')->store('news_photos', 'public');
+            }
+            $content = strip_tags($validatedData['content']);
+
+            News::create([
+                'admin_id' => $admin->id,
+                'subtitle' => $validatedData['subtitle'],
+                'title' => $validatedData['title'],
+                'content' => $content,
+                'image_url_1' => $imagePath1,
+                'image_url_2' => $imagePath2,
+            ]);
+
+            return redirect()->route('admin.news')->with('success', 'News post created successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'An error occurred while creating the news. Please try again.');
+        }
+    }
+
+    // Edit News Form   
+    public function EditNewsForm($id)
+    {
+        $news = News::findOrFail($id);
+
+        return view('admin.news_create', compact('news'));
+    }
+
+    // Update News
+    public function UpdateNews(Request $request, $id)
+    {
+        $news = News::find($id);
+
+        // Validate input fields
+        $validatedData = $request->validate([
+            'subtitle' => 'required|string|max:255',
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
+            'image_url_1' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image_url_2' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        $changesMade = false;
+        if ($news->title !== $validatedData['title']) {
+            $news->title = $validatedData['title'];
+            $changesMade = true;
+        }
+
+        if (
+            $news->subtitle !== $validatedData['subtitle']
+        ) {
+            $news->subtitle = $validatedData['subtitle'];
+            $changesMade = true;
+        }
+
+        if (
+            $news->content !== strip_tags($validatedData['content'])
+        ) {
+            $news->content = strip_tags($validatedData['content']);
+            $changesMade = true;
+        }
+
+        if ($request->hasFile('image_url_1')) {
+            if ($news->image_url_1) {
+                Storage::disk('public')->delete($news->image_url_1);
+            }
+            $news->image_url_1 = $request->file('image_url_1')->store('news_photos', 'public');
+            $changesMade = true;
+        }
+        if ($request->hasFile('image_url_2')) {
+            if ($news->image_url_2) {
+                Storage::disk('public')->delete($news->image_url_2);
+            }
+
+            $news->image_url_2 = $request->file('image_url_2')->store('news_photos', 'public');
+            $changesMade = true;
+        }
+
+        if (!$changesMade) {
+            return redirect()->route('admin.news')->with('info', 'No changes were made to the news post.');
+        }
+
+        $news->save();
+
+        return redirect()->route('admin.news')->with('success', 'News updated successfully.');
+    }
+
+
     public function deleteNews(Request $request)
     {
         $news = News::find($request->id);
 
         if ($news) {
+
+            if ($news->image_url_1 && Storage::disk('public')->exists($news->image_url_1)) {
+                Storage::disk('public')->delete($news->image_url_1);
+            }
+
+            if ($news->image_url_2 && Storage::disk('public')->exists($news->image_url_2)) {
+                Storage::disk('public')->delete($news->image_url_2);
+            }
+
             $news->delete();
-            return redirect()->back()->with('success', 'News deleted successfully.');
+
+            return redirect()->back()->with('success', 'News deleted successfully along with associated images.');
         }
 
         return redirect()->back()->with('error', 'News not found.');

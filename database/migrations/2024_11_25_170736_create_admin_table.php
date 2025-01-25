@@ -31,7 +31,7 @@ return new class extends Migration
             $table->text('content');
             $table->string('image_url_1', 255)->nullable();
             $table->string('image_url_2', 255)->nullable();
-            $table->timestamp('posted_at')->useCurrent();
+            $table->timestamps();
         });
 
 

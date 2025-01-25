@@ -130,7 +130,7 @@
                   </div>
                   <span>Admin Profile</span>
                 </a>
-                <a class="nav-link" href="" title="Admin Accounts">
+                <a class="nav-link" href="{{ route('admin.list') }}" title="Admin Accounts">
                   <div class="sb-nav-link-icon">
                     <i class="far fa-circle nav-icon"></i>
                   </div>

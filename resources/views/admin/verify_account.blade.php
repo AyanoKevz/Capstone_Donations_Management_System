@@ -129,7 +129,7 @@
                   </div>
                   <span>Admin Profile</span>
                 </a>
-                <a class="nav-link" href="" title="Admin Accounts">
+                <a class="nav-link" href="{{ route('admin.list') }}" title="Admin Accounts">
                   <div class="sb-nav-link-icon">
                     <i class="far fa-circle nav-icon"></i>
                   </div>
@@ -277,22 +277,21 @@
     <!-- Content -->
     <div id="layoutSidenav_content">
       <main>
+        @if(session('success'))
+        <div id="alert-success" class="alert alert-success" style="position: absolute; right: 10px; top: 40px;">
+          <i class="fa-solid fa-circle-check fa-xl me-3"></i>{{ session('success') }}
+        </div>
+        @endif
+        @if(session('error'))
+        <div id="alert-error" class="alert alert-danger" style=" position: absolute; right: 10px; top: 40px;">
+          <i class=" fa-solid fa-circle-xmark fa-xl me-3"></i>{{ session('error') }}
+        </div>
+        @endif
         <div class="container-fluid px-3 py-2">
           <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item active"></li>
           </ol>
           <h1 class="my-2">Verify Accounts</h1>
-          @if(session('success'))
-          <div id="alert-success" class="alert alert-success">
-            <i class="fa-solid fa-circle-check fa-xl me-3"></i>{{ session('success') }}
-          </div>
-          @endif
-
-          @if(session('error'))
-          <div id="alert-error" class="alert alert-danger">
-            <i class="fa-solid fa-circle-xmark fa-xl me-3"></i>{{ session('error') }}
-          </div>
-          @endif
           <div class="d-flex justify-content-end  mb-1">
             <a href="{{ route('verify_account', ['role_name' => 'all']) }}"
               class="btn table-btn btn-sm {{ $filter === 'all' ? 'custom-active' : '' }}">

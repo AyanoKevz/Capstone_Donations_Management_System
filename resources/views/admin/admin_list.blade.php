@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Admin | All Volunteers</title>
+  <title>Admin | Admin List</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -111,7 +111,7 @@
             </a>
 
             <!-- Admin Settings -->
-            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#admin-settings"
+            <a class="nav-link collapsed active" href="#" data-bs-toggle="collapse" data-bs-target="#admin-settings"
               aria-expanded="false" aria-controls="admin-settings" title="Admin Settings">
               <div class="sb-nav-link-icon">
                 <i class="fas fa-user-cog"></i>
@@ -129,9 +129,9 @@
                   </div>
                   <span>Admin Profile</span>
                 </a>
-                <a class="nav-link" href="{{ route('admin.list') }}" title="Admin Accounts">
+                <a class="nav-link active" href="{{ route('admin.list') }}" title="Admin Accounts">
                   <div class="sb-nav-link-icon">
-                    <i class="far fa-circle nav-icon"></i>
+                    <i class="fas fa-circle-arrow-right nav-icon"></i>
                   </div>
                   <span>Admin Accounts</span>
                 </a>
@@ -139,7 +139,7 @@
             </div>
 
             <!-- Manage Users -->
-            <a class="nav-link collapsed active" href="#" data-bs-toggle="collapse" data-bs-target="#manage-users"
+            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#manage-users"
               aria-expanded="false" aria-controls="manage-users" title="Manage Users">
               <div class="sb-nav-link-icon">
                 <i class="fas fa-users"></i>
@@ -157,7 +157,7 @@
                   </div>
                   <span>Donors</span>
                 </a>
-                <a class="nav-link active" href="{{ route('admin.volunteerList') }}" title="Volunteers">
+                <a class="nav-link" href="{{ route('admin.volunteerList') }}" title="Volunteers">
                   <div class="sb-nav-link-icon">
                     <i class="far fa-circle nav-icon"></i>
                   </div>
@@ -237,7 +237,7 @@
             </a>
 
             <!-- Chapters -->
-            <a class="nav-link " href="{{ route('admin.chapters') }}" title="Chapters">
+            <a class="nav-link" href="{{ route('admin.chapters') }}" title="Chapters">
               <div class="sb-nav-link-icon">
                 <i class="fas fa-map-marker-alt"></i>
               </div>
@@ -268,6 +268,7 @@
               <span>Reports</span>
             </a>
           </div>
+
         </div>
         <div class="sb-sidenav-footer bg-logo1">
           <div>Admin Menu</div>
@@ -282,75 +283,80 @@
           <i class="fa-solid fa-circle-check fa-xl me-3"></i>{{ session('success') }}
         </div>
         @endif
-        @if(session('error'))
-        <div id="alert-error" class="alert alert-danger" style=" position: absolute; right: 10px; top: 40px;">
-          <i class=" fa-solid fa-circle-xmark fa-xl me-3"></i>{{ session('error') }}
+        @if($errors->any())
+        <div id="alert-error" class="alert alert-error" style=" position: absolute; right: 10px; top: 40px;">
+          <ul>
+            @foreach ($errors->all() as $error)
+            <li><i class="fa-solid fa-circle-xmark fa-xl"></i> {{ $error }}</li>
+            @endforeach
+          </ul>
         </div>
         @endif
         <div class="container-fluid px-3 py-2">
           <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item active"></li>
           </ol>
-          <h1 class="my-2">Our Volunteer</h1>
+          <h1 class="my-2">Admin List</h1>
+          <div class="d-flex justify-content-end mb-1">
+            <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#create"><i class="fas fa-plus fa-1x me-1" style="color:white;"></i>Create Admin</button>
+          </div>
           <div class="card card-primary card-outline">
             <div class="card-header">
-              <h3 class="card-title">Currently Active Volunteer</h3>
+              <h3 class="card-title">UniAid Admins</h3>
             </div>
             <div class="card-body">
               <table id="example1" class="table table-bordered table-hover table-striped">
                 <thead>
                   <tr>
-                    <th>Role</th>
                     <th>Username</th>
-                    <th>Chapter</th>
-                    <th>Status</th>
+                    <th>Full Name</th>
+                    <th>Email</th>
+                    <th>Profile Picture</th>
                     <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  @forelse($activeVolunteers as $volunteer)
+                  @forelse($admins as $admin)
                   <tr>
-                    <td>{{ $volunteer->role_name }}</td>
-                    <td>{{ $volunteer->username }}</td>
-                    <td>{{ $volunteer->volunteer->chapter->chapter_name ?? 'No Chapter' }}</td>
-                    <td>
-                      <p class="bg-success-subtle text-success-emphasis m-0 p-1 fw-bold">Active</p>
+                    <td class="align-middle">{{ $admin->username }}</td>
+                    <td class="align-middle">{{ $admin->name }}</td>
+                    <td class="align-middle">{{ $admin->email }}</td>
+                    <td class="align-middle">
+                      <img src="{{ asset('storage/' . $admin->profile_image) }}" alt="Profile Picture" class="w-25 img-fluid border border-black bg-white">
                     </td>
-                    <td>
-                      <!-- Action Buttons -->
-                      <button type="button" class="btn btn-success btn-sm" title="View Details">
-                        <a href="{{ route('view_details', $volunteer->id) }}" style="color: white; text-decoration:none;">View</a>
-                      </button>
-                      <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $volunteer->id }}" title="Delete">
-                        Delete
+                    <td class="align-middle">
+                      <!-- Delete Button -->
+                      <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $admin->id }}" title="Delete">
+                        <i class="fas fa-trash fa-1x" style="color:white;"></i>
                       </button>
                     </td>
                   </tr>
 
                   <!-- Delete Modal -->
-                  <div class="modal fade" id="deleteModal{{ $volunteer->id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+                  <div class="modal fade" id="deleteModal{{ $admin->id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
                     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                       <div class="modal-content">
-                        <form action="{{ route('volunteers.delete', $volunteer->id) }}" method="POST">
-                          @csrf
-                          <div class="modal-header">
-                            <h5 class="modal-title">Delete Volunteer</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                          </div>
-                          <div class="modal-body text-center">
-                            Are you sure you want to delete this volunteer?
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <div class="modal-header text-center">
+                          <h1 class="modal-title fs-4">Delete Admin</h1>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body text-center">
+                          <p class="m-0">Are you sure you want to delete the admin "{{ $admin->name }}"?</p>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                          <form action="{{ route('admin.delete') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="id" value="{{ $admin->id }}">
                             <button type="submit" class="btn btn-danger">Delete</button>
-                          </div>
-                        </form>
+                          </form>
+                        </div>
                       </div>
                     </div>
                   </div>
                   @empty
                   <tr>
-                    <td colspan="5" class="text-center">No Active Volunteers Available</td>
+                    <td colspan="5" class="text-center">No Admin Available</td>
                   </tr>
                   @endforelse
                 </tbody>
@@ -359,6 +365,35 @@
           </div>
         </div>
       </main>
+
+      <!-- Create Admin Modal -->
+      <div class="modal fade" id="create" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-4">Create New Admin Account</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ route('admin.store') }}" method="POST">
+              @csrf
+              <div class="modal-body">
+                <div class="form-group mb-3">
+                  <label for="name">Admin Full Name <span class="text-danger fs-6">*</span></label>
+                  <input type="text" class="form-control" id="name" name="name" required>
+                </div>
+                <div class="form-group mb-2">
+                  <label for="email">Email <span class="text-danger fs-6">*</span> <span style="font-size: small; color: #aaa;">(Must be active)</span></label>
+                  <input type="email" class="form-control" id="email" name="email" required>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-success">Create</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
 
       <footer class="py-3 bg-dark mt-3">
         <div class="container-fluid ps-4">

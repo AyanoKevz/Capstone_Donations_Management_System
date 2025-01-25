@@ -41,7 +41,7 @@ class VerifyAcct extends Controller
             $details = $user->donor;
         } elseif ($role === 'Volunteer') {
             $details = $user->volunteer()->with('chapter')->first();
-            $appointmentExists = Appointment::where('volunteer_id', $user->id)->exists();
+            $appointmentExists = Appointment::where('volunteer_id', $details->id)->exists();
         }
 
         return view('admin.view_details', compact('user', 'details', 'role', 'appointmentExists'));

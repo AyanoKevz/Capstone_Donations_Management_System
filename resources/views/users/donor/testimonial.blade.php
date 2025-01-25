@@ -15,7 +15,8 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="{{ asset('lib/bootstrap/css/bootstrap.min.css') }}">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{ asset('assets/users/css/donor/home_donor.css') }}">
+    <link href="{{ asset('lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('assets/users/css/donor/testimonial.css') }}">
 </head>
 
 <!-- Spinner Start -->
@@ -148,7 +149,7 @@
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <!-- Home -->
                         <li class="nav-item">
-                            <a href="{{route ('donor.home') }}" class="nav-link active">
+                            <a href="{{route ('donor.home') }}" class="nav-link">
                                 <i class="nav-icon fas fa-house"></i>
                                 <p>Home</p>
                             </a>
@@ -204,7 +205,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="route{{'prc-chapters'}}" class="nav-link">
+                                    <a href="{{route ('prc-chapters') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>PRC Chapters</p>
                                     </a>
@@ -228,7 +229,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Donation History</p>
                                     </a>
@@ -238,7 +239,7 @@
 
                         <!-- Learn About Causes -->
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="" class="nav-link">
                                 <i class="nav-icon fas fa-info-circle"></i>
                                 <p>Learn About Causes</p>
                             </a>
@@ -246,7 +247,7 @@
 
                         <!-- Testimonials -->
                         <li class="nav-item">
-                            <a href="{{route ('donor.testi_form') }}" class="nav-link">
+                            <a href="{{route ('donor.testi_form') }}" class=" nav-link active">
                                 <i class="nav-icon fas fa-star"></i>
                                 <p>Testimonials</p>
                             </a>
@@ -254,13 +255,12 @@
 
                         <!-- Feedback / Support -->
                         <li class="nav-item">
-                            <a href="{{route ('donor.contact_form') }}" class="nav-link ">
+                            <a href="{{route ('donor.contact_form') }}" class="nav-link">
                                 <i class="nav-icon fas fa-comments"></i>
                                 <p>Contact / Support</p>
                             </a>
                         </li>
                     </ul>
-
                 </nav>
                 <!-- /.sidebar-menu -->
             </div>
@@ -279,6 +279,14 @@
                             <h1 class="m-0">
                                 Donor Portal
                             </h1>
+                        </div>
+                        <div class="col-5 d-flex justify-content-end align-items-center">
+                            <ol class="breadcrumb mb-0">
+                                <li class="breadcrumb-item">
+                                    <a href="{{ route('donor.home') }}">Home</a>
+                                </li>
+                                <li class="breadcrumb-item active">Testimonials</li>
+                            </ol>
                         </div>
                     </div>
                 </div>
@@ -299,15 +307,180 @@
             <!-- Main content -->
             <div class="content">
                 <div class="container py-3">
-                    <div class="row">
 
+                    <div class="row flex-wrap-reverse  align-items-center">
+
+                        <div class="col-md-5 d-flex flex-column justify-content-center align-items-center my-2">
+                            <h1 class="mb-3">Other Testimonials</h1>
+                            @if($testimonials->isEmpty())
+                            <div class="text-center">
+                                <p class="h4 text-danger">No testimonials available at the moment. Please check back later!</p>
+                            </div>
+                            @else
+                            <div class="owl-carousel other-testi-carousel ">
+                                @foreach($testimonials as $testimonial)
+                                <div class="other-testi">
+                                    <div class="header">
+                                        <div class="image">
+                                            <img src="{{ $testimonial->user->donor->user_photo ? asset('storage/' . $testimonial->user->donor->user_photo) : ($testimonial->user->volunteer->user_photo ? asset('storage/' . $testimonial->user->volunteer->user_photo) : asset('assets/img/no_profile.png')) }}"
+                                                class="img-fluid rounded-circle"
+                                                alt="User Image">
+                                        </div>
+                                        <div class="d-flex flex-column align-items-center">
+                                            <h4 class="name">{{ $testimonial->user->username ?? 'Anonymous' }}</h4>
+                                            <p class="text-muted fw-medium m-0">{{ ucfirst($testimonial->user_type) }}</p>
+                                        </div>
+                                    </div>
+
+                                    <p class="message">
+                                        {{ $testimonial->content }}
+                                    </p>
+
+                                    <!-- Rating Text -->
+                                    <div class="d-flex justify-content-end mb-1">
+                                        <p class="m-0 fw-bold">
+                                            @switch($testimonial->rating)
+                                            @case(1)
+                                            <span class="text-danger">Very Bad</span>
+                                            @break
+                                            @case(2)
+                                            <span class="text-danger">Bad</span>
+                                            @break
+                                            @case(3)
+                                            <span class="text-warning">Mediocre</span>
+                                            @break
+                                            @case(4)
+                                            <span class="text-primary">Good</span>
+                                            @break
+                                            @case(5)
+                                            <span class="text-success">Very Good</span>
+                                            @break
+                                            @endswitch
+                                        </p>
+                                    </div>
+
+                                    <!-- Stars -->
+                                    <div class="d-flex justify-content-end">
+                                        <p class="m-0 fw-bold">
+                                            @for($i = 1; $i <= $testimonial->rating; $i++)
+                                                <i class="fas fa-star text-warning"></i>
+                                                @endfor
+                                                @for($i = $testimonial->rating + 1; $i <= 5; $i++)
+                                                    <i class="fas fa-star text-muted"></i>
+                                                    @endfor
+                                        </p>
+                                    </div>
+                                </div>
+                                @endforeach
+                            </div>
+                            @endif
+                        </div>
+
+                        <div class="col-md-7 my-2">
+
+                            @if ($userTestimonial)
+                            <div class="d-flex justify-content-end me-2 mb-1">
+                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $userTestimonial->id }}" title="Delete">
+                                    Delete
+                                </button>
+                            </div>
+                            <!-- Delete Modal -->
+                            <div class="modal fade" id="deleteModal{{ $userTestimonial->id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                    <div class="modal-content">
+                                        <form action="{{ route('testimonial.delete', $userTestimonial->id) }}" method="POST">
+                                            @csrf
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Delete Testimonial</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body text-center">
+                                                Are you sure you want to delete this testimonial?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                <button type="submit" class="btn btn-danger">Delete</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            @endif
+                            <div class="card shadow">
+                                <div class="card-header">
+                                    <h4 class="card-title text-white my-1" id="exampleModalLabel">Testimonial</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="text-center">
+                                        <i class="far fa-comments fa-3x mb-1" style="color: #1b2a5f;"></i>
+                                        <p>
+                                            <strong>Your Story Experience Matters</strong>
+                                        </p>
+                                        <p>
+                                            Share your experience to encourage the community.
+                                            <strong>We value your thoughts!</strong>
+                                        </p>
+                                    </div>
+                                    <hr />
+                                    <form class="px-4"
+                                        action="{{ $userTestimonial ? route('testimonials.update', $userTestimonial->id) : route('testimonials.store') }}"
+                                        method="POST">
+                                        @csrf
+                                        @if ($userTestimonial)
+                                        @method('PUT')
+                                        @endif
+
+                                        <p class="text-center"><strong>Your rating:</strong></p>
+                                        <div class="d-flex align-items-center justify-content-center mb-2 flex-wrap">
+                                            @for ($i = 1; $i <= 5; $i++)
+                                                <div class="form-check form-check-inline">
+                                                <input class="form-check-input"
+                                                    type="radio"
+                                                    name="rating"
+                                                    id="radioRating{{ $i }}"
+                                                    value="{{ $i }}"
+                                                    {{ isset($userTestimonial) && $userTestimonial->rating == $i ? 'checked' : '' }}
+                                                    required />
+                                                <label class="form-check-label" for="radioRating{{ $i }}">
+                                                    @if ($i == 1)
+                                                    <i class="fas fa-angry text-dark"></i> Very bad
+                                                    @elseif ($i == 2)
+                                                    <i class="fas fa-frown text-danger"></i> Bad
+                                                    @elseif ($i == 3)
+                                                    <i class="fas fa-meh text-warning"></i> Mediocre
+                                                    @elseif ($i == 4)
+                                                    <i class="fas fa-smile-beam text-primary"></i> Good
+                                                    @else
+                                                    <i class="fas fa-smile text-success"></i> Very good
+                                                    @endif
+                                                </label>
+                                        </div>
+                                        @endfor
+                                </div>
+
+                                <p class="text-center"><strong>Your Message:</strong></p>
+                                <div data-mdb-input-init class="form-outline mb-4">
+                                    <textarea class="form-control"
+                                        id="form4Example3"
+                                        rows="4"
+                                        name="content"
+                                        required>{{ old('content', $userTestimonial->content ?? '') }}</textarea>
+                                </div>
+
+                                <div class="card-footer text-end">
+                                    <button type="submit" class="btn primary_btn">
+                                        {{ $userTestimonial ? 'Update' : 'Submit' }}
+                                    </button>
+                                </div>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
-
+                <!-- End content -->
             </div>
-
+            <!-- /.content wrapper -->
         </div>
-        <!-- /.content wrapper -->
 
         <!-- Main Footer -->
         <footer class="main-footer">
@@ -321,6 +494,8 @@
     <script src="{{ asset('lib/jquery/jquery.min.js') }}"></script>
     <!-- Bootstrap 5 -->
     <script src="{{ asset('lib/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <!-- Owl -->
+    <script src="{{ asset('lib/owlcarousel/owl.carousel.min.js') }}"></script>
     <!-- Fontawesome 6 -->
     <script src="{{ asset('lib/fontawesome/all.js') }}"></script>
     <!-- User JS -->

@@ -494,7 +494,7 @@
                                                             </select>
                                                         </div>
                                                         <div class="col-12">
-                                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                                            <button type="submit" class="btn primary_btn">Submit</button>
                                                         </div>
                                                     </form>
                                                 </div>
@@ -533,7 +533,7 @@
                                                                 </div>
                                                             </div>
                                                             <div class="col-12 mt-3">
-                                                                <button type="submit" class="btn btn-primary">Submit</button>
+                                                                <button type="submit" class="btn primary_btn">Submit</button>
                                                             </div>
                                                         </div>
                                                     </form>

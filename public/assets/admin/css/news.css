@@ -673,6 +673,11 @@ body.sb-sidenav-toggled .sb-sidenav .nav-link span {
   font-size: 22px;
 }
 
+.alert-info {
+  font-weight: 700;
+  font-size: 22px;
+}
+
 .alert-error ul {
     list-style-type: none;
     padding: 0;
@@ -680,23 +685,43 @@ body.sb-sidenav-toggled .sb-sidenav .nav-link span {
     font-size: 18px;
 }
 
-
-.table-btn {
- background-color: #f8f9fa;
-    border-color: #ddd;
-    color: #444;
-}
-.table-btn:hover {
- background-color: #d4d4d4;
+.card-header {
+  color: #393939;
+  background: #eaeaead9;
+  text-align: center;
 }
 
-.custom-active {
-    background-color: #007bff;
-    color: white;
-    border-color: #0056b3;
+.error {
+    color: red !important; 
+    font-size: 12px !important; 
+    font-weight: 500; 
+    margin: 0; 
+    position: absolute; 
+    top: 100%;
+    width: 100%; 
+    text-align: center;
 }
 
-.custom-active:hover {
-    background-color: #0056b3;
-    color: white;
+input {
+    border-radius: 5px;
+    border: 1px solid #aaa !important;
+}
+
+input:focus, textarea:focus {
+    outline: none;
+    box-shadow: none !important;
+    border: 1.5px solid #1a73e8 !important;
+}
+
+input.is-valid, textarea.is-valid {
+    border: 1.5px solid #06b400 !important;
+}
+
+input.is-invalid, textarea.is-invalid {
+    border: 1.5px solid #ff0000 !important; 
+}
+
+#subtitle-error, #title-error, #content-error, #image_url_1-error,#image_url_2-error
+{
+  position: static;
 }

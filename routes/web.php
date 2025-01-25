@@ -41,8 +41,9 @@ Route::post('/register/volunteer', [UserRegistrationController::class, 'register
 Route::post('/user-login', [userLoginController::class, 'login'])->name('login');
 Route::post('/logout', [userLoginController::class, 'logout'])->name('user.logout');
 
-//testimonial in the homepage
-Route::get('/', [HomeController::class, 'showHomepage'])->name('home');
+Route::post('/forgot-password', [HomeController::class, 'sendResetLink'])->name('forgot-password');
+Route::get('/reset-password/{token}', [HomeController::class, 'showResetForm'])->name('reset-password');
+Route::post('/reset-password', [HomeController::class, 'resetPassword'])->name('reset-password.submit');
 
 
 
@@ -75,6 +76,11 @@ Route::middleware(['admin', 'prevent-back-button'])->prefix('admin')->group(func
     Route::get('/profile', [AdminController::class, 'admin_profile'])->name('admin.profile');
     Route::post('/profile/{id}', [AdminController::class, 'updateProfile'])->name('admin.updateProfile');
     Route::post('/account/{id}', [AdminController::class, 'updateAccount'])->name('admin.updateAccount');
+    //Manage Admin
+    Route::get('/active-admin', [AdminController::class, 'adminList'])->name('admin.list');
+    Route::post('/Admin-create', [AdminController::class, 'CreateAdmin'])->name('admin.store');
+    Route::post('/Admin-delete', [AdminController::class, 'deleteAdmin'])->name('admin.delete');
+
     // Admin Donor List
     Route::get('/active-donors', [AdminController::class, 'allDonors'])->name('admin.donorList');
     Route::post('/active-donors/{userId}', [AdminController::class, 'deleteDonor'])->name('donors.delete');
@@ -99,11 +105,16 @@ Route::middleware(['admin', 'prevent-back-button'])->prefix('admin')->group(func
     Route::post('/appointments/{id}/delete', [AdminController::class, 'delete_appointment'])->name('appointments.delete');
     // Admin chapter
     Route::get('/chapters', [AdminController::class, 'chapters'])->name('admin.chapters');
-    Route::post('/chapters', [AdminController::class, 'store'])->name('chapters.store');
+    Route::post('/chapters', [AdminController::class, 'CreateChapter'])->name('chapters.store');
     Route::post('/chapters/{id}/update', [AdminController::class, 'update'])->name('chapters.update');
     Route::post('/chapters/{id}/destroy', [AdminController::class, 'destroy'])->name('chapters.destroy');
     // Admin News
     Route::get('/admin/news', [AdminController::class, 'showNews'])->name('admin.news');
+    Route::post('/admin/news', [AdminController::class, 'CreateNews'])->name('news.create');
+    Route::get('/admin/news/form', [AdminController::class, 'NewsForm'])->name('admin.news.form');
+    Route::get('/admin/news/form/{id}', [AdminController::class, 'EditNewsForm'])->name('admin.news.form.edit');
+    Route::post('/admin/news/update/{id}', [AdminController::class, 'UpdateNews'])->name('admin.news.update');
+
     Route::post('/admin/news/delete', [AdminController::class, 'deleteNews'])->name('news.delete');
 });
 
@@ -113,23 +124,22 @@ Route::middleware(['admin', 'prevent-back-button'])->prefix('admin')->group(func
 Route::middleware(['auth', 'prevent-back-button'])->prefix('user')->group(function () {
 
     Route::post('/user/account/{id}', [user_profileController::class, 'updateUserAccount'])->name('user.updateAccount');
+    Route::post('/contact/send', [DonorController::class, 'UserContact'])->name('user.submit_contact');
+    Route::post('/testimonials/store', [DonorController::class, 'StoreTestimonials'])->name('testimonials.store');
+    Route::put('/testimonials/{id}/update', [DonorController::class, 'updateTestimonial'])->name('testimonials.update');
+    Route::post('/testimonial/delete/{id}', [DonorController::class, 'deleteTestimonial'])->name('testimonial.delete');
 
     // Middleware-protected routes for Donor
     Route::middleware('role:Donor')->prefix('donor')->group(function () {
         Route::get('/home', [DonorController::class, 'index'])->name('donor.home');
         Route::get('/donor-review', [DonorController::class, 'review'])->name('donor.review');
         Route::get('/donor-profile', [user_profileController::class, 'DonorProfile'])->name('donor.profile');
-        Route::get('/prc-chapters', [DonorController::class, 'showChapters'])->name('prc-chapters');
         Route::post('/donor/update/{id}', [user_profileController::class, 'updateDonorProfile'])->name('donor.updateProfile');
-        Route::post('/testimonial/store', [DonorController::class, 'store'])->middleware('auth')->name('testimonial.store');
-    // testimonial
-    Route::get('/testimonials/create', [DonorController::class, 'create'])->name('testimonials.create');
-    Route::post('/testimonials', [DonorController::class, 'store'])->name('testimonials.store');
-    Route::get('/testimonials/{id}/edit', [DonorController::class, 'edit'])->name('testimonials.edit');
-    Route::put('/testimonials/{id}', [DonorController::class, 'update'])->name('testimonials.update');
-    Route::delete('/testimonials/{id}', [DonorController::class, 'destroy'])->name('testimonials.destroy');
-
+        Route::get('/prc-chapters', [DonorController::class, 'showChapters'])->name('prc-chapters');
+        Route::get('/contact', [DonorController::class, 'showContactForm'])->name('donor.contact_form');
+        Route::get('/testimonial', [DonorController::class, 'showTestimonialForm'])->name('donor.testi_form');
     });
+
 
     // Middleware-protected routes for Volunteer
     Route::middleware('role:Volunteer')->prefix('volunteer')->group(function () {

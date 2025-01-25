@@ -129,7 +129,7 @@
                   </div>
                   <span>Admin Profile</span>
                 </a>
-                <a class="nav-link" href="" title="Admin Accounts">
+                <a class="nav-link" href="{{ route('admin.list') }}" title="Admin Accounts">
                   <div class="sb-nav-link-icon">
                     <i class="far fa-circle nav-icon"></i>
                   </div>
@@ -153,7 +153,7 @@
               <nav class="sb-sidenav-menu-nested nav">
                 <a class="nav-link active" href="{{ route('admin.donorList') }}" title="Donors">
                   <div class="sb-nav-link-icon">
-                    <i class="far fa-circle nav-icon"></i>
+                    <i class="fas fa-circle-arrow-right nav-icon"></i>
                   </div>
                   <span>Donors</span>
                 </a>

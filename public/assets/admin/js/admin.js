@@ -62,14 +62,16 @@ var spinnerElement = document.getElementById("spinner");
   setInterval(updateDateTime, 1000);
 
 
-  $(function() {
-      $("#example1").DataTable({
-        "responsive": true,
-        "lengthChange": false,
-        "autoWidth": false,
-        "buttons": ["copy", "csv", "excel", "pdf", "print"]
-      }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-    });
+ $(function () {
+    if ($("#example1").length) {
+        $("#example1").DataTable({
+            responsive: true,
+            lengthChange: false,
+            autoWidth: false,
+            buttons: ["copy", "csv", "excel", "pdf", "print"],
+        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+    }
+});
 
 
   if ($("#admin-login").length > 0) {
@@ -209,7 +211,7 @@ $("#admin_acount_form").validate({
                     required: true,
                     minlength: 8
                 },
-                 oldPassword: {
+                oldPassword: {
                     required: true,
                     minlength: 8
                 },
@@ -255,8 +257,7 @@ $("#admin_acount_form").validate({
             }
         });
 
-
-        $("#admin_profile_form").validate({
+         $("#admin_profile_form").validate({
             rules: {
                 profile_image: {
                 extension: "jpg|jpeg|png"
@@ -287,7 +288,114 @@ $("#admin_acount_form").validate({
             submitHandler: function (form) {
                 form.submit();
             }
-        });
+        }); 
+
+        if ($("#news_form").length > 0) {
+
+                    $("#news_form").validate({
+                rules: {
+                    image_url_1: {
+                        required: true,
+                        extension: "jpg|jpeg|png"
+                    },
+                    image_url_2: {
+                        required: true,
+                        extension: "jpg|jpeg|png"
+                    },
+                    subtitle: {
+                        required: true,
+                        maxlength: 15
+                    },
+                    title: {
+                        required: true,
+                        maxlength: 25
+                    }
+                
+                },
+                messages: {
+                    image_url_1: {
+                        required: "Please upload an image",
+                        extension: "Please upload a valid image (jpg, jpeg, png)"
+                    },
+                    image_url_2: {
+                        required: "Please upload an image",
+                        extension: "Please upload a valid image (jpg, jpeg, png)"
+                    },
+                    subtitle: {
+                        required: "Please enter a subtitle",
+                        maxlength: "Subtitle must be less than 15 characters"
+                    },
+                    title: {
+                        required: "Please enter a title",
+                        maxlength: "Title must be less than 25 characters"
+                    },
+                },
+                highlight: function (element) {
+                    $(element).addClass('is-invalid').removeClass('is-valid');
+                },
+                unhighlight: function (element) {
+                    $(element).addClass('is-valid').removeClass('is-invalid');
+                },
+                errorPlacement: function (error, element) {
+                    error.insertAfter(element);
+                },
+                submitHandler: function (form) {
+                    form.submit();
+                }
+            });
+        }
+
+if ($("#news_form_update").length > 0) {
+
+                    $("#news_form_update").validate({
+                rules: {
+                    image_url_1: {
+                        extension: "jpg|jpeg|png"
+                    },
+                    image_url_2: {
+                        extension: "jpg|jpeg|png"
+                    },
+                    subtitle: {
+                        required: true,
+                        maxlength: 15
+                    },
+                    title: {
+                        required: true,
+                        maxlength: 25
+                    }
+                
+                },
+                messages: {
+                    image_url_1: {
+                        extension: "Please upload a valid image (jpg, jpeg, png)"
+                    },
+                    image_url_2: {
+                        extension: "Please upload a valid image (jpg, jpeg, png)"
+                    },
+                    subtitle: {
+                        required: "Please enter a subtitle",
+                        maxlength: "Subtitle must be less than 15 characters"
+                    },
+                    title: {
+                        required: "Please enter a title",
+                        maxlength: "Title must be less than 25 characters"
+                    },
+                },
+                highlight: function (element) {
+                    $(element).addClass('is-invalid').removeClass('is-valid');
+                },
+                unhighlight: function (element) {
+                    $(element).addClass('is-valid').removeClass('is-invalid');
+                },
+                errorPlacement: function (error, element) {
+                    error.insertAfter(element);
+                },
+                submitHandler: function (form) {
+                    form.submit();
+                }
+            });
+        }
+
 
 $('#file-input').change(function (event) {
         const file = event.target.files[0];
@@ -300,11 +408,34 @@ $('#file-input').change(function (event) {
         }
     });
 
+    $('#image1').change(function (event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                $('#imagePreviewOne').attr('src', e.target.result);
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+     $('#image2').change(function (event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                $('#imagePreviewTwo').attr('src', e.target.result);
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
      $('#toggle-password-section').click(function () {
             $('#password-section').toggle();
         });
 
     
+        
 });
 
 

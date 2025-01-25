@@ -85,11 +85,6 @@
                             <div class="col-xl-7 wow fadeInRight">
                                 <div class="text-sm-center text-md-end">
                                     <h3 class="carousel-header text-uppercase mb-4">Welcome To UniAid</h4>
-                                        <!-- @if (session('error'))
-                                        <div id="alert-error" class="alert alert-error wow fadeInLeft">
-                                            <i class="fa-solid fa-circle-xmark me-3"></i>{{ session('error') }}
-                                        </div>
-                                        @endif -->
                                         <h2 class="display-4 text-uppercase text-white mb-4">Community Donations and
                                             Resources Distribution</h2>
                                         <p class="mb-3 fs-5">UniAid is a platform that bridges the gap between donors
@@ -273,64 +268,64 @@
             </div>
             <div class="owl-carousel blog-carousel">
 
-                <div class="blog-item text-center">
-                    <div class="blog-img mb-2">
+                <div class="resources-item text-center">
+                    <div class="resources-img mb-2">
                         <img src="{{asset('assets/img/r1.jpg') }}" class="img-fluid w-100 rounded" alt="">
                     </div>
                     <h4 class="d-inline-block m-2">Canned Goods</h4>
                 </div>
 
-                <div class="blog-item text-center">
-                    <div class="blog-img mb-2">
+                <div class="resources-item text-center">
+                    <div class="resources-img mb-2">
                         <img src="{{asset('assets/img/r2.png') }}" class="img-fluid w-100 rounded" alt="">
                     </div>
                     <h4 class="d-inline-block m-2">Breads</h4>
                 </div>
 
-                <div class="blog-item text-center">
-                    <div class="blog-img mb-2">
+                <div class="resources-item text-center">
+                    <div class="resources-img mb-2">
                         <img src="{{asset('assets/img/r3.png') }}" class="img-fluid w-100 rounded" alt="">
                     </div>
                     <h4 class="d-inline-block m-2">Instant Noodles</h4>
                 </div>
 
-                <div class="blog-item text-center">
-                    <div class="blog-img mb-2">
+                <div class="resources-item text-center">
+                    <div class="resources-img mb-2">
                         <img src="{{asset('assets/img/r4.png') }}" class="img-fluid w-100 rounded" alt="">
                     </div>
                     <h4 class="d-inline-block m-2">Bottled Drinks</h4>
                 </div>
 
-                <div class="blog-item text-center">
-                    <div class="blog-img mb-2">
+                <div class="resources-item text-center">
+                    <div class="resources-img mb-2">
                         <img src="{{asset('assets/img/r5.png') }}" class="img-fluid w-100 rounded" alt="">
                     </div>
                     <h4 class="d-inline-block m-2">Rice</h4>
                 </div>
 
-                <div class="blog-item text-center">
-                    <div class="blog-img mb-2">
+                <div class="resources-item text-center">
+                    <div class="resources-img mb-2">
                         <img src="{{asset('assets/img/r6.png') }}" class="img-fluid w-100 rounded" alt="">
                     </div>
                     <h4 class="d-inline-block m-2">First Aid Kits</h4>
                 </div>
 
-                <div class="blog-item text-center">
-                    <div class="blog-img mb-2">
+                <div class="resources-item text-center">
+                    <div class="resources-img mb-2">
                         <img src="{{asset('assets/img/r7.png') }}" class="img-fluid w-100 rounded" alt="">
                     </div>
                     <h4 class="d-inline-block m-2">Medecines</h4>
                 </div>
 
-                <div class="blog-item text-center">
-                    <div class="blog-img mb-2">
+                <div class="resources-item text-center">
+                    <div class="resources-img mb-2">
                         <img src="{{asset('assets/img/r8.png') }}" class="img-fluid w-100 rounded" alt="">
                     </div>
                     <h4 class="d-inline-block m-2">Clothes</h4>
                 </div>
 
-                <div class="blog-item text-center">
-                    <div class="blog-img mb-2">
+                <div class="resources-item text-center">
+                    <div class="resources-img mb-2">
                         <img src="{{asset('assets/img/r9.png') }}" class="img-fluid w-100 rounded" alt="">
                     </div>
                     <h4 class="d-inline-block m-2">School Supplies</h4>
@@ -418,6 +413,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button class="btn btn-primary" data-bs-target="#fpass" data-bs-toggle="modal">Forgot Password</button>
                             <button type="submit" name="userlogin" id="userlogin" class="btn btn-success">Login</button>
                         </div>
                     </form>
@@ -425,6 +421,39 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="fpass" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content email-modal">
+                <div class="card-email">
+                    <div class="BG">
+                        <svg
+                            viewBox="0 0 512 512"
+                            class="ionicon"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M256 176a80 80 0 1080 80 80.24 80.24 0 00-80-80zm172.72 80a165.53 165.53 0 01-1.64 22.34l48.69 38.12a11.59 11.59 0 012.63 14.78l-46.06 79.52a11.64 11.64 0 01-14.14 4.93l-57.25-23a176.56 176.56 0 01-38.82 22.67l-8.56 60.78a11.93 11.93 0 01-11.51 9.86h-92.12a12 12 0 01-11.51-9.53l-8.56-60.78A169.3 169.3 0 01151.05 393L93.8 416a11.64 11.64 0 01-14.14-4.92L33.6 331.57a11.59 11.59 0 012.63-14.78l48.69-38.12A174.58 174.58 0 0183.28 256a165.53 165.53 0 011.64-22.34l-48.69-38.12a11.59 11.59 0 01-2.63-14.78l46.06-79.52a11.64 11.64 0 0114.14-4.93l57.25 23a176.56 176.56 0 0138.82-22.67l8.56-60.78A11.93 11.93 0 01209.94 26h92.12a12 12 0 0111.51 9.53l8.56 60.78A169.3 169.3 0 01361 119l57.2-23a11.64 11.64 0 0114.14 4.92l46.06 79.52a11.59 11.59 0 01-2.63 14.78l-48.69 38.12a174.58 174.58 0 011.64 22.66z"></path>
+                        </svg>
+                    </div>
+                    <div class="content">
+                        <p class="heading">Forgot Password?</p>
+                        <p class="sub-heading">Type your email to recover</p>
+                        <p class="sub-sub-heading m-0">You will recieved an email.</p>
+                        <form action="{{ route('forgot-password') }}" method="POST" id="forgot_form">
+                            @csrf
+                            <input class="email" name="find_email" placeholder="Email" type="email" autocomplete="offs" required />
+                            <button class="card-email-btn" type="submit">Find Email</button>
+                            <button type="button" class="back-login" data-bs-toggle="modal"
+                                data-bs-target="#login">Back</button>
+                            <button type="button" class="close-forgot" data-bs-dismiss="modal">Close</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!--  Modal End -->
 
     <!-- Blog Start -->
@@ -447,20 +476,19 @@
             <!-- MERON -->
             <div class="owl-carousel blog-carousel">
                 @foreach ($news as $item)
-                <div class="blog-item p-4">
+                <div class="blog-item p-3">
                     <div class="blog-img mb-4">
-                        <img src="{{ asset($item->image_url) }}"
+                        <img src="{{ asset('storage/' . $item->image_url_2) }}"
                             class="img-fluid w-100 rounded" alt="">
                     </div>
-                    <a href="{{ route('more-news', ['id' => $item->news_id]) }}"
-                        class="h4 d-inline-block mb-3">{{ $item->title }}</a>
+                    <p class="text-center mb-0"><a href="{{ route('more-news', ['id' => $item->id]) }}" class="h4 d-inline-block mb-2">{{ $item->title }}</a></p>
                     <p class="mb-4">{{ Str::limit($item->content, 150) }}</p>
                     <div class="d-flex align-items-center">
-                        <img src="{{ asset('assets/img/no_profile.png') }}"
+                        <img src="{{ asset('storage/' . $item->admin->profile_image) }}"
                             class="img-fluid rounded-circle" style="width: 60px; height: 60px;" alt="">
                         <div class="ms-3">
-                            <h5>Admin</h5>
-                            <p class="mb-0">{{ $item->posted_at->format('F j, Y') }}</p>
+                            <h5>{{$item->admin->username}} (Admin)</h5>
+                            <p class="mb-0">{{ $item->created_at->format('F j, Y') }}</p>
                         </div>
                     </div>
                 </div>
@@ -483,32 +511,73 @@
             Hear from our users—donors, recipients, and volunteers—about their experiences
                         with UniAid. Discover how their involvement has impacted lives, strengthened communities,
                         and brought people together through the power of giving and receiving.
-            </p>
-        </div>
-        <div class="owl-carousel testimonial-carousel">
-            @forelse ($testimonials as $testimonial)
-            <div class="testimonial-item">
-                <div class="testimonial-quote-left">
-                    <i class="fas fa-quote-left fa-2x"></i>
-                </div>
-                <div class="testimonial-img">
-                    <img src="{{ asset($testimonial->user->profile_image ?? 'assets/img/no_profile.png') }}" class="img-fluid" alt="Image">
-                </div>
-                <div class="testimonial-text">
-                    <p>{{ $testimonial->content }}</p>
-                </div>
-                <div class="testimonial-title">
-                    <h4>{{ $testimonial->user->username }}</h4>
-                    <!-- <p>{{ ucfirst($testimonial->user_type) }}</p> -->
-                    <p class="testimonial-time">{{ \Carbon\Carbon::parse($testimonial->created_at)->format('F j, Y, g:i a') }}</p>
-                </div>
-                <div class="testimonial-quote-right">
-                    <i class="fas fa-quote-right fa-2x"></i>
-                </div>
+                    </p>
             </div>
-            @empty
-            <p>No testimonials available.</p>
-            @endforelse
+            @if($testimonials->isEmpty())
+            <div class="text-center">
+                <p class="h4 text-danger">No testimonials posted at the moment. Please check back later!</p>
+            </div>
+            @else
+            <div class="owl-carousel testimonial-carousel">
+                @foreach($testimonials as $testimonial)
+                <div class="testimonial-item">
+                    <div class="testimonial-quote-left">
+                        <i class="fas fa-quote-left fa-2x"></i>
+                    </div>
+                    <div class="testimonial-img">
+                        <img src="{{ $testimonial->user->donor->user_photo ? asset('storage/' . $testimonial->user->donor->user_photo) : ($testimonial->user->volunteer->user_photo ? asset('storage/' . $testimonial->user->volunteer->user_photo) : asset('assets/img/no_profile.png')) }}"
+                            class="img-fluid"
+                            alt="User Image">
+                    </div>
+                    <div class="testimonial-text">
+                        <p>{{ $testimonial->content }}</p>
+                    </div>
+                    <div class="testimonial-title">
+                        <div>
+                            <h4 class="mb-0">{{ $testimonial->user->username }}</h4>
+                            <p class="mb-0 text-muted">{{ ucfirst($testimonial->user_type) }}</p>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end mb-1">
+                        <p class="m-0 fw-bold">
+                            @switch($testimonial->rating)
+                            @case(1)
+                            <span class="text-danger">Very Bad</span>
+                            @break
+                            @case(2)
+                            <span class="text-danger">Bad</span>
+                            @break
+                            @case(3)
+                            <span class="text-warning">Mediocre</span>
+                            @break
+                            @case(4)
+                            <span class="text-primary">Good</span>
+                            @break
+                            @case(5)
+                            <span class="text-success">Very Good</span>
+                            @break
+                            @endswitch
+                        </p>
+                    </div>
+                    <!-- Stars -->
+                    <div class="d-flex justify-content-end mb-2">
+                        <p class="m-0 fw-bold">
+                            @for($i = 1; $i <= $testimonial->rating; $i++)
+                                <i class="fas fa-star text-warning"></i>
+                                @endfor
+                                @for($i = $testimonial->rating + 1; $i <= 5; $i++)
+                                    <i class="fas fa-star text-muted"></i>
+                                    @endfor
+                        </p>
+                    </div>
+
+                    <div class="testimonial-quote-right">
+                        <i class="fas fa-quote-right fa-2x"></i>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+            @endif
         </div>
     </div>
 </div>
@@ -709,7 +778,6 @@
     <script src="{{ asset('lib/jquery/counterup.min.js') }}"></script>
     <script src="{{ asset('lib/owlcarousel/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('lib/fontawesome/all.js') }}"></script>
-
     <!-- Template JavaScript -->
     <script src="{{ asset('lib/jquery/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('assets/homepage/js/main.js') }}"></script>

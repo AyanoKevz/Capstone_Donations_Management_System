@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('username', 100)->unique();
             $table->string('email', 100)->unique();
             $table->string('password', 100);
-            $table->string('account_type', 50); // individual or Organization
+            $table->string('account_type', 50);
             $table->boolean('is_verified')->default(false);
             $table->timestamps();
         });
@@ -94,6 +94,7 @@ return new class extends Migration
         });
 
 
+        // Create testimonials Appointment
         Schema::create('testimonial', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('user_account')->onDelete('cascade');
