@@ -20,7 +20,20 @@ var spinnerElement = document.getElementById("spinner");
     }, 3000);
 
 
-   if ($("#user_profile_form").length) {
+    if ($(".other-testi-carousel").length) {
+    $(".other-testi-carousel").owlCarousel({
+            items: 1,
+            center: true,
+            autoplayTimeout: 2000, 
+            autoplaySpeed: 1000, 
+            smartSpeed: 1000, 
+            loop:  $(".other-testi-carousel .other-testi").length > 1,
+            autoplay: true, 
+            dots: false
+        });
+      }
+
+  if ($("#user_profile_form").length) {
     
         $.validator.addMethod("mobilePH", function (value, element) {
             return this.optional(element) || /^09\d{9}$/.test(value);
@@ -359,6 +372,18 @@ function handleBarangayChange() {
         $('#barangay-name').val(barangayName);  // Store the barangay name in the hidden input field
     }
 }
+
+/**
+ * Reset a dropdown to its default option.
+ * @param {string} selector - The selector of the dropdown to reset.
+ * @param {string} defaultText - The default option text.
+ */
+function resetDropdown(selector, defaultText) {
+    $(selector).empty().append(`<option disabled selected value="">${defaultText}</option>`);
+}
+
+
+
 
      // Toggle visibility for the "current password" field
 $('#toggle-opassword').on('click', function () {

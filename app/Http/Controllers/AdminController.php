@@ -282,7 +282,6 @@ class AdminController extends Controller
         $profileImagePath = 'admin_photos/' . Str::random(10) . '_PRC_logo.png';
         Storage::disk('public')->put($profileImagePath, file_get_contents(public_path($defaultImagePath)));
 
-        // Create admin
         $admin = Admin::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -291,7 +290,6 @@ class AdminController extends Controller
             'profile_image' => $profileImagePath,
         ]);
 
-        // Email details
         $details = [
             'name' => $request->name,
             'username' => $username,
@@ -299,7 +297,7 @@ class AdminController extends Controller
             'logoPath' => public_path('assets/img/systemLogo.png'),
         ];
 
-        // Send email
+
         Mail::send('emails.admin_credentials', $details, function ($message) use ($request) {
             $message->to($request->email)
                 ->subject('Your UniAid Admin Account Credentials');

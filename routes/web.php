@@ -41,6 +41,9 @@ Route::post('/register/volunteer', [UserRegistrationController::class, 'register
 Route::post('/user-login', [userLoginController::class, 'login'])->name('login');
 Route::post('/logout', [userLoginController::class, 'logout'])->name('user.logout');
 
+Route::post('/forgot-password', [HomeController::class, 'sendResetLink'])->name('forgot-password');
+Route::get('/reset-password/{token}', [HomeController::class, 'showResetForm'])->name('reset-password');
+Route::post('/reset-password', [HomeController::class, 'resetPassword'])->name('reset-password.submit');
 
 
 
@@ -122,6 +125,9 @@ Route::middleware(['auth', 'prevent-back-button'])->prefix('user')->group(functi
 
     Route::post('/user/account/{id}', [user_profileController::class, 'updateUserAccount'])->name('user.updateAccount');
     Route::post('/contact/send', [DonorController::class, 'UserContact'])->name('user.submit_contact');
+    Route::post('/testimonials/store', [DonorController::class, 'StoreTestimonials'])->name('testimonials.store');
+    Route::put('/testimonials/{id}/update', [DonorController::class, 'updateTestimonial'])->name('testimonials.update');
+    Route::post('/testimonial/delete/{id}', [DonorController::class, 'deleteTestimonial'])->name('testimonial.delete');
 
     // Middleware-protected routes for Donor
     Route::middleware('role:Donor')->prefix('donor')->group(function () {
@@ -132,7 +138,6 @@ Route::middleware(['auth', 'prevent-back-button'])->prefix('user')->group(functi
         Route::get('/contact', [DonorController::class, 'showContactForm'])->name('donor.contact_form');
         Route::get('/testimonial', [DonorController::class, 'showTestimonialForm'])->name('donor.testi_form');
     });
-
 
 
     // Middleware-protected routes for Volunteer

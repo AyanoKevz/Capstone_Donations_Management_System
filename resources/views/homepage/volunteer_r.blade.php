@@ -120,7 +120,7 @@
                     </ul>
                 </div>
                 @endif
-                <form method="POST" action="{{ route ('register.vol') }}" enctype="multipart/form-data">
+                <form method="POST" action="{{ route ('register.vol') }}" enctype="multipart/form-data" id="reg_form">
                     @csrf
                     <div class="form">
                         <div class="details type" style="display: none;">

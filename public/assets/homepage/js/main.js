@@ -75,7 +75,6 @@ $(window).on('scroll', function () {
 
     // Blog carousel
 $(".blog-carousel").owlCarousel({
-    
     autoplay: true, 
     autoplayTimeout: 2000, 
     autoplaySpeed: 1000, 
@@ -84,11 +83,6 @@ $(".blog-carousel").owlCarousel({
     dots: false,
     loop: $(".blog-carousel .blog-item").length > 1, 
     margin: 25,
-    nav: true,
-    navText: [
-        '<i class="fa fa-angle-left"></i>',
-        '<i class="fa fa-angle-right"></i>'
-    ],
     responsiveClass: true,
     responsive: {
         0: {
@@ -110,20 +104,16 @@ $(".blog-carousel").owlCarousel({
 });
 
 
-
     // testimonial carousel
     $(".testimonial-carousel").owlCarousel({
         autoplay: true,
-        smartSpeed: 1500,
-        center: false,
+        autoplayTimeout: 2000, 
+        autoplaySpeed: 1000, 
+        smartSpeed: 500, 
+        center: true,
         dots: false,
-        loop: true,
+        loop:  $(".testimonial-carousel .testimonial-item").length > 1,
         margin: 25,
-        nav : true,
-        navText : [
-             '<i class="fa fa-angle-left"></i>',
-            '<i class="fa fa-angle-right"></i>'
-        ],
         responsiveClass: true,
         responsive: {
             0:{
@@ -488,7 +478,7 @@ $.validator.addMethod("mobilePH", function(value, element) {
     return this.optional(element) || /^09\d{9}$/.test(value); 
 });
 
-$("form").validate({
+ $("#reg_form").validate({
     rules: {
         username: {
             required: true,
@@ -604,6 +594,34 @@ $("form").validate({
 });
 
 
+ $("#forgot_form").validate({
+            rules: {
+                 find_email: {
+                    required: true,
+                    email: true
+                 },
+            
+            },
+            messages: {
+                find_email: {
+                    required: "Please enter a valid email address",
+                    email: "Please enter a valid email address"
+                },
+            },
+            highlight: function (element) {
+                $(element).addClass('is-invalid').removeClass('is-valid');
+            },
+            unhighlight: function (element) {
+                $(element).addClass('is-valid').removeClass('is-invalid');
+            },
+            errorPlacement: function (error, element) {
+                error.insertAfter(element);
+            },
+            submitHandler: function (form) {
+                form.submit();
+            }
+        });
+
 $("#login-form").validate({
     rules: {
         username: {
@@ -639,25 +657,7 @@ $("#login-form").validate({
     }
 });
 
-   $('#login-form').on('submit', function (e) {
-        // Get the values of the username and password fields
-        const username = $('#username').val().trim();
-        const password = $('.password-input').val().trim();
 
-        // Prevent submission and hide spinner if validation fails
-        if (username.length < 5 || password.length < 8) {
-            e.preventDefault(); // Stop form submission
-            if (spinnerElement) {
-                spinnerElement.classList.remove("show"); // Ensure spinner is hidden
-            }
-            return; // Exit the function
-        }
-
-        // If validation passes, show the spinner
-        if (spinnerElement) {
-            spinnerElement.classList.add("show");
-        }
-    });
 
 $('.toggle-password').on('click', function () {
     const passwordInput = $('.password-input'); // Target the password input

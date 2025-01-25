@@ -155,7 +155,7 @@
 
                         <!-- My Profile -->
                         <li class="nav-item">
-                            <a href="{{route ('donor.profile') }}" class="nav-link">
+                            <a href="{{route ('donor.profile') }}" class="nav-link active">
                                 <i class="nav-icon fas fa-user"></i>
                                 <p>My Profile</p>
                             </a>
@@ -253,7 +253,7 @@
 
                         <!-- Feedback / Support -->
                         <li class="nav-item">
-                            <a href="{{route ('donor.contact_form') }}" class="nav-link active">
+                            <a href="{{route ('donor.contact_form') }}" class="nav-link">
                                 <i class="nav-icon fas fa-comments"></i>
                                 <p>Contact / Support</p>
                             </a>
@@ -477,35 +477,35 @@
                                                         </div>
                                                         <div class="col-12 col-md-6">
                                                             <label for="inputLastName" class="form-label">Region</label>
-                                                            <select class="form-select" id="region" name="region">
+                                                            <select class="form-select" id="region" name="region" required>
                                                                 <option selected value="{{$User->location->region}}" disabled>{{$User->location->region}}</option>
                                                             </select>
                                                             <input type="hidden" id="region-name" name="region_name">
                                                         </div>
                                                         <div class="col-12 col-md-6">
                                                             <label for="inputLastName" class="form-label">Province</label>
-                                                            <select class="form-select" id="province" name="province">
+                                                            <select class="form-select" id="province" name="province" required>
                                                                 <option selected value="{{$User->location->province}}" disabled>{{$User->location->province}}</option>
                                                             </select>
                                                             <input type="hidden" id="province-name" name="province_name">
                                                         </div>
                                                         <div class="col-12 col-md-6">
                                                             <label for="inputLastName" class="form-label">City/Municipality</label>
-                                                            <select class="form-select" id="city" name="city">
+                                                            <select class="form-select" id="city" name="city" required>
                                                                 <option selected value="{{$User->location->city_municipality}}" disabled>{{$User->location->city_municipality}}</option>
                                                             </select>
                                                             <input type="hidden" id="city-name" name="city_name">
                                                         </div>
                                                         <div class="col-12 col-md-6">
                                                             <label for="inputLastName" class="form-label">Barangay</label>
-                                                            <select class="form-select" id="barangay" name="barangay">
+                                                            <select class="form-select" id="barangay" name="barangay" required>
                                                                 <option selected value="{{$User->location->barangay}}" disabled>{{$User->location->barangay}}</option>
                                                             </select>
                                                             <input type="hidden" id="barangay-name" name="barangay_name">
                                                         </div>
                                                         <div class="col-12 col-md-12">
                                                             <label for="inputFirstName" class="form-label">Full Address</label>
-                                                            <input type="text" class="form-control" id="full_address" name="full_address" value="{{ $User->location->full_address }}">
+                                                            <input type="text" class="form-control" id="full_address" name="full_address" value="{{ $User->location->full_address }}" required>
                                                         </div>
                                                         <div class="col-12">
                                                             <button type="submit" class="btn primary_btn">Submit</button>

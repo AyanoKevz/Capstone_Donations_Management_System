@@ -1230,36 +1230,6 @@ body:not(.layout-fixed) .main-sidebar .sidebar {
   background: #fff; 
 }
 
-  .contact-banner {
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center center;
-  }
-
-  
-  label {
-  display: inline-block;
-  margin-bottom: 0.5rem; }
-
-
-.contactForm .label {
-  color: #000;
-  text-transform: uppercase;
-  font-size: 12px;
-  font-weight: 600; }
-
-.contactForm .form-control {
-  border: none;
-  border-bottom: 1px solid #1b2a5fc8;
-  padding: 0; }
-
-  textarea.form-control {
-  height: auto; }
-
-.form-group {
-  margin-bottom: 1rem; }
-
-
   .primary_btn {
     background: #1b2a5f !important;
     border-color: #1b2a5f !important;
@@ -1272,4 +1242,75 @@ body:not(.layout-fixed) .main-sidebar .sidebar {
     color: #1b2a5f !important;
 }
 
+
+.card-header {
+  background: #1b2a5f;
+  color: #fff;
+  text-align: center;
+  border-bottom: #020202 1px solid;
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+
+/* From Uiverse.io by Yaya12085 */ 
+.other-testi {
+  background-color:white;
+  padding: 2rem;
+  max-width: 350px;
+  min-height: 350px;
+  border-radius: 10px;
+  box-shadow: 0 20px 30px -20px rgba(57, 57, 57, 0.548);
+  border: solid 1px #1b2a5f;
+}
+
+.header {
+  display: flex;
+  grid-gap: 1rem;
+  gap: 1rem;
+  border-bottom: 2px solid rgba(127, 131, 138, 0.619);
+  padding: 5px 0;
+  align-items: center;
+}
+
+.header .image {
+  height: 5rem;
+  width: 5rem;
+  border-radius: 9999px;
+  object-fit: cover;
+  background-color: royalblue;
+}
+
+.other-testi .header .image img {
+  object-fit: cover;
+  height: 5rem;
+  width: 5rem;
+  border-radius: 9999px;
+}
+
+
+.name {
+  margin-top: 0.25rem;
+  font-size: 2rem;
+  line-height: 1.75rem;
+  font-weight: 600;
+  --tw-text-opacity: 1;
+  color: rgba(55, 65, 81, 1);
+}
+
+.message {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  margin-top: 2rem;
+  margin-bottom: 3rem;
+  color: rgba(107, 114, 128, 1);
+  text-align: center;
+}
+
+
+.owl-item.active {
+  display: flex;
+  justify-content: center;
+}
 
