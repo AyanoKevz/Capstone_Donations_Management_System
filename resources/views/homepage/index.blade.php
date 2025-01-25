@@ -268,8 +268,8 @@
             </div>
 
             <div class="text-center">
-            <h3 class="mb-4">Basic Needs</h3>
-             </div>
+                <h3 class="mb-4">Basic Needs</h3>
+            </div>
 
             <div class="owl-carousel blog-carousel">
 
@@ -315,8 +315,8 @@
     <div class="container-fluid blog py-5">
         <div class="container py-5 wow slideInLeft" data-wow-delay="0.3s">
             <div class="text-center">
-            <h3 class="mb-4">New Clothing and Bedding</h3>
-             </div>
+                <h3 class="mb-4">New Clothing and Bedding</h3>
+            </div>
 
             <div class="owl-carousel blog-carousel">
 
@@ -362,8 +362,8 @@
     <div class="container-fluid blog py-5">
         <div class="container py-5 wow slideInLeft" data-wow-delay="0.3s">
             <div class="text-center">
-            <h3 class="mb-4">Hygiene</h3>
-             </div>
+                <h3 class="mb-4">Hygiene</h3>
+            </div>
 
             <div class="owl-carousel blog-carousel">
 
@@ -415,8 +415,8 @@
     <div class="container-fluid blog py-5">
         <div class="container py-5 wow slideInLeft" data-wow-delay="0.3s">
             <div class="text-center">
-            <h3 class="mb-4">Medical Supplies</h3>
-             </div>
+                <h3 class="mb-4">Medical Supplies</h3>
+            </div>
 
             <div class="owl-carousel blog-carousel">
 
@@ -620,15 +620,15 @@
 
     <!-- Testimonial Start -->
     <<div class="container-fluid testimonial py-3 rev" id="testimonials">
-    <div class="container py-3 wow slideInLeft" data-wow-delay="0.3s">
-        <div class="text-center mx-auto pb-5" style="max-width: 800px;">
-            <h2 class="section-header">Testimonial</h2>
-            <h1 class="display-5 mb-4">What Our Users Say</h1>
-            <p class="mb-0">
-            Hear from our users—donors, recipients, and volunteers—about their experiences
-                        with UniAid. Discover how their involvement has impacted lives, strengthened communities,
-                        and brought people together through the power of giving and receiving.
-                    </p>
+        <div class="container py-3 wow slideInLeft" data-wow-delay="0.3s">
+            <div class="text-center mx-auto pb-5" style="max-width: 800px;">
+                <h2 class="section-header">Testimonial</h2>
+                <h1 class="display-5 mb-4">What Our Users Say</h1>
+                <p class="mb-0">
+                    Hear from our users—donors, recipients, and volunteers—about their experiences
+                    with UniAid. Discover how their involvement has impacted lives, strengthened communities,
+                    and brought people together through the power of giving and receiving.
+                </p>
             </div>
             @if($testimonials->isEmpty())
             <div class="text-center">
@@ -696,208 +696,208 @@
             </div>
             @endif
         </div>
-    </div>
-</div>
-
-    <!-- Testimonial End -->
-
-    <!-- FAQs Start -->
-    <div class="container-fluid faq-section py-3">
-        <div class="container py-3 overflow-hidden">
-            <div class="text-center mx-auto pb-5 wow rotateInDownLeft" style="max-width: 800px;">
-                <h2 class="section-header">FAQs</h2>
-                <h1 class="display-5 mb-4">Frequently Asked Questions</h1>
-                <p class="mb-0">
-                    Have questions about how UniAid works? Find answers to the most common queries about registration,
-                    donations, receiving assistance, and volunteering. Whether you’re a donor, recipient, or volunteer,
-                    our FAQs aim to guide you through every step of the process.
-                </p>
-            </div>
-            <div class="row g-5 align-items-center flex-wrap-reverse">
-                <div class="col-lg-6 wow fadeInLeft">
-                    <div class="accordion accordion-flush bg-light rounded p-5" id="accordionFlushSection">
-                        <div class="accordion-item rounded-top">
-                            <h2 class="accordion-header" id="flush-headingOne">
-                                <button class="accordion-button collapsed rounded-top" type="button"
-                                    data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false"
-                                    aria-controls="flush-collapseOne">
-                                    How to Donate using UniAid?
-                            </h2>
-                            <div id="flush-collapseOne" class="accordion-collapse collapse"
-                                aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushSection">
-                                <div class="accordion-body"> 1) <b>Quick Donation Option</b>
-                                    - Donors can make quick donations without needing to browse or select specific recipients <br>
-                                    2) <b>Donee Selection. </b>
-                                    - Donors can browse through requests and select which resources to donate based on donee needs displayed on the platform. <br>
-                                    <a href="{{ route ('more_donor')}}">Learn More.</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="flush-headingThree">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#flush-collapseThree" aria-expanded="false"
-                                    aria-controls="flush-collapseThree">
-                                    How to register as volunteer?
-                                </button>
-                            </h2>
-                            <div id="flush-collapseThree" class="accordion-collapse collapse"
-                                aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushSection">
-                                <div class="accordion-body">
-                                    Volunteers need to register first and then view admin request for help.
-                                    <a href="{{ route ('more_volunteer')}}">Learn More.</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="flush-headingFour">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#flush-collapseFour" aria-expanded="false"
-                                    aria-controls="flush-collapseFour">
-                                    What kind of donations UniAid accepts?
-                                </button>
-                            </h2>
-                            <div id="flush-collapseFour" class="accordion-collapse collapse"
-                                aria-labelledby="flush-headingFour" data-bs-parent="#accordionFlushSection">
-                                <div class="accordion-body"> The UniAid accepts in-kind donations such as canned goods, bottled water, medecines, clothes, and other non-perishable Items.
-                                    We also accept monetary doantions.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="flush-headingFive">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#flush-collapseFive" aria-expanded="false"
-                                    aria-controls="flush-collapseFive">
-                                    Can I donate anonymously?
-                                </button>
-                            </h2>
-                            <div id="flush-collapseFive" class="accordion-collapse collapse"
-                                aria-labelledby="flush-headingFive" data-bs-parent="#accordionFlushSection">
-                                <div class="accordion-body">Yes, you can choose to make your donation anonymously.
-                                    Simply select the "Anonymous" option during the donation process.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="accordion-item rounded-bottom">
-                            <h2 class="accordion-header" id="flush-headingSix">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#flush-collapseSix" aria-expanded="false"
-                                    aria-controls="flush-collapseSix">
-                                    How are donees selected?
-                                </button>
-                            </h2>
-                            <div id="flush-collapseSix" class="accordion-collapse collapse"
-                                aria-labelledby="flush-headingSix" data-bs-parent="#accordionFlushSection">
-                                <div class="accordion-body">Donees are selected based on specific criteria that assess their needs and
-                                    eligibility. We work with local organizations, community leaders,
-                                    and other partners to identify those who would benefit the most from our support.</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6 wow fadeInRight" data-wow-delay="0.2s">
-                    <img src="{{asset('assets/img/faq.gif') }}" class="img-fluid w-75 d-block mx-auto" alt="">
-                </div>
-            </div>
         </div>
-    </div>
-    <!-- FAQs End -->
+        </div>
 
-    <!-- Footer Start -->
-    <div class="container-fluid footer py-3 wow fadeIn" data-wow-delay="0.2s">
-        <div class="container py-3 border-start-0 border-end-0"
-            style="border: 1px solid; border-color: rgb(255, 255, 255, 0.08);">
-            <div class="row g-5">
-                <div class="col-md-2 col-lg-2 col-xl-5">
-                    <div class="footer-item">
-                        <h3 class="text-white"> UniAid: Community Donations
-                            and Resources Distribution</h3>
-                        <p class="mb-4">UniAid is a platform that bridges the gap between donors
-                            and those in need. Whether you want to give, receive, or volunteer, UniAid
-                            makes it simple to contribute and request resources across the Philippines.</p>
-                    </div>
+        <!-- Testimonial End -->
+
+        <!-- FAQs Start -->
+        <div class="container-fluid faq-section py-3">
+            <div class="container py-3 overflow-hidden">
+                <div class="text-center mx-auto pb-5 wow rotateInDownLeft" style="max-width: 800px;">
+                    <h2 class="section-header">FAQs</h2>
+                    <h1 class="display-5 mb-4">Frequently Asked Questions</h1>
+                    <p class="mb-0">
+                        Have questions about how UniAid works? Find answers to the most common queries about registration,
+                        donations, receiving assistance, and volunteering. Whether you’re a donor, recipient, or volunteer,
+                        our FAQs aim to guide you through every step of the process.
+                    </p>
                 </div>
-                <div class="col-md-2 col-lg-2 col-xl-3">
-                    <div class="footer-item">
-                        <h4 class="text-white mb-4">Quick Links</h4>
-                        <a href="{{ route('about') }}"><i class="fas fa-angle-right me-2"></i> About Us</a>
-                        <a href="{{ route('register') }}"><i class="fas fa-angle-right me-2"></i> Register</a>
-                        <a href="{{ route('home') }}#portals"><i class="fas fa-angle-right me-2"></i> Portals</a>
-                        <a href="{{ route('home') }}#news"><i class="fas fa-angle-right me-2"></i> News</a>
-                        <a href="{{ route('contact') }}"><i class="fas fa-angle-right me-2"></i> Contact us</a>
+                <div class="row g-5 align-items-center flex-wrap-reverse">
+                    <div class="col-lg-6 wow fadeInLeft">
+                        <div class="accordion accordion-flush bg-light rounded p-5" id="accordionFlushSection">
+                            <div class="accordion-item rounded-top">
+                                <h2 class="accordion-header" id="flush-headingOne">
+                                    <button class="accordion-button collapsed rounded-top" type="button"
+                                        data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false"
+                                        aria-controls="flush-collapseOne">
+                                        How to Donate using UniAid?
+                                </h2>
+                                <div id="flush-collapseOne" class="accordion-collapse collapse"
+                                    aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushSection">
+                                    <div class="accordion-body"> 1) <b>Quick Donation Option</b>
+                                        - Donors can make quick donations without needing to browse or select specific recipients <br>
+                                        2) <b>Donee Selection. </b>
+                                        - Donors can browse through requests and select which resources to donate based on donee needs displayed on the platform. <br>
+                                        <a href="{{ route ('more_donor')}}">Learn More.</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="flush-headingThree">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#flush-collapseThree" aria-expanded="false"
+                                        aria-controls="flush-collapseThree">
+                                        How to register as volunteer?
+                                    </button>
+                                </h2>
+                                <div id="flush-collapseThree" class="accordion-collapse collapse"
+                                    aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushSection">
+                                    <div class="accordion-body">
+                                        Volunteers need to register first and then view admin request for help.
+                                        <a href="{{ route ('more_volunteer')}}">Learn More.</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="flush-headingFour">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#flush-collapseFour" aria-expanded="false"
+                                        aria-controls="flush-collapseFour">
+                                        What kind of donations UniAid accepts?
+                                    </button>
+                                </h2>
+                                <div id="flush-collapseFour" class="accordion-collapse collapse"
+                                    aria-labelledby="flush-headingFour" data-bs-parent="#accordionFlushSection">
+                                    <div class="accordion-body"> The UniAid accepts in-kind donations such as canned goods, bottled water, medecines, clothes, and other non-perishable Items.
+                                        We also accept monetary doantions.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="flush-headingFive">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#flush-collapseFive" aria-expanded="false"
+                                        aria-controls="flush-collapseFive">
+                                        Can I donate anonymously?
+                                    </button>
+                                </h2>
+                                <div id="flush-collapseFive" class="accordion-collapse collapse"
+                                    aria-labelledby="flush-headingFive" data-bs-parent="#accordionFlushSection">
+                                    <div class="accordion-body">Yes, you can choose to make your donation anonymously.
+                                        Simply select the "Anonymous" option during the donation process.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item rounded-bottom">
+                                <h2 class="accordion-header" id="flush-headingSix">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#flush-collapseSix" aria-expanded="false"
+                                        aria-controls="flush-collapseSix">
+                                        How are donees selected?
+                                    </button>
+                                </h2>
+                                <div id="flush-collapseSix" class="accordion-collapse collapse"
+                                    aria-labelledby="flush-headingSix" data-bs-parent="#accordionFlushSection">
+                                    <div class="accordion-body">Donees are selected based on specific criteria that assess their needs and
+                                        eligibility. We work with local organizations, community leaders,
+                                        and other partners to identify those who would benefit the most from our support.</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-
-                </div>
-
-                <div class="col-md-2 col-lg-2 col-xl-4">
-                    <div class="footer-item">
-                        <h4 class="text-white mb-4">Contact Info</h4>
-                        <div class="d-flex align-items-center">
-                            <i class="fas fa-map-marker-alt text-danger me-3"></i>
-                            <p class="text-white mb-0">37 EDSA corner Boni Avenue, Barangka-Ilaya, Mandaluyong City
-                                1550</p>
-                        </div>
-
-                        <div class="d-flex align-items-center">
-                            <i class="fa fa-phone-alt text-danger me-3"></i>
-                            <p class="text-white mb-0">(+63 2) 8790-2300</p>
-                        </div>
-
-                        <div class="d-flex align-items-center">
-                            <i class="fa fa-hands-holding-child text-danger me-3"></i>
-                            <p class="text-white mb-0">Donations - (+63 2) 8790-2410 / (+63 2) 8790-2413</p>
-                        </div>
-
-                        <div class="d-flex align-items-center mb-4">
-                            <i class="fa fa-people-group text-danger me-3"></i>
-                            <p class="text-white mb-0">Volunteer (+63 2) 8790-2373</p>
-                        </div>
-
-                        <div class="d-flex">
-                            <a class="btn btn-primary btn-sm-square rounded-circle me-3"
-                                href="https://www.facebook.com/phredcross" target="_blank"><i
-                                    class="fab fa-facebook-f text-white"></i></a>
-                            <a class="btn btn-primary btn-sm-square rounded-circle me-3"
-                                href="https://x.com/philredcross?mx=2" target="_blank"><i
-                                    class="fab fa-twitter text-white"></i></a>
-                            <a class="btn btn-primary btn-sm-square rounded-circle me-3"
-                                href="https://www.instagram.com/philredcross/" target="_blank"><i
-                                    class="fab fa-instagram text-white"></i></a>
-                            <a class="btn btn-primary btn-sm-square rounded-circle me-0"
-                                href="https://www.linkedin.com/authwall?trk=bf&trkInfo=AQG5L29q_iR04gAAAZJD6itogdLGIBN_s1xsrE9UpfecYUEigsPKbT-qW_l8QHDO39R9u7Tdt9YtyqWKyDMAT_SdwWfWF26jNVEheyJkrIXk6gDKySM35vzHOu5wZ3nAixD8fTw=&original_referer=&sessionRedirect=https%3A%2F%2Fwww.linkedin.com%2Fcompany%2F1089054"
-                                target="_blank"><i class="fab fa-linkedin-in text-white"></i></a>
-                        </div>
+                    <div class="col-lg-6 wow fadeInRight" data-wow-delay="0.2s">
+                        <img src="{{asset('assets/img/faq.gif') }}" class="img-fluid w-75 d-block mx-auto" alt="">
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- Footer End -->
+        <!-- FAQs End -->
 
-    <!-- Copyright Start -->
-    <div class="container-fluid copyright p-1">
-        <p class="my-3">&copy; UniAid: Community Donations and
-            Resources Distribution</p>
-    </div>
-    <!-- Copyright End -->
+        <!-- Footer Start -->
+        <div class="container-fluid footer py-3 wow fadeIn" data-wow-delay="0.2s">
+            <div class="container py-3 border-start-0 border-end-0"
+                style="border: 1px solid; border-color: rgb(255, 255, 255, 0.08);">
+                <div class="row g-5">
+                    <div class="col-md-2 col-lg-2 col-xl-5">
+                        <div class="footer-item">
+                            <h3 class="text-white"> UniAid: Community Donations
+                                and Resources Distribution</h3>
+                            <p class="mb-4">UniAid is a platform that bridges the gap between donors
+                                and those in need. Whether you want to give, receive, or volunteer, UniAid
+                                makes it simple to contribute and request resources across the Philippines.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-lg-2 col-xl-3">
+                        <div class="footer-item">
+                            <h4 class="text-white mb-4">Quick Links</h4>
+                            <a href="{{ route('about') }}"><i class="fas fa-angle-right me-2"></i> About Us</a>
+                            <a href="{{ route('register') }}"><i class="fas fa-angle-right me-2"></i> Register</a>
+                            <a href="{{ route('home') }}#portals"><i class="fas fa-angle-right me-2"></i> Portals</a>
+                            <a href="{{ route('home') }}#news"><i class="fas fa-angle-right me-2"></i> News</a>
+                            <a href="{{ route('contact') }}"><i class="fas fa-angle-right me-2"></i> Contact us</a>
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-2 col-lg-2 col-xl-4">
+                        <div class="footer-item">
+                            <h4 class="text-white mb-4">Contact Info</h4>
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-map-marker-alt text-danger me-3"></i>
+                                <p class="text-white mb-0">37 EDSA corner Boni Avenue, Barangka-Ilaya, Mandaluyong City
+                                    1550</p>
+                            </div>
+
+                            <div class="d-flex align-items-center">
+                                <i class="fa fa-phone-alt text-danger me-3"></i>
+                                <p class="text-white mb-0">(+63 2) 8790-2300</p>
+                            </div>
+
+                            <div class="d-flex align-items-center">
+                                <i class="fa fa-hands-holding-child text-danger me-3"></i>
+                                <p class="text-white mb-0">Donations - (+63 2) 8790-2410 / (+63 2) 8790-2413</p>
+                            </div>
+
+                            <div class="d-flex align-items-center mb-4">
+                                <i class="fa fa-people-group text-danger me-3"></i>
+                                <p class="text-white mb-0">Volunteer (+63 2) 8790-2373</p>
+                            </div>
+
+                            <div class="d-flex">
+                                <a class="btn btn-primary btn-sm-square rounded-circle me-3"
+                                    href="https://www.facebook.com/phredcross" target="_blank"><i
+                                        class="fab fa-facebook-f text-white"></i></a>
+                                <a class="btn btn-primary btn-sm-square rounded-circle me-3"
+                                    href="https://x.com/philredcross?mx=2" target="_blank"><i
+                                        class="fab fa-twitter text-white"></i></a>
+                                <a class="btn btn-primary btn-sm-square rounded-circle me-3"
+                                    href="https://www.instagram.com/philredcross/" target="_blank"><i
+                                        class="fab fa-instagram text-white"></i></a>
+                                <a class="btn btn-primary btn-sm-square rounded-circle me-0"
+                                    href="https://www.linkedin.com/authwall?trk=bf&trkInfo=AQG5L29q_iR04gAAAZJD6itogdLGIBN_s1xsrE9UpfecYUEigsPKbT-qW_l8QHDO39R9u7Tdt9YtyqWKyDMAT_SdwWfWF26jNVEheyJkrIXk6gDKySM35vzHOu5wZ3nAixD8fTw=&original_referer=&sessionRedirect=https%3A%2F%2Fwww.linkedin.com%2Fcompany%2F1089054"
+                                    target="_blank"><i class="fab fa-linkedin-in text-white"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Footer End -->
+
+        <!-- Copyright Start -->
+        <div class="container-fluid copyright p-1">
+            <p class="my-3">&copy; UniAid: Community Donations and
+                Resources Distribution</p>
+        </div>
+        <!-- Copyright End -->
 
 
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-primary btn-lg-square rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>
+        <!-- Back to Top -->
+        <a href="#" class="btn btn-primary btn-lg-square rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>
 
 
-    <!-- JavaScript Libraries -->
-    <script src="{{ asset('lib/jquery/jquery.min.js') }}"></script>
-    <script src="{{ asset('lib/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('lib/animate/wow.min.js') }}"></script>
-    <script src="{{ asset('lib/jquery/easing.min.js') }}"></script>
-    <script src="{{ asset('lib/jquery/counterup.min.js') }}"></script>
-    <script src="{{ asset('lib/owlcarousel/owl.carousel.min.js') }}"></script>
-    <script src="{{ asset('lib/fontawesome/all.js') }}"></script>
-    <!-- Template JavaScript -->
-    <script src="{{ asset('lib/jquery/jquery.validate.min.js') }}"></script>
-    <script src="{{ asset('assets/homepage/js/main.js') }}"></script>
+        <!-- JavaScript Libraries -->
+        <script src="{{ asset('lib/jquery/jquery.min.js') }}"></script>
+        <script src="{{ asset('lib/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+        <script src="{{ asset('lib/animate/wow.min.js') }}"></script>
+        <script src="{{ asset('lib/jquery/easing.min.js') }}"></script>
+        <script src="{{ asset('lib/jquery/counterup.min.js') }}"></script>
+        <script src="{{ asset('lib/owlcarousel/owl.carousel.min.js') }}"></script>
+        <script src="{{ asset('lib/fontawesome/all.js') }}"></script>
+        <!-- Template JavaScript -->
+        <script src="{{ asset('lib/jquery/jquery.validate.min.js') }}"></script>
+        <script src="{{ asset('assets/homepage/js/main.js') }}"></script>
 
 </body>
 
