@@ -82,7 +82,12 @@ $(".blog-carousel").owlCarousel({
     center: false,
     dots: false,
     loop: $(".blog-carousel .blog-item").length > 1, 
+    nav: true,
     margin: 25,
+    navText : [
+        '<i class="fa fa-angle-left"></i>',
+        '<i class="fa fa-angle-right"></i>'
+    ],
     responsiveClass: true,
     responsive: {
         0: {

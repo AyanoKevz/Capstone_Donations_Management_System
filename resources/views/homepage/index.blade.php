@@ -266,6 +266,11 @@
                     need it most across the Philippines.
                 </p>
             </div>
+
+            <div class="text-center">
+            <h3 class="mb-4">Basic Needs</h3>
+             </div>
+
             <div class="owl-carousel blog-carousel">
 
                 <div class="resources-item text-center">
@@ -273,13 +278,6 @@
                         <img src="{{asset('assets/img/r1.jpg') }}" class="img-fluid w-100 rounded" alt="">
                     </div>
                     <h4 class="d-inline-block m-2">Canned Goods</h4>
-                </div>
-
-                <div class="resources-item text-center">
-                    <div class="resources-img mb-2">
-                        <img src="{{asset('assets/img/r2.png') }}" class="img-fluid w-100 rounded" alt="">
-                    </div>
-                    <h4 class="d-inline-block m-2">Breads</h4>
                 </div>
 
                 <div class="resources-item text-center">
@@ -293,42 +291,161 @@
                     <div class="resources-img mb-2">
                         <img src="{{asset('assets/img/r4.png') }}" class="img-fluid w-100 rounded" alt="">
                     </div>
-                    <h4 class="d-inline-block m-2">Bottled Drinks</h4>
+                    <h4 class="d-inline-block m-2">Bottled Water</h4>
                 </div>
 
                 <div class="resources-item text-center">
                     <div class="resources-img mb-2">
                         <img src="{{asset('assets/img/r5.png') }}" class="img-fluid w-100 rounded" alt="">
                     </div>
-                    <h4 class="d-inline-block m-2">Rice</h4>
+                    <h4 class="d-inline-block m-2">3KG Packaged Rice</h4>
                 </div>
 
                 <div class="resources-item text-center">
                     <div class="resources-img mb-2">
                         <img src="{{asset('assets/img/r6.png') }}" class="img-fluid w-100 rounded" alt="">
                     </div>
-                    <h4 class="d-inline-block m-2">First Aid Kits</h4>
+                    <h4 class="d-inline-block m-2">Biscuits</h4>
                 </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid blog py-5">
+        <div class="container py-5 wow slideInLeft" data-wow-delay="0.3s">
+            <div class="text-center">
+            <h3 class="mb-4">New Clothing and Bedding</h3>
+             </div>
+
+            <div class="owl-carousel blog-carousel">
 
                 <div class="resources-item text-center">
                     <div class="resources-img mb-2">
-                        <img src="{{asset('assets/img/r7.png') }}" class="img-fluid w-100 rounded" alt="">
+                        <img src="{{asset('assets/img/r1.jpg') }}" class="img-fluid w-100 rounded" alt="">
                     </div>
-                    <h4 class="d-inline-block m-2">Medecines</h4>
+                    <h4 class="d-inline-block m-2">Blankets</h4>
                 </div>
 
                 <div class="resources-item text-center">
                     <div class="resources-img mb-2">
-                        <img src="{{asset('assets/img/r8.png') }}" class="img-fluid w-100 rounded" alt="">
+                        <img src="{{asset('assets/img/r3.png') }}" class="img-fluid w-100 rounded" alt="">
+                    </div>
+                    <h4 class="d-inline-block m-2">Towels</h4>
+                </div>
+
+                <div class="resources-item text-center">
+                    <div class="resources-img mb-2">
+                        <img src="{{asset('assets/img/r4.png') }}" class="img-fluid w-100 rounded" alt="">
+                    </div>
+                    <h4 class="d-inline-block m-2">Jacket/Sweaters</h4>
+                </div>
+
+                <div class="resources-item text-center">
+                    <div class="resources-img mb-2">
+                        <img src="{{asset('assets/img/r5.png') }}" class="img-fluid w-100 rounded" alt="">
                     </div>
                     <h4 class="d-inline-block m-2">Clothes</h4>
                 </div>
 
                 <div class="resources-item text-center">
                     <div class="resources-img mb-2">
-                        <img src="{{asset('assets/img/r9.png') }}" class="img-fluid w-100 rounded" alt="">
+                        <img src="{{asset('assets/img/r6.png') }}" class="img-fluid w-100 rounded" alt="">
                     </div>
-                    <h4 class="d-inline-block m-2">School Supplies</h4>
+                    <h4 class="d-inline-block m-2">Slippers</h4>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid blog py-5">
+        <div class="container py-5 wow slideInLeft" data-wow-delay="0.3s">
+            <div class="text-center">
+            <h3 class="mb-4">Hygiene</h3>
+             </div>
+
+            <div class="owl-carousel blog-carousel">
+
+                <div class="resources-item text-center">
+                    <div class="resources-img mb-2">
+                        <img src="{{asset('assets/img/r1.jpg') }}" class="img-fluid w-100 rounded" alt="">
+                    </div>
+                    <h4 class="d-inline-block m-2">Soap</h4>
+                </div>
+
+                <div class="resources-item text-center">
+                    <div class="resources-img mb-2">
+                        <img src="{{asset('assets/img/r3.png') }}" class="img-fluid w-100 rounded" alt="">
+                    </div>
+                    <h4 class="d-inline-block m-2">Sachet Shampoos</h4>
+                </div>
+
+                <div class="resources-item text-center">
+                    <div class="resources-img mb-2">
+                        <img src="{{asset('assets/img/r4.png') }}" class="img-fluid w-100 rounded" alt="">
+                    </div>
+                    <h4 class="d-inline-block m-2">Toothpaste</h4>
+                </div>
+
+                <div class="resources-item text-center">
+                    <div class="resources-img mb-2">
+                        <img src="{{asset('assets/img/r5.png') }}" class="img-fluid w-100 rounded" alt="">
+                    </div>
+                    <h4 class="d-inline-block m-2">Toothbrushes</h4>
+                </div>
+
+                <div class="resources-item text-center">
+                    <div class="resources-img mb-2">
+                        <img src="{{asset('assets/img/r6.png') }}" class="img-fluid w-100 rounded" alt="">
+                    </div>
+                    <h4 class="d-inline-block m-2">Baby Diapers</h4>
+                </div>
+
+                <div class="resources-item text-center">
+                    <div class="resources-img mb-2">
+                        <img src="{{asset('assets/img/r6.png') }}" class="img-fluid w-100 rounded" alt="">
+                    </div>
+                    <h4 class="d-inline-block m-2">Hand Sanitizers</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid blog py-5">
+        <div class="container py-5 wow slideInLeft" data-wow-delay="0.3s">
+            <div class="text-center">
+            <h3 class="mb-4">Medical Supplies</h3>
+             </div>
+
+            <div class="owl-carousel blog-carousel">
+
+                <div class="resources-item text-center">
+                    <div class="resources-img mb-2">
+                        <img src="{{asset('assets/img/r1.jpg') }}" class="img-fluid w-100 rounded" alt="">
+                    </div>
+                    <h4 class="d-inline-block m-2">First Aid Kits</h4>
+                </div>
+
+                <div class="resources-item text-center">
+                    <div class="resources-img mb-2">
+                        <img src="{{asset('assets/img/r3.png') }}" class="img-fluid w-100 rounded" alt="">
+                    </div>
+                    <h4 class="d-inline-block m-2">Bondages and Gauze</h4>
+                </div>
+
+                <div class="resources-item text-center">
+                    <div class="resources-img mb-2">
+                        <img src="{{asset('assets/img/r4.png') }}" class="img-fluid w-100 rounded" alt="">
+                    </div>
+                    <h4 class="d-inline-block m-2">Alcohol/Disinfectants</h4>
+                </div>
+
+                <div class="resources-item text-center">
+                    <div class="resources-img mb-2">
+                        <img src="{{asset('assets/img/r5.png') }}" class="img-fluid w-100 rounded" alt="">
+                    </div>
+                    <h4 class="d-inline-block m-2">Mask(N95 or Surgical)</h4>
                 </div>
 
             </div>
