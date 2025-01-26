@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Testimonial;
 use App\Models\Inquiry;
 use Exception;
-
 use Illuminate\Http\Request;
 
 class DonorController extends Controller
