@@ -320,12 +320,50 @@
     </div>
 
                 <!-- Content Section -->
-<div class="content">
-    <h2>What does PRC do?</h2>
-    <p>
-    The Philippine Red Cross is committed to providing humanitarian aid, disaster relief, and essential health services to those in need. Your donations support life-saving initiatives, including disaster response, blood services, emergency medical assistance, health programs, and community outreach. Together, we can alleviate suffering, strengthen resilience, and make a lasting impact on vulnerable communities.    </p>
-</div>
+        <div class="content">
+            <h2>What does PRC do?</h2>
+            <p>
+            The Philippine Red Cross is committed to providing humanitarian aid, disaster relief, and essential health services to those in need. Your donations support life-saving initiatives, including disaster response, blood services, emergency medical assistance, health programs, and community outreach. Together, we can alleviate suffering, strengthen resilience, and make a lasting impact on vulnerable communities.    </p>
+        </div>
      <!-- Main content -->
+     <div class="gallery">
+    <div class="row">
+        <div class="image-item">
+        <img src="{{ asset('assets/img/causes.jpg') }}" >
+            <p class="title">Flood Victims</p>
+        </div>
+        <div class="image-item">
+        <img src="{{ asset('assets/img/causes.jpg') }}" >
+            <p class="title">Fire Victims</p>
+        </div>
+        <div class="image-item">
+        <img src="{{ asset('assets/img/causes.jpg') }}" >
+            <p class="title">Typhoon Victims</p>
+        </div>
+        <div class="image-item">
+        <img src="{{ asset('assets/img/causes.jpg') }}" >
+            <p class="title">General</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="image-item">
+        <img src="{{ asset('assets/img/causes.jpg') }}" >
+            <p class="title">Earthquake Victims</p>
+        </div>
+        <div class="image-item">
+        <img src="{{ asset('assets/img/causes.jpg') }}" >
+            <p class="title">Volcanic Eruption Victims</p>
+        </div>
+        <div class="image-item">
+        <img src="{{ asset('assets/img/causes.jpg') }}" >
+            <p class="title">Feeding Program</p>
+        </div>
+        
+    </div>
+   
+    </div>
+</div>
+
 
         <!-- Main Footer -->
         <footer class="main-footer">
