@@ -137,6 +137,7 @@ Route::middleware(['auth', 'prevent-back-button'])->prefix('user')->group(functi
         Route::get('/prc-chapters', [DonorController::class, 'showChapters'])->name('prc-chapters');
         Route::get('/contact', [DonorController::class, 'showContactForm'])->name('donor.contact_form');
         Route::get('/testimonial', [DonorController::class, 'showTestimonialForm'])->name('donor.testi_form');
+        Route::get('/causes', [DonorController::class, 'causes'])->name('causes');
     });
 
 

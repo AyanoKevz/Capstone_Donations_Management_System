@@ -140,6 +140,11 @@ class DonorController extends Controller
         return view('users.donor.contact');
     }
 
+    public function causes()
+    {
+        return view('users.donor.causes');
+    }
+
     public function showTestimonialForm()
     {
         $user = Auth::user();

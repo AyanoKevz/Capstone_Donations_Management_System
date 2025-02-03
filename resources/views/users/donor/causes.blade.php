@@ -15,7 +15,9 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="{{ asset('lib/bootstrap/css/bootstrap.min.css') }}">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{ asset('assets/users/css/donor/home_donor.css') }}">
+    <link href="{{ asset('lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('assets/users/css/donor/testimonial.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/users/css/donor/causes.css') }}">
 </head>
 
 <!-- Spinner Start -->
@@ -148,7 +150,7 @@
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <!-- Home -->
                         <li class="nav-item">
-                            <a href="{{route ('donor.home') }}" class="nav-link active">
+                            <a href="{{route ('donor.home') }}" class="nav-link">
                                 <i class="nav-icon fas fa-house"></i>
                                 <p>Home</p>
                             </a>
@@ -204,7 +206,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="route{{'prc-chapters'}}" class="nav-link">
+                                    <a href="{{route ('prc-chapters') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>PRC Chapters</p>
                                     </a>
@@ -228,7 +230,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Donation History</p>
                                     </a>
@@ -238,7 +240,7 @@
 
                         <!-- Learn About Causes -->
                         <li class="nav-item">
-                          <a href="{{route ('causes') }}" class="nav-link">
+                            <a href="" class="nav-link">
                                 <i class="nav-icon fas fa-info-circle"></i>
                                 <p>Learn About Causes</p>
                             </a>
@@ -246,7 +248,7 @@
 
                         <!-- Testimonials -->
                         <li class="nav-item">
-                            <a href="{{route ('donor.testi_form') }}" class="nav-link">
+                            <a href="{{route ('donor.testi_form') }}" class=" nav-link active">
                                 <i class="nav-icon fas fa-star"></i>
                                 <p>Testimonials</p>
                             </a>
@@ -254,13 +256,12 @@
 
                         <!-- Feedback / Support -->
                         <li class="nav-item">
-                            <a href="{{route ('donor.contact_form') }}" class="nav-link ">
+                            <a href="{{route ('donor.contact_form') }}" class="nav-link">
                                 <i class="nav-icon fas fa-comments"></i>
                                 <p>Contact / Support</p>
                             </a>
                         </li>
                     </ul>
-
                 </nav>
                 <!-- /.sidebar-menu -->
             </div>
@@ -280,6 +281,14 @@
                                 Donor Portal
                             </h1>
                         </div>
+                        <div class="col-5 d-flex justify-content-end align-items-center">
+                            <ol class="breadcrumb mb-0">
+                                <li class="breadcrumb-item">
+                                    <a href="{{ route('donor.home') }}">Home</a>
+                                </li>
+                                <li class="breadcrumb-item active">Our Causes</li>
+                            </ol>
+                        </div>
                     </div>
                 </div>
                 @if(session('error'))
@@ -297,17 +306,26 @@
             <!-- End content-header -->
 
             <!-- Main content -->
-            <div class="content">
-                <div class="container py-3">
-                    <div class="row">
-
-                    </div>
-                </div>
-
+            <div class="main-content" >
+            <div class="hero" style="background: url('{{ asset('assets/img/causes.jpg') }}') no-repeat center center/cover;">
+        <div class="overlay"></div>
+        <div class="hero-content">
+            <h1>OUR CAUSES</h1>
+            <div class="social-icons">
+                <i class="fa-brands fa-facebook"></i>
+                <i class="fa-brands fa-twitter"></i>
+                <i class="fa-solid fa-envelope"></i>
             </div>
-
         </div>
-        <!-- /.content wrapper -->
+    </div>
+
+                <!-- Content Section -->
+<div class="content">
+    <h2>What does PRC do?</h2>
+    <p>
+    The Philippine Red Cross is committed to providing humanitarian aid, disaster relief, and essential health services to those in need. Your donations support life-saving initiatives, including disaster response, blood services, emergency medical assistance, health programs, and community outreach. Together, we can alleviate suffering, strengthen resilience, and make a lasting impact on vulnerable communities.    </p>
+</div>
+     <!-- Main content -->
 
         <!-- Main Footer -->
         <footer class="main-footer">
@@ -321,6 +339,8 @@
     <script src="{{ asset('lib/jquery/jquery.min.js') }}"></script>
     <!-- Bootstrap 5 -->
     <script src="{{ asset('lib/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <!-- Owl -->
+    <script src="{{ asset('lib/owlcarousel/owl.carousel.min.js') }}"></script>
     <!-- Fontawesome 6 -->
     <script src="{{ asset('lib/fontawesome/all.js') }}"></script>
     <!-- User JS -->
