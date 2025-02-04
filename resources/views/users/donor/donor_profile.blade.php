@@ -442,10 +442,11 @@
                                                         <div class="col-12">
                                                             <div class="row gy-2 justify-content-around align-items-center">
                                                                 <label class="col-12 form-label m-0 text-center"><strong> Profile Image </strong></label>
-                                                                <img id="imagePreview" src="{{ asset('storage/' . $User->donor->user_photo) }}" class="rounded w-25 border border-dark-subtle p-0" alt="Profile Image">
+
                                                                 <div class="form">
                                                                     <span class="form-title">Upload your file</span>
                                                                     <p class="form-paragraph">File should be an image</p>
+                                                                    <img id="imagePreview" src="{{ asset('storage/' . $User->donor->user_photo) }}" class="profile_preview" alt="Profile Image">
                                                                     <label for="file-input" class="drop-container">
                                                                         <input type="file" accept="image/*" id="file-input" name="user_photo">
                                                                     </label>
@@ -455,16 +456,16 @@
                                                         @if($User->account_type === 'Individual')
                                                         <div class="col-12 col-md-6">
                                                             <label for="inputFirstName" class="form-label">First Name</label>
-                                                            <input type="text" class="form-control" id="inputFirstName" name="fname" value="{{ $User->donor->first_name }}">
+                                                            <input type="text" class="form-control" id="fname" name="fname" value="{{ $User->donor->first_name }}">
                                                         </div>
                                                         <div class="col-12 col-md-6">
                                                             <label for="inputFirstName" class="form-label">Last Name</label>
-                                                            <input type="text" class="form-control" id="inputFirstName" name="lname" value="{{ $User->donor->last_name }}">
+                                                            <input type="text" class="form-control" id="lname" name="lname" value="{{ $User->donor->last_name }}">
                                                         </div>
                                                         @else
                                                         <div class="col-12 col-md-6">
                                                             <label for="inputFirstName" class="form-label">Organization Name</label>
-                                                            <input type="text" class="form-control" id="inputFirstName" name="fname" value="{{ $User->donor->first_name }}">
+                                                            <input type="text" class="form-control" id="fname" name="fname" value="{{ $User->donor->first_name }}">
                                                         </div>
                                                         @endif
                                                         <div class="col-12 col-md-6">
@@ -477,29 +478,29 @@
                                                         </div>
                                                         <div class="col-12 col-md-6">
                                                             <label for="inputLastName" class="form-label">Region</label>
-                                                            <select class="form-select" id="region" name="region" required>
-                                                                <option selected value="{{$User->location->region}}" disabled>{{$User->location->region}}</option>
+                                                            <select class="form-select" id="region" name="region">
+                                                                <option selected value="{{$User->location->region}}" readonly>{{$User->location->region}}</option>
                                                             </select>
                                                             <input type="hidden" id="region-name" name="region_name">
                                                         </div>
                                                         <div class="col-12 col-md-6">
                                                             <label for="inputLastName" class="form-label">Province</label>
-                                                            <select class="form-select" id="province" name="province" required>
-                                                                <option selected value="{{$User->location->province}}" disabled>{{$User->location->province}}</option>
+                                                            <select class="form-select" id="province" name="province">
+                                                                <option selected value="{{$User->location->province}}" readonly>{{$User->location->province}}</option>
                                                             </select>
                                                             <input type="hidden" id="province-name" name="province_name">
                                                         </div>
                                                         <div class="col-12 col-md-6">
                                                             <label for="inputLastName" class="form-label">City/Municipality</label>
-                                                            <select class="form-select" id="city" name="city" required>
-                                                                <option selected value="{{$User->location->city_municipality}}" disabled>{{$User->location->city_municipality}}</option>
+                                                            <select class="form-select" id="city" name="city">
+                                                                <option selected value="{{$User->location->city_municipality}}" readonly>{{$User->location->city_municipality}}</option>
                                                             </select>
                                                             <input type="hidden" id="city-name" name="city_name">
                                                         </div>
                                                         <div class="col-12 col-md-6">
                                                             <label for="inputLastName" class="form-label">Barangay</label>
-                                                            <select class="form-select" id="barangay" name="barangay" required>
-                                                                <option selected value="{{$User->location->barangay}}" disabled>{{$User->location->barangay}}</option>
+                                                            <select class="form-select" id="barangay" name="barangay">
+                                                                <option selected value="{{$User->location->barangay}}" readonly>{{$User->location->barangay}}</option>
                                                             </select>
                                                             <input type="hidden" id="barangay-name" name="barangay_name">
                                                         </div>

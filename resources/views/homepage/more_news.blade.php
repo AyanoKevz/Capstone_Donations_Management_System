@@ -61,10 +61,12 @@
             <div class="dropdown-menu m-0">
               <a href="{{ route ('more_donor')}}" class="dropdown-item">Donation</a>
               <a href="{{ route ('more_volunteer')}}" class="dropdown-item">Volunteer</a>
+              <a href="{{ route('home') }}#news" class="dropdown-item">News</a>
             </div>
           </div>
           <a href="{{ route ('contact')}}" class="nav-item nav-link">Contact Us</a>
           <a href="{{ route ('register')}}" class="nav-item nav-link">Register</a>
+          <a href="{{ route('home') }}#mobile" class="nav-item nav-link">Install App <i class="fa-solid fa-mobile-screen-button"></i></a>
         </div>
         <a href="{{ route('home') }}#portals" class="btn btn-primary rounded-pill py-2 px-4 my-3 my-lg-0 flex-shrink-0">Portals</a>
       </div>
@@ -110,7 +112,7 @@
       <div class="row g-5">
 
         <div class="col-lg-8">
-          <article class="blog-details">
+          <article class="blog-details zoomIn wow">
             <div class="post-img">
               <!-- Displaying the image -->
               <img src="{{ asset('storage/' . $news->image_url_1) }}" alt="" class="img-fluid">
@@ -126,7 +128,7 @@
                 <li class="d-flex align-items-center mx-1"><i class="far fa-calendar me-1"></i>{{ $news->created_at->format('F j, Y') }}</li>
               </ul>
             </div>
-            <div class="content">
+            <div class="content-news">
               <blockquote>
                 <p>{{ $news->subtitle }}</p>
               </blockquote>
@@ -140,7 +142,7 @@
 
         <div class="col-lg-4">
 
-          <div class="sidebar wow bounceInRight">
+          <div class="sidebar">
 
             <div class="sidebar-item recent-posts">
               <h3 class="sidebar-title">Other News</h3>

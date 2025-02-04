@@ -12,7 +12,9 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use App\Mail\AccountUpdated;
 use Carbon\Carbon;
+use Illuminate\Cache\RateLimiter;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class HomeController extends Controller
 {
@@ -44,12 +46,23 @@ class HomeController extends Controller
         return view('homepage.more_news', compact('news', 'otherNews'));
     }
 
-
-    // Step 1: Send Reset Link
+    // Send Reset Link
     public function sendResetLink(Request $request)
     {
         $request->validate(['find_email' => 'required|email']);
         $email = $request->input('find_email');
+
+        $rateLimitKey = 'password-reset:' . $email;
+
+        // Check if rate limit is exceeded
+        $limiter = app(RateLimiter::class);
+        if ($limiter->tooManyAttempts($rateLimitKey, 1)) {
+            return redirect()->route('home')
+                ->with('error', 'You can request a password reset only once every 3 minutes.')
+                ->header('Location', route('home') . '#portals');
+        }
+
+        $limiter->hit($rateLimitKey, 180);
 
         $user = UserAccount::where('email', $email)->first();
 
@@ -69,40 +82,52 @@ class HomeController extends Controller
             ['token' => $token, 'created_at' => now()]
         );
 
-        // Prepare email data
         $resetLink = route('reset-password', ['token' => $token]);
         $logoPath = public_path('assets/img/systemLogo.png');
 
-        // Send reset email
-        Mail::send('emails.reset-password', [
-            'username' => $user->username,
-            'resetLink' => $resetLink,
-            'logoPath' => $logoPath,
-        ], function ($message) use ($email) {
-            $message->to($email)->subject('Password Reset Request');
-        });
+        try {
+            Mail::send('emails.reset-password', [
+                'username' => $user->username,
+                'resetLink' => $resetLink,
+                'logoPath' => $logoPath,
+            ], function ($message) use ($email) {
+                $message->to($email)->subject('Password Reset Request');
+            });
+        } catch (\Exception $e) {
+            Log::error('Error sending password reset email: ' . $e->getMessage());
+            return redirect()->route('home')
+                ->with('error', 'Failed to send password reset email. Please try again later.')
+                ->header('Location', route('home') . '#portals');
+        }
 
         return redirect()->route('home')
             ->with('success', 'Password reset link sent to your email.')
             ->header('Location', route('home') . '#portals');
     }
 
-    // Step 2: Show Reset Form
+    // Show Reset Form
     public function showResetForm($token)
     {
         DB::table('password_resets')->where('created_at', '<', Carbon::now()->subMinutes(2))->delete();
+
         $tokenData = DB::table('password_resets')->where('token', $token)->first();
 
-        if (!$tokenData || Carbon::parse($tokenData->created_at)->addMinutes(2)->isPast()) {
+        if (!$tokenData) {
             return redirect()->route('home')
-                ->with('error', 'Invalid or expired reset link.')
+                ->with('error', 'Link is invalid or has expired.')
                 ->header('Location', route('home') . '#portals');
         }
 
-        return view('homepage.resetpass', ['token' => $token]);
+        $expiresAt = Carbon::parse($tokenData->created_at)->addMinutes(2);
+        $remainingTime = Carbon::now()->diffInSeconds($expiresAt);
+
+        return view('homepage.resetpass', [
+            'token' => $token,
+            'remainingTime' => $remainingTime,
+        ]);
     }
 
-    // Step 3: Reset Password
+    //Reset Password
     public function resetPassword(Request $request)
     {
         $request->validate([

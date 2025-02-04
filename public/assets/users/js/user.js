@@ -41,9 +41,6 @@ var spinnerElement = document.getElementById("spinner");
 
         $("#user_profile_form").validate({
             rules: {
-                user_photo: {
-                    extension: "jpg|jpeg|png"
-                },
                 email: {
                     required: true,
                     email: true
@@ -60,14 +57,21 @@ var spinnerElement = document.getElementById("spinner");
                     mobilePH: true,
                     maxlength: 11
                 },
+    
+                province: {
+                  required: true
+                },
+                city: {
+                    required: true
+                },
+                barangay: {
+                    required: true
+                },
                 full_address: {
                     required: true
                 },
             },
             messages: {
-                user_photo: {
-                    extension: "Please upload a valid image (jpg, jpeg, png)"
-                },
                 email: {
                     required: "Please enter a valid email address",
                     email: "Please enter a valid email address"
@@ -76,6 +80,18 @@ var spinnerElement = document.getElementById("spinner");
                     required: "Please enter your mobile number",
                     digits: "Please enter only digits",
                     mobilePH: "Invalid Format (09xxxxxxxxx)"
+                },
+                province: {
+                  required: "Please select a province"
+                },
+                city: {
+                    required: "Please select a city"
+                },
+                barangay: {
+                    required: "Please select a barangay"
+                },
+                full_address: {
+                    required: "Please enter your full address"
                 },
             },
             highlight: function (element) {
@@ -194,7 +210,7 @@ $('#toggle-cpassword').on('click', function () {
 
 
 
-    const API_BASE_URL = "https://psgc.gitlab.io/api";
+const API_BASE_URL = "https://psgc.gitlab.io/api";
 
 initializeRegionDropdown();
 $('#region').on('change', handleRegionChange);
@@ -222,17 +238,25 @@ function initializeRegionDropdown() {
 function handleRegionChange() {
     const regionCode = this.value;  // Get the selected region code
     const regionName = $('option:selected', this).text(); // Get the name from the selected option
-    
+
     if (!regionCode) return;  // Exit if no region is selected
 
     // Store the region name in a hidden input field
-    $('#region-name').val(regionName);  // Assuming you have a hidden input field with id="region-name"
-    
-    // Special handling for NCR (no provinces)
-    if (regionCode === "130000000") { // NCR region code
+    $('#region-name').val(regionName);
+
+    // Clear/reset dependent fields
+    $('#province').empty().append('<option disabled selected value="">Select Province</option>');
+    $('#province-name').val('');
+    $('#city').empty().append('<option disabled selected value="">Select City</option>');
+    $('#city-name').val('');
+    $('#barangay').empty().append('<option disabled selected value="">Select Barangay</option>');
+    $('#barangay-name').val('');
+
+    // Special handling for NCR (130000000 has no provinces)
+    if (regionCode === "130000000") {
         handleNCRRegion();
     } else {
-        loadProvinces(regionCode);  // Use the region code to load provinces
+        loadProvinces(regionCode);
     }
 }
 
@@ -257,6 +281,7 @@ function handleNCRRegion() {
 function loadProvinces(regionCode) {
     $.getJSON(`${API_BASE_URL}/regions/${regionCode}/provinces/`, function(data) {
         const provinceDropdown = $('#province');
+        provinceDropdown.empty().append('<option disabled selected value="">Select Province</option>');
         if (data.length > 0) {
             data.forEach(province => {
                 provinceDropdown.append(`<option value="${province.code}" data-name="${province.name}">${province.name}</option>`);
@@ -293,6 +318,7 @@ function handleProvinceChange() {
 function loadCitiesForProvince(provinceCode) {
     $.getJSON(`${API_BASE_URL}/provinces/${provinceCode}/cities-municipalities/`, function(data) {
         const cityDropdown = $('#city');
+        cityDropdown.empty().append('<option disabled selected value="">Select City</option>');
         if (data.length > 0) {
             data.forEach(city => {
                 cityDropdown.append(`<option value="${city.code}" data-name="${city.name}">${city.name}</option>`);
@@ -314,6 +340,7 @@ function loadCitiesForProvince(provinceCode) {
 function loadCitiesForRegion(regionCode) {
     $.getJSON(`${API_BASE_URL}/regions/${regionCode}/cities-municipalities/`, function(data) {
         const cityDropdown = $('#city');
+        cityDropdown.empty().append('<option disabled selected value="">Select City</option>');
         if (data.length > 0) {
             data.forEach(city => {
                 cityDropdown.append(`<option value="${city.code}" data-name="${city.name}">${city.name}</option>`);
@@ -381,8 +408,6 @@ function handleBarangayChange() {
 function resetDropdown(selector, defaultText) {
     $(selector).empty().append(`<option disabled selected value="">${defaultText}</option>`);
 }
-
-
 
 
      // Toggle visibility for the "current password" field
@@ -2500,6 +2525,17 @@ $('#file-input').change(function (event) {
 
 
 
-    
+    if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+        navigator.serviceWorker.register('/sw.js')
+            .then(function (registration) {
+                console.log('Service Worker registered with scope:', registration.scope);
+            })
+            .catch(function (error) {
+                console.log('Service Worker registration failed:', error);
+            });
+    });
+}
+
     
 });

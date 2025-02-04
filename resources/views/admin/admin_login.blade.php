@@ -37,10 +37,15 @@
                       <span class="h1 fw-bold my-2 mx-4">Admin Login</span>
                     </div>
                     @if ($errors->any())
-                    <div id="alert-error" class="alert alert-error wow fadeInLeft">
+                    <div id="alert-error" class="alert alert-error">
                       @foreach ($errors->all() as $error)
                       <i class="fa-solid fa-circle-xmark me-2"></i> {{ $error }}
                       @endforeach
+                    </div>
+                    @endif
+                      @if (session('error'))
+                    <div id="alert-error" class="alert alert-error ">
+                      <i class="fa-solid fa-circle-xmark me-2" style="position: relative;"></i> {{ session('error') }}
                     </div>
                     @endif
 
@@ -64,7 +69,7 @@
                       <button type="submit" class="btn btn-success">Login</button>
                     </div>
                     <div class="d-flex justify-content-center links">
-                      <a class="small text-muted ms-2" href="{{ route('admin.reset_password') }}">Forgot password?</a>
+                      <a class="small text-muted ms-2" href="{{ route('admin.findEmail') }}">Forgot password?</a>
                       <a class="small text-muted ms-2" href="{{ route('home') }}">View Page</a>
                     </div>
                   </form>

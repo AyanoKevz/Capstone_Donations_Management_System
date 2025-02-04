@@ -126,13 +126,10 @@
             <!-- Sidebar -->
             <div class="sidebar">
                 <!-- Sidebar user (optional) -->
-                <div class="user-panel my-3 pb-3  d-flex justify-content-center">
-                    <div class="image">
-                        <img src="{{ asset('storage/' . $User->volunteer->user_photo) }}" class="img-circle elevation-2" alt="User Image">
-                    </div>
-                    <div class="info">
-                        <a href="#" class="d-block">{{ $User->username}}</a>
-                    </div>
+                <div class="user-panel my-3 pb-3 d-flex flex-column align-items-center justify-content-center">
+                    <img src="{{ asset('storage/' . $User->volunteer->user_photo) }}" class="img-circle elevation-2" alt="User Image">
+                    <a href="{{route ('donor.profile') }}" class="d-block side-user mt-2" title="profile">{{ $User->username }}</a>
+                    <p class="text-white m-0">Donor</p>
                 </div>
                 <!-- SidebarSearch Form -->
                 <div class="form-inline">

@@ -16,6 +16,8 @@ use App\Http\Controllers\user_profileController;
 
 //Homepage Route
 Route::get('/', [HomeController::class, 'index'])->name('home')->middleware('prevent-back-button');
+Route::view('/install', 'install')->name('install');
+Route::view('/thankyou-install', 'ty')->name('thankyou-message');
 // About page route
 Route::view('/about', 'homepage.about')->name('about');
 // Donation (Donor) page route
@@ -49,22 +51,16 @@ Route::post('/reset-password', [HomeController::class, 'resetPassword'])->name('
 
 //ADMIN ROUTES:
 
-// Admin Reset  Password Page
-Route::get('/admin/login/reset_password', function () {
-    return view('admin.admin_forgot');
-})->name('admin.reset_password');
-
-// Admin Find Email Page
-Route::get('/admin/login/find_email', function () {
-    return view('admin.admin_find_email');
-})->name('admin.findEmail');
+Route::get('/admin/login/find_email', [AdminController::class, 'showFindEmailForm'])->name('admin.findEmail');
+Route::post('/admin/login/send_reset_link', [AdminController::class, 'sendResetLink'])->name('admin.sendResetLink');
+Route::get('/admin/login/reset_password/{token}', [AdminController::class, 'showResetForm'])->name('admin.resetPasswordForm');
+Route::post('/admin/login/reset_password', [AdminController::class, 'resetPassword'])->name('admin.resetPassword');
 
 // Admin Login
-Route::get('/admin/login', [App\Http\Controllers\AdminController::class, 'showLoginForm'])->name('admin.login');
-Route::post('/admin/login', [App\Http\Controllers\AdminController::class, 'login'])->name('admin.login.submit');
+Route::get('/admin/login', [AdminController::class, 'showLoginForm'])->name('admin.login');
+Route::post('/admin/login', [AdminController::class, 'login'])->name('admin.login.submit');
 // Admin Logout
 Route::post('/admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
-
 
 
 // Middleware-protected routes for admin

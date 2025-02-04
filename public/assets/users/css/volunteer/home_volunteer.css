@@ -171,6 +171,7 @@ h1,
   }
 }
 
+
 #spinner {
     opacity: 0;
     visibility: hidden;
@@ -494,6 +495,8 @@ h1,
 }
 
 
+
+
 .row {
   display: -ms-flexbox;
   display: flex;
@@ -651,6 +654,7 @@ h1,
   }
 }
 
+
 .navbar-light .navbar-brand {
   color: rgba(0, 0, 0, 0.9);
   margin-left: 5rem;
@@ -783,7 +787,7 @@ body:not(.layout-fixed) .main-sidebar .sidebar {
 }
 
 .content-header h1 {
-  font-size: 1.8rem;
+  font-size: 2rem;
   margin: 0;
 }
 
@@ -917,14 +921,17 @@ body:not(.layout-fixed) .main-sidebar .sidebar {
   white-space: nowrap;
 }
 
-.user-panel .image {
-  display: inline-block;
-  padding-left: 0.8rem;
+.side-user {
+  font-size: 20px;
+}
+
+.side-user:hover {
+  text-decoration: underline;
 }
 
 .user-panel img {
   height: auto;
-  width: 2.1rem;
+  width: 5rem;
 }
 
 .user-panel .info {
@@ -1244,9 +1251,8 @@ body:not(.layout-fixed) .main-sidebar .sidebar {
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22) !important;
 }
 
-
 .banner-img {
-  width: 35px;
+  width: 50px;
 }
 
 .alert-success {
@@ -1256,7 +1262,6 @@ body:not(.layout-fixed) .main-sidebar .sidebar {
   font-weight: 700;
   font-size: 22px;
 }
-
 
 .alert-error {
   color: #fff;

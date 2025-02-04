@@ -20,11 +20,23 @@
         <div class="col d-flex justify-content-center">
           <div class="card forgot-card">
             <div class="card-body p-4 p-lg-4 text-black d-flex justify-content-center">
-              <form id="admin-login">
+              <form id="admin-login" action="{{ route('admin.sendResetLink') }}" method="POST">
+                 @csrf
                 <div class="d-flex align-items-center justify-content-center  mb-2 pb-1 flex-wrap">
                   <img src="{{ asset('assets/img/systemLogo.png') }}" alt="" class="me-3 forgotlogo-icon">
                   <span class="h1 fw-bold mb-1">Find Your Account</span>
                 </div>
+                 @if (session('error'))
+                    <div id="alert-error" class="alert alert-error ">
+                      <i class="fa-solid fa-circle-xmark me-2"></i> {{ session('error') }}
+                    </div>
+                    @endif
+
+                    @if (session('success'))
+                    <div id="alert-success" class="alert alert-success">
+                      <i class="fa-solid fa-circle-check me-2"></i> {{ session('success') }}
+                    </div>
+                    @endif
                 <h5 class="fw-normal mb-3 text-center">Enter your email address to search for your account.
                 </h5>
                 <div class="input-group mb-3">
@@ -33,12 +45,10 @@
                   <label class="user-label" for="email">Email Address</label>
                 </div>
             </div>
-
             <div class="card-footer d-flex justify-content-end mb-2">
               <a class="btn btn-secondary ms-2" href="{{route('admin.login')}}">Cancel</a>
               <button class="btn btn-success ms-2" type="submit">Search</button>
             </div>
-
             </form>
           </div>
         </div>

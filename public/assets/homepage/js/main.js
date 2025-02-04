@@ -1,6 +1,18 @@
 (function ($) {
     "use strict";
 
+                if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+        navigator.serviceWorker.register('/sw.js')
+            .then(function (registration) {
+                console.log('Service Worker registered with scope:', registration.scope);
+            })
+            .catch(function (error) {
+                console.log('Service Worker registration failed:', error);
+            });
+    });
+}
+
     setTimeout(() => {
             $('#alert-success').fadeOut();
             $('#alert-error').fadeOut();
@@ -18,6 +30,22 @@ var spinnerElement = document.getElementById("spinner");
             spinnerElement.classList.remove("show");
         });
     }
+
+
+function isMobileDevice() {
+    return window.matchMedia("(max-width: 768px)").matches;
+}
+
+function isAppInstalled() {
+    return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+}
+
+if (isMobileDevice() && !isAppInstalled() && !localStorage.getItem("installDismissed")) {
+    window.location.href = "/install";
+}
+
+
+    
    //animation
 const wow = new WOW({
     boxClass: 'wow',
@@ -1078,5 +1106,6 @@ function dataURLtoFile(dataurl, filename) {
 }
 
 loadModels();
+
 
 
