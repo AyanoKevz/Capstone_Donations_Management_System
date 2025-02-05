@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>UniAid - Donor Portal</title>
+    <title>UniAid - Volunteer Portal</title>
     <link rel="icon" href="{{ asset ('assets/img/systemLogo.png') }}" type="image/png">
     <!-- Google Font-->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -66,7 +66,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active rounded-pill" aria-current="page" href="{{route('donor.home')}}">Home</a>
+                            <a class="nav-link active rounded-pill" aria-current="page" href="{{route('volunteer.home')}}">Home</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link " aria-current="page" href="{{route('prc-chapters')}}">Chapters</a>
@@ -89,11 +89,11 @@
                         role="button" data-bs-toggle="dropdown" aria-expanded="false">
 
                         <div class="nav-profile-img">
-                            <img src="{{ asset('storage/' . $User->donor->user_photo) }}" alt="image">
+                            <img src="{{ asset('storage/' . $User->volunteer->user_photo) }}" alt="image">
                             <span class="availability-status online"></span>
                         </div>
                         <div class="nav-profile-text">
-                            <span>{{ $User->donor->first_name . ' ' . $User->donor->last_name }}</span>
+                            <span>{{ $User->volunteer->first_name . ' ' . $User->volunteer->last_name }}</span>
                         </div>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
@@ -108,7 +108,7 @@
                         </li>
                         <li>
                             <a class="dropdown-item d-flex justify-content-center align-items-center"
-                                href="{{ route('donor.profile') }}">My profile
+                                href="{{ route('volunteer.profile') }}">My profile
                                 <i class="fas fa-user ms-2"></i>
                             </a>
                         </li>
@@ -129,9 +129,9 @@
             <div class="sidebar">
                 <!-- Sidebar user (optional) -->
                 <div class="user-panel my-3 pb-3 d-flex flex-column align-items-center justify-content-center">
-                    <img src="{{ asset('storage/' . $User->donor->user_photo) }}" class="img-circle elevation-2" alt="User Image">
-                    <a href="{{route ('donor.profile') }}" class="d-block side-user mt-2" title="profile">{{ $User->username }}</a>
-                    <p class="text-white m-0">Donor</p>
+                    <img src="{{ asset('storage/' . $User->volunteer->user_photo) }}" class="img-circle elevation-2" alt="User Image">
+                    <a href="{{route ('volunteer.profile') }}" class="d-block side-user mt-2" title="profile">{{ $User->username }}</a>
+                    <p class="text-white m-0">Volunteer</p>
                 </div>
                 <!-- SidebarSearch Form -->
                 <div class="form-inline">
@@ -150,7 +150,7 @@
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <!-- Home -->
                         <li class="nav-item">
-                            <a href="{{route ('donor.home') }}" class="nav-link">
+                            <a href="{{ route('volunteer.home') }}" class="nav-link active">
                                 <i class="nav-icon fas fa-house"></i>
                                 <p>Home</p>
                             </a>
@@ -158,18 +158,17 @@
 
                         <!-- My Profile -->
                         <li class="nav-item">
-                            <a href="{{route ('donor.profile') }}" class="nav-link">
+                            <a href="{{ route('volunteer.profile') }}" class="nav-link">
                                 <i class="nav-icon fas fa-user"></i>
                                 <p>My Profile</p>
                             </a>
                         </li>
 
-                        <!-- Make a Donation -->
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-hand-holding-heart"></i>
                                 <p>
-                                    Make a Donation
+                                    blank
                                     <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>
@@ -177,78 +176,20 @@
                                 <li class="nav-item">
                                     <a href="#" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Quick Donation</p>
+                                        <p>blank</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="#" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Donation Requests</p>
+                                        <p>blank</p>
                                     </a>
                                 </li>
                             </ul>
                         </li>
-
-                        <!-- Geo Map -->
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-map-marked-alt"></i>
-                                <p>
-                                    Geo-mapping
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Donation Request Map</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{route ('prc-chapters') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>PRC Chapters</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <!-- Track Donations -->
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-chart-line"></i>
-                                <p>
-                                    Track Donations
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Donation Status</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Donation History</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-
-                        <!-- Learn About Causes -->
-                        <li class="nav-item">
-                            <a href="" class="nav-link">
-                                <i class="nav-icon fas fa-info-circle"></i>
-                                <p>Learn About Causes</p>
-                            </a>
-                        </li>
-
                         <!-- Testimonials -->
                         <li class="nav-item">
-                            <a href="{{route ('donor.testi_form') }}" class=" nav-link active">
+                            <a href="{{route ('volunteer.testi_form') }}" class=" nav-link">
                                 <i class="nav-icon fas fa-star"></i>
                                 <p>Testimonials</p>
                             </a>
@@ -256,7 +197,7 @@
 
                         <!-- Feedback / Support -->
                         <li class="nav-item">
-                            <a href="{{route ('donor.contact_form') }}" class="nav-link">
+                            <a href="{{route ('volunteer.contact_form') }}" class="nav-link">
                                 <i class="nav-icon fas fa-comments"></i>
                                 <p>Contact / Support</p>
                             </a>
@@ -276,15 +217,15 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-6 d-flex align-items-center ms-3">
-                            <img src="{{ asset('assets/img/donorbanner.png') }}" alt="" class="banner-img img-fluid mx-2">
+                            <img src="{{ asset('assets/img/volunteerbanner.png') }}" alt="" class="banner-img img-fluid mx-2">
                             <h1 class="m-0">
-                                Donor Portal
+                                Volunteer Portal
                             </h1>
                         </div>
                         <div class="col-5 d-flex justify-content-end align-items-center">
                             <ol class="breadcrumb mb-0">
                                 <li class="breadcrumb-item">
-                                    <a href="{{ route('donor.home') }}">Home</a>
+                                    <a href="{{ route('volunteer.home') }}">Home</a>
                                 </li>
                                 <li class="breadcrumb-item active">Testimonials</li>
                             </ol>
@@ -478,8 +419,9 @@
                 </div>
                 <!-- End content -->
             </div>
-            <!-- /.content wrapper -->
+
         </div>
+        <!-- /.content wrapper -->
 
         <!-- Main Footer -->
         <footer class="main-footer">

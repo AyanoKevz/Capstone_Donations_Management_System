@@ -15,7 +15,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="{{ asset('lib/bootstrap/css/bootstrap.min.css') }}">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{ asset('assets/users/css/volunteer/home_volunteer.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/users/css/donor/contact_form.css') }}">
 </head>
 
 <!-- Spinner Start -->
@@ -161,6 +161,7 @@
                                 <p>My Profile</p>
                             </a>
                         </li>
+
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-hand-holding-heart"></i>
@@ -194,7 +195,7 @@
 
                         <!-- Feedback / Support -->
                         <li class="nav-item">
-                            <a href="{{ route('volunteer.contact_form') }}" class="nav-link ">
+                            <a href="{{route ('volunteer.contact_form') }}" class="nav-link active">
                                 <i class="nav-icon fas fa-comments"></i>
                                 <p>Contact / Support</p>
                             </a>
@@ -219,11 +220,24 @@
                                 Volunteer Portal
                             </h1>
                         </div>
+                        <div class="col-5 d-flex justify-content-end align-items-center">
+                            <ol class="breadcrumb mb-0">
+                                <li class="breadcrumb-item">
+                                    <a href="{{ route('volunteer.home') }}">Home</a>
+                                </li>
+                                <li class="breadcrumb-item active">Contact - Support</li>
+                            </ol>
+                        </div>
                     </div>
                 </div>
                 @if(session('error'))
                 <div id="alert-error" class="alert alert-error" style=" position: absolute; ; right: 10px; top: 90px;">
                     <i class=" fa-solid fa-circle-xmark fa-xl me-3"></i>{{ session('error') }}
+                </div>
+                @endif
+                @if(session('success'))
+                <div id="alert-success" class="alert alert-success" style=" position: absolute; ; right: 10px; top: 90px;">
+                    <i class="fa-solid fa-circle-check fa-xl me-3"></i>{{ session('success') }}
                 </div>
                 @endif
             </div>
@@ -232,13 +246,103 @@
 
             <!-- Main content -->
             <div class="content">
-                <div class="container">
-                    <div class="row">
-
+                <div class="container py-3">
+                    <div class="row mb-3">
+                        <div class="col-md-3">
+                            <div class="dbox w-100 text-center">
+                                <div class="icon d-flex align-items-center justify-content-center">
+                                    <span class="fas fa-location-dot"></span>
+                                </div>
+                                <div class="text">
+                                    <p><span>Address: </span>37 EDSA corner Boni Avenue, Barangka-Ilaya, Mandaluyong City 1550</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="dbox w-100 text-center">
+                                <div class="icon d-flex align-items-center justify-content-center">
+                                    <span class="fas fa-phone"></span>
+                                </div>
+                                <div class="text">
+                                    <p><span>Phone: </span> (+632) 8790-2300</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="dbox w-100 text-center">
+                                <div class="icon d-flex align-items-center justify-content-center">
+                                    <span class="fas fa-hands-holding-child"></span>
+                                </div>
+                                <div class="text">
+                                    <p><span>Donation: </span>(+632) 8790-2410 / (+632) 8790-2413</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="dbox w-100 text-center">
+                                <div class="icon d-flex align-items-center justify-content-center">
+                                    <span class="fas fa-people-group"></span>
+                                </div>
+                                <div class="text">
+                                    <p><span>Volunteer: </span>(+632) 8790-2373</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
+                    <div class="row no-gutters flex-wrap-reverse shadow-sm">
+                        <div class="col-md-7">
+                            <div class="contact-wrap w-100 p-md-5 p-4">
+                                <h3 class="mb-4">Contact Us</h3>
+                                <form method="POST" id="contactForm" name="contactForm" class="contactForm" action="{{ route('user.submit_contact') }}">
+                                    @csrf
+                                    <div class="row ">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="label" for="name">Full Name</label>
+                                                <input type="text" class="form-control" name="name" id="name" placeholder="Name" required value="{{ $User->volunteer->first_name . ' ' . $User->volunteer->last_name }}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="label" for="email">Contact </label>
+                                                <input type="text" class="form-control" name="contact" id="contact" placeholder="contact" required value="{{ $User->volunteer->contact}}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="label" for="subject">Email Address</label>
+                                                <input type="email" class="form-control" name="email" id="email" placeholder="Email Address" value="{{ $User->email}}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="label" for="subject">Subject</label>
+                                                <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="label" for="#">Message</label>
+                                                <textarea name="message" class="form-control" id="message" cols="30" rows="4" placeholder="Message" required></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <input type="submit" value="Send Message" class="btn primary_btn">
+                                                <div class="submitting"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="col-md-5 d-flex align-items-stretch">
+                            <div class="info-wrap w-100 p-5 contact-banner" style="background-image: url('{{ asset('assets/img/user-contact.jpg') }}');">
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
             </div>
 
         </div>

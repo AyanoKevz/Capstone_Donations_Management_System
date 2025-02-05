@@ -141,5 +141,7 @@ Route::middleware(['auth', 'prevent-back-button'])->prefix('user')->group(functi
         Route::get('/home', [VolunteerController::class, 'index'])->name('volunteer.home');
         Route::get('/volunteer-profile', [user_profileController::class, 'VolunteerProfile'])->name('volunteer.profile');
         Route::post('/volunteer/update/{id}', [user_profileController::class, 'updateVolunteerProfile'])->name('volunteer.updateProfile');
+        Route::get('/contact', [VolunteerController::class, 'showContactForm'])->name('volunteer.contact_form');
+        Route::get('/testimonial', [VolunteerController::class, 'showTestimonialForm'])->name('volunteer.testi_form');
     });
 });

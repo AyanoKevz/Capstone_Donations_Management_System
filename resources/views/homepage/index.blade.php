@@ -631,7 +631,7 @@
                         <i class="fas fa-quote-left fa-2x"></i>
                     </div>
                     <div class="testimonial-img">
-                        <img src="{{ $testimonial->user->donor->user_photo ? asset('storage/' . $testimonial->user->donor->user_photo) : ($testimonial->user->volunteer->user_photo ? asset('storage/' . $testimonial->user->volunteer->user_photo) : asset('assets/img/no_profile.png')) }}"
+                        <img src="{{ $testimonial->user->donor ? asset('storage/' . $testimonial->user->donor->user_photo) : asset('storage/' . $testimonial->user->volunteer->user_photo) }}"
                             class="img-fluid"
                             alt="User Image">
                     </div>
