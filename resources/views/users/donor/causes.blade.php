@@ -321,48 +321,82 @@
 
                 <!-- Content Section -->
         <div class="content">
-            <h2>What does PRC do?</h2>
+            <h2>What does UNIAID do?</h2>
             <p>
-            The Philippine Red Cross is committed to providing humanitarian aid, disaster relief, and essential health services to those in need. Your donations support life-saving initiatives, including disaster response, blood services, emergency medical assistance, health programs, and community outreach. Together, we can alleviate suffering, strengthen resilience, and make a lasting impact on vulnerable communities.    </p>
+            UNIAID is committed to providing urgent assistance to victims of disasters, emergencies, and humanitarian crises. Through rescue efforts, medical aid, food distribution, and recovery programs, we support those affected by fires, typhoons, and other calamities. Our mission is to bring relief, rebuild lives, and offer hope to vulnerable communities in their time of need. </p>
         </div>
-     <!-- Main content -->
-     <div class="gallery">
-    <div class="row">
-        <div class="image-item">
-        <img src="{{ asset('assets/img/causes.jpg') }}" >
-            <p class="title">Flood Victims</p>
-        </div>
-        <div class="image-item">
-        <img src="{{ asset('assets/img/causes.jpg') }}" >
-            <p class="title">Fire Victims</p>
-        </div>
-        <div class="image-item">
-        <img src="{{ asset('assets/img/causes.jpg') }}" >
-            <p class="title">Typhoon Victims</p>
-        </div>
-        <div class="image-item">
-        <img src="{{ asset('assets/img/causes.jpg') }}" >
-            <p class="title">General</p>
-        </div>
-    </div>
-    <div class="row">
-        <div class="image-item">
-        <img src="{{ asset('assets/img/causes.jpg') }}" >
-            <p class="title">Earthquake Victims</p>
-        </div>
-        <div class="image-item">
-        <img src="{{ asset('assets/img/causes.jpg') }}" >
-            <p class="title">Volcanic Eruption Victims</p>
-        </div>
-        <div class="image-item">
-        <img src="{{ asset('assets/img/causes.jpg') }}" >
-            <p class="title">Feeding Program</p>
-        </div>
-        
-    </div>
-   
+    
+           
     </div>
 </div>
+
+     <!-- Main content -->
+
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <!-- From Uiverse.io by gharsh11032000 --> 
+            <div class="card">
+                <img src="{{ asset('assets/img/q6.jpg') }}">
+            <div class="card__content">
+                <p class="card__title">Feeding Program
+                </p><p class="card__description"> provides nutritious meals to underprivileged individuals,to combat hunger and malnutrition in communities.</p>
+                <button class="buttonc">Learn More</button>
+            </div>
+            </div>
+            <!-- From Uiverse.io by gharsh11032000 --> 
+            <div class="card">
+                <img src="{{ asset('assets/img/e3.jpg') }}">
+            <div class="card__content">
+                <p class="card__title">Earthquake Victims
+                </p><p class="card__description"> provides essential aid such as food, water, shelter, and medical assistance to those affected by the disaster.</p>
+                <button class="buttonc">Learn More</button>
+            </div>
+            </div>
+            <!-- From Uiverse.io by gharsh11032000 --> 
+            <div class="card">
+            <img src="{{ asset('assets/img/f2.jpg') }}">
+            <div class="card__content">
+                <p class="card__title">Fire Victims
+                </p><p class="card__description">provides emergency assistance, including food, clothing, and shelter, to individuals and families affected by fires.</p>
+                <button class="buttonc">Learn More</button>
+            </div>
+            </div>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <!-- From Uiverse.io by gharsh11032000 --> 
+            <div class="card">
+            <img src="{{ asset('assets/img/ff2.jpeg') }}">
+            <div class="card__content">
+                <p class="card__title">Flood Victims
+                </p><p class="card__description">provides emergency aid, including food, clean water, shelter, and medical support, to families affected by flooding.</p>
+                <button class="buttonc">Learn More</button>
+            </div>
+            </div>
+            <!-- From Uiverse.io by gharsh11032000 --> 
+            <div class="card">
+            <img src="{{ asset('assets/img/t3.jpeg') }}">
+            <div class="card__content">
+                <p class="card__title">Typhoon Victims
+                </p><p class="card__description"> provides urgent assistance, including food, clean water, shelter, and medical care, to communities affected.</p>
+                <button class="buttonc">Learn More</button>
+            </div>
+            </div>
+            <!-- From Uiverse.io by gharsh11032000 --> 
+            <div class="card">
+            <img src="{{ asset('assets/img/v4.jpg') }}">
+            <div class="card__content">
+                <p class="card__title">Volcanic Disaster
+                </p><p class="card__description">Provides emergency aid, including food, clean water, shelter, medical care, and protective gear, to families affected.</p>  
+                <button class="buttonc">Learn More</button>
+            </div>
+            </div>
+    </div>
+</div>
+
 
 
         <!-- Main Footer -->
@@ -383,6 +417,8 @@
     <script src="{{ asset('lib/fontawesome/all.js') }}"></script>
     <!-- User JS -->
     <script src="{{ asset('assets/users/js/user.js') }}"></script>
+
+
 </body>
 
 </html>
