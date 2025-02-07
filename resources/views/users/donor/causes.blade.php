@@ -340,7 +340,7 @@
                 <img src="{{ asset('assets/img/q6.jpg') }}">
             <div class="card__content">
                 <p class="card__title">Feeding Program
-                </p><p class="card__description"> provides nutritious meals to underprivileged individuals,to combat hunger and malnutrition in communities.</p>
+                </p>
                 <button class="buttonc">Learn More</button>
             </div>
             </div>
@@ -349,7 +349,7 @@
                 <img src="{{ asset('assets/img/e3.jpg') }}">
             <div class="card__content">
                 <p class="card__title">Earthquake Victims
-                </p><p class="card__description"> provides essential aid such as food, water, shelter, and medical assistance to those affected by the disaster.</p>
+                </p>
                 <button class="buttonc">Learn More</button>
             </div>
             </div>
@@ -358,7 +358,7 @@
             <img src="{{ asset('assets/img/f2.jpg') }}">
             <div class="card__content">
                 <p class="card__title">Fire Victims
-                </p><p class="card__description">provides emergency assistance, including food, clothing, and shelter, to individuals and families affected by fires.</p>
+                </p>
                 <button class="buttonc">Learn More</button>
             </div>
             </div>
@@ -372,7 +372,7 @@
             <img src="{{ asset('assets/img/ff2.jpeg') }}">
             <div class="card__content">
                 <p class="card__title">Flood Victims
-                </p><p class="card__description">provides emergency aid, including food, clean water, shelter, and medical support, to families affected by flooding.</p>
+                </p>
                 <button class="buttonc">Learn More</button>
             </div>
             </div>
@@ -381,7 +381,7 @@
             <img src="{{ asset('assets/img/t3.jpeg') }}">
             <div class="card__content">
                 <p class="card__title">Typhoon Victims
-                </p><p class="card__description"> provides urgent assistance, including food, clean water, shelter, and medical care, to communities affected.</p>
+                </p>
                 <button class="buttonc">Learn More</button>
             </div>
             </div>
@@ -390,7 +390,7 @@
             <img src="{{ asset('assets/img/v4.jpg') }}">
             <div class="card__content">
                 <p class="card__title">Volcanic Disaster
-                </p><p class="card__description">Provides emergency aid, including food, clean water, shelter, medical care, and protective gear, to families affected.</p>  
+                </p>
                 <button class="buttonc">Learn More</button>
             </div>
             </div>

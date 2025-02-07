@@ -136,13 +136,7 @@
     font-weight: 700;
   }
   
-  .card__description {
-    margin: 5px 0 0;
-    margin-bottom: 5px;
-    font-size: 14px;
-    color: #777;
-    line-height: 1.4;
-  }
+  
   
   .card:hover svg {
     scale: 0;
@@ -152,6 +146,8 @@
 
 
 .buttonc {
+  margin-top: 30px;
+  margin-left: 60px;
   width: 9em;
   height: 3em;
   border-radius: 30em;
