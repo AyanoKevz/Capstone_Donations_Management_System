@@ -339,63 +339,269 @@
             <div class="card">
                 <img src="{{ asset('assets/img/q6.jpg') }}">
             <div class="card__content">
-                <p class="card__title">Feeding Program
-                </p>
-                <button class="buttonc">Learn More</button>
+            <p class="card__title">Feeding Program</p>
+                <button class="buttonc" data-bs-toggle="modal" data-bs-target="#infoModal1" 
+                    data-title="Feeding Program" 
+                    data-description="Flood victims need urgent assistance including shelter, food, and medical aid.">
+                    Learn More
+                </button>
             </div>
             </div>
             <!-- From Uiverse.io by gharsh11032000 --> 
             <div class="card">
                 <img src="{{ asset('assets/img/e3.jpg') }}">
             <div class="card__content">
-                <p class="card__title">Earthquake Victims
-                </p>
-                <button class="buttonc">Learn More</button>
+            <p class="card__title">Earthquake Victims</p>
+                <button class="buttonc" data-bs-toggle="modal" data-bs-target="#infoModal2" 
+                    data-title="Earthquake Victims" 
+                    data-description="The Philippines sits along the Pacific Ring of Fire, making it highly vulnerable to earthquakes. These natural disasters can strike without warning, causing destruction, displacing families, and putting lives at risk.">
+                    Learn More
+                </button>
             </div>
             </div>
             <!-- From Uiverse.io by gharsh11032000 --> 
             <div class="card">
             <img src="{{ asset('assets/img/f2.jpg') }}">
             <div class="card__content">
-                <p class="card__title">Fire Victims
-                </p>
-                <button class="buttonc">Learn More</button>
+            <p class="card__title">Fire Victims</p>
+                <button class="buttonc" data-bs-toggle="modal" data-bs-target="#infoModal3" 
+                    data-title="Fire Victims" 
+                    data-description="Flood victims need urgent assistance including shelter, food, and medical aid.">
+                    Learn More
+                </button>
             </div>
             </div>
+    </div>
+</div>
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <!-- Card 1 --> 
+        <div class="card">
+            <img src="{{ asset('assets/img/ff2.jpeg') }}">
+            <div class="card__content">
+                <p class="card__title">Flood Victims</p>
+                <button class="buttonc" data-bs-toggle="modal" data-bs-target="#infoModal4" 
+                    data-title="Flood Victims" 
+                    data-description="Flood victims need urgent assistance including shelter, food, and medical aid.">
+                    Learn More
+                </button>
+            </div>
+        </div>
+        
+        <!-- Card 2 --> 
+        <div class="card">
+            <img src="{{ asset('assets/img/t3.jpeg') }}">
+            <div class="card__content">
+                <p class="card__title">Typhoon Victims</p>
+                <button class="buttonc" data-bs-toggle="modal" data-bs-target="#infoModal5" 
+                    data-title="Typhoon Victims" 
+                    data-description="Typhoon victims face loss of homes and require immediate relief supplies and assistance.">
+                    Learn More
+                </button>
+            </div>
+        </div>
+        
+        <!-- Card 3 --> 
+        <div class="card">
+            <img src="{{ asset('assets/img/v4.jpg') }}">
+            <div class="card__content">
+                <p class="card__title">Volcanic Disaster</p>
+                <button class="buttonc" data-bs-toggle="modal" data-bs-target="#infoModal6" 
+                    data-title="Volcanic Disaster" 
+                    data-description="Volcanic eruptions lead to severe destruction, requiring evacuation and humanitarian support.">
+                    Learn More
+                </button>
+            </div>
+        </div>
     </div>
 </div>
 
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <!-- From Uiverse.io by gharsh11032000 --> 
-            <div class="card">
-            <img src="{{ asset('assets/img/ff2.jpeg') }}">
-            <div class="card__content">
-                <p class="card__title">Flood Victims
-                </p>
-                <button class="buttonc">Learn More</button>
+<!-- Modal 1 -->
+<div class="modal fade" id="infoModal1" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="infoModalLabel">Feeding Program</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+            <div class="modal-body text-start">
+            <strong>Your donation helps provide nutritious meals to those in need, including:</strong><br>
+            • Hot meals for disaster-affected families<br>
+            • Supplemental feeding for malnourished children<br>
+            • Food packs for vulnerable communities<br><br>
+
+            <strong>Become a Red Cross volunteer</strong> and assist in:<br>
+            • Meal preparation and distribution<br>
+            • Nutrition awareness and education<br>
+            • Packing and delivering food supplies<br>
+            • Supporting feeding missions in remote areas<br><br>
+
+            <strong>PRC also conducts long-term programs to fight malnutrition, including:</strong><br>
+            
+            • Community-based nutrition programs<br>
+            • School feeding initiatives<br>
+            • Sustainable food security projects  
             </div>
-            <!-- From Uiverse.io by gharsh11032000 --> 
-            <div class="card">
-            <img src="{{ asset('assets/img/t3.jpeg') }}">
-            <div class="card__content">
-                <p class="card__title">Typhoon Victims
-                </p>
-                <button class="buttonc">Learn More</button>
-            </div>
-            </div>
-            <!-- From Uiverse.io by gharsh11032000 --> 
-            <div class="card">
-            <img src="{{ asset('assets/img/v4.jpg') }}">
-            <div class="card__content">
-                <p class="card__title">Volcanic Disaster
-                </p>
-                <button class="buttonc">Learn More</button>
-            </div>
-            </div>
+        </div>
     </div>
 </div>
+
+<!-- Modal 2 -->
+<div class="modal fade" id="infoModal2" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="infoModalLabel">Earthquake Victims</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body  text-start">
+            <strong>Your donation provides immediate relief, including:</strong><br>
+            • Food and clean water<br>
+            • Medical aid and emergency response</strong><br>
+            • Temporary shelter and essential supplies<br><br>
+
+                <strong>Become a Red Cross volunteer</strong> and assist in:<br>
+                • Emergency response teams<br>
+                • Shelter and relief distribution<br>
+                • First aid and medical missions<br>
+                • Community awareness campaigns<br><br>
+
+                <strong>PRC also provides disaster preparedness programs, including:</strong><br>
+                • First Aid & CPR Training<br>
+                • Earthquake Safety Drills<br>
+                • Community Disaster Response Planning
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal 3 -->
+<div class="modal fade" id="infoModal3" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="infoModalLabel">Fire Victims</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-start">
+            <strong>Your donation provides immediate relief to fire victims, including:</strong><br>
+            • Food and clean water<br>
+            • Emergency medical aid and first aid services<br>
+            • Temporary shelter and essential supplies<br>
+            • Clothing and hygiene kits for displaced families<br><br>
+
+            <strong>Become a Red Cross volunteer</strong> and assist in:<br>
+            • Fire response and rescue operations<br>
+            • Shelter and relief distribution<br>
+            • First aid and medical support<br>
+            • Community fire prevention awareness<br><br>
+
+            <strong>PRC also provides fire safety and preparedness programs, including:</strong><br>
+            • Fire Prevention Awareness Campaigns<br>
+            • First Aid & Burn Injury Training<br>
+            • Emergency Evacuation Drills  
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal 4 -->
+<div class="modal fade" id="infoModal4" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="infoModalLabel">Flood Victims</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-start">
+            <strong>Your donation provides immediate relief to flood victims, including:</strong><br>
+            • Food and clean drinking water<br>
+            • Emergency medical aid and first aid services<br>
+            • Temporary shelter and essential supplies<br>
+            • Hygiene kits and dry clothing for displaced families<br>
+            • Rescue and evacuation assistance<br><br>
+
+            <strong>Become a Red Cross volunteer</strong> and assist in:<br>
+            • Flood rescue and evacuation operations<br>
+            • Shelter and relief distribution<br>
+            • First aid and medical support<br>
+            • Community flood preparedness and awareness<br><br>
+
+            <strong>PRC also provides flood safety and preparedness programs, including:</strong><br>
+            • Flood Early Warning and Response Training<br>
+            • First Aid & Water Safety Training<br>
+            • Community Disaster Risk Reduction Programs  
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal 5 -->
+<div class="modal fade" id="infoModal5" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="infoModalLabel">Typhoon Victims</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-start">
+            <strong>Your donation provides immediate relief to typhoon victims, including:</strong><br>
+            • Food and clean drinking water<br>
+            • Emergency medical aid and first aid services<br>
+            • Temporary shelter and essential supplies<br>
+            • Hygiene kits and dry clothing for displaced families<br>
+            • Rescue, evacuation, and transportation assistance<br><br>
+
+            <strong>Become a Red Cross volunteer</strong> and assist in:<br>
+            • Typhoon rescue and evacuation operations<br>
+            • Shelter and relief distribution<br>
+            • First aid and medical support<br>
+            • Community disaster preparedness and awareness<br><br>
+
+            <strong>PRC also provides typhoon safety and preparedness programs, including:</strong><br>
+            • Disaster Preparedness and Emergency Response Training<br>
+            • First Aid & Water Safety Training<br>
+            • Community Risk Reduction and Resilience Programs  
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal 6 -->
+<div class="modal fade" id="infoModal6" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="infoModalLabel">Volcanic Eruption Victims</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-start">
+            <strong>Your donation provides immediate relief to volcanic eruption victims, including:</strong><br>
+            • Food and clean drinking water<br>
+            • Emergency medical aid and respiratory protection (e.g., N95 masks)<br>
+            • Temporary shelter and essential supplies<br>
+            • Hygiene kits and protective clothing for ashfall exposure<br>
+            • Rescue, evacuation, and transportation assistance<br><br>
+
+            <strong>Become a Red Cross volunteer</strong> and assist in:<br>
+            • Evacuation and emergency response operations<br>
+            • Shelter and relief distribution<br>
+            • First aid and medical support for ash-related illnesses<br>
+            • Community awareness on volcanic hazards and safety measures<br><br>
+
+            <strong>PRC also provides volcanic eruption safety and preparedness programs, including:</strong><br>
+            • Ashfall and Respiratory Safety Training<br>
+            • First Aid & Emergency Evacuation Drills<br>
+            • Community Disaster Risk Reduction and Resilience Programs  
+
+            </div>
+        </div>
+    </div>
+</div>
+
 
 
 
@@ -417,6 +623,20 @@
     <script src="{{ asset('lib/fontawesome/all.js') }}"></script>
     <!-- User JS -->
     <script src="{{ asset('assets/users/js/user.js') }}"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    var infoModal = document.getElementById('infoModal');
+    infoModal.addEventListener('show.bs.modal', function (event) {
+        var button = event.relatedTarget;
+        var title = button.getAttribute('data-title');
+        var description = button.getAttribute('data-description');
+        document.getElementById('infoModalLabel').textContent = title;
+        document.getElementById('modalBody').textContent = description;
+    });
+});
+</script>  
 
 
 </body>

@@ -179,4 +179,27 @@
  }
 
  
+ .modal.show .modal-dialog {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh; /* Ensures the modal takes the full viewport height */
+}
 
+.modal-content {
+  border-radius: 15px;
+  
+}
+.modal-header {
+  background: linear-gradient(to right, #ff1f1f, #ff6b6b); /* Smooth red gradient */
+  color: white;
+  
+}
+.modal-footer {
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+}
+.modal-body {
+  font-size: 16px;
+  text-align: center;
+}
