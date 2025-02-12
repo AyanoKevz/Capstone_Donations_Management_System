@@ -82,8 +82,9 @@
 /* From Uiverse.io by gharsh11032000 */ 
 .card {
     position: relative;
-    width: 300px;
-    height: 200px;
+    width: 100%;
+    max-width: 300px; /* Ensures consistency */
+    height: 220px; /* Slightly taller for better content fit */  
     background: White;
     border-radius: 10px;
     display: flex;
@@ -91,8 +92,9 @@
     justify-content: center;
     overflow: hidden;
     transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);    
-    margin-right: 100px; 
-    margin-left: 35px;
+    margin-left: 40px;
+     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
   }
   
   .card img {
@@ -246,5 +248,10 @@
   to {
       opacity: 1;
       transform: translateY(0);
+  }
+}
+@media (max-width: 576px) {
+  .modal-body {
+      font-size: 14px;
   }
 }

@@ -336,6 +336,7 @@
 <div class="container py-5">
     <div class="row justify-content-center">
         <!-- From Uiverse.io by gharsh11032000 --> 
+        <div class="col-md-4 d-flex justify-content-center">
             <div class="card">
                 <img src="{{ asset('assets/img/q6.jpg') }}">
             <div class="card__content">
@@ -347,7 +348,9 @@
                 </button>
             </div>
             </div>
+            </div>
             <!-- From Uiverse.io by gharsh11032000 --> 
+            <div class="col-md-4 d-flex justify-content-center">
             <div class="card">
                 <img src="{{ asset('assets/img/e3.jpg') }}">
             <div class="card__content">
@@ -359,7 +362,9 @@
                 </button>
             </div>
             </div>
+            </div>
             <!-- From Uiverse.io by gharsh11032000 --> 
+            <div class="col-md-4 d-flex justify-content-center">
             <div class="card">
             <img src="{{ asset('assets/img/f2.jpg') }}">
             <div class="card__content">
@@ -371,11 +376,13 @@
                 </button>
             </div>
             </div>
+            </div>
     </div>
 </div>
 <div class="container py-5">
     <div class="row justify-content-center">
         <!-- Card 1 --> 
+        <div class="col-md-4 d-flex justify-content-center">
         <div class="card">
             <img src="{{ asset('assets/img/ff2.jpeg') }}">
             <div class="card__content">
@@ -386,9 +393,11 @@
                     Learn More
                 </button>
             </div>
+            </div>
         </div>
         
         <!-- Card 2 --> 
+        <div class="col-md-4 d-flex justify-content-center">
         <div class="card">
             <img src="{{ asset('assets/img/t3.jpeg') }}">
             <div class="card__content">
@@ -399,9 +408,11 @@
                     Learn More
                 </button>
             </div>
+            </div>
         </div>
         
         <!-- Card 3 --> 
+        <div class="col-md-4 d-flex justify-content-center">
         <div class="card">
             <img src="{{ asset('assets/img/v4.jpg') }}">
             <div class="card__content">
@@ -411,6 +422,7 @@
                     data-description="Volcanic eruptions lead to severe destruction, requiring evacuation and humanitarian support.">
                     Learn More
                 </button>
+            </div>
             </div>
         </div>
     </div>
