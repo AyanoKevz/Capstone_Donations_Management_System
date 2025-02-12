@@ -426,21 +426,21 @@
             </div>
             <div class="modal-body text-start">
             <strong>Your donation helps provide nutritious meals to those in need, including:</strong><br>
-            • Hot meals for disaster-affected families<br>
-            • Supplemental feeding for malnourished children<br>
-            • Food packs for vulnerable communities<br><br>
+            <i class="fa-solid fa-right-long"></i> Hot meals for disaster-affected families<br>
+            <i class="fa-solid fa-right-long"></i> Supplemental feeding for malnourished children<br>
+            <i class="fa-solid fa-right-long"></i> Food packs for vulnerable communities<br><br>
 
-            <strong>Become a Red Cross volunteer</strong> and assist in:<br>
-            • Meal preparation and distribution<br>
-            • Nutrition awareness and education<br>
-            • Packing and delivering food supplies<br>
-            • Supporting feeding missions in remote areas<br><br>
+            <strong>Become a volunteer and assist in:</strong><br>
+            <i class="fa-solid fa-right-long"></i> Meal preparation and distribution<br>
+            <i class="fa-solid fa-right-long"></i> Nutrition awareness and education<br>
+            <i class="fa-solid fa-right-long"></i> Packing and delivering food supplies<br>
+            <i class="fa-solid fa-right-long"></i> Supporting feeding missions in remote areas<br><br>
 
-            <strong>PRC also conducts long-term programs to fight malnutrition, including:</strong><br>
+            <strong>We conducts long-term programs to fight malnutrition, including:</strong><br>
             
-            • Community-based nutrition programs<br>
-            • School feeding initiatives<br>
-            • Sustainable food security projects  
+            <i class="fa-solid fa-right-long"></i> Community-based nutrition programs<br>
+            <i class="fa-solid fa-right-long"></i> School feeding initiatives<br>
+            <i class="fa-solid fa-right-long"></i> Sustainable food security projects  
             </div>
         </div>
     </div>
@@ -456,20 +456,19 @@
             </div>
             <div class="modal-body  text-start">
             <strong>Your donation provides immediate relief, including:</strong><br>
-            • Food and clean water<br>
-            • Medical aid and emergency response</strong><br>
-            • Temporary shelter and essential supplies<br><br>
+            <i class="fa-solid fa-right-long"></i> Food and clean water<br>
+            <i class="fa-solid fa-right-long"></i> Medical aid and emergency response</strong><br>
+            <i class="fa-solid fa-right-long"></i> Temporary shelter and essential supplies<br><br>
 
-                <strong>Become a Red Cross volunteer</strong> and assist in:<br>
-                • Emergency response teams<br>
-                • Shelter and relief distribution<br>
-                • First aid and medical missions<br>
-                • Community awareness campaigns<br><br>
+            <strong>Become a volunteer and assist in:</strong><br>
+            <i class="fa-solid fa-right-long"></i> Emergency response teams<br>
+                <i class="fa-solid fa-right-long"></i> Shelter and relief distribution<br>
+                <i class="fa-solid fa-right-long"></i> First aid and medical missions<br><br>
 
-                <strong>PRC also provides disaster preparedness programs, including:</strong><br>
-                • First Aid & CPR Training<br>
-                • Earthquake Safety Drills<br>
-                • Community Disaster Response Planning
+                <strong>We provide disaster preparedness programs, including:</strong><br>
+                <i class="fa-solid fa-right-long"></i> First Aid & CPR Training<br>
+                <i class="fa-solid fa-right-long"></i> Earthquake Safety Drills<br>
+                <i class="fa-solid fa-right-long"></i> Community Disaster Response Planning
             </div>
         </div>
     </div>
@@ -485,21 +484,21 @@
             </div>
             <div class="modal-body text-start">
             <strong>Your donation provides immediate relief to fire victims, including:</strong><br>
-            • Food and clean water<br>
-            • Emergency medical aid and first aid services<br>
-            • Temporary shelter and essential supplies<br>
-            • Clothing and hygiene kits for displaced families<br><br>
+            <i class="fa-solid fa-right-long"></i> Food and clean water<br>
+            <i class="fa-solid fa-right-long"></i> Emergency medical aid and first aid services<br>
+            <i class="fa-solid fa-right-long"></i> Temporary shelter and essential supplies<br>
+            <i class="fa-solid fa-right-long"></i> Clothing and hygiene kits for displaced families<br><br>
 
-            <strong>Become a Red Cross volunteer</strong> and assist in:<br>
-            • Fire response and rescue operations<br>
-            • Shelter and relief distribution<br>
-            • First aid and medical support<br>
-            • Community fire prevention awareness<br><br>
+            <strong>Become a volunteer and assist in:</strong><br>
+            <i class="fa-solid fa-right-long"></i> Fire response and rescue operations<br>
+            <i class="fa-solid fa-right-long"></i> Shelter and relief distribution<br>
+            <i class="fa-solid fa-right-long"></i> First aid and medical support<br>
+            <i class="fa-solid fa-right-long"></i> Community fire prevention awareness<br><br>
 
-            <strong>PRC also provides fire safety and preparedness programs, including:</strong><br>
-            • Fire Prevention Awareness Campaigns<br>
-            • First Aid & Burn Injury Training<br>
-            • Emergency Evacuation Drills  
+            <strong>We provide fire safety and preparedness programs, including:</strong><br>
+            <i class="fa-solid fa-right-long"></i> Fire Prevention Awareness Campaigns<br>
+            <i class="fa-solid fa-right-long"></i> First Aid & Burn Injury Training<br>
+            <i class="fa-solid fa-right-long"></i> Emergency Evacuation Drills  
 
             </div>
         </div>
@@ -516,22 +515,22 @@
             </div>
             <div class="modal-body text-start">
             <strong>Your donation provides immediate relief to flood victims, including:</strong><br>
-            • Food and clean drinking water<br>
-            • Emergency medical aid and first aid services<br>
-            • Temporary shelter and essential supplies<br>
-            • Hygiene kits and dry clothing for displaced families<br>
-            • Rescue and evacuation assistance<br><br>
+            <i class="fa-solid fa-right-long"></i> Food and clean drinking water<br>
+            <i class="fa-solid fa-right-long"></i> Emergency medical aid and first aid services<br>
+            <i class="fa-solid fa-right-long"></i> Temporary shelter and essential supplies<br>
+            <i class="fa-solid fa-right-long"></i> Hygiene kits and dry clothing for displaced families<br>
+            <i class="fa-solid fa-right-long"></i> Rescue and evacuation assistance<br><br>
 
-            <strong>Become a Red Cross volunteer</strong> and assist in:<br>
-            • Flood rescue and evacuation operations<br>
-            • Shelter and relief distribution<br>
-            • First aid and medical support<br>
-            • Community flood preparedness and awareness<br><br>
+            <strong>Become a volunteer and assist in:</strong><br>
+            <i class="fa-solid fa-right-long"></i> Flood rescue and evacuation operations<br>
+            <i class="fa-solid fa-right-long"></i> Shelter and relief distribution<br>
+            <i class="fa-solid fa-right-long"></i> First aid and medical support<br>
+            <i class="fa-solid fa-right-long"></i> Community flood preparedness and awareness<br><br>
 
-            <strong>PRC also provides flood safety and preparedness programs, including:</strong><br>
-            • Flood Early Warning and Response Training<br>
-            • First Aid & Water Safety Training<br>
-            • Community Disaster Risk Reduction Programs  
+            <strong>We provide flood safety and preparedness programs, including:</strong><br>
+            <i class="fa-solid fa-right-long"></i> Flood Early Warning and Response Training<br>
+            <i class="fa-solid fa-right-long"></i> First Aid & Water Safety Training<br>
+            <i class="fa-solid fa-right-long"></i> Community Disaster Risk Reduction Programs  
 
             </div>
         </div>
@@ -548,22 +547,22 @@
             </div>
             <div class="modal-body text-start">
             <strong>Your donation provides immediate relief to typhoon victims, including:</strong><br>
-            • Food and clean drinking water<br>
-            • Emergency medical aid and first aid services<br>
-            • Temporary shelter and essential supplies<br>
-            • Hygiene kits and dry clothing for displaced families<br>
-            • Rescue, evacuation, and transportation assistance<br><br>
+            <i class="fa-solid fa-right-long"></i> Food and clean drinking water<br>
+            <i class="fa-solid fa-right-long"></i> Emergency medical aid and first aid services<br>
+            <i class="fa-solid fa-right-long"></i> Temporary shelter and essential supplies<br>
+            <i class="fa-solid fa-right-long"></i> Hygiene kits and dry clothing for displaced families<br>
+            <i class="fa-solid fa-right-long"></i> Rescue, evacuation, and transportation assistance<br><br>
 
-            <strong>Become a Red Cross volunteer</strong> and assist in:<br>
-            • Typhoon rescue and evacuation operations<br>
-            • Shelter and relief distribution<br>
-            • First aid and medical support<br>
-            • Community disaster preparedness and awareness<br><br>
+            <strong>Become a volunteer and assist in:</strong><br>
+            <i class="fa-solid fa-right-long"></i> Typhoon rescue and evacuation operations<br>
+            <i class="fa-solid fa-right-long"></i> Shelter and relief distribution<br>
+            <i class="fa-solid fa-right-long"></i> First aid and medical support<br>
+            <i class="fa-solid fa-right-long"></i> Community disaster preparedness and awareness<br><br>
 
-            <strong>PRC also provides typhoon safety and preparedness programs, including:</strong><br>
-            • Disaster Preparedness and Emergency Response Training<br>
-            • First Aid & Water Safety Training<br>
-            • Community Risk Reduction and Resilience Programs  
+            <strong>We provide typhoon safety and preparedness programs, including:</strong><br>
+            <i class="fa-solid fa-right-long"></i> Disaster Preparedness and Emergency Response Training<br>
+            <i class="fa-solid fa-right-long"></i> First Aid & Water Safety Training<br>
+            <i class="fa-solid fa-right-long"></i> Community Risk Reduction and Resilience Programs  
 
             </div>
         </div>
@@ -580,22 +579,22 @@
             </div>
             <div class="modal-body text-start">
             <strong>Your donation provides immediate relief to volcanic eruption victims, including:</strong><br>
-            • Food and clean drinking water<br>
-            • Emergency medical aid and respiratory protection (e.g., N95 masks)<br>
-            • Temporary shelter and essential supplies<br>
-            • Hygiene kits and protective clothing for ashfall exposure<br>
-            • Rescue, evacuation, and transportation assistance<br><br>
+            <i class="fa-solid fa-right-long"></i> Food and clean drinking water<br>
+            <i class="fa-solid fa-right-long"></i> Emergency medical aid and respiratory protection (e.g., N95 masks)<br>
+            <i class="fa-solid fa-right-long"></i> Temporary shelter and essential supplies<br>
+            <i class="fa-solid fa-right-long"></i> Hygiene kits and protective clothing for ashfall exposure<br>
+            <i class="fa-solid fa-right-long"></i> Rescue, evacuation, and transportation assistance<br><br>
 
-            <strong>Become a Red Cross volunteer</strong> and assist in:<br>
-            • Evacuation and emergency response operations<br>
-            • Shelter and relief distribution<br>
-            • First aid and medical support for ash-related illnesses<br>
-            • Community awareness on volcanic hazards and safety measures<br><br>
+            <strong>Become a volunteer and assist in:</strong><br>
+            <i class="fa-solid fa-right-long"></i> Evacuation and emergency response operations<br>
+            <i class="fa-solid fa-right-long"></i> Shelter and relief distribution<br>
+            <i class="fa-solid fa-right-long"></i> First aid and medical support for ash-related illnesses<br>
+            <i class="fa-solid fa-right-long"></i> Community awareness on volcanic hazards and safety measures<br><br>
 
-            <strong>PRC also provides volcanic eruption safety and preparedness programs, including:</strong><br>
-            • Ashfall and Respiratory Safety Training<br>
-            • First Aid & Emergency Evacuation Drills<br>
-            • Community Disaster Risk Reduction and Resilience Programs  
+            <strong>We provide volcanic eruption safety and preparedness programs, including:</strong><br>
+            <i class="fa-solid fa-right-long"></i> Ashfall and Respiratory Safety Training<br>
+            <i class="fa-solid fa-right-long"></i> First Aid & Emergency Evacuation Drills<br>
+            <i class="fa-solid fa-right-long"></i> Community Disaster Risk Reduction and Resilience Programs  
 
             </div>
         </div>
