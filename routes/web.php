@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\DonationController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InquiryController;
 use App\Http\Controllers\VerifyAcct;
@@ -41,6 +42,10 @@ Route::post('/register/volunteer', [UserRegistrationController::class, 'register
 
 //User login route
 Route::post('/user-login', [userLoginController::class, 'login'])->name('login');
+
+Route::get('mobile/login', [userLoginController::class, 'mobileLoginForm'])->name('mobile-login')->middleware('prevent-back-button');
+Route::post('mobile/login', [userLoginController::class, 'SubmitMobileLogin'])->name('mlogin-submit');
+
 Route::post('/logout', [userLoginController::class, 'logout'])->name('user.logout');
 
 Route::post('/forgot-password', [HomeController::class, 'sendResetLink'])->name('forgot-password');
@@ -72,6 +77,12 @@ Route::middleware(['admin', 'prevent-back-button'])->prefix('admin')->group(func
     Route::get('/profile', [AdminController::class, 'admin_profile'])->name('admin.profile');
     Route::post('/profile/{id}', [AdminController::class, 'updateProfile'])->name('admin.updateProfile');
     Route::post('/account/{id}', [AdminController::class, 'updateAccount'])->name('admin.updateAccount');
+
+    // Request
+    Route::get('donation/request', [DonationController::class, 'RequestForm'])->name('admin.request_form');
+    Route::post('donation/request', [DonationController::class, 'submitRequest'])->name('admin.request.submit');
+
+
     //Manage Admin
     Route::get('/active-admin', [AdminController::class, 'adminList'])->name('admin.list');
     Route::post('/Admin-create', [AdminController::class, 'CreateAdmin'])->name('admin.store');
@@ -133,6 +144,8 @@ Route::middleware(['auth', 'prevent-back-button'])->prefix('user')->group(functi
         Route::get('/prc-chapters', [DonorController::class, 'showChapters'])->name('prc-chapters');
         Route::get('/contact', [DonorController::class, 'showContactForm'])->name('donor.contact_form');
         Route::get('/testimonial', [DonorController::class, 'showTestimonialForm'])->name('donor.testi_form');
+
+        Route::get('/request-map', [DonationController::class, 'RequestMap'])->name('donor.request_map');
     });
 
 

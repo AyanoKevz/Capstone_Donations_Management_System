@@ -148,7 +148,7 @@
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <!-- Home -->
                         <li class="nav-item">
-                            <a href="{{ route('volunteer.home') }}" class="nav-link active">
+                            <a href="{{ route('volunteer.home') }}" class="nav-link">
                                 <i class="nav-icon fas fa-house"></i>
                                 <p>Home</p>
                             </a>
@@ -162,11 +162,12 @@
                             </a>
                         </li>
 
+                        <!-- Volunteer Activities -->
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-hand-holding-heart"></i>
                                 <p>
-                                    blank
+                                    Volunteer Tasks
                                     <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>
@@ -174,28 +175,53 @@
                                 <li class="nav-item">
                                     <a href="#" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>blank</p>
+                                        <p>Available Tasks</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="#" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>blank</p>
+                                        <p>Assigned Task</p>
                                     </a>
                                 </li>
                             </ul>
                         </li>
+
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-pen-to-square"></i>
+                                <p>
+                                    Track Activities
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>My Task</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Volunteer History</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
                         <!-- Testimonials -->
                         <li class="nav-item">
-                            <a href="{{route ('volunteer.testi_form') }}" class=" nav-link">
+                            <a href="{{ route('volunteer.testi_form') }}" class="nav-link">
                                 <i class="nav-icon fas fa-star"></i>
                                 <p>Testimonials</p>
                             </a>
                         </li>
 
-                        <!-- Feedback / Support -->
+                        <!-- Contact / Support -->
                         <li class="nav-item">
-                            <a href="{{route ('volunteer.contact_form') }}" class="nav-link active">
+                            <a href="{{ route('volunteer.contact_form') }}" class="nav-link active">
                                 <i class="nav-icon fas fa-comments"></i>
                                 <p>Contact / Support</p>
                             </a>

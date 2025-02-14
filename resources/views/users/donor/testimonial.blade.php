@@ -200,7 +200,7 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="{{route ('donor.request_map') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Donation Request Map</p>
                                     </a>
@@ -310,7 +310,6 @@
                 <div class="container py-3">
 
                     <div class="row flex-wrap-reverse  align-items-center">
-
                         <div class="col-md-5 d-flex flex-column justify-content-center align-items-center my-2">
                             <h1 class="mb-3">Other Testimonials</h1>
                             @if($testimonials->isEmpty())

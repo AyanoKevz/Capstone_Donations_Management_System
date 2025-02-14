@@ -7,6 +7,7 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
+    <meta name="mobile-login-route" content="{{ route('mobile-login') }}">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,7 +15,6 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Roboto:wght@400;500;700;900&display=swap"
         rel="stylesheet">
-    <link rel="manifest" href="{{ asset('manifest.json') }}">
     <link rel="icon" href="{{ asset ('assets/img/systemLogo.png') }}" type="image/png">
     <!-- Libraries Stylesheet -->
     <link rel="stylesheet" href="{{ asset('lib/animate/animate.min.css') }}" />
@@ -66,7 +66,9 @@
                     </div>
                     <a href="{{ route ('contact')}}" class="nav-item nav-link">Contact Us</a>
                     <a href="{{ route ('register')}}" class="nav-item nav-link">Register</a>
-                    <a href="#mobile" class="nav-item nav-link">Install App <i class="fa-solid fa-mobile-screen-button"></i></a>
+                    <a href="#mobile" id="installAppLink" class="nav-item nav-link">
+                        Install App <i class="fa-solid fa-mobile-screen-button"></i>
+                    </a>
                 </div>
                 <a href="#portals" class="btn btn-primary rounded-pill py-2 px-4 my-3 my-lg-0 flex-shrink-0">Portal</a>
             </div>
@@ -458,7 +460,7 @@
             <div class="text-center mx-auto pb-5" style="max-width: 800px;">
                 <h2 class="section-header">Portals</h2>
                 <h1 class="display-5 mb-4">User Login Portal</h1>
-                <p class="mb-0"> Access UniAid's secure login portal tailored for donors, recipients, and volunteers.Make a dontation, request, and help the community in one platform.
+                <p class="mb-0"> Access UniAid's secure login portal tailored for donors and volunteers. Make a dontation, and help the community in one platform.
                 </p>
             </div>
             <div class="row g-4 align-items-center">
@@ -466,12 +468,12 @@
                     <img src="{{asset('assets/img/portal.gif') }}" class="img-fluid w-100 rounded border border-4 border-danger" alt="">
                 </div>
                 <div class="col-md-7">
-                    <h1 class="display-5 mb-4">Access Your Portal</h1>
+                    <h1 class="display-5 mb-4 text-center" id="login-heading">Access Your Portal</h1>
                     <p class="mb-4">
                         Navigate effortlessly through a secure and personalized portal. Click "Login" to explore and access your personalized portal tailored to your needs.
                     </p>
-                    <a class="btn btn-primary rounded-pill py-2 px-4" data-bs-toggle="modal"
-                        data-bs-target="#login">Login Now</a>
+                    <a class="btn btn-primary rounded-pill py-2 px-4 d-flex justify-content-center align-items-center" data-bs-toggle="modal"
+                        data-bs-target="#login" id="loginLink">Login Now</a>
                 </div>
             </div>
         </div>
@@ -513,7 +515,7 @@
                                 <input type="password" name="password" autocomplete="off" class="login-input password-input" required>
                                 <label class="user-label" for="password">Password</label>
                                 <button type="button" class="toggle-password">
-                                    <i class="fas fa-eye-slash toggle-password-icon" id=""></i>
+                                    <i class="fas fa-eye-slash toggle-password-icon"></i>
                                 </button>
                             </div>
                         </div>

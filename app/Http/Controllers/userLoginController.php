@@ -54,4 +54,38 @@ class userLoginController extends Controller
             ->with('success', 'You have been logged out successfully.')
             ->header('Location', route('home') . '#portals');
     }
+
+    public function mobileLoginForm()
+    {
+        return view('homepage.mobile-login');
+    }
+
+    public function SubmitMobileLogin(Request $request)
+    {
+        $credentials = $request->only('username', 'password');
+
+        // Attempt to authenticate the user
+        if (Auth::attempt($credentials)) {
+            $user = Auth::user();
+
+            // Check if account is verified
+            if (!$user->is_verified) {
+                Auth::logout();
+                return redirect()->route('mobile-login')->with('error', 'You account is not verified yet.');
+            }
+
+            switch ($user->role_name) {
+                case 'Donor':
+                    return redirect()->route('donor.home');
+                case 'Volunteer':
+                    return redirect()->route('volunteer.home');
+                default:
+                    Auth::logout();
+                    return redirect()->route('mobile-login')->with('error', 'Invalid user role.');
+            }
+        }
+
+        // Authentication failed
+        return redirect()->route('mobile-login')->with('error', 'Invalid username or password.');
+    }
 }

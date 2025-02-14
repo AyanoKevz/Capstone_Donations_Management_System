@@ -199,7 +199,11 @@
 
         document.getElementById('cancelBtn').addEventListener('click', (e) => {
             localStorage.setItem("installDismissed", "true");
-            window.location.href = "/";
+            if (window.close) {
+                window.close();
+            } else {
+                window.location.href = "/";
+            }
         });
     </script>
 </body>

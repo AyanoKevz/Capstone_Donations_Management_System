@@ -17,7 +17,7 @@ var spinnerElement = document.getElementById("spinner");
         $('#alert-success').fadeOut();
         $('#alert-error').fadeOut();
           $('#alert-info').fadeOut();
-    }, 3000);
+    }, 8000);
 
 
     if ($(".other-testi-carousel").length) {
@@ -2521,9 +2521,6 @@ $('#file-input').change(function (event) {
     (e.TodoList = Lt),
     (e.Treeview = $t),
     Object.defineProperty(e, "__esModule", { value: !0 });
-
-
-
 
     if ('serviceWorker' in navigator) {
     window.addEventListener('load', function () {

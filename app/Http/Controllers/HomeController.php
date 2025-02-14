@@ -39,6 +39,8 @@ class HomeController extends Controller
         return view('homepage.index', compact('news', 'testimonials'));
     }
 
+
+
     public function moreNews($id)
     {
         $news = News::findOrFail($id);

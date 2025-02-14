@@ -40,12 +40,12 @@ return new class extends Migration
         // Create location table
         Schema::create('location', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('user_account')->onDelete('cascade');
+            $table->foreignId('user_id')->nullable()->constrained('user_account')->onDelete('cascade');
             $table->string('region', 100);
             $table->string('province', 100);
             $table->string('city_municipality', 100);
             $table->string('barangay', 100);
-            $table->string('full_address', 255);
+            $table->string('full_address', 255)->nullable();
             $table->decimal('latitude', 9, 6)->nullable();
             $table->decimal('longitude', 9, 6)->nullable();
             $table->timestamps();

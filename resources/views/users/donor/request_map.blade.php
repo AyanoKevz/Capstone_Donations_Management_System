@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>UniAid - Donor Portal</title>
+    <title>UniAid - Donor Portal | Chapters</title>
     <link rel="icon" href="{{ asset ('assets/img/systemLogo.png') }}" type="image/png">
     <!-- Google Font-->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,33 +14,12 @@
         rel="stylesheet">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="{{ asset('lib/bootstrap/css/bootstrap.min.css') }}">
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="{{ asset('lib/leaflet/leaflet.css') }}">
+    </link>
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{ asset('assets/users/css/donor/home_donor.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/users/css/donor/request_map.css') }}">
 </head>
-
-<!-- Spinner Start -->
-<div id="spinner" class="show bg-white position-fixed w-100 vh-100 d-flex flex-column align-items-center justify-content-center">
-    <div class="text-center mb-4">
-        <h1 class="m-0 fw-bold" style="color: #ff1f1f; font-size:50px;">
-            <img src="{{ asset('assets/img/systemLogo.png') }}" class="me-3 w-25" alt="Logo">UniAid
-        </h1>
-    </div>
-
-    <div class="cssload-main">
-        <div class="cssload-heart">
-            <span class="cssload-heartL"></span>
-            <span class="cssload-heartR"></span>
-            <span class="cssload-square"></span>
-        </div>
-        <div class="cssload-shadow"></div>
-    </div>
-    <div class="loading-text mt-4">
-        <p class="text-center fw-bold" style="color: #ff1f1f; font-size: 20px; margin: 0; position: absolute; bottom: 160px; left: 50%; transform: translateX(-50%); ">
-            Loading....
-        </p>
-    </div>
-</div>
-<!-- Spinner End -->
 
 <body class="hold-transition sidebar-collapse layout-top-nav">
     <div class="wrapper">
@@ -64,10 +43,10 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active rounded-pill" aria-current="page" href="{{route('donor.home')}}">Home</a>
+                            <a class="nav-link " aria-current="page" href="{{route('donor.home')}}">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link " aria-current="page" href="{{route('prc-chapters')}}">Chapters</a>
+                            <a class="nav-link rounded-pill " aria-current="page" href="{{route('prc-chapters')}}">Chapters</a>
                         </li>
                     </ul>
                 </div>
@@ -96,13 +75,10 @@
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                         <li>
-                            <form action="{{ route('user.logout') }}" method="POST" id="logout-form">
-                                @csrf
-                                <button type="submit" class="dropdown-item d-flex justify-content-center align-items-center">
-                                    Logout
-                                    <i class="fas fa-right-from-bracket ms-2"></i>
-                                </button>
-                            </form>
+                            <a class="dropdown-item d-flex justify-content-center align-items-center"
+                                href="logout.php">Logout
+                                <i class="fas fa-right-from-bracket ms-2"></i>
+                            </a>
                         </li>
                         <li>
                             <a class="dropdown-item d-flex justify-content-center align-items-center"
@@ -125,11 +101,10 @@
             </a>
             <!-- Sidebar -->
             <div class="sidebar">
-                <!-- Sidebar user (optional) -->
                 <div class="user-panel my-3 pb-3 d-flex flex-column align-items-center justify-content-center">
                     <img src="{{ asset('storage/' . $User->donor->user_photo) }}" class="img-circle elevation-2" alt="User Image">
                     <a href="{{route ('donor.profile') }}" class="d-block side-user mt-2" title="profile">{{ $User->username }}</a>
-                    <p class="text-white m-0">Donor</p>
+                    <p class="text-white m-0 fs-6">Donor</p>
                 </div>
                 <!-- SidebarSearch Form -->
                 <div class="form-inline">
@@ -148,7 +123,7 @@
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <!-- Home -->
                         <li class="nav-item">
-                            <a href="{{route ('donor.home') }}" class="nav-link active">
+                            <a href="{{route ('donor.home') }}" class="nav-link">
                                 <i class="nav-icon fas fa-house"></i>
                                 <p>Home</p>
                             </a>
@@ -189,7 +164,7 @@
 
                         <!-- Geo Map -->
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="#" class="nav-link active">
                                 <i class="nav-icon fas fa-map-marked-alt"></i>
                                 <p>
                                     Geo-mapping
@@ -198,13 +173,13 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{route ('donor.request_map') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
+                                    <a href="{{route ('donor.request_map') }}" class="nav-link active">
+                                        <i class="fas fa-circle-arrow-right nav-icon "></i>
                                         <p>Donation Request Map</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="route{{'prc-chapters'}}" class="nav-link">
+                                    <a href="{{route ('prc-chapters') }}" class="nav-link ">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>PRC Chapters</p>
                                     </a>
@@ -228,7 +203,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Donation History</p>
                                     </a>
@@ -238,7 +213,7 @@
 
                         <!-- Learn About Causes -->
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="" class="nav-link">
                                 <i class="nav-icon fas fa-info-circle"></i>
                                 <p>Learn About Causes</p>
                             </a>
@@ -246,7 +221,7 @@
 
                         <!-- Testimonials -->
                         <li class="nav-item">
-                            <a href="{{route ('donor.testi_form') }}" class="nav-link">
+                            <a href="{{route ('donor.testi_form') }}" class=" nav-link">
                                 <i class="nav-icon fas fa-star"></i>
                                 <p>Testimonials</p>
                             </a>
@@ -254,13 +229,12 @@
 
                         <!-- Feedback / Support -->
                         <li class="nav-item">
-                            <a href="{{route ('donor.contact_form') }}" class="nav-link ">
+                            <a href="{{route ('donor.contact_form') }}" class="nav-link">
                                 <i class="nav-icon fas fa-comments"></i>
                                 <p>Contact / Support</p>
                             </a>
                         </li>
                     </ul>
-
                 </nav>
                 <!-- /.sidebar-menu -->
             </div>
@@ -280,32 +254,80 @@
                                 Donor Portal
                             </h1>
                         </div>
+                        <div class="col-5 d-flex justify-content-end align-items-center">
+                            <ol class="breadcrumb mb-0">
+                                <li class="breadcrumb-item">
+                                    <a href="{{ route('donor.home') }}">Home</a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    Geo-mapping
+                                </li>
+                                <li class="breadcrumb-item active">Donation Request Map</li>
+                            </ol>
+                        </div>
                     </div>
                 </div>
-                @if(session('error'))
-                <div id="alert-error" class="alert alert-error" style=" position: absolute; ; right: 10px; top: 90px;">
-                    <i class=" fa-solid fa-circle-xmark fa-xl me-3"></i>{{ session('error') }}
-                </div>
-                @endif
-                @if(session('success'))
-                <div id="alert-success" class="alert alert-success" style=" position: absolute; ; right: 10px; top: 90px;">
-                    <i class="fa-solid fa-circle-check fa-xl me-3"></i>{{ session('success') }}
-                </div>
-                @endif
             </div>
 
             <!-- End content-header -->
 
             <!-- Main content -->
             <div class="content">
-                <div class="container py-3">
+                <div class="container py-2">
                     <div class="row">
+
+                        <div class="col-12 col-md-7">
+                            <form id="filterForm" method="GET" action="{{ route('donor.request_map') }}">
+                                <div class="row mb-3 align-items-center">
+                                    <div class="col-auto">
+                                        <h5 class="mb-0">Sort: </h5>
+                                    </div>
+                                    <div class="col">
+                                        <div class="row g-3 align-items-center">
+                                            <div class="col-12 col-md-6">
+                                                <div class="d-flex flex-column flex-md-row align-items-center gap-2">
+                                                    <label for="cause" class="form-label mb-0">Cause</label>
+                                                    <select class="form-select" id="cause" name="cause">
+                                                        <option value="General" {{ request('cause') === 'General' ? 'selected' : '' }}>General</option>
+                                                        <option value="Fire" {{ request('cause') === 'Fire' ? 'selected' : '' }}>Fire</option>
+                                                        <option value="Flood" {{ request('cause') === 'Flood' ? 'selected' : '' }}>Flood</option>
+                                                        <option value="Typhoon" {{ request('cause') === 'Typhoon' ? 'selected' : '' }}>Typhoon</option>
+                                                        <option value="Earthquake" {{ request('cause') === 'Earthquake' ? 'selected' : '' }}>Earthquake</option>
+                                                        <option value="Volcanic Eruption" {{ request('cause') === 'Volcanic Eruption' ? 'selected' : '' }}>Volcanic Eruption</option>
+                                                        <option value="Feeding Program" {{ request('cause') === 'Feeding Program' ? 'selected' : '' }}>Feeding Program</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-6">
+                                                <div class="d-flex flex-column flex-md-row align-items-center gap-2">
+                                                    <label for="urgency" class="form-label mb-0">Urgency</label>
+                                                    <select class="form-select" id="urgency" name="urgency">
+                                                        <option value="General" {{ request('urgency') === 'General' ? 'selected' : '' }}>General</option>
+                                                        <option value="Low" {{ request('urgency') === 'Low' ? 'selected' : '' }}>Low</option>
+                                                        <option value="Moderate" {{ request('urgency') === 'Moderate' ? 'selected' : '' }}>Moderate</option>
+                                                        <option value="Critical" {{ request('urgency') === 'Critical' ? 'selected' : '' }}>Critical</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="map"></div>
+                            </form>
+                        </div>
+
+                        <div class="col-12 col-md-5" id="infoSidebar">
+                            <div id="requestInfo">
+                                <h2>Philippine Request Map</h2>
+                                <p>The Philippine Request Map is an interactive map designed to visualize donation requests across different locations. Each pin provides key details like location, needs, and urgency, helping donors quickly find and support causes.</p>
+                                <hr>
+                                <h5 class="text-center text-muted">Click on icon shows in the map to view details</h5>
+                            </div>
+                        </div>
 
                     </div>
                 </div>
-
             </div>
-
         </div>
         <!-- /.content wrapper -->
 
@@ -325,6 +347,15 @@
     <script src="{{ asset('lib/fontawesome/all.js') }}"></script>
     <!-- User JS -->
     <script src="{{ asset('assets/users/js/user.js') }}"></script>
+    <!-- Leaflet -->
+    <script src="{{ asset('lib/leaflet/leaflet.js') }}"></script>
+    <script>
+        var donationRequests = @json($donationRequests);
+    </script>
+
+    <!-- PH MAP JS -->
+    <script src="{{ asset('assets/users/js/user-map.js') }}"></script>
+
 </body>
 
 </html>
