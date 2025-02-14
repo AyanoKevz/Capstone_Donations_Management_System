@@ -14,8 +14,9 @@
         rel="stylesheet">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="{{ asset('lib/bootstrap/css/bootstrap.min.css') }}">
-    <!-- Custom CSS -->
+    <!-- OWL -->
     <link href="{{ asset('lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('assets/users/css/donor/testimonial.css') }}">
 </head>
 
@@ -199,7 +200,7 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="{{route ('donor.request_map') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Donation Request Map</p>
                                     </a>
@@ -309,7 +310,6 @@
                 <div class="container py-3">
 
                     <div class="row flex-wrap-reverse  align-items-center">
-
                         <div class="col-md-5 d-flex flex-column justify-content-center align-items-center my-2">
                             <h1 class="mb-3">Other Testimonials</h1>
                             @if($testimonials->isEmpty())
@@ -322,9 +322,7 @@
                                 <div class="other-testi">
                                     <div class="header">
                                         <div class="image">
-                                            <img src="{{ $testimonial->user->donor->user_photo ? asset('storage/' . $testimonial->user->donor->user_photo) : ($testimonial->user->volunteer->user_photo ? asset('storage/' . $testimonial->user->volunteer->user_photo) : asset('assets/img/no_profile.png')) }}"
-                                                class="img-fluid rounded-circle"
-                                                alt="User Image">
+                                            <img src="{{ $testimonial->user->donor ? asset('storage/' . $testimonial->user->donor->user_photo) : asset('storage/' . $testimonial->user->volunteer->user_photo) }}" alt="User Image">
                                         </div>
                                         <div class="d-flex flex-column align-items-center">
                                             <h4 class="name">{{ $testimonial->user->username ?? 'Anonymous' }}</h4>

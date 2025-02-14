@@ -1,5 +1,5 @@
 var chapterData = [];
-var chapterMap = L.map('map').setView([12.8797, 121.7740], 6); 
+var chapterMap = L.map('map', { zoomControl: false }).setView([12.8797, 121.7740], 6); 
 var chapterLayer = L.featureGroup().addTo(chapterMap);
 
 L.control.zoom({ position: 'topright' }).addTo(chapterMap);

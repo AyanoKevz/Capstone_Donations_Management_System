@@ -369,10 +369,10 @@
                             <div class="col-12">
                               <div class="row gy-2 justify-content-around align-items-center">
                                 <label class="col-12 form-label m-0 text-center"><strong> Profile Image </strong></label>
-                                <img id="imagePreview" src="{{ asset('storage/' . $Admin->profile_image) }}" class="rounded w-25 border border-dark-subtle p-0" alt="Profile Image">
                                 <div class="form">
                                   <span class="form-title">Upload your file</span>
                                   <p class="form-paragraph">File should be an image</p>
+                                  <img id="imagePreview" src="{{ asset('storage/' . $Admin->profile_image) }}" class="profile_preview" alt="Profile Image">
                                   <label for="file-input" class="drop-container">
                                     <input type="file" accept="image/*" id="file-input" name="profile_image">
                                   </label>

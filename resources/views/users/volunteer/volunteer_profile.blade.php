@@ -103,7 +103,7 @@
                         </li>
                         <li>
                             <a class="dropdown-item d-flex justify-content-center align-items-center"
-                                href="my_profile">My profile
+                                href="{{ route('volunteer.profile') }}">My profile
                                 <i class="fas fa-user ms-2"></i>
                             </a>
                         </li>
@@ -123,13 +123,10 @@
             <!-- Sidebar -->
             <div class="sidebar">
                 <!-- Sidebar user (optional) -->
-                <div class="user-panel my-3 pb-3  d-flex justify-content-center">
-                    <div class="image">
-                        <img src="{{ asset('storage/' . $User->volunteer->user_photo) }}" class="img-circle elevation-2" alt="User Image">
-                    </div>
-                    <div class="info">
-                        <a href="#" class="d-block">{{ $User->username}}</a>
-                    </div>
+                <div class="user-panel my-3 pb-3 d-flex flex-column align-items-center justify-content-center">
+                    <img src="{{ asset('storage/' . $User->volunteer->user_photo) }}" class="img-circle elevation-2" alt="User Image">
+                    <a href="{{route ('donor.profile') }}" class="d-block side-user mt-2" title="profile">{{ $User->username }}</a>
+                    <p class="text-white m-0">Donor</p>
                 </div>
                 <!-- SidebarSearch Form -->
                 <div class="form-inline">
@@ -148,7 +145,7 @@
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <!-- Home -->
                         <li class="nav-item">
-                            <a href="{{ route('volunteer.home') }}" class="nav-link">
+                            <a href="{{ route('volunteer.home') }}" class="nav-link ">
                                 <i class="nav-icon fas fa-house"></i>
                                 <p>Home</p>
                             </a>
@@ -162,12 +159,12 @@
                             </a>
                         </li>
 
-                        <!-- Make A Donation -->
+                        <!-- Volunteer Activities -->
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-hand-holding-heart"></i>
                                 <p>
-                                    Make A Donation
+                                    Volunteer Tasks
                                     <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>
@@ -175,48 +172,55 @@
                                 <li class="nav-item">
                                     <a href="#" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Quick Donation</p>
+                                        <p>Available Tasks</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="#" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Browse Requests</p>
+                                        <p>Assigned Task</p>
                                     </a>
                                 </li>
                             </ul>
                         </li>
 
-                        <!-- Track Donations -->
                         <li class="nav-item">
                             <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-chart-line"></i>
+                                <i class="nav-icon fas fa-pen-to-square"></i>
                                 <p>
-                                    Track Donations
-                                    <i class="fas fa-angle-left right"></i>
+                                    Track Activities
+                                    <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
                                     <a href="#" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Donation Status</p>
+                                        <p>My Task</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="#" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Donation History</p>
+                                        <p>Volunteer History</p>
                                     </a>
                                 </li>
                             </ul>
                         </li>
 
-                        <!-- Feedback and Support -->
+                        <!-- Testimonials -->
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{ route('volunteer.testi_form') }}" class="nav-link">
+                                <i class="nav-icon fas fa-star"></i>
+                                <p>Testimonials</p>
+                            </a>
+                        </li>
+
+                        <!-- Contact / Support -->
+                        <li class="nav-item">
+                            <a href="{{ route('volunteer.contact_form') }}" class="nav-link">
                                 <i class="nav-icon fas fa-comments"></i>
-                                <p>Feedback / Support</p>
+                                <p>Contact / Support</p>
                             </a>
                         </li>
                     </ul>
@@ -246,9 +250,13 @@
                     <i class="fa-solid fa-circle-check fa-xl me-3"></i>{{ session('success') }}
                 </div>
                 @endif
-                @if(session('error'))
-                <div id="alert-error" class="alert alert-error" style=" position: absolute; ; right: 10px; top: 90px;">
-                    <i class=" fa-solid fa-circle-xmark fa-xl me-3"></i>{{ session('error') }}
+                @if($errors->any())
+                <div id="alert-error" class="alert alert-error" style="position: absolute; right: 10px; top: 90px;">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                        <li><i class="fa-solid fa-circle-xmark fa-xl"></i> {{ $error }}</li>
+                        @endforeach
+                    </ul>
                 </div>
                 @endif
                 @if(session('info'))
@@ -341,16 +349,28 @@
                                                             <div class="p-2">{{$User->location->region}}</div>
                                                         </div>
                                                         <div class="col-5 col-md-3 bg-light border-bottom border-white border-3">
-                                                            <div class="p-2"><strong>Region</strong> </div>
+                                                            <div class="p-2"><strong>Province</strong> </div>
                                                         </div>
                                                         <div class="col-7 col-md-9 bg-light border-start border-bottom border-white border-3">
-                                                            <div class="p-2">{{$User->location->region}}</div>
+                                                            <div class="p-2">{{$User->location->province}}</div>
                                                         </div>
                                                         <div class="col-5 col-md-3 bg-light border-bottom border-white border-3">
-                                                            <div class="p-2"><strong>Region</strong> </div>
+                                                            <div class="p-2"><strong>City/Municipality</strong> </div>
                                                         </div>
                                                         <div class="col-7 col-md-9 bg-light border-start border-bottom border-white border-3">
-                                                            <div class="p-2">{{$User->location->region}}</div>
+                                                            <div class="p-2">{{$User->location->city_municipality}}</div>
+                                                        </div>
+                                                        <div class="col-5 col-md-3 bg-light border-bottom border-white border-3">
+                                                            <div class="p-2"><strong>Barangay</strong> </div>
+                                                        </div>
+                                                        <div class="col-7 col-md-9 bg-light border-start border-bottom border-white border-3">
+                                                            <div class="p-2">{{$User->location->barangay}}</div>
+                                                        </div>
+                                                        <div class="col-5 col-md-3 bg-light border-bottom border-white border-3">
+                                                            <div class="p-2"><strong>Full Address</strong> </div>
+                                                        </div>
+                                                        <div class="col-7 col-md-9 bg-light border-start border-bottom border-white border-3">
+                                                            <div class="p-2">{{$User->location->full_address}}</div>
                                                         </div>
                                                         <div class="col-5 col-md-3 bg-light border-bottom border-white border-3">
                                                             <div class="p-2"><strong>Chapter</strong> </div>
@@ -394,12 +414,12 @@
                                                         <div class="col-12">
                                                             <div class="row gy-2 justify-content-around align-items-center">
                                                                 <label class="col-12 form-label m-0 text-center"><strong> Profile Image </strong></label>
-                                                                <img id="imagePreview" src="{{ asset('storage/' . $User->volunteer->user_photo) }}" class="rounded w-25 border border-dark-subtle p-0" alt="Profile Image">
                                                                 <div class="form">
                                                                     <span class="form-title">Upload your file</span>
                                                                     <p class="form-paragraph">File should be an image</p>
+                                                                    <img id="imagePreview" src="{{ asset('storage/' . $User->volunteer->user_photo) }}" class="profile_preview" alt="Profile Image">
                                                                     <label for="file-input" class="drop-container">
-                                                                        <input type="file" accept="image/*" id="file-input" name="profile_image">
+                                                                        <input type="file" accept="image/*" id="file-input" id="user_photo" name="user_photo">
                                                                     </label>
                                                                 </div>
                                                             </div>
@@ -407,11 +427,11 @@
 
                                                         <div class="col-12 col-md-6">
                                                             <label for="inputFirstName" class="form-label">First Name</label>
-                                                            <input type="text" class="form-control" id="inputFirstName" name="fname" value="{{ $User->volunteer->first_name }}">
+                                                            <input type="text" class="form-control" id="fname" name="fname" value="{{ $User->volunteer->first_name }}">
                                                         </div>
                                                         <div class="col-12 col-md-6">
                                                             <label for="inputFirstName" class="form-label">Last Name</label>
-                                                            <input type="text" class="form-control" id="inputFirstName" name="lname" value="{{ $User->volunteer->last_name }}">
+                                                            <input type="text" class="form-control" id="lname" name="lname" value="{{ $User->volunteer->last_name }}">
                                                         </div>
                                                         <div class="col-12 col-md-6">
                                                             <label for="inputLastName" class="form-label">Email</label>
@@ -424,34 +444,38 @@
                                                         <div class="col-12 col-md-6">
                                                             <label for="inputLastName" class="form-label">Region</label>
                                                             <select class="form-select" id="region" name="region">
-                                                                <option selected value="{{$User->location->region}}" disabled>{{$User->location->region}}</option>
+                                                                <option selected value="{{$User->location->region}}" readonly>{{$User->location->region}}</option>
                                                             </select>
                                                             <input type="hidden" id="region-name" name="region_name">
                                                         </div>
                                                         <div class="col-12 col-md-6">
                                                             <label for="inputLastName" class="form-label">Province</label>
                                                             <select class="form-select" id="province" name="province">
-                                                                <option selected value="{{$User->location->province}}" disabled>{{$User->location->province}}</option>
+                                                                <option selected value="{{$User->location->province}}" readonly>{{$User->location->province}}</option>
                                                             </select>
                                                             <input type="hidden" id="province-name" name="province_name">
                                                         </div>
                                                         <div class="col-12 col-md-6">
                                                             <label for="inputLastName" class="form-label">City/Municipality</label>
                                                             <select class="form-select" id="city" name="city">
-                                                                <option selected value="{{$User->location->city_municipality}}" disabled>{{$User->location->city_municipality}}</option>
+                                                                <option selected value="{{$User->location->city_municipality}}" readonly>{{$User->location->city_municipality}}</option>
                                                             </select>
                                                             <input type="hidden" id="city-name" name="city_name">
                                                         </div>
                                                         <div class="col-12 col-md-6">
                                                             <label for="inputLastName" class="form-label">Barangay</label>
                                                             <select class="form-select" id="barangay" name="barangay">
-                                                                <option selected value="{{$User->location->barangay}}" disabled>{{$User->location->barangay}}</option>
+                                                                <option selected value="{{$User->location->barangay}}" readonly>{{$User->location->barangay}}</option>
                                                             </select>
                                                             <input type="hidden" id="barangay-name" name="barangay_name">
                                                         </div>
+                                                        <div class="col-12 col-md-12">
+                                                            <label for="inputFirstName" class="form-label">Full Address</label>
+                                                            <input type="text" class="form-control" id="full_address" name="full_address" value="{{ $User->location->full_address }}" required>
+                                                        </div>
                                                         <div class="col-12 col-md-6">
                                                             <label for="inputLastName" class="form-label">Chapter</label>
-                                                            <select class="form-select" id="city" name="city">
+                                                            <select class="form-select" id="city" name="chapter">
                                                                 <option selected value="{{$User->volunteer->chapter->id}}" disabled>{{$User->volunteer->chapter->chapter_name}}</option>
                                                                 @foreach ($chapters as $chapter)
                                                                 <option value="{{ $chapter->id }}">{{ $chapter->chapter_name }}</option>
@@ -459,8 +483,8 @@
                                                             </select>
                                                         </div>
                                                         <div class="col-12 col-md-6">
-                                                            <label for="inputLastName" class="form-label">Preferred Services</label>
-                                                            <select class="form-select" id="city" name="city">
+                                                            <label for="pref_services" class="form-label">Preferred Services</label>
+                                                            <select class="form-select" id="pref_services" name="pref_services">
                                                                 <option selected value="{{$User->volunteer->pref_services}}" disabled>{{$User->volunteer->pref_services}}</option>
                                                                 <option value="Collect Donations">Collect Donations</option>
                                                                 <option value="Relief Operations">Relief Operations</option>
@@ -468,9 +492,10 @@
                                                                 <option value="Emergency Response">Emergency Response</option>
                                                             </select>
                                                         </div>
+
                                                         <div class="col-12 col-md-6">
-                                                            <label for="inputLastName" class="form-label">Availability</label>
-                                                            <select class="form-select" id="city" name="city">
+                                                            <label for="availability" class="form-label">Availability</label>
+                                                            <select class="form-select" id="availability" name="availability">
                                                                 <option selected value="{{$User->volunteer->availability}}" disabled>{{$User->volunteer->availability}}</option>
                                                                 <option value="Weekday">Weekday</option>
                                                                 <option value="Weekend">Weekend</option>
@@ -478,17 +503,15 @@
                                                                 <option value="In time of Disasters">In time of disasters</option>
                                                             </select>
                                                         </div>
+
                                                         <div class="col-12 col-md-6">
-                                                            <label for="inputLastName" class="form-label">Availability Time</label>
-                                                            <select class="form-select" id="city" name="city">
+                                                            <label for="availability_time" class="form-label">Availability Time</label>
+                                                            <select class="form-select" id="availability_time" name="availability_time">
                                                                 <option selected value="{{$User->volunteer->availability_time}}" disabled>{{$User->volunteer->availability_time}}</option>
                                                                 <option value="Morning" title="Typically between 6 AM to 12 PM">Morning</option>
-                                                                <option value="Afternoon" title="Typically between 12 PM to 6 PM">Afternoon
-                                                                </option>
+                                                                <option value="Afternoon" title="Typically between 12 PM to 6 PM">Afternoon</option>
                                                                 <option value="Night" title="Typically between 6 PM to 12 AM">Night</option>
-                                                                <option value="On-Call"
-                                                                    title="Available as needed, potentially outside regular hours">On-Call
-                                                                </option>
+                                                                <option value="On-Call" title="Available as needed, potentially outside regular hours">On-Call</option>
                                                                 <option value="Whole-Day" title="Available throughout the entire day">Whole-Day</option>
                                                                 <option value="In time of Disasters">In time of disasters</option>
                                                             </select>

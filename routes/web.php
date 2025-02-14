@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\DonationController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InquiryController;
 use App\Http\Controllers\VerifyAcct;
@@ -16,6 +17,8 @@ use App\Http\Controllers\user_profileController;
 
 //Homepage Route
 Route::get('/', [HomeController::class, 'index'])->name('home')->middleware('prevent-back-button');
+Route::view('/install', 'install')->name('install');
+Route::view('/thankyou-install', 'ty')->name('thankyou-message');
 // About page route
 Route::view('/about', 'homepage.about')->name('about');
 // Donation (Donor) page route
@@ -39,6 +42,10 @@ Route::post('/register/volunteer', [UserRegistrationController::class, 'register
 
 //User login route
 Route::post('/user-login', [userLoginController::class, 'login'])->name('login');
+
+Route::get('mobile/login', [userLoginController::class, 'mobileLoginForm'])->name('mobile-login')->middleware('prevent-back-button');
+Route::post('mobile/login', [userLoginController::class, 'SubmitMobileLogin'])->name('mlogin-submit');
+
 Route::post('/logout', [userLoginController::class, 'logout'])->name('user.logout');
 
 Route::post('/forgot-password', [HomeController::class, 'sendResetLink'])->name('forgot-password');
@@ -49,22 +56,16 @@ Route::post('/reset-password', [HomeController::class, 'resetPassword'])->name('
 
 //ADMIN ROUTES:
 
-// Admin Reset  Password Page
-Route::get('/admin/login/reset_password', function () {
-    return view('admin.admin_forgot');
-})->name('admin.reset_password');
-
-// Admin Find Email Page
-Route::get('/admin/login/find_email', function () {
-    return view('admin.admin_find_email');
-})->name('admin.findEmail');
+Route::get('/admin/login/find_email', [AdminController::class, 'showFindEmailForm'])->name('admin.findEmail');
+Route::post('/admin/login/send_reset_link', [AdminController::class, 'sendResetLink'])->name('admin.sendResetLink');
+Route::get('/admin/login/reset_password/{token}', [AdminController::class, 'showResetForm'])->name('admin.resetPasswordForm');
+Route::post('/admin/login/reset_password', [AdminController::class, 'resetPassword'])->name('admin.resetPassword');
 
 // Admin Login
-Route::get('/admin/login', [App\Http\Controllers\AdminController::class, 'showLoginForm'])->name('admin.login');
-Route::post('/admin/login', [App\Http\Controllers\AdminController::class, 'login'])->name('admin.login.submit');
+Route::get('/admin/login', [AdminController::class, 'showLoginForm'])->name('admin.login');
+Route::post('/admin/login', [AdminController::class, 'login'])->name('admin.login.submit');
 // Admin Logout
 Route::post('/admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
-
 
 
 // Middleware-protected routes for admin
@@ -76,6 +77,12 @@ Route::middleware(['admin', 'prevent-back-button'])->prefix('admin')->group(func
     Route::get('/profile', [AdminController::class, 'admin_profile'])->name('admin.profile');
     Route::post('/profile/{id}', [AdminController::class, 'updateProfile'])->name('admin.updateProfile');
     Route::post('/account/{id}', [AdminController::class, 'updateAccount'])->name('admin.updateAccount');
+
+    // Request
+    Route::get('donation/request', [DonationController::class, 'RequestForm'])->name('admin.request_form');
+    Route::post('donation/request', [DonationController::class, 'submitRequest'])->name('admin.request.submit');
+
+
     //Manage Admin
     Route::get('/active-admin', [AdminController::class, 'adminList'])->name('admin.list');
     Route::post('/Admin-create', [AdminController::class, 'CreateAdmin'])->name('admin.store');
@@ -137,7 +144,6 @@ Route::middleware(['auth', 'prevent-back-button'])->prefix('user')->group(functi
         Route::get('/prc-chapters', [DonorController::class, 'showChapters'])->name('prc-chapters');
         Route::get('/contact', [DonorController::class, 'showContactForm'])->name('donor.contact_form');
         Route::get('/testimonial', [DonorController::class, 'showTestimonialForm'])->name('donor.testi_form');
-        Route::get('/causes', [DonorController::class, 'causes'])->name('causes');
     });
 
 
@@ -146,5 +152,7 @@ Route::middleware(['auth', 'prevent-back-button'])->prefix('user')->group(functi
         Route::get('/home', [VolunteerController::class, 'index'])->name('volunteer.home');
         Route::get('/volunteer-profile', [user_profileController::class, 'VolunteerProfile'])->name('volunteer.profile');
         Route::post('/volunteer/update/{id}', [user_profileController::class, 'updateVolunteerProfile'])->name('volunteer.updateProfile');
+        Route::get('/contact', [VolunteerController::class, 'showContactForm'])->name('volunteer.contact_form');
+        Route::get('/testimonial', [VolunteerController::class, 'showTestimonialForm'])->name('volunteer.testi_form');
     });
 });

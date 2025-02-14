@@ -431,7 +431,7 @@ input.is-invalid, select.is-invalid {
 }
 
 .header-carousel .header-carousel-item {
- clip-path: polygon(0 0, 100% 0, 100% 85%, 0 95%); 
+ clip-path: polygon(0 0, 100% 0, 100% 88%, 0 95%); 
 }
 
 
@@ -490,9 +490,7 @@ input.is-invalid, select.is-invalid {
 }
 
 @media (max-width: 991px) {
-    .header-carousel .header-carousel-item .carousel-caption {
-        padding-top: 45px;
-    }
+   
 }
 
 @media (max-width: 767px) {
@@ -703,7 +701,7 @@ input.is-invalid, select.is-invalid {
     background: #fff;
     box-shadow: inset 0 0 45px rgba(0, 0, 0, .1);
     transition: 0.5s;
-    border: 1px solid #ff1f1f;
+    border: 4px solid #c40909c3;
 }
 
 .blog .resources-item .resouces-img {
@@ -849,17 +847,17 @@ input.is-invalid, select.is-invalid {
   text-align: center;
 }
 
-.blog .blog-details .content {
+.blog .blog-details .content-news {
   margin-top: 20px;
 }
 
-.blog .blog-details .content h3 {
+.blog .blog-details .content-news h3 {
   font-size: 22px;
   margin-top: 30px;
   font-weight: bold;
 }
 
-.blog .blog-details .content blockquote {
+.blog .blog-details .content-news blockquote {
   overflow: hidden;
   background-color: rgba(82, 86, 94, 0.06);
   padding: 60px;
@@ -868,7 +866,7 @@ input.is-invalid, select.is-invalid {
   margin: 20px 0;
 }
 
-.blog .blog-details .content blockquote p {
+.blog .blog-details .content-news blockquote p {
   color: #364d59;
   line-height: 1.6;
   margin-bottom: 0;
@@ -877,7 +875,7 @@ input.is-invalid, select.is-invalid {
   font-size: 22px;
 }
 
-.blog .blog-details .content blockquote:after {
+.blog .blog-details .content-news blockquote:after {
   content: "";
   position: absolute;
   left: 0;
@@ -1612,3 +1610,6 @@ input.is-invalid, select.is-invalid {
 #find_email-error{
     position: static;
 }
+
+
+

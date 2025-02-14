@@ -173,7 +173,7 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="{{route ('donor.request_map') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Donation Request Map</p>
                                     </a>
@@ -320,8 +320,6 @@
     <script src="{{ asset('lib/leaflet/leaflet.js') }}"></script>
     <script>
         var prcIconUrl = "{{ asset('assets/img/PRC_logo.png') }}";
-        /*         var userIconUrl = "{{ asset('assets/img/leaflet/marker-icon.png') }}";
-                var shadow = "{{ asset('assets/img/leaflet/marker-shadow.png') }}"; */
         var chaptersGeoJsonUrl = "{{ asset('lib/leaflet/chapters.geojson') }}";
         var baseImageUrl = "{{ asset('') }}";
     </script>

@@ -26,4 +26,15 @@ class Chapter extends Model
     {
         return $this->hasMany(Volunteer::class, 'chapter_id');
     }
+
+
+    public function donations()
+    {
+        return $this->hasMany(Donation::class);
+    }
+
+    public function pooledResources()
+    {
+        return $this->hasMany(PooledResource::class);
+    }
 }

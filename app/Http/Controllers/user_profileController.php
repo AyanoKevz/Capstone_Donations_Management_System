@@ -17,9 +17,6 @@ use Illuminate\Support\Facades\Storage;
 class user_profileController extends Controller
 {
 
-
-
-
     public function DonorProfile()
     {
         return view('users.donor.donor_profile');
@@ -206,22 +203,22 @@ class user_profileController extends Controller
         }
 
         // Update other volunteer-specific fields
-        if ($volunteer->chapter_id !== $request->chapter) {
+        if ($request->has('chapter') && $volunteer->chapter_id !== $request->chapter) {
             $volunteer->chapter_id = $request->chapter;
             $changes = true;
         }
 
-        if ($volunteer->pref_services !== $request->pref_services) {
+        if ($request->has('pref_services') && $volunteer->pref_services !== $request->pref_services) {
             $volunteer->pref_services = $request->pref_services;
             $changes = true;
         }
 
-        if ($volunteer->availability !== $request->availability) {
+        if ($request->has('availability') && $volunteer->availability !== $request->availability) {
             $volunteer->availability = $request->availability;
             $changes = true;
         }
 
-        if ($volunteer->availability_time !== $request->availability_time) {
+        if ($request->has('availability_time') && $volunteer->availability_time !== $request->availability_time) {
             $volunteer->availability_time = $request->availability_time;
             $changes = true;
         }

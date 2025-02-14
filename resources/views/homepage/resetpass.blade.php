@@ -174,42 +174,82 @@
     .wrapper form .w-100 button:active {
       transform: scale(0.95);
     }
+
+    .container-fluid {
+      width: 100%;
+      height: 100%;
+      --color: #E1E1E1;
+      background-color: #F3F3F3;
+      background-image: linear-gradient(0deg, transparent 24%, var(--color) 25%, var(--color) 26%, transparent 27%, transparent 74%, var(--color) 75%, var(--color) 76%, transparent 77%, transparent),
+        linear-gradient(90deg, transparent 24%, var(--color) 25%, var(--color) 26%, transparent 27%, transparent 74%, var(--color) 75%, var(--color) 76%, transparent 77%, transparent);
+      background-size: 55px 55px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+    }
+
+    #expiredMessage {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: red;
+      font-weight: bold;
+      width: 100%;
+    }
   </style>
 </head>
 
 <body>
+  <div class="container-fluid">
+    <div class="wrapper">
+      <div id="formContent">
+        <div class="title">
+          <img src="{{ asset('assets/img/systemLogo.png') }}" alt="Logo" class="logo">
+          Change Password
+        </div>
+        <form action="{{ route('reset-password.submit') }}" method="POST" id="forgot_form">
+          @csrf
+          <div id="timer" class="text-center mb-4">
+            <p>This link will expire in <strong id="countdown" class="text-danger"></strong></p>
+          </div>
 
-  <div class="wrapper">
-    <div class="title">
-      <img src="{{ asset('assets/img/systemLogo.png') }}" alt="Logo" class="logo">
-      Change Password
+          <input type="hidden" name="token" value="{{ $token }}">
+          <div class="field position-relative">
+            <input type="password" name="password" id="password" class="form-control" required>
+            <label>New Password</label>
+            <button class="btn btn-outline-secondary position-absolute" type="button" id="toggle-password">
+              <i class="fas fa-eye" id="toggle-password-icon"></i>
+            </button>
+          </div>
+          <div class="field position-relative">
+            <input type="password" name="cpassword" id="cpassword" class="form-control" required>
+            <label>Confirm New Password</label>
+            <button class="btn btn-outline-secondary position-absolute" type="button" id="toggle-cpassword">
+              <i class="fas fa-eye" id="toggle-cpassword-icon"></i>
+            </button>
+          </div>
+          <div class="w-100 text-center">
+            <button type="submit" name="submit" class="btn btn-primary w-100">Submit</button>
+          </div>
+        </form>
+      </div>
     </div>
-    <form action="{{ route('reset-password.submit') }}" method="POST" id="forgot_form">
-      @csrf
-      <input type="hidden" name="token" value="{{ $token }}">
-      <div class="field position-relative">
-        <input type="password" name="password" id="password" class="form-control" required>
-        <label>New Password</label>
-        <button class="btn btn-outline-secondary position-absolute" type="button" id="toggle-password">
-          <i class="fas fa-eye" id="toggle-password-icon"></i>
-        </button>
-      </div>
-      <div class="field position-relative">
-        <input type="password" name="cpassword" id="cpassword" class="form-control" required>
-        <label>Confirm New Password</label>
-        <button class="btn btn-outline-secondary position-absolute" type="button" id="toggle-cpassword">
-          <i class="fas fa-eye" id="toggle-cpassword-icon"></i>
-        </button>
-      </div>
-      <div class="w-100 text-center">
-        <button type="submit" name="submit" class="btn btn-primary w-100">Submit</button>
-      </div>
-    </form>
+    <!-- Expired Link Message -->
+    <div id="expiredMessage" style="display:none;" class="text-center">
+      <h2>Link Expired</h2>
+    </div>
   </div>
+  <script src="{{ asset('lib/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
   <script src="{{ asset('lib/jquery/jquery.min.js') }}"></script>
   <script src="{{ asset('lib/fontawesome/all.js') }}"></script>
   <script src="{{ asset('lib/jquery/jquery.validate.min.js') }}"></script>
+
+
+
   <script>
+    // Toggle password visibility for password
     $('#toggle-password').on('click', function() {
       const passwordInput = $('#password');
       const toggleIcon = $('#toggle-password-icon');
@@ -222,7 +262,7 @@
       }
     });
 
-
+    // Toggle password visibility for confirm password
     $('#toggle-cpassword').on('click', function() {
       const cpasswordInput = $('#cpassword');
       const toggleIcon = $('#toggle-cpassword-icon');
@@ -235,6 +275,7 @@
       }
     });
 
+    // Form validation
     $("#forgot_form").validate({
       rules: {
         password: {
@@ -245,7 +286,6 @@
           required: true,
           equalTo: "#password"
         },
-
       },
       messages: {
         password: {
@@ -270,6 +310,29 @@
         form.submit();
       }
     });
+
+    let remainingTime = @json($remainingTime);
+    const countdownElement = document.getElementById('countdown');
+    const content = document.getElementById('formContent');
+    const expiredMessage = document.getElementById('expiredMessage');
+
+    function updateCountdown() {
+      if (remainingTime > 0) {
+        const minutes = Math.floor(remainingTime / 60);
+        const seconds = Math.floor(remainingTime % 60);
+        countdownElement.textContent = `${minutes}m ${seconds}s`;
+        remainingTime--;
+        setTimeout(updateCountdown, 1000);
+      } else {
+        content.style.display = 'none';
+        expiredMessage.style.display = 'block';
+        setTimeout(() => {
+          location.reload();
+        }, 3000);
+      }
+    }
+
+    updateCountdown();
   </script>
 
 </body>

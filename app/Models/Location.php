@@ -27,4 +27,9 @@ class Location extends Model
     {
         return $this->belongsTo(UserAccount::class, 'user_id');
     }
+
+    public function donationRequests()
+    {
+        return $this->hasMany(DonationRequest::class);
+    }
 }

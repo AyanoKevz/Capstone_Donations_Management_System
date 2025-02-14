@@ -16,6 +16,9 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\AccountUpdated;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Cache\RateLimiter;
 use Illuminate\Support\Str;
 
 class AdminController extends Controller
@@ -53,6 +56,125 @@ class AdminController extends Controller
         session()->regenerateToken();
         return redirect()->route('admin.login')->with('success', 'You have been logged out successfully.');
     }
+
+    // ADMIN Send email form  
+    public function showFindEmailForm()
+    {
+        return view('admin.admin_find_email');
+    }
+
+    // Send Reset Link
+    public function sendResetLink(Request $request)
+    {
+        $request->validate(['email' => 'required|email']);
+        $email = $request->input('email');
+
+        $rateLimitKey = 'admin-password-reset:' . $email;
+        $limiter = app(RateLimiter::class);
+
+        if ($limiter->tooManyAttempts($rateLimitKey, 1)) {
+            return redirect()->route('admin.login')
+                ->with('error', 'You can request a password reset only once every 3 minutes.');
+        }
+
+        $limiter->hit($rateLimitKey, 180);
+
+        $admin = Admin::where('email', $email)->first();
+
+        if (!$admin) {
+            return redirect()->route('admin.findEmail')
+                ->with('error', 'Sorry, email not found.')
+                ->withInput();
+        }
+
+        $token = Str::random(64);
+        DB::table('password_resets')->updateOrInsert(
+            ['email' => $email],
+            ['token' => $token, 'created_at' => now()]
+        );
+
+        $resetLink = route('admin.resetPasswordForm', ['token' => $token]);
+        $logoPath = public_path('assets/img/systemLogo.png');
+
+        try {
+            Mail::send('emails.reset-password', [
+                'username' => $admin->username,
+                'resetLink' => $resetLink,
+                'logoPath' => $logoPath,
+            ], function ($message) use ($email) {
+                $message->to($email)->subject('Admin Password Reset Request');
+            });
+        } catch (\Exception $e) {
+            Log::error('Error sending admin password reset email: ' . $e->getMessage());
+            return redirect()->route('admin.findEmail')
+                ->with('error', 'Failed to send password reset email. Please try again later.');
+        }
+
+        return redirect()->route('admin.login')
+            ->with('success', 'A reset link has been sent to your email.');
+    }
+
+    // Show Reset Form
+    public function showResetForm($token)
+    {
+        DB::table('password_resets')->where('created_at', '<', Carbon::now()->subMinutes(2))->delete();
+
+        $tokenData = DB::table('password_resets')->where('token', $token)->first();
+
+        if (!$tokenData) {
+            return redirect()->route('admin.login')
+                ->with('error', 'Link is invalid or has expired.');
+        }
+
+        $expiresAt = Carbon::parse($tokenData->created_at)->addMinutes(2);
+        $remainingTime = Carbon::now()->diffInSeconds($expiresAt);
+
+        return view('admin.admin_forgot', [
+            'token' => $token,
+            'remainingTime' => $remainingTime,
+        ]);
+    }
+
+    // Reset Password
+    public function resetPassword(Request $request)
+    {
+        $request->validate([
+            'password' => 'required|min:8',
+            'token' => 'required',
+        ]);
+
+        $tokenData = DB::table('password_resets')->where('token', $request->input('token'))->first();
+
+        if (!$tokenData || Carbon::parse($tokenData->created_at)->addMinutes(2)->isPast()) {
+            return redirect()->route('admin.findEmail')
+                ->with('error', 'Invalid or expired reset link.');
+        }
+
+        $admin = Admin::where('email', $tokenData->email)->first();
+        if (!$admin) {
+            return redirect()->route('admin.findEmail')
+                ->with('error', 'Admin not found.');
+        }
+
+        $admin->update(['password' => Hash::make($request->input('password'))]);
+
+        DB::table('password_resets')->where('email', $tokenData->email)->delete();
+
+        $details = [
+            'changes' => ['password'],
+            'username' => $admin->username,
+        ];
+
+        try {
+            Mail::to($admin->email)->send(new AccountUpdated($details));
+        } catch (\Exception $e) {
+            Log::error('Failed to send account update email: ' . $e->getMessage());
+        }
+
+        return redirect()->route('admin.login')
+            ->with('success', 'Your password has been successfully reset.');
+    }
+
 
 
     // ADMIN DASHBOARD
@@ -273,11 +395,9 @@ class AdminController extends Controller
             'email' => 'required|email|unique:admin,email',
         ]);
 
-        // Generate credentials
         $username = 'uniaid_admin' . rand(1000, 9999);
         $password = strtoupper(Str::random(4)) . rand(1000, 9999);
 
-        // Upload default profile picture
         $defaultImagePath = 'assets/img/PRC_logo.png';
         $profileImagePath = 'admin_photos/' . Str::random(10) . '_PRC_logo.png';
         Storage::disk('public')->put($profileImagePath, file_get_contents(public_path($defaultImagePath)));
@@ -455,8 +575,6 @@ class AdminController extends Controller
     public function UpdateNews(Request $request, $id)
     {
         $news = News::find($id);
-
-        // Validate input fields
         $validatedData = $request->validate([
             'subtitle' => 'required|string|max:255',
             'title' => 'required|string|max:255',

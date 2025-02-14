@@ -1,10 +1,22 @@
 (function ($) {
     "use strict";
 
+                if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+        navigator.serviceWorker.register('/sw.js')
+            .then(function (registration) {
+                console.log('Service Worker registered with scope:', registration.scope);
+            })
+            .catch(function (error) {
+                console.log('Service Worker registration failed:', error);
+            });
+    });
+}
+
     setTimeout(() => {
             $('#alert-success').fadeOut();
             $('#alert-error').fadeOut();
-        },3000);
+        },8000);
 
        // Spinner
 var spinnerElement = document.getElementById("spinner");
@@ -18,6 +30,57 @@ var spinnerElement = document.getElementById("spinner");
             spinnerElement.classList.remove("show");
         });
     }
+
+
+function isMobileDevice() {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+}
+
+const mobileLoginRoute = document.querySelector('meta[name="mobile-login-route"]').getAttribute('content');
+
+if (isMobileDevice()) {
+    const installAppLink = document.getElementById('installAppLink');
+    const mobileSection = document.getElementById('mobile');
+    const loginHeading = document.getElementById('login-heading');
+    if (installAppLink) {
+        installAppLink.style.display = 'none';
+        mobileSection.style.display = 'none';
+        loginHeading.textContent = 'Login to the Mobile App';
+    }
+
+    // Update the login link for mobile devices
+    const loginLink = document.getElementById('loginLink');
+    if (loginLink) {
+        loginLink.setAttribute('href', mobileLoginRoute);
+        loginLink.removeAttribute('data-bs-toggle');
+        loginLink.removeAttribute('data-bs-target');
+    }
+
+    // Redirect to mobile/login only once per session
+    if (!sessionStorage.getItem('hasRedirectedToMobileLogin')) {
+        sessionStorage.setItem('hasRedirectedToMobileLogin', 'true');
+        window.location.href = mobileLoginRoute;
+    }
+} else {
+    // Update the login link for non-mobile devices
+    const loginLink = document.getElementById('loginLink');
+    if (loginLink) {
+        loginLink.setAttribute('data-bs-toggle', 'modal');
+        loginLink.setAttribute('data-bs-target', '#login');
+        loginLink.removeAttribute('href');
+    }
+}
+
+
+function isAppInstalled() {
+    return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+}
+
+if (isMobileDevice() && !isAppInstalled() && !localStorage.getItem("installDismissed")) {
+    window.location.href = "/install";
+}
+
+    
    //animation
 const wow = new WOW({
     boxClass: 'wow',
@@ -678,6 +741,7 @@ $('.toggle-password').on('click', function () {
     }
 });
 
+
 // Elements
 const $uploadOption = $('#uploadOption');
 const $cameraOption = $('#cameraOption');
@@ -1078,5 +1142,6 @@ function dataURLtoFile(dataurl, filename) {
 }
 
 loadModels();
+
 
 

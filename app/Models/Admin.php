@@ -30,4 +30,9 @@ class Admin extends Authenticatable
     {
         return $this->hasMany(News::class, 'admin_id');
     }
+
+    public function donationRequests()
+    {
+        return $this->hasMany(DonationRequest::class, 'created_by_admin_id');
+    }
 }

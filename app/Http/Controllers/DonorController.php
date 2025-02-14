@@ -14,6 +14,12 @@ class DonorController extends Controller
     /* USER CONTACT SUBMIT VOL AND DONOR NA TO */
     public function UserContact(Request $request)
     {
+
+        $user = Auth::user();
+
+
+        $userType = $user->donor ? 'Donor' : ($user->volunteer ? 'Volunteer' : null);
+
         $validated = $request->validate([
             'name' => 'required|string|max:100',
             'email' => 'required|email|max:100',
@@ -32,7 +38,11 @@ class DonorController extends Controller
             session()->flash('error', 'An error occurred while submitting your inquiry.');
         }
 
-        return redirect()->route('donor.contact_form');
+        if ($userType === 'Donor') {
+            return redirect()->route('donor.contact_form');
+        } elseif ($userType === 'Volunteer') {
+            return redirect()->route('volunteer.contact_form');
+        }
     }
 
 
@@ -65,7 +75,6 @@ class DonorController extends Controller
         } elseif ($userType === 'Volunteer') {
             return redirect()->route('volunteer.testi_form')->with('success', 'Thank you for your feedback!.');
         }
-        return redirect()->back()->with('success', 'Thank you for your feedback!');
     }
 
     public function updateTestimonial(Request $request, $id)

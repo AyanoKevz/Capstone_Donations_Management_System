@@ -198,7 +198,7 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="{{route ('donor.request_map') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Donation Request Map</p>
                                     </a>
@@ -371,7 +371,7 @@
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label class="label" for="subject">Email Address</label>
-                                                <input type="email" class="form-control" name="email" id="email" placeholder="Email Address" required>
+                                                <input type="email" class="form-control" name="email" id="email" placeholder="Email Address" value="{{ $User->email}}">
                                             </div>
                                         </div>
                                         <div class="col-md-12">
@@ -401,11 +401,8 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
-
             </div>
-
         </div>
         <!-- /.content wrapper -->
 

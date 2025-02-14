@@ -106,7 +106,7 @@
                         </li>
                         <li>
                             <a class="dropdown-item d-flex justify-content-center align-items-center"
-                                href="my_profile">My profile
+                                href="{{ route('volunteer.profile') }}">My profile
                                 <i class="fas fa-user ms-2"></i>
                             </a>
                         </li>
@@ -126,13 +126,10 @@
             <!-- Sidebar -->
             <div class="sidebar">
                 <!-- Sidebar user (optional) -->
-                <div class="user-panel my-3 pb-3  d-flex justify-content-center">
-                    <div class="image">
-                        <img src="{{ asset('storage/' . $User->volunteer->user_photo) }}" class="img-circle elevation-2" alt="User Image">
-                    </div>
-                    <div class="info">
-                        <a href="#" class="d-block">{{ $User->username}}</a>
-                    </div>
+                <div class="user-panel my-3 pb-3 d-flex flex-column align-items-center justify-content-center">
+                    <img src="{{ asset('storage/' . $User->volunteer->user_photo) }}" class="img-circle elevation-2" alt="User Image">
+                    <a href="{{route ('volunteer.profile') }}" class="d-block side-user mt-2" title="profile">{{ $User->username }}</a>
+                    <p class="text-white m-0">Volunteer</p>
                 </div>
                 <!-- SidebarSearch Form -->
                 <div class="form-inline">
@@ -165,12 +162,12 @@
                             </a>
                         </li>
 
-                        <!-- Make A Donation -->
+                        <!-- Volunteer Activities -->
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-hand-holding-heart"></i>
                                 <p>
-                                    Make A Donation
+                                    Volunteer Tasks
                                     <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>
@@ -178,48 +175,55 @@
                                 <li class="nav-item">
                                     <a href="#" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Quick Donation</p>
+                                        <p>Available Tasks</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="#" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Browse Requests</p>
+                                        <p>Assigned Task</p>
                                     </a>
                                 </li>
                             </ul>
                         </li>
 
-                        <!-- Track Donations -->
                         <li class="nav-item">
                             <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-chart-line"></i>
+                                <i class="nav-icon fas fa-pen-to-square"></i>
                                 <p>
-                                    Track Donations
-                                    <i class="fas fa-angle-left right"></i>
+                                    Track Activities
+                                    <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
                                     <a href="#" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Donation Status</p>
+                                        <p>My Task</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="#" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Donation History</p>
+                                        <p>Volunteer History</p>
                                     </a>
                                 </li>
                             </ul>
                         </li>
 
-                        <!-- Feedback and Support -->
+                        <!-- Testimonials -->
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{ route('volunteer.testi_form') }}" class="nav-link">
+                                <i class="nav-icon fas fa-star"></i>
+                                <p>Testimonials</p>
+                            </a>
+                        </li>
+
+                        <!-- Contact / Support -->
+                        <li class="nav-item">
+                            <a href="{{ route('volunteer.contact_form') }}" class="nav-link">
                                 <i class="nav-icon fas fa-comments"></i>
-                                <p>Feedback / Support</p>
+                                <p>Contact / Support</p>
                             </a>
                         </li>
                     </ul>

@@ -56,15 +56,18 @@
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link" data-bs-toggle="dropdown">
                             <span>More <i class="fa-solid fa-angle-down fa-sm dropdown-toggle"></i></span>
-
                         </a>
                         <div class="dropdown-menu m-0">
                             <a href="{{ route ('more_donor')}}" class="dropdown-item">Donation</a>
                             <a href="{{ route ('more_volunteer')}}" class="dropdown-item">Volunteer</a>
+                            <a href="{{ route('home') }}#news" class="dropdown-item">News</a>
                         </div>
                     </div>
                     <a href="{{ route ('contact')}}" class="nav-item nav-link">Contact Us</a>
                     <a href="{{ route ('register')}}" class="nav-item nav-link">Register</a>
+                    <a href="#mobile" id="installAppLink" class="nav-item nav-link">
+                        Install App <i class="fa-solid fa-mobile-screen-button"></i>
+                    </a>
                 </div>
                 <a href="{{ route('home') }}#portals" class="btn btn-primary rounded-pill py-2 px-4 my-3 my-lg-0 flex-shrink-0">Portal</a>
             </div>
