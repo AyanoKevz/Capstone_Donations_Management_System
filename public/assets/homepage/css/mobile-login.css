@@ -272,14 +272,14 @@ html, body {
 
 #username-error {
    position: absolute;
-    top: 320px;
+    top: 270px;
     left: 0;
     word-wrap: break-word
 }
 
 #password-error {
     position: absolute;
-    top: 390px;
+    top: 340px;
     left: 0;
 }
 
