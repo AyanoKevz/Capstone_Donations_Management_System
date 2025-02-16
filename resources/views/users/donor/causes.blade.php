@@ -16,7 +16,6 @@
     <link rel="stylesheet" href="{{ asset('lib/bootstrap/css/bootstrap.min.css') }}">
     <!-- Custom CSS -->
     <link href="{{ asset('lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('assets/users/css/donor/testimonial.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/users/css/donor/causes.css') }}">
 </head>
 
@@ -240,7 +239,7 @@
 
                         <!-- Learn About Causes -->
                         <li class="nav-item">
-                            <a href="" class="nav-link">
+                            <a href="{{route ('donor.causes') }}" class="nav-link active">
                                 <i class="nav-icon fas fa-info-circle"></i>
                                 <p>Learn About Causes</p>
                             </a>
@@ -248,7 +247,7 @@
 
                         <!-- Testimonials -->
                         <li class="nav-item">
-                            <a href="{{route ('donor.testi_form') }}" class=" nav-link active">
+                            <a href="{{route ('donor.testi_form') }}" class=" nav-link">
                                 <i class="nav-icon fas fa-star"></i>
                                 <p>Testimonials</p>
                             </a>
@@ -291,330 +290,115 @@
                         </div>
                     </div>
                 </div>
-                @if(session('error'))
-                <div id="alert-error" class="alert alert-error" style=" position: absolute; ; right: 10px; top: 90px;">
-                    <i class=" fa-solid fa-circle-xmark fa-xl me-3"></i>{{ session('error') }}
-                </div>
-                @endif
-                @if(session('success'))
-                <div id="alert-success" class="alert alert-success" style=" position: absolute; ; right: 10px; top: 90px;">
-                    <i class="fa-solid fa-circle-check fa-xl me-3"></i>{{ session('success') }}
-                </div>
-                @endif
             </div>
 
             <!-- End content-header -->
 
             <!-- Main content -->
-            <div class="main-content" >
-            <div class="hero" style="background: url('{{ asset('assets/img/causes.jpg') }}') no-repeat center center/cover;">
-        <div class="overlay"></div>
-        <div class="hero-content">
-            <h1>OUR CAUSES</h1>
-            <div class="social-icons">
-                <i class="fa-brands fa-facebook"></i>
-                <i class="fa-brands fa-twitter"></i>
-                <i class="fa-solid fa-envelope"></i>
+            <div class="content px-0">
+                <div class="container-fluid py-2 px-0">
+                    <div class="hero" style="background: url('{{ asset('assets/img/causes.jpg') }}') no-repeat center center/cover;">
+                        <div class="overlay"></div>
+                        <div class="hero-content">
+                            <h1>OUR CAUSES</h1>
+                        </div>
+                    </div>
+
+                    <div class="sub-content mb-5">
+                        <h2>What does UNIAID do?</h2>
+                        <p>
+                            UNIAID is committed to providing urgent assistance to victims of disasters, emergencies, and humanitarian crises. Through rescue efforts, medical aid, food distribution, and recovery programs, we support those affected by fires, typhoons, and other calamities. Our mission is to bring relief, rebuild lives, and offer hope to vulnerable communities in their time of need.
+                        </p>
+                    </div>
+
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <!-- First Row -->
+                            <div class="col-md-4 mb-5 d-flex justify-content-center">
+                                <div class="cause-card text-center"> <!-- Center content inside the card -->
+                                    <img src="{{ asset('assets/img/q6.jpg') }}" class="img-fluid" alt="Feeding Program">
+                                    <div class="card__content">
+                                        <p class="card__title">Feeding Program</p>
+                                        <button class="buttonc" data-bs-toggle="modal" data-bs-target="#infoModal1"
+                                            data-title="Feeding Program"
+                                            data-description="Flood victims need urgent assistance including shelter, food, and medical aid.">
+                                            Learn More
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-5 d-flex justify-content-center">
+                                <div class="cause-card text-center">
+                                    <img src="{{ asset('assets/img/e3.jpg') }}" class="img-fluid" alt="Earthquake Victims">
+                                    <div class="card__content">
+                                        <p class="card__title">Earthquake Victims</p>
+                                        <button class="buttonc" data-bs-toggle="modal" data-bs-target="#infoModal2"
+                                            data-title="Earthquake Victims"
+                                            data-description="The Philippines sits along the Pacific Ring of Fire, making it highly vulnerable to earthquakes. These natural disasters can strike without warning, causing destruction, displacing families, and putting lives at risk.">
+                                            Learn More
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-5 d-flex justify-content-center">
+                                <div class="cause-card text-center">
+                                    <img src="{{ asset('assets/img/f2.jpg') }}" class="img-fluid" alt="Fire Victims">
+                                    <div class="card__content">
+                                        <p class="card__title">Fire Victims</p>
+                                        <button class="buttonc" data-bs-toggle="modal" data-bs-target="#infoModal3"
+                                            data-title="Fire Victims"
+                                            data-description="Flood victims need urgent assistance including shelter, food, and medical aid.">
+                                            Learn More
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Second Row -->
+                            <div class="col-md-4 mb-5 d-flex justify-content-center">
+                                <div class="cause-card text-center">
+                                    <img src="{{ asset('assets/img/ff2.jpeg') }}" class="img-fluid" alt="Flood Victims">
+                                    <div class="card__content">
+                                        <p class="card__title">Flood Victims</p>
+                                        <button class="buttonc" data-bs-toggle="modal" data-bs-target="#infoModal4"
+                                            data-title="Flood Victims"
+                                            data-description="Flood victims need urgent assistance including shelter, food, and medical aid.">
+                                            Learn More
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-5 d-flex justify-content-center">
+                                <div class="cause-card text-center">
+                                    <img src="{{ asset('assets/img/t3.jpeg') }}" class="img-fluid" alt="Typhoon Victims">
+                                    <div class="card__content">
+                                        <p class="card__title">Typhoon Victims</p>
+                                        <button class="buttonc" data-bs-toggle="modal" data-bs-target="#infoModal5"
+                                            data-title="Typhoon Victims"
+                                            data-description="Typhoon victims face loss of homes and require immediate relief supplies and assistance.">
+                                            Learn More
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-5 d-flex justify-content-center">
+                                <div class="cause-card text-center">
+                                    <img src="{{ asset('assets/img/v4.jpg') }}" class="img-fluid" alt="Volcanic Disaster">
+                                    <div class="card__content">
+                                        <p class="card__title">Volcanic Disaster</p>
+                                        <button class="buttonc" data-bs-toggle="modal" data-bs-target="#infoModal6"
+                                            data-title="Volcanic Disaster"
+                                            data-description="Volcanic eruptions lead to severe destruction, requiring evacuation and humanitarian support.">
+                                            Learn More
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-
-                <!-- Content Section -->
-        <div class="content">
-            <h2>What does UNIAID do?</h2>
-            <p>
-            UNIAID is committed to providing urgent assistance to victims of disasters, emergencies, and humanitarian crises. Through rescue efforts, medical aid, food distribution, and recovery programs, we support those affected by fires, typhoons, and other calamities. Our mission is to bring relief, rebuild lives, and offer hope to vulnerable communities in their time of need. </p>
-        </div>
-    
-           
-    </div>
-</div>
-
-     <!-- Main content -->
-
-
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <!-- From Uiverse.io by gharsh11032000 --> 
-        <div class="col-md-4 d-flex justify-content-center">
-            <div class="card">
-                <img src="{{ asset('assets/img/q6.jpg') }}">
-            <div class="card__content">
-            <p class="card__title">Feeding Program</p>
-                <button class="buttonc" data-bs-toggle="modal" data-bs-target="#infoModal1" 
-                    data-title="Feeding Program" 
-                    data-description="Flood victims need urgent assistance including shelter, food, and medical aid.">
-                    Learn More
-                </button>
-            </div>
-            </div>
-            </div>
-            <!-- From Uiverse.io by gharsh11032000 --> 
-            <div class="col-md-4 d-flex justify-content-center">
-            <div class="card">
-                <img src="{{ asset('assets/img/e3.jpg') }}">
-            <div class="card__content">
-            <p class="card__title">Earthquake Victims</p>
-                <button class="buttonc" data-bs-toggle="modal" data-bs-target="#infoModal2" 
-                    data-title="Earthquake Victims" 
-                    data-description="The Philippines sits along the Pacific Ring of Fire, making it highly vulnerable to earthquakes. These natural disasters can strike without warning, causing destruction, displacing families, and putting lives at risk.">
-                    Learn More
-                </button>
-            </div>
-            </div>
-            </div>
-            <!-- From Uiverse.io by gharsh11032000 --> 
-            <div class="col-md-4 d-flex justify-content-center">
-            <div class="card">
-            <img src="{{ asset('assets/img/f2.jpg') }}">
-            <div class="card__content">
-            <p class="card__title">Fire Victims</p>
-                <button class="buttonc" data-bs-toggle="modal" data-bs-target="#infoModal3" 
-                    data-title="Fire Victims" 
-                    data-description="Flood victims need urgent assistance including shelter, food, and medical aid.">
-                    Learn More
-                </button>
-            </div>
-            </div>
-            </div>
-    </div>
-</div>
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <!-- Card 1 --> 
-        <div class="col-md-4 d-flex justify-content-center">
-        <div class="card">
-            <img src="{{ asset('assets/img/ff2.jpeg') }}">
-            <div class="card__content">
-                <p class="card__title">Flood Victims</p>
-                <button class="buttonc" data-bs-toggle="modal" data-bs-target="#infoModal4" 
-                    data-title="Flood Victims" 
-                    data-description="Flood victims need urgent assistance including shelter, food, and medical aid.">
-                    Learn More
-                </button>
-            </div>
-            </div>
-        </div>
-        
-        <!-- Card 2 --> 
-        <div class="col-md-4 d-flex justify-content-center">
-        <div class="card">
-            <img src="{{ asset('assets/img/t3.jpeg') }}">
-            <div class="card__content">
-                <p class="card__title">Typhoon Victims</p>
-                <button class="buttonc" data-bs-toggle="modal" data-bs-target="#infoModal5" 
-                    data-title="Typhoon Victims" 
-                    data-description="Typhoon victims face loss of homes and require immediate relief supplies and assistance.">
-                    Learn More
-                </button>
-            </div>
-            </div>
-        </div>
-        
-        <!-- Card 3 --> 
-        <div class="col-md-4 d-flex justify-content-center">
-        <div class="card">
-            <img src="{{ asset('assets/img/v4.jpg') }}">
-            <div class="card__content">
-                <p class="card__title">Volcanic Disaster</p>
-                <button class="buttonc" data-bs-toggle="modal" data-bs-target="#infoModal6" 
-                    data-title="Volcanic Disaster" 
-                    data-description="Volcanic eruptions lead to severe destruction, requiring evacuation and humanitarian support.">
-                    Learn More
-                </button>
-            </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal 1 -->
-<div class="modal fade" id="infoModal1" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="infoModalLabel">Feeding Program</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body text-start">
-            <strong>Your donation helps provide nutritious meals to those in need, including:</strong><br>
-            <i class="fa-solid fa-right-long"></i> Hot meals for disaster-affected families<br>
-            <i class="fa-solid fa-right-long"></i> Supplemental feeding for malnourished children<br>
-            <i class="fa-solid fa-right-long"></i> Food packs for vulnerable communities<br><br>
-
-            <strong>Become a volunteer and assist in:</strong><br>
-            <i class="fa-solid fa-right-long"></i> Meal preparation and distribution<br>
-            <i class="fa-solid fa-right-long"></i> Nutrition awareness and education<br>
-            <i class="fa-solid fa-right-long"></i> Packing and delivering food supplies<br>
-            <i class="fa-solid fa-right-long"></i> Supporting feeding missions in remote areas<br><br>
-
-            <strong>We conducts long-term programs to fight malnutrition, including:</strong><br>
-            
-            <i class="fa-solid fa-right-long"></i> Community-based nutrition programs<br>
-            <i class="fa-solid fa-right-long"></i> School feeding initiatives<br>
-            <i class="fa-solid fa-right-long"></i> Sustainable food security projects  
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal 2 -->
-<div class="modal fade" id="infoModal2" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="infoModalLabel">Earthquake Victims</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body  text-start">
-            <strong>Your donation provides immediate relief, including:</strong><br>
-            <i class="fa-solid fa-right-long"></i> Food and clean water<br>
-            <i class="fa-solid fa-right-long"></i> Medical aid and emergency response</strong><br>
-            <i class="fa-solid fa-right-long"></i> Temporary shelter and essential supplies<br><br>
-
-            <strong>Become a volunteer and assist in:</strong><br>
-            <i class="fa-solid fa-right-long"></i> Emergency response teams<br>
-                <i class="fa-solid fa-right-long"></i> Shelter and relief distribution<br>
-                <i class="fa-solid fa-right-long"></i> First aid and medical missions<br><br>
-
-                <strong>We provide disaster preparedness programs, including:</strong><br>
-                <i class="fa-solid fa-right-long"></i> First Aid & CPR Training<br>
-                <i class="fa-solid fa-right-long"></i> Earthquake Safety Drills<br>
-                <i class="fa-solid fa-right-long"></i> Community Disaster Response Planning
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal 3 -->
-<div class="modal fade" id="infoModal3" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="infoModalLabel">Fire Victims</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body text-start">
-            <strong>Your donation provides immediate relief to fire victims, including:</strong><br>
-            <i class="fa-solid fa-right-long"></i> Food and clean water<br>
-            <i class="fa-solid fa-right-long"></i> Emergency medical aid and first aid services<br>
-            <i class="fa-solid fa-right-long"></i> Temporary shelter and essential supplies<br>
-            <i class="fa-solid fa-right-long"></i> Clothing and hygiene kits for displaced families<br><br>
-
-            <strong>Become a volunteer and assist in:</strong><br>
-            <i class="fa-solid fa-right-long"></i> Fire response and rescue operations<br>
-            <i class="fa-solid fa-right-long"></i> Shelter and relief distribution<br>
-            <i class="fa-solid fa-right-long"></i> First aid and medical support<br>
-            <i class="fa-solid fa-right-long"></i> Community fire prevention awareness<br><br>
-
-            <strong>We provide fire safety and preparedness programs, including:</strong><br>
-            <i class="fa-solid fa-right-long"></i> Fire Prevention Awareness Campaigns<br>
-            <i class="fa-solid fa-right-long"></i> First Aid & Burn Injury Training<br>
-            <i class="fa-solid fa-right-long"></i> Emergency Evacuation Drills  
-
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal 4 -->
-<div class="modal fade" id="infoModal4" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="infoModalLabel">Flood Victims</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body text-start">
-            <strong>Your donation provides immediate relief to flood victims, including:</strong><br>
-            <i class="fa-solid fa-right-long"></i> Food and clean drinking water<br>
-            <i class="fa-solid fa-right-long"></i> Emergency medical aid and first aid services<br>
-            <i class="fa-solid fa-right-long"></i> Temporary shelter and essential supplies<br>
-            <i class="fa-solid fa-right-long"></i> Hygiene kits and dry clothing for displaced families<br>
-            <i class="fa-solid fa-right-long"></i> Rescue and evacuation assistance<br><br>
-
-            <strong>Become a volunteer and assist in:</strong><br>
-            <i class="fa-solid fa-right-long"></i> Flood rescue and evacuation operations<br>
-            <i class="fa-solid fa-right-long"></i> Shelter and relief distribution<br>
-            <i class="fa-solid fa-right-long"></i> First aid and medical support<br>
-            <i class="fa-solid fa-right-long"></i> Community flood preparedness and awareness<br><br>
-
-            <strong>We provide flood safety and preparedness programs, including:</strong><br>
-            <i class="fa-solid fa-right-long"></i> Flood Early Warning and Response Training<br>
-            <i class="fa-solid fa-right-long"></i> First Aid & Water Safety Training<br>
-            <i class="fa-solid fa-right-long"></i> Community Disaster Risk Reduction Programs  
-
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal 5 -->
-<div class="modal fade" id="infoModal5" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="infoModalLabel">Typhoon Victims</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body text-start">
-            <strong>Your donation provides immediate relief to typhoon victims, including:</strong><br>
-            <i class="fa-solid fa-right-long"></i> Food and clean drinking water<br>
-            <i class="fa-solid fa-right-long"></i> Emergency medical aid and first aid services<br>
-            <i class="fa-solid fa-right-long"></i> Temporary shelter and essential supplies<br>
-            <i class="fa-solid fa-right-long"></i> Hygiene kits and dry clothing for displaced families<br>
-            <i class="fa-solid fa-right-long"></i> Rescue, evacuation, and transportation assistance<br><br>
-
-            <strong>Become a volunteer and assist in:</strong><br>
-            <i class="fa-solid fa-right-long"></i> Typhoon rescue and evacuation operations<br>
-            <i class="fa-solid fa-right-long"></i> Shelter and relief distribution<br>
-            <i class="fa-solid fa-right-long"></i> First aid and medical support<br>
-            <i class="fa-solid fa-right-long"></i> Community disaster preparedness and awareness<br><br>
-
-            <strong>We provide typhoon safety and preparedness programs, including:</strong><br>
-            <i class="fa-solid fa-right-long"></i> Disaster Preparedness and Emergency Response Training<br>
-            <i class="fa-solid fa-right-long"></i> First Aid & Water Safety Training<br>
-            <i class="fa-solid fa-right-long"></i> Community Risk Reduction and Resilience Programs  
-
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal 6 -->
-<div class="modal fade" id="infoModal6" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="infoModalLabel">Volcanic Eruption Victims</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body text-start">
-            <strong>Your donation provides immediate relief to volcanic eruption victims, including:</strong><br>
-            <i class="fa-solid fa-right-long"></i> Food and clean drinking water<br>
-            <i class="fa-solid fa-right-long"></i> Emergency medical aid and respiratory protection (e.g., N95 masks)<br>
-            <i class="fa-solid fa-right-long"></i> Temporary shelter and essential supplies<br>
-            <i class="fa-solid fa-right-long"></i> Hygiene kits and protective clothing for ashfall exposure<br>
-            <i class="fa-solid fa-right-long"></i> Rescue, evacuation, and transportation assistance<br><br>
-
-            <strong>Become a volunteer and assist in:</strong><br>
-            <i class="fa-solid fa-right-long"></i> Evacuation and emergency response operations<br>
-            <i class="fa-solid fa-right-long"></i> Shelter and relief distribution<br>
-            <i class="fa-solid fa-right-long"></i> First aid and medical support for ash-related illnesses<br>
-            <i class="fa-solid fa-right-long"></i> Community awareness on volcanic hazards and safety measures<br><br>
-
-            <strong>We provide volcanic eruption safety and preparedness programs, including:</strong><br>
-            <i class="fa-solid fa-right-long"></i> Ashfall and Respiratory Safety Training<br>
-            <i class="fa-solid fa-right-long"></i> First Aid & Emergency Evacuation Drills<br>
-            <i class="fa-solid fa-right-long"></i> Community Disaster Risk Reduction and Resilience Programs  
-
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
 
         <!-- Main Footer -->
         <footer class="main-footer">
@@ -623,6 +407,193 @@
         </footer>
     </div>
     <!-- ./wrapper -->
+
+
+
+    <!-- Modal 1 -->
+    <div class="modal fade" id="infoModal1" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="infoModalLabel">Feeding Program</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-start">
+                    <strong>Your donation helps provide nutritious meals to those in need, including:</strong><br>
+                    <i class="fa-solid fa-right-long"></i> Hot meals for disaster-affected families<br>
+                    <i class="fa-solid fa-right-long"></i> Supplemental feeding for malnourished children<br>
+                    <i class="fa-solid fa-right-long"></i> Food packs for vulnerable communities<br><br>
+
+                    <strong>Become a volunteer and assist in:</strong><br>
+                    <i class="fa-solid fa-right-long"></i> Meal preparation and distribution<br>
+                    <i class="fa-solid fa-right-long"></i> Nutrition awareness and education<br>
+                    <i class="fa-solid fa-right-long"></i> Packing and delivering food supplies<br>
+                    <i class="fa-solid fa-right-long"></i> Supporting feeding missions in remote areas<br><br>
+
+                    <strong>We conducts long-term programs to fight malnutrition, including:</strong><br>
+
+                    <i class="fa-solid fa-right-long"></i> Community-based nutrition programs<br>
+                    <i class="fa-solid fa-right-long"></i> School feeding initiatives<br>
+                    <i class="fa-solid fa-right-long"></i> Sustainable food security projects
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 2 -->
+    <div class="modal fade" id="infoModal2" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="infoModalLabel">Earthquake Victims</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body  text-start">
+                    <strong>Your donation provides immediate relief, including:</strong><br>
+                    <i class="fa-solid fa-right-long"></i> Food and clean water<br>
+                    <i class="fa-solid fa-right-long"></i> Medical aid and emergency response</strong><br>
+                    <i class="fa-solid fa-right-long"></i> Temporary shelter and essential supplies<br><br>
+
+                    <strong>Become a volunteer and assist in:</strong><br>
+                    <i class="fa-solid fa-right-long"></i> Emergency response teams<br>
+                    <i class="fa-solid fa-right-long"></i> Shelter and relief distribution<br>
+                    <i class="fa-solid fa-right-long"></i> First aid and medical missions<br><br>
+
+                    <strong>We provide disaster preparedness programs, including:</strong><br>
+                    <i class="fa-solid fa-right-long"></i> First Aid & CPR Training<br>
+                    <i class="fa-solid fa-right-long"></i> Earthquake Safety Drills<br>
+                    <i class="fa-solid fa-right-long"></i> Community Disaster Response Planning
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 3 -->
+    <div class="modal fade" id="infoModal3" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="infoModalLabel">Fire Victims</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-start">
+                    <strong>Your donation provides immediate relief to fire victims, including:</strong><br>
+                    <i class="fa-solid fa-right-long"></i> Food and clean water<br>
+                    <i class="fa-solid fa-right-long"></i> Emergency medical aid and first aid services<br>
+                    <i class="fa-solid fa-right-long"></i> Temporary shelter and essential supplies<br>
+                    <i class="fa-solid fa-right-long"></i> Clothing and hygiene kits for displaced families<br><br>
+
+                    <strong>Become a volunteer and assist in:</strong><br>
+                    <i class="fa-solid fa-right-long"></i> Fire response and rescue operations<br>
+                    <i class="fa-solid fa-right-long"></i> Shelter and relief distribution<br>
+                    <i class="fa-solid fa-right-long"></i> First aid and medical support<br>
+                    <i class="fa-solid fa-right-long"></i> Community fire prevention awareness<br><br>
+
+                    <strong>We provide fire safety and preparedness programs, including:</strong><br>
+                    <i class="fa-solid fa-right-long"></i> Fire Prevention Awareness Campaigns<br>
+                    <i class="fa-solid fa-right-long"></i> First Aid & Burn Injury Training<br>
+                    <i class="fa-solid fa-right-long"></i> Emergency Evacuation Drills
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 4 -->
+    <div class="modal fade" id="infoModal4" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="infoModalLabel">Flood Victims</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-start">
+                    <strong>Your donation provides immediate relief to flood victims, including:</strong><br>
+                    <i class="fa-solid fa-right-long"></i> Food and clean drinking water<br>
+                    <i class="fa-solid fa-right-long"></i> Emergency medical aid and first aid services<br>
+                    <i class="fa-solid fa-right-long"></i> Temporary shelter and essential supplies<br>
+                    <i class="fa-solid fa-right-long"></i> Hygiene kits and dry clothing for displaced families<br>
+                    <i class="fa-solid fa-right-long"></i> Rescue and evacuation assistance<br><br>
+
+                    <strong>Become a volunteer and assist in:</strong><br>
+                    <i class="fa-solid fa-right-long"></i> Flood rescue and evacuation operations<br>
+                    <i class="fa-solid fa-right-long"></i> Shelter and relief distribution<br>
+                    <i class="fa-solid fa-right-long"></i> First aid and medical support<br>
+                    <i class="fa-solid fa-right-long"></i> Community flood preparedness and awareness<br><br>
+
+                    <strong>We provide flood safety and preparedness programs, including:</strong><br>
+                    <i class="fa-solid fa-right-long"></i> Flood Early Warning and Response Training<br>
+                    <i class="fa-solid fa-right-long"></i> First Aid & Water Safety Training<br>
+                    <i class="fa-solid fa-right-long"></i> Community Disaster Risk Reduction Programs
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 5 -->
+    <div class="modal fade" id="infoModal5" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="infoModalLabel">Typhoon Victims</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-start">
+                    <strong>Your donation provides immediate relief to typhoon victims, including:</strong><br>
+                    <i class="fa-solid fa-right-long"></i> Food and clean drinking water<br>
+                    <i class="fa-solid fa-right-long"></i> Emergency medical aid and first aid services<br>
+                    <i class="fa-solid fa-right-long"></i> Temporary shelter and essential supplies<br>
+                    <i class="fa-solid fa-right-long"></i> Hygiene kits and dry clothing for displaced families<br>
+                    <i class="fa-solid fa-right-long"></i> Rescue, evacuation, and transportation assistance<br><br>
+
+                    <strong>Become a volunteer and assist in:</strong><br>
+                    <i class="fa-solid fa-right-long"></i> Typhoon rescue and evacuation operations<br>
+                    <i class="fa-solid fa-right-long"></i> Shelter and relief distribution<br>
+                    <i class="fa-solid fa-right-long"></i> First aid and medical support<br>
+                    <i class="fa-solid fa-right-long"></i> Community disaster preparedness and awareness<br><br>
+
+                    <strong>We provide typhoon safety and preparedness programs, including:</strong><br>
+                    <i class="fa-solid fa-right-long"></i> Disaster Preparedness and Emergency Response Training<br>
+                    <i class="fa-solid fa-right-long"></i> First Aid & Water Safety Training<br>
+                    <i class="fa-solid fa-right-long"></i> Community Risk Reduction and Resilience Programs
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 6 -->
+    <div class="modal fade" id="infoModal6" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="infoModalLabel">Volcanic Eruption Victims</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-start">
+                    <strong>Your donation provides immediate relief to volcanic eruption victims, including:</strong><br>
+                    <i class="fa-solid fa-right-long"></i> Food and clean drinking water<br>
+                    <i class="fa-solid fa-right-long"></i> Emergency medical aid and respiratory protection (e.g., N95 masks)<br>
+                    <i class="fa-solid fa-right-long"></i> Temporary shelter and essential supplies<br>
+                    <i class="fa-solid fa-right-long"></i> Hygiene kits and protective clothing for ashfall exposure<br>
+                    <i class="fa-solid fa-right-long"></i> Rescue, evacuation, and transportation assistance<br><br>
+
+                    <strong>Become a volunteer and assist in:</strong><br>
+                    <i class="fa-solid fa-right-long"></i> Evacuation and emergency response operations<br>
+                    <i class="fa-solid fa-right-long"></i> Shelter and relief distribution<br>
+                    <i class="fa-solid fa-right-long"></i> First aid and medical support for ash-related illnesses<br>
+                    <i class="fa-solid fa-right-long"></i> Community awareness on volcanic hazards and safety measures<br><br>
+
+                    <strong>We provide volcanic eruption safety and preparedness programs, including:</strong><br>
+                    <i class="fa-solid fa-right-long"></i> Ashfall and Respiratory Safety Training<br>
+                    <i class="fa-solid fa-right-long"></i> First Aid & Emergency Evacuation Drills<br>
+                    <i class="fa-solid fa-right-long"></i> Community Disaster Risk Reduction and Resilience Programs
+
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- jQuery -->
     <script src="{{ asset('lib/jquery/jquery.min.js') }}"></script>
@@ -634,22 +605,6 @@
     <script src="{{ asset('lib/fontawesome/all.js') }}"></script>
     <!-- User JS -->
     <script src="{{ asset('assets/users/js/user.js') }}"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-    var infoModal = document.getElementById('infoModal');
-    infoModal.addEventListener('show.bs.modal', function (event) {
-        var button = event.relatedTarget;
-        var title = button.getAttribute('data-title');
-        var description = button.getAttribute('data-description');
-        document.getElementById('infoModalLabel').textContent = title;
-        document.getElementById('modalBody').textContent = description;
-    });
-});
-</script>  
-
-
 </body>
 
 </html>

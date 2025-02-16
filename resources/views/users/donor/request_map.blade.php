@@ -213,7 +213,7 @@
 
                         <!-- Learn About Causes -->
                         <li class="nav-item">
-                            <a href="" class="nav-link">
+                            <a href="{{route ('donor.causes') }}" class="nav-link">
                                 <i class="nav-icon fas fa-info-circle"></i>
                                 <p>Learn About Causes</p>
                             </a>

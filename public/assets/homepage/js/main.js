@@ -36,28 +36,35 @@ function isMobileDevice() {
     return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 }
 
-const mobileLoginRoute = document.querySelector('meta[name="mobile-login-route"]').getAttribute('content');
+// Check if the meta tag exists before accessing its content
+const mobileLoginMeta = document.querySelector('meta[name="mobile-login-route"]');
+const mobileLoginRoute = mobileLoginMeta ? mobileLoginMeta.getAttribute('content') : null;
 
 if (isMobileDevice()) {
     const installAppLink = document.getElementById('installAppLink');
     const mobileSection = document.getElementById('mobile');
     const loginHeading = document.getElementById('login-heading');
+
     if (installAppLink) {
         installAppLink.style.display = 'none';
         mobileSection.style.display = 'none';
         loginHeading.textContent = 'Login to the Mobile App';
     }
+    if (mobileSection) {
+        mobileSection.style.display = 'none';
+    }
+    if (loginHeading) {
+        loginHeading.textContent = 'Login to the Mobile App';
+    }
 
-    // Update the login link for mobile devices
     const loginLink = document.getElementById('loginLink');
-    if (loginLink) {
+    if (loginLink && mobileLoginRoute) {
         loginLink.setAttribute('href', mobileLoginRoute);
         loginLink.removeAttribute('data-bs-toggle');
         loginLink.removeAttribute('data-bs-target');
     }
 
-    // Redirect to mobile/login only once per session
-    if (!sessionStorage.getItem('hasRedirectedToMobileLogin')) {
+    if (mobileLoginRoute && !sessionStorage.getItem('hasRedirectedToMobileLogin')) {
         sessionStorage.setItem('hasRedirectedToMobileLogin', 'true');
         window.location.href = mobileLoginRoute;
     }
@@ -79,7 +86,6 @@ function isAppInstalled() {
 if (isMobileDevice() && !isAppInstalled() && !localStorage.getItem("installDismissed")) {
     window.location.href = "/install";
 }
-
     
    //animation
 const wow = new WOW({
