@@ -17,7 +17,6 @@
   <link rel="stylesheet" href="{{ asset('lib/bootstrap/css/bootstrap.min.css') }}">
   <link rel="stylesheet" href="{{ asset('lib/datatables/datatables.min.css') }}">
   <link rel="stylesheet" href="{{ asset ('assets/admin/css/list.css') }}">
-  <link rel="stylesheet" href="{{ asset ('assets/admin/css/publish_news.css') }}">
 
 </head>
 
