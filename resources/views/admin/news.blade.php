@@ -299,7 +299,7 @@
           </ol>
           <h1 class="my-2">UniAid News</h1>
           <div class="d-flex justify-content-end mb-1">
-            <a href="{{ route('admin.news.form') }}" class="btn btn-success btn-sm"><i class="fas fa-pen-to-square fa-1x" style="color:white;"></i>Publish News</a>
+            <a href="#" type="button" class="btn btn-success btn-sm"><i class="fas fa-pen-to-square fa-1x" style="color:white;"></i>Publish News</a>
           </div>
           <div class="card card-primary card-outline">
             <div class="card-header">
@@ -312,7 +312,7 @@
                     <th>Published By</th>
                     <th>Title</th>
                     <th>Subtitle</th>
-                    <th>Posted At</th>
+                    <th>Posted Date</th>
                     <th>Action</th>
                   </tr>
                 </thead>
