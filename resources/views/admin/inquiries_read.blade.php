@@ -212,7 +212,7 @@
             </a>
             <div class="collapse" id="manage-requests" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
               <nav class="sb-sidenav-menu-nested nav">
-                <a class="nav-link" href="" title="Create Request">
+                <a class="nav-link" href="{{ route('admin.request_form') }}" title="Create Request">
                   <div class="sb-nav-link-icon">
                     <i class="far fa-circle nav-icon"></i>
                   </div>
