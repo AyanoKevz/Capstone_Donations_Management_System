@@ -13,6 +13,7 @@ class DonationItem extends Model
 
     protected $fillable = [
         'donation_id',
+        'donation_request_id',
         'category',
         'item',
         'quantity',
@@ -22,5 +23,10 @@ class DonationItem extends Model
     public function donation()
     {
         return $this->belongsTo(Donation::class);
+    }
+
+    public function donationRequest()
+    {
+        return $this->belongsTo(DonationRequest::class, 'donation_request_id');
     }
 }

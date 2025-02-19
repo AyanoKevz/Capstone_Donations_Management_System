@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\DonationRequest;
 use App\Models\DonationRequestItem;
 use App\Models\Location;
+use Illuminate\Support\Facades\Http;
+
 
 use Illuminate\Http\Request;
 
@@ -79,27 +81,41 @@ class DonationController extends Controller
         }
     }
 
+
     public function RequestMap(Request $request)
     {
-        // Start with a base query for pending requests
-        $query = DonationRequest::with('location')
-            ->where('status', 'Pending');
+        // Fetch the list of regions from the PSGC API
+        $regions = Http::get('https://psgc.gitlab.io/api/regions')->json();
 
-        // Apply filtering if the user selects a specific cause
+        $regionNames = collect($regions)
+            ->pluck('name')
+            ->unique()
+            ->values()
+            ->toArray();
+
+        // Start with a base query for pending requests
+        $query = DonationRequest::with(['location', 'items'])->where('status', 'Pending');
+
+        // Apply filters
         if ($request->has('cause') && $request->cause !== 'General') {
             $query->where('cause', $request->cause);
         }
-
-        // Apply filtering if the user selects a specific urgency
         if ($request->has('urgency') && $request->urgency !== 'General') {
             $query->where('urgency', $request->urgency);
         }
+        if ($request->has('region') && $request->region !== 'General') {
+            $region = $request->region;
 
-        // Fetch the filtered requests
+            $query->whereHas('location', function ($q) use ($region) {
+                $q->where('region', $region);
+            });
+        }
+
         $donationRequests = $query->get();
 
         return view('users.donor.request_map', [
-            'donationRequests' => $donationRequests
+            'donationRequests' => $donationRequests,
+            'regions' => $regionNames,
         ]);
     }
 }

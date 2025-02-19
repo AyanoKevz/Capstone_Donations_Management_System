@@ -310,7 +310,7 @@
                             <img src="{{ asset('storage/' . $Admin->profile_image) }}" class="img-fluid rounded-circle w-50" alt="Luna John">
                           </div>
                           <h5 class="text-center mb-1">{{$Admin -> name}}</h5>
-                          <p class="text-center text-secondary mb-4">Admin</p>
+                          <p class="text-center text-secondary mb-4">({{$Admin->chapter->chapter_name}}) Chapter</p>
                           <ul class="list-group list-group-flush">
                             <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                               <h6 class="m-0">Username:</h6>
@@ -380,12 +380,23 @@
                               </div>
                             </div>
                             <div class="col-12 col-md-6">
-                              <label for="inputFirstName" class="form-label">Name</label>
-                              <input type="text" class="form-control" id="inputFirstName" name="name" value="{{ $Admin->name }}">
+                              <label for="name" class="form-label">Name</label>
+                              <input type="text" class="form-control" id="name" name="name" value="{{ $Admin->name }}">
                             </div>
                             <div class="col-12 col-md-6">
-                              <label for="inputLastName" class="form-label">Email</label>
+                              <label for="email" class="form-label">Email</label>
                               <input type="text" class="form-control" id="email" name="email" value="{{ $Admin->email }}">
+                            </div>
+                            <div class="col-12 col-md-12">
+                              <div class="form-group">
+                                <label for="inputLastName" class="form-label">Chapter</label>
+                                <select class="form-select" id="city" name="chapter">
+                                  <option selected value="{{$Admin->chapter->id}}">{{$Admin->chapter->chapter_name}}</option>
+                                  @foreach ($chapters as $chapter)
+                                  <option value="{{ $chapter->id }}">{{ $chapter->chapter_name }}</option>
+                                  @endforeach
+                                </select>
+                              </div>
                             </div>
                             <div class="col-12">
                               <button type="submit" class="btn btn-primary">Submit</button>

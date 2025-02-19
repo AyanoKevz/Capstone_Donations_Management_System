@@ -267,13 +267,17 @@ class AdminController extends Controller
     //ADMIN PRFOLIE
     public function admin_profile()
     {
-        return view('admin.admin_profile');
+        $chapters = Chapter::all();
+        return view('admin.admin_profile', compact('chapters'));
     }
+
+
 
     public function updateProfile(Request $request, $id)
     {
         $admin = Admin::findOrFail($id);
 
+        // Validate the request
         $request->validate([
             'email' => 'required|email|unique:admin,email,' . $id,
             'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -281,6 +285,7 @@ class AdminController extends Controller
 
         $changes = [];
 
+        // Update profile image if provided
         if ($request->hasFile('profile_image')) {
             if ($admin->profile_image && Storage::disk('public')->exists($admin->profile_image)) {
                 Storage::disk('public')->delete($admin->profile_image);
@@ -292,16 +297,25 @@ class AdminController extends Controller
             }
         }
 
+        // Update name if changed
         if ($admin->name !== $request->input('name')) {
             $changes[] = 'name';
             $admin->name = $request->input('name');
         }
 
+        // Update email if changed
         if ($admin->email !== $request->input('email')) {
             $changes[] = 'email';
             $admin->email = $request->input('email');
         }
 
+        // Update chapter_id if changed
+        if ($admin->chapter_id != $request->input('chapter')) { // Use loose comparison (!=)
+            $changes[] = 'chapter_id';
+            $admin->chapter_id = $request->input('chapter');
+        }
+
+        // Check if any changes were made
         if (empty($changes)) {
             return back()->with('info', 'No changes were made to your profile.');
         }
@@ -369,7 +383,8 @@ class AdminController extends Controller
     public function adminList()
     {
         $admins = Admin::all();
-        return view('admin.admin_list', compact('admins'));
+        $chapters = Chapter::all();
+        return view('admin.admin_list', compact('admins', 'chapters'));
     }
 
 
@@ -388,36 +403,45 @@ class AdminController extends Controller
         return redirect()->back()->with('error', 'Admin not found.');
     }
 
+
     public function CreateAdmin(Request $request)
     {
+        // Validate the request
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:admin,email',
+            'chapter' => 'required|exists:chapter,id',
         ]);
 
+        // Generate username and password
         $username = 'uniaid_admin' . rand(1000, 9999);
-        $password = strtoupper(Str::random(4)) . rand(1000, 9999);
+        $password = strtoupper(Str::random(4)) . rand(1000, 9999); // 4 letters + 4 digits = 8 characters
 
+        // Set default profile image
         $defaultImagePath = 'assets/img/PRC_logo.png';
         $profileImagePath = 'admin_photos/' . Str::random(10) . '_PRC_logo.png';
         Storage::disk('public')->put($profileImagePath, file_get_contents(public_path($defaultImagePath)));
 
+        // Create the admin
         $admin = Admin::create([
             'name' => $request->name,
             'email' => $request->email,
             'username' => $username,
             'password' => bcrypt($password),
             'profile_image' => $profileImagePath,
+            'chapter_id' => $request->chapter, // Include chapter_id
         ]);
 
+        // Prepare email details
         $details = [
             'name' => $request->name,
             'username' => $username,
             'password' => $password,
             'logoPath' => public_path('assets/img/systemLogo.png'),
+            'chapter' => Chapter::find($request->chapter)->chapter_name, // Include chapter name
         ];
 
-
+        // Send email
         Mail::send('emails.admin_credentials', $details, function ($message) use ($request) {
             $message->to($request->email)
                 ->subject('Your UniAid Admin Account Credentials');
@@ -425,7 +449,6 @@ class AdminController extends Controller
 
         return redirect()->back()->with('success', 'Admin account created successfully, and credentials have been emailed.');
     }
-
 
     //Donor LIST
     public function allDonors(Request $request)

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('email', 100)->unique();
             $table->string('password', 100);
             $table->string('profile_image');
+            $table->foreignId('chapter_id')->nullable()->constrained('chapter')->onDelete('set null');
             $table->timestamps();
         });
 
@@ -63,6 +64,7 @@ return new class extends Migration
             'email' => 'uniaid2024@gmail.com',
             'password' => Hash::make('uniaid123'),
             'profile_image' => 'admin_photos/no_profile.png',
+            'chapter_id' => '2',
             'created_at' => now(),
             'updated_at' => now(),
         ]);

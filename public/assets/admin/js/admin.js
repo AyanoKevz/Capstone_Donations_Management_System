@@ -126,7 +126,8 @@ var spinnerElement = document.getElementById("spinner");
             }
         });
     }
-        $(document).ready(function () {
+       
+    if ($("#compose-textarea").length > 0) {
       $('#compose-textarea').summernote({
         placeholder: 'Write your message here...',
         tabsize: 2,
@@ -140,7 +141,8 @@ var spinnerElement = document.getElementById("spinner");
           ['height', ['height']],
         ]
       });
-    });
+    }
+
 
     const toggleButton = $('.checkbox-toggle'); 
     const checkboxes = $('input[type="checkbox"][name="selected[]"]'); 
@@ -204,6 +206,7 @@ $('#toggle-cpassword').on('click', function () {
   }
 });
 
+if ($("#admin_acount_form").length > 0) {
 
 $("#admin_acount_form").validate({
             rules: {
@@ -257,38 +260,46 @@ $("#admin_acount_form").validate({
             }
         });
 
-         $("#admin_profile_form").validate({
-            rules: {
-                profile_image: {
-                extension: "jpg|jpeg|png"
-            },
-                email: {
-                    required: true,
-                    email: true
-                }
-            },
-            messages: {
-                profile_image: {
-                    extension: "Please upload a valid image (jpg, jpeg, png)"
+    }
+        
+        if ($("#admin_profile_form").length > 0) {
+        
+            $("#admin_profile_form").validate({
+                rules: {
+                    email: {
+                        required: true,
+                        email: true
+                    },
+                    name: {
+                        required: true,
+                    
+                    }
                 },
-                email: {
-                    required: "Please enter a valid email address",
-                    email: "Please enter a valid email address"
+                messages: {
+                    
+                    email: {
+                        required: "Please enter a valid email address",
+                        email: "Please enter a valid email address"
+                    },
+                    name: {
+                        required: "Please enter your name",
+                    }
+                },
+                highlight: function (element) {
+                    $(element).addClass('is-invalid').removeClass('is-valid');
+                },
+                unhighlight: function (element) {
+                    $(element).addClass('is-valid').removeClass('is-invalid');
+                },
+                errorPlacement: function (error, element) {
+                    error.insertAfter(element);
+                },
+                submitHandler: function (form) {
+                    form.submit();
                 }
-            },
-            highlight: function (element) {
-                $(element).addClass('is-invalid').removeClass('is-valid');
-            },
-            unhighlight: function (element) {
-                $(element).addClass('is-valid').removeClass('is-invalid');
-            },
-            errorPlacement: function (error, element) {
-                error.insertAfter(element);
-            },
-            submitHandler: function (form) {
-                form.submit();
-            }
-        }); 
+            }); 
+
+        }
 
         if ($("#news_form").length > 0) {
 
@@ -767,7 +778,6 @@ function updateMap(lat, lng, cause, fullAddress) {
   document.getElementById("longitude").value = lng;
 }
 
-
 function formatAddress(region, province, city, barangay) {
   if (region === "NCR") {
     return `${barangay ? barangay + ", " : ""}${city}, Metro Manila, Philippines`;
@@ -775,24 +785,18 @@ function formatAddress(region, province, city, barangay) {
   return `${barangay ? barangay + ", " : ""}${city}, ${province}, ${region}, Philippines`;
 }
 
-async function getCoordinates(address) {
-  if (locationCache[address]) return locationCache[address]; // Use cached data
-
-  const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`;
-  try {
-    const response = await fetch(url);
-    const data = await response.json();
-    if (data.length > 0) {
-      locationCache[address] = { lat: data[0].lat, lon: data[0].lon };
-      return locationCache[address];
-    }
-  } catch (error) {
-    console.error("Error fetching location:", error);
-  }
-  return null;
-}
+let abortController = null; // To track the current request
 
 async function fetchAndUpdateLocation() {
+  // Cancel the previous request if it exists
+  if (abortController) {
+    abortController.abort();
+  }
+
+  // Create a new AbortController for the current request
+  abortController = new AbortController();
+  const signal = abortController.signal;
+
   var barangay = $("#barangay option:selected").text().trim();
   var city = $("#city option:selected").text().trim();
   var province = $("#province option:selected").text().trim();
@@ -813,15 +817,43 @@ async function fetchAndUpdateLocation() {
   }
 
   for (let i = 0; i < addressFormats.length; i++) {
-    let coordinates = await getCoordinates(addressFormats[i]);
+    try {
+      let coordinates = await getCoordinates(addressFormats[i], signal);
 
-    if (coordinates) {
-      updateMap(coordinates.lat, coordinates.lon, selectedCause, addressFormats[i]);
-      return;
+      if (coordinates) {
+        updateMap(coordinates.lat, coordinates.lon, selectedCause, addressFormats[i]);
+        return;
+      }
+    } catch (error) {
+      if (error.name === 'AbortError') {
+        console.log('Request aborted');
+        return; // Exit if the request was aborted
+      }
+      console.error("Error fetching location:", error);
     }
   }
 
   console.error("Location not found after multiple attempts.");
+}
+
+async function getCoordinates(address, signal) {
+  if (locationCache[address]) return locationCache[address]; // Use cached data
+
+  const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`;
+  try {
+    const response = await fetch(url, { signal }); // Pass the signal to the fetch request
+    const data = await response.json();
+    if (data.length > 0) {
+      locationCache[address] = { lat: data[0].lat, lon: data[0].lon };
+      return locationCache[address];
+    }
+  } catch (error) {
+    if (error.name !== 'AbortError') {
+      console.error("Error fetching location:", error);
+    }
+    throw error;
+  }
+  return null;
 }
 
 // Event listeners
@@ -831,7 +863,7 @@ $("#cause").on("change", fetchAndUpdateLocation);
 
 
 const itemsByCategory = { 
-  "Basic Needs": ["Bottled Water", "Canned Goods", "3kg Packaged Rice", "Packed Biscuits", "Instant Noodles"],
+  "Basic Needs": ["Bottled Water", "Canned Goods", "5kg Packaged Rice", "Packed Biscuits", "Instant Noodles"],
   "Clothing and Bedding": ["Blankets", "Towels", "Jackets/Sweaters", "New Clothes", "Slippers"],
   "Hygiene Kits": ["Soap", "Sachet Shampoo", "Toothpaste", "Toothbrushes", "Baby Diapers", "Hand Sanitizers"],
   "Medical Supplies": ["First Aid Kits", "Bandages and Gauze", "Alcohol/Disinfectants", "Masks (N95 or surgical)"]

@@ -15,7 +15,7 @@ class Donation extends Model
         'donor_id',
         'donor_name',
         'chapter_id',
-        'quantity_donated',
+        'donation_request_id',
         'cause',
         'donation_method',
         'pickup_address',
@@ -33,6 +33,11 @@ class Donation extends Model
     public function chapter()
     {
         return $this->belongsTo(Chapter::class);
+    }
+
+    public function donationRequest()
+    {
+        return $this->belongsTo(DonationRequest::class, 'donation_request_id');
     }
 
     public function donationItems()
