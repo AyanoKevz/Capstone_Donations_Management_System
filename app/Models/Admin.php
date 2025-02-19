@@ -18,6 +18,7 @@ class Admin extends Authenticatable
         'email',
         'password',
         'profile_image',
+        'chapter_id',
     ];
 
     protected $hidden = [
@@ -34,5 +35,15 @@ class Admin extends Authenticatable
     public function donationRequests()
     {
         return $this->hasMany(DonationRequest::class, 'created_by_admin_id');
+    }
+
+    public function chapter()
+    {
+        return $this->belongsTo(Chapter::class, 'chapter_id');
+    }
+
+    public function fundRequests()
+    {
+        return $this->hasMany(FundRequest::class, 'created_by_admin_id');
     }
 }

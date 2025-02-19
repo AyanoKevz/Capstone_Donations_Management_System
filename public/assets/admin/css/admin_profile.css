@@ -814,7 +814,7 @@ input.is-invalid {
 }
 
 
-#email-error, #username-error
+#email-error, #username-error,#name-error
 {
   position: static;
 }

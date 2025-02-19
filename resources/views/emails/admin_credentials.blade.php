@@ -130,6 +130,7 @@
         <ul>
           <li><strong>Username:</strong> {{ $username }}</li>
           <li><strong>Password:</strong> {{ $password }}</li>
+          <li><strong>Chapter:</strong> {{ $chapter }}</li>
         </ul>
         <p><strong>Note:</strong> Please log in and change your username and password immediately for security purposes.</p>
         <p>Thank you!</p>

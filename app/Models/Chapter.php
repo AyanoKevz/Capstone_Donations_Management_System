@@ -27,6 +27,10 @@ class Chapter extends Model
         return $this->hasMany(Volunteer::class, 'chapter_id');
     }
 
+    public function admins()
+    {
+        return $this->hasMany(Admin::class, 'chapter_id');
+    }
 
     public function donations()
     {
@@ -36,5 +40,15 @@ class Chapter extends Model
     public function pooledResources()
     {
         return $this->hasMany(PooledResource::class);
+    }
+
+    public function cashDonations()
+    {
+        return $this->hasMany(CashDonation::class, 'chapter_id');
+    }
+
+    public function fundRequests()
+    {
+        return $this->hasMany(FundRequest::class, 'chapter_id');
     }
 }

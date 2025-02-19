@@ -276,7 +276,7 @@
                 <div class="container py-2">
                     <div class="row">
 
-                        <div class="col-12 col-md-7">
+                        <div class="col-12 col-md-6 mb-3 mb-md-0 p-3 bg-light-subtle">
                             <form id="filterForm" method="GET" action="{{ route('donor.request_map') }}">
                                 <div class="row mb-3 align-items-center">
                                     <div class="col-auto">
@@ -284,6 +284,7 @@
                                     </div>
                                     <div class="col">
                                         <div class="row g-3 align-items-center">
+                                            <!-- Cause Dropdown -->
                                             <div class="col-12 col-md-6">
                                                 <div class="d-flex flex-column flex-md-row align-items-center gap-2">
                                                     <label for="cause" class="form-label mb-0">Cause</label>
@@ -298,6 +299,8 @@
                                                     </select>
                                                 </div>
                                             </div>
+
+                                            <!-- Urgency Dropdown -->
                                             <div class="col-12 col-md-6">
                                                 <div class="d-flex flex-column flex-md-row align-items-center gap-2">
                                                     <label for="urgency" class="form-label mb-0">Urgency</label>
@@ -309,14 +312,39 @@
                                                     </select>
                                                 </div>
                                             </div>
+
+                                            <!-- Region Dropdown -->
+                                            <div class="col-12 col-md-12">
+                                                <div class="d-flex flex-column flex-md-row align-items-center gap-2">
+                                                    <label for="region-filter" class="form-label mb-0">Region</label>
+                                                    <select class="form-select" id="region-filter" name="region">
+                                                        <option value="General" {{ request('region') === 'General' ? 'selected' : '' }}>General</option>
+                                                        @foreach ($regions as $region)
+                                                        <option value="{{ $region }}" {{ request('region') === $region ? 'selected' : '' }}>
+                                                            {{ $region }}
+                                                        </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div id="map"></div>
                             </form>
+                            <div class="col-12 col-md-12 mt-2">
+                                <button class="donate-btn w-100" id="donateBtn" data-bs-toggle="modal" data-bs-target="#donateNow" style="display: none;">
+                                    <div class="svg-wrapper-1">
+                                        <div class="svg-wrapper">
+                                            <i class="fa-solid fa-hand-holding-heart fa-lg"></i>
+                                        </div>
+                                    </div>
+                                    <span>Donate Now</span>
+                                </button>
+                            </div>
                         </div>
 
-                        <div class="col-12 col-md-5" id="infoSidebar">
+                        <div class="col-12 col-md-6 mt-3 mt-md-0 e p-3 bg-body-secondary" id="infoSidebar">
                             <div id="requestInfo">
                                 <h2>Philippine Request Map</h2>
                                 <p>The Philippine Request Map is an interactive map designed to visualize donation requests across different locations. Each pin provides key details like location, needs, and urgency, helping donors quickly find and support causes.</p>

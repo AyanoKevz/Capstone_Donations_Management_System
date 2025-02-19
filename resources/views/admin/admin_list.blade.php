@@ -385,6 +385,15 @@
                   <label for="email">Email <span class="text-danger fs-6">*</span> <span style="font-size: small; color: #aaa;">(Must be active)</span></label>
                   <input type="email" class="form-control" id="email" name="email" required>
                 </div>
+                <div class="form-group mb-2">
+                  <label for="email">Chapter <span class="text-danger fs-6"></label>
+                  <select class="form-select" name="chapter" required>
+                    <option disabled selected value="">Select Chapter</option>
+                    @foreach ($chapters as $chapter)
+                    <option value="{{ $chapter->id }}">{{ $chapter->chapter_name }}</option>
+                    @endforeach
+                  </select>
+                </div>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
