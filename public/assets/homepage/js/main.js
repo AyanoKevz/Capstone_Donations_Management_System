@@ -44,17 +44,20 @@ if (isMobileDevice()) {
     const installAppLink = document.getElementById('installAppLink');
     const mobileSection = document.getElementById('mobile');
     const loginHeading = document.getElementById('login-heading');
+    const SwitchCam = document.getElementById('ToggleCamera');
 
     if (installAppLink) {
         installAppLink.style.display = 'none';
-        mobileSection.style.display = 'none';
-        loginHeading.textContent = 'Login to the Mobile App';
     }
     if (mobileSection) {
         mobileSection.style.display = 'none';
     }
     if (loginHeading) {
         loginHeading.textContent = 'Login to the Mobile App';
+    }
+
+      if (SwitchCam) {
+        SwitchCam.style.display = 'inline-block';
     }
 
     const loginLink = document.getElementById('loginLink');
@@ -755,9 +758,13 @@ const $fileUploadSection = $('#fileUploadSection');
 const $cameraSection = $('#cameraSection');
 const $proofUpload = $('#proofUpload');
 const $captureBtn = $('#captureBtn');
+const $SwitchCam = $('#ToggleCamera');
 const $myCamera = $('#my_camera');
 const $capturedImageDiv = $('#capturedImage');
 const $reviewIdImage = $('#reviewIdImage');
+
+let currentFacingMode = 'user'; // Default to front camera
+let stream = null;
 
 // Toggle sections based on user selection
 $('input[name="photoOption"]').on('change', function () {
@@ -765,53 +772,92 @@ $('input[name="photoOption"]').on('change', function () {
         $fileUploadSection.show();
         $cameraSection.hide();
         $proofUpload.prop('required', true);
+        stopCamera(); // Stop the camera when switching to upload option
     } else if ($cameraOption.is(':checked')) {
         $fileUploadSection.hide();
         $cameraSection.show();
         $proofUpload.prop('required', false);
-        // Initialize Webcam
-        Webcam.set({
-            width: 300,
-            height: 250,
-            image_format: 'jpeg',
-            jpeg_quality: 90
-        });
-        Webcam.attach('#my_camera');
+        startCamera(currentFacingMode); // Start the camera with the current facing mode
     }
 });
 
-// Update review image when a file is uploaded
-$proofUpload.on('change', function () {
-    if (this.files && this.files[0]) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-            $reviewIdImage.attr('src', e.target.result);
-        };
-        reader.readAsDataURL(this.files[0]);
+// Start the camera with the specified facing mode
+function startCamera(facingMode) {
+    stopCamera(); // Stop any existing camera stream before starting a new one
+
+    const constraints = {
+        video: isMobileDevice() ? { facingMode: { exact: facingMode }, width: 300, height: 250 } : { width: 300, height: 250 }
+    };
+
+    navigator.mediaDevices.getUserMedia(constraints)
+        .then(function (newStream) {
+            stream = newStream; // Save the new stream
+
+            const videoElement = document.createElement('video');
+            videoElement.srcObject = stream;
+            videoElement.autoplay = true;
+            videoElement.playsInline = true;
+            videoElement.style.width = '300px';
+            videoElement.style.height = '250px';
+
+            $myCamera.empty().append(videoElement);
+
+            // Show the toggle button only for mobile devices
+            if (isMobileDevice()) {
+                $SwitchCam.show().text(facingMode === 'user' ? 'Back Camera' : 'Front Camera');
+            } else {
+                $SwitchCam.hide(); // Hide switch button on PC
+            }
+        })
+        .catch(function (error) {
+            console.error('Error accessing webcam:', error);
+            alert('Unable to access the webcam. Please check permissions and try again.');
+        });
+}
+
+
+// Stop the camera
+function stopCamera() {
+    if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+        stream = null;
     }
+}
+
+// Toggle between front and back camera
+$SwitchCam.on('click', function () {
+    currentFacingMode = currentFacingMode === 'user' ? 'environment' : 'user'; // Toggle facing mode
+    startCamera(currentFacingMode); // Restart the camera with the new facing mode
 });
 
 // Capture Photo and toggle between camera and captured image
 $captureBtn.on('click', function () {
     if ($captureBtn.text() === "Capture Photo") {
-        Webcam.snap(function (dataUri) {
-            // Hide camera and show captured image
-            $myCamera.hide();
-            $capturedImageDiv.html('<img src="' + dataUri + '" style="width: 300px; height: 250px;"/>').show();
-            $captureBtn.text("Capture Again");
+        const videoElement = $myCamera.find('video')[0];
+        const canvas = document.createElement('canvas');
+        canvas.width = videoElement.videoWidth;
+        canvas.height = videoElement.videoHeight;
+        const context = canvas.getContext('2d');
+        context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
 
-            // Update review image
-            $reviewIdImage.attr('src', dataUri);
+        const dataUri = canvas.toDataURL('image/jpeg');
 
-            // Convert Base64 to Blob and create a File object
-            const blob = dataURItoBlob(dataUri);
-            const file = new File([blob], "captured_id.jpg", { type: "image/jpeg" });
+        // Hide camera and show captured image
+        $myCamera.hide();
+        $capturedImageDiv.html('<img src="' + dataUri + '" style="width: 300px; height: 250px;"/>').show();
+        $captureBtn.text("Capture Again");
 
-            // Populate the file input programmatically
-            const dataTransfer = new DataTransfer();
-            dataTransfer.items.add(file);
-            $proofUpload[0].files = dataTransfer.files;
-        });
+        // Update review image
+        $reviewIdImage.attr('src', dataUri);
+
+        // Convert Base64 to Blob and create a File object
+        const blob = dataURItoBlob(dataUri);
+        const file = new File([blob], "captured_id.jpg", { type: "image/jpeg" });
+
+        // Populate the file input programmatically
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(file);
+        $proofUpload[0].files = dataTransfer.files;
     } else {
         // Reset to camera view
         $myCamera.show();
@@ -832,7 +878,7 @@ function dataURItoBlob(dataURI) {
     return new Blob([ab], { type: mimeString });
 }
 
-
+// Handle file upload changes
 $('#imageFile').on('change', function (event) {
     const file = event.target.files[0];
 
@@ -951,23 +997,28 @@ canvas.style.background = 'black';
 // Start webcam
 async function startVideo() {
   try {
-    // Start the video stream
-    videoStream = await navigator.mediaDevices.getUserMedia({ video: {} });
+    const stream = await navigator.mediaDevices.getUserMedia({ video: {} });
+    videoStream = stream;
     video.srcObject = videoStream;
-    video.style.display = 'block'; // Ensure video is visible
+    video.style.display = 'block';
     canvas.style.background = 'none';
 
-    // Once video metadata is loaded, adjust the overlay size
     video.onloadedmetadata = () => {
       adjustOverlaySize();
-      detectFace(); // Start face detection when video is ready
+      detectFace();
     };
 
     detecting = true;
     toggleCameraBtn.textContent = 'Turn Off Camera';
   } catch (error) {
     console.error('Error accessing webcam:', error);
-    alert('Unable to access the camera. Please check permissions.');
+    if (error.name === 'NotAllowedError') {
+      alert('Camera access was denied. Please allow camera access in your browser settings.');
+    } else if (error.name === 'NotFoundError') {
+      alert('No camera found. Please ensure your device has a camera.');
+    } else {
+      alert('Unable to access the camera. Please check permissions.');
+    }
   }
 }
 

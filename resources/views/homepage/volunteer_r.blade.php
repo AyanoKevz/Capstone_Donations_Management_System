@@ -112,8 +112,8 @@
     <!-- Navbar & Hero End -->
 
     <!-- Register Start -->
-    <div class="container-fluid service py-5">
-        <div class="container pb-3 ">
+    <div class="container-fluid service py-5 no-padding">
+        <div class="container pb-3 no-padding ">
             <div class="card p-3 register-form wow zoomIn">
                 @if ($errors->any())
                 <div class="alert alert-error">
@@ -415,10 +415,11 @@
                                 </div>
                                 <!-- Webcam Section (Hidden by Default) -->
                                 <div id="cameraSection" style="display: none; text-align: center;">
-                                    <div id="my_camera" style="width: 300px; height: 250px; margin: 0 auto; "></div>
-                                    <div id="capturedImage" style=" text-align: center; display: none;"></div>
+                                    <div id="my_camera" style="width: 300px; height: 250px; margin: 0 auto;"></div>
+                                    <div id="capturedImage" style="text-align: center; display: none;"></div>
                                     <br>
-                                    <div class="d-flex justify-content-center align-items-center">
+                                    <div class="d-flex justify-content-around align-items-center">
+                                        <button type="button" id="ToggleCamera" class="btn btn-secondary btn-sm m-0" style="display: none;">Back Camera</button>
                                         <button type="button" id="captureBtn" class="btn btn-secondary btn-sm m-0">Capture Photo</button>
                                     </div>
                                 </div>

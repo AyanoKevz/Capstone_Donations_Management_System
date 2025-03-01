@@ -51,4 +51,9 @@ class Chapter extends Model
     {
         return $this->hasMany(FundRequest::class, 'chapter_id');
     }
+
+    public function pooledFunds()
+    {
+        return $this->hasOne(PooledFund::class, 'chapter_id');
+    }
 }

@@ -865,8 +865,8 @@ $("#cause").on("change", fetchAndUpdateLocation);
 const itemsByCategory = { 
   "Basic Needs": ["Bottled Water", "Canned Goods", "5kg Packaged Rice", "Packed Biscuits", "Instant Noodles"],
   "Clothing and Bedding": ["Blankets", "Towels", "Jackets/Sweaters", "New Clothes", "Slippers"],
-  "Hygiene Kits": ["Soap", "Sachet Shampoo", "Toothpaste", "Toothbrushes", "Baby Diapers", "Hand Sanitizers"],
-  "Medical Supplies": ["First Aid Kits", "Bandages and Gauze", "Alcohol/Disinfectants", "Masks (N95 or surgical)"]
+  "Hygiene Kits": ["Soap", "Sachet Shampoo", "Toothpaste", "Toothbrushes", "Baby Diapers"],
+  "Medical Supplies": ["Adhesive Tape", "Bandages and Gauze", "Alcohol/Disinfectants", "Masks (N95 or surgical)"]
 };
 
 // Function to create a new item entry

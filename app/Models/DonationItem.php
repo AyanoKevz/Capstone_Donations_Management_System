@@ -17,8 +17,12 @@ class DonationItem extends Model
         'category',
         'item',
         'quantity',
-        'expiration_date',
+        'status',
+
+
     ];
+
+    public $timestamps = false;
 
     public function donation()
     {

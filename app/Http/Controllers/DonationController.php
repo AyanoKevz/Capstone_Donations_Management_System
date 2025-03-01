@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Donation;
+use App\Models\Chapter;
+use App\Models\DonationItem;
 use Illuminate\Support\Facades\Auth;
 use App\Models\DonationRequest;
 use App\Models\DonationRequestItem;
@@ -81,20 +83,30 @@ class DonationController extends Controller
         }
     }
 
-
     public function RequestMap(Request $request)
     {
         // Fetch the list of regions from the PSGC API
         $regions = Http::get('https://psgc.gitlab.io/api/regions')->json();
+        $regionNames = collect($regions)->pluck('name')->unique()->values()->toArray();
 
-        $regionNames = collect($regions)
-            ->pluck('name')
-            ->unique()
-            ->values()
+        // Get authenticated donor
+        $user = Auth::user();
+        $donor = $user->donor;
+
+        if (!$donor) {
+            return redirect()->back()->with('error', 'Donor profile not found.');
+        }
+
+        // Get request IDs where the donor has donated but the donation is NOT received
+        $pendingDonations = Donation::where('donor_id', $donor->id)
+            ->where('status', '!=', 'Received') // Status is NOT received
+            ->pluck('donation_request_id')
             ->toArray();
 
         // Start with a base query for pending requests
-        $query = DonationRequest::with(['location', 'items'])->where('status', 'Pending');
+        $query = DonationRequest::with(['location', 'items'])
+            ->where('status', 'Pending')
+            ->whereNotIn('id', $pendingDonations); // Hide requests where the donor has a pending donation
 
         // Apply filters
         if ($request->has('cause') && $request->cause !== 'General') {
@@ -105,17 +117,105 @@ class DonationController extends Controller
         }
         if ($request->has('region') && $request->region !== 'General') {
             $region = $request->region;
-
             $query->whereHas('location', function ($q) use ($region) {
                 $q->where('region', $region);
             });
         }
 
         $donationRequests = $query->get();
+        $chapters = Chapter::all();
+
+        // Calculate donated quantities
+        $donationRequests->each(function ($request) {
+            $request->items->each(function ($item) use ($request) {
+                $donatedQuantity = DonationItem::where('donation_request_id', $request->id)
+                    ->where('item', $item->item)
+                    ->sum('quantity');
+                $item->donated_quantity = $donatedQuantity;
+            });
+        });
 
         return view('users.donor.request_map', [
             'donationRequests' => $donationRequests,
             'regions' => $regionNames,
+            'chapters' => $chapters
         ]);
+    }
+
+
+    public function RequestMapDonate(Request $request)
+    {
+        $request->validate([
+            'cause' => 'required|string',
+            'donation_method' => 'required|in:pickup,drop-off',
+            'donation_datetime' => 'required|date',
+            'chapter_id' => 'required|exists:chapter,id',
+            'proof_image' => 'nullable|image|mimes:jpeg,png,jpg|max:5120',
+            'quantity' => 'required|array',
+            'quantity.*' => 'required|integer|min:1',
+            'donation_request_id' => 'required|exists:donation_request,id',
+        ]);
+
+        try {
+            $user = Auth::user();
+            $donor = $user->donor;
+
+            if (!$donor) {
+                return redirect()->back()->with('error', 'Donor profile not found.');
+            }
+
+            // Store the proof image
+            $proofImagePath = null;
+            if ($request->hasFile('proof_image')) {
+                $proofImagePath = $request->file('proof_image')->store('proof_donation', 'public');
+            }
+
+            // Create the donation record
+            $donation = Donation::create([
+                'donor_id' => $donor->id,
+                'donor_name' => $request->has('anonymous_checkbox') ? 'Anonymous' : "{$donor->first_name} {$donor->last_name}",
+                'chapter_id' => $request->chapter_id,
+                'donation_request_id' => $request->donation_request_id,
+                'cause' => $request->cause,
+                'donation_method' => $request->donation_method,
+                'pickup_address' => $request->donation_method === 'pickup' ? $request->pickup_address : null,
+                'donation_datetime' => $request->donation_datetime,
+                'proof_image' => $proofImagePath,
+                'tracking_number' => strtoupper(uniqid('TRK-')),
+            ]);
+
+            // Save the donation items
+            foreach ($request->quantity as $itemId => $quantity) {
+                $item = DonationRequestItem::find($itemId);
+
+                if ($item && $quantity > 0) {
+                    // Calculate the total donated quantity for this item
+                    $totalDonated = DonationItem::where('donation_request_id', $item->donation_request_id)
+                        ->where('item', $item->item)
+                        ->sum('quantity');
+
+                    // Calculate the remaining quantity needed
+                    $remainingQuantity = $item->quantity - $totalDonated;
+
+                    // Ensure the donated quantity does not exceed the remaining quantity
+                    if ($quantity > $remainingQuantity) {
+                        return redirect()->back()->with('error', "Cannot donate more than {$remainingQuantity} for {$item->item}.");
+                    }
+
+                    // Create the donation item
+                    DonationItem::create([
+                        'donation_id' => $donation->id,
+                        'donation_request_id' => $item->donation_request_id,
+                        'category' => $item->category,
+                        'item' => $item->item,
+                        'quantity' => $quantity,
+                    ]);
+                }
+            }
+
+            return redirect()->back()->with('success', 'Donation submitted successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Something went wrong. Please try again.');
+        }
     }
 }

@@ -395,13 +395,6 @@
                         </div>
                         <h4 class="d-inline-block m-2">Baby Diapers</h4>
                     </div>
-
-                    <div class="resources-item text-center">
-                        <div class="resources-img mb-2">
-                            <img src="{{asset('assets/img/q6.png') }}" class="img-fluid w-100 rounded" alt="">
-                        </div>
-                        <h4 class="d-inline-block m-2">Hand Sanitizers</h4>
-                    </div>
                 </div>
             </div>
             <div class="my-3">
@@ -411,7 +404,7 @@
                 <div class="owl-carousel blog-carousel">
                     <div class="resources-item text-center">
                         <div class="resources-img mb-2">
-                            <img src="{{asset('assets/img/w1.png') }}" class="img-fluid w-100 rounded" alt="">
+                            <img src="{{asset('assets/img/w1.jpg') }}" class="img-fluid w-100 rounded" alt="">
                         </div>
                         <h4 class="d-inline-block m-2">First Aid Kits</h4>
                     </div>

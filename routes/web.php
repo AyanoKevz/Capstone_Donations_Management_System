@@ -67,7 +67,6 @@ Route::post('/admin/login', [AdminController::class, 'login'])->name('admin.logi
 // Admin Logout
 Route::post('/admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
 
-
 // Middleware-protected routes for admin
 Route::middleware(['admin', 'prevent-back-button'])->prefix('admin')->group(function () {
     // Admin Dashboard
@@ -143,9 +142,11 @@ Route::middleware(['auth', 'prevent-back-button'])->prefix('user')->group(functi
         Route::post('/donor/update/{id}', [user_profileController::class, 'updateDonorProfile'])->name('donor.updateProfile');
         Route::get('/prc-chapters', [DonorController::class, 'showChapters'])->name('prc-chapters');
         Route::get('/contact', [DonorController::class, 'showContactForm'])->name('donor.contact_form');
+        Route::view('/select-donations', 'users.donor.quick')->name('donor.quick_donation');
         Route::get('/testimonial', [DonorController::class, 'showTestimonialForm'])->name('donor.testi_form');
         Route::get('/learn-about-causes', [DonorController::class, 'causes'])->name('donor.causes');
         Route::get('/request-map', [DonationController::class, 'RequestMap'])->name('donor.request_map');
+        Route::post('/request-map/donate', [DonationController::class, 'RequestMapDonate'])->name('donation.store');
     });
 
 

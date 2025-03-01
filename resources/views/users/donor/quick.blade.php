@@ -15,8 +15,32 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="{{ asset('lib/bootstrap/css/bootstrap.min.css') }}">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{ asset('assets/users/css/donor/home_donor.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/users/css/donor/quick.css') }}">
 </head>
+
+<!-- Spinner Start -->
+<div id="spinner" class="show bg-white position-fixed w-100 vh-100 d-flex flex-column align-items-center justify-content-center">
+    <div class="text-center mb-4">
+        <h1 class="m-0 fw-bold" style="color: #ff1f1f; font-size:50px;">
+            <img src="{{ asset('assets/img/systemLogo.png') }}" class="me-3 w-25" alt="Logo">UniAid
+        </h1>
+    </div>
+
+    <div class="cssload-main">
+        <div class="cssload-heart">
+            <span class="cssload-heartL"></span>
+            <span class="cssload-heartR"></span>
+            <span class="cssload-square"></span>
+        </div>
+        <div class="cssload-shadow"></div>
+    </div>
+    <div class="loading-text mt-4">
+        <p class="text-center fw-bold" style="color: #ff1f1f; font-size: 20px; margin: 0; position: absolute; bottom: 160px; left: 50%; transform: translateX(-50%); ">
+            Loading....
+        </p>
+    </div>
+</div>
+<!-- Spinner End -->
 
 <body class="hold-transition sidebar-collapse layout-top-nav">
     <div class="wrapper">
@@ -40,7 +64,10 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="home.html">Home</a>
+                            <a class="nav-link active rounded-pill" aria-current="page" href="{{route('donor.home')}}">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link " aria-current="page" href="{{route('prc-chapters')}}">Chapters</a>
                         </li>
                     </ul>
                 </div>
@@ -56,23 +83,26 @@
                     </div>
                 </form>
                 <div class="nav-item dropdown me-5 ms-2">
-                    <a class="nav-link dropdown-toggle d-flex align-items-center" id="navbarDropdown" href="#"
+                    <a class="nav-link dropdown-toggle d-flex align-items-center p-2" id="navbarDropdown" href="#"
                         role="button" data-bs-toggle="dropdown" aria-expanded="false">
 
                         <div class="nav-profile-img">
-                            <img src="{{ asset('assets/img/no_profile.png') }}" alt="image">
+                            <img src="{{ asset('storage/' . $User->donor->user_photo) }}" alt="image">
                             <span class="availability-status online"></span>
                         </div>
                         <div class="nav-profile-text">
-                            <span class="text-white">Username</span>
+                            <span>{{ $User->donor->first_name . ' ' . $User->donor->last_name }}</span>
                         </div>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                         <li>
-                            <a class="dropdown-item d-flex justify-content-center align-items-center"
-                                href="logout.php">Logout
-                                <i class="fas fa-right-from-bracket ms-2"></i>
-                            </a>
+                            <form action="{{ route('user.logout') }}" method="POST" id="logout-form">
+                                @csrf
+                                <button type="submit" class="dropdown-item d-flex justify-content-center align-items-center">
+                                    Logout
+                                    <i class="fas fa-right-from-bracket ms-2"></i>
+                                </button>
+                            </form>
                         </li>
                         <li>
                             <a class="dropdown-item d-flex justify-content-center align-items-center"
@@ -95,9 +125,10 @@
             </a>
             <!-- Sidebar -->
             <div class="sidebar">
+                <!-- Sidebar user (optional) -->
                 <div class="user-panel my-3 pb-3 d-flex flex-column align-items-center justify-content-center">
                     <img src="{{ asset('storage/' . $User->donor->user_photo) }}" class="img-circle elevation-2" alt="User Image">
-                    <a href="route{{'donor.profile'}}" class="d-block side-user mt-2" title="profile">{{ $User->username }}</a>
+                    <a href="{{route ('donor.profile') }}" class="d-block side-user mt-2" title="profile">{{ $User->username }}</a>
                     <p class="text-white m-0">Donor</p>
                 </div>
                 <!-- SidebarSearch Form -->
@@ -117,7 +148,7 @@
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <!-- Home -->
                         <li class="nav-item">
-                            <a href="{{route ('donor.home') }}" class="nav-link">
+                            <a href="{{route ('donor.home') }}" class="nav-link active">
                                 <i class="nav-icon fas fa-house"></i>
                                 <p>Home</p>
                             </a>
@@ -143,7 +174,7 @@
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
                                     <a href="#" class="nav-link">
-                                        <i class="fas fa-circle-arrow-right nav-icon"></i>
+                                        <i class="far fa-circle nav-icon"></i>
                                         <p>Quick Donation</p>
                                     </a>
                                 </li>
@@ -173,7 +204,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{route ('prc-chapters') }}" class="nav-link">
+                                    <a href="route{{'prc-chapters'}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>PRC Chapters</p>
                                     </a>
@@ -197,7 +228,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="" class="nav-link">
+                                    <a href="#" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Donation History</p>
                                     </a>
@@ -215,7 +246,7 @@
 
                         <!-- Testimonials -->
                         <li class="nav-item">
-                            <a href="{{route ('donor.testi_form') }}" class=" nav-link">
+                            <a href="{{route ('donor.testi_form') }}" class="nav-link">
                                 <i class="nav-icon fas fa-star"></i>
                                 <p>Testimonials</p>
                             </a>
@@ -223,17 +254,19 @@
 
                         <!-- Feedback / Support -->
                         <li class="nav-item">
-                            <a href="{{route ('donor.contact_form') }}" class="nav-link active">
+                            <a href="{{route ('donor.contact_form') }}" class="nav-link ">
                                 <i class="nav-icon fas fa-comments"></i>
                                 <p>Contact / Support</p>
                             </a>
                         </li>
                     </ul>
+
                 </nav>
                 <!-- /.sidebar-menu -->
             </div>
             <!-- /.sidebar -->
         </aside>
+
 
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
@@ -242,9 +275,9 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-6 d-flex align-items-center ms-3">
+                            <img src="{{ asset('assets/img/donorbanner.png') }}" alt="" class="banner-img img-fluid mx-2">
                             <h1 class="m-0">
                                 Donor Portal
-
                             </h1>
                         </div>
                         <div class="col-5 d-flex justify-content-end align-items-center">
@@ -252,10 +285,9 @@
                                 <li class="breadcrumb-item">
                                     <a href="{{ route('donor.home') }}">Home</a>
                                 </li>
-                                <li class="breadcrumb-item">
-                                    Make A Donations
+                                <li class="breadcrumb-item active">
+                                    Quick Donation
                                 </li>
-                                <li class="breadcrumb-item active">Quick Donation</li>
                             </ol>
                         </div>
                     </div>
@@ -266,8 +298,33 @@
 
             <!-- Main content -->
             <div class="content">
-                <div class="container">
+                <div class="container-fluid py-3">
                     <div class="row">
+                        <h3 class="text-center">Select Type of Donations</h3>
+                        <div class="d-flex justify-content-center">
+                            <div class="quick my-3 mx-4">
+                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M20 5H4V19L13.2923 9.70649C13.6828 9.31595 14.3159 9.31591 14.7065 9.70641L20 15.0104V5ZM2 3.9934C2 3.44476 2.45531 3 2.9918 3H21.0082C21.556 3 22 3.44495 22 3.9934V20.0066C22 20.5552 21.5447 21 21.0082 21H2.9918C2.44405 21 2 20.5551 2 20.0066V3.9934ZM8 11C6.89543 11 6 10.1046 6 9C6 7.89543 6.89543 7 8 7C9.10457 7 10 7.89543 10 9C10 10.1046 9.10457 11 8 11Z"></path>
+                                </svg>
+                                <div class="quick__content ">
+                                    <p class="quick__title">Cash</p>
+                                    <p class="quick__description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
+                                    <button class="quick__button">Donate</button>
+
+                                </div>
+                            </div>
+
+                            <div class="quick m-2">
+                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M20 5H4V19L13.2923 9.70649C13.6828 9.31595 14.3159 9.31591 14.7065 9.70641L20 15.0104V5ZM2 3.9934C2 3.44476 2.45531 3 2.9918 3H21.0082C21.556 3 22 3.44495 22 3.9934V20.0066C22 20.5552 21.5447 21 21.0082 21H2.9918C2.44405 21 2 20.5551 2 20.0066V3.9934ZM8 11C6.89543 11 6 10.1046 6 9C6 7.89543 6.89543 7 8 7C9.10457 7 10 7.89543 10 9C10 10.1046 9.10457 11 8 11Z"></path>
+                                </svg>
+                                <div class="quick__content">
+                                    <p class="quick__title">In-Kind items</p>
+                                    <p class="quick__description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
+                                    <button class="quick__button">Donate</button>
+                                </div>
+                            </div>
+                        </div>
 
                     </div>
                 </div>
@@ -279,13 +336,11 @@
 
         <!-- Main Footer -->
         <footer class="main-footer">
-
             <strong>Copyright &copy; 2024 UniAid - Community Donations and Resource Distribution.</strong>
             All rights reserved.
         </footer>
     </div>
     <!-- ./wrapper -->
-
 
     <!-- jQuery -->
     <script src="{{ asset('lib/jquery/jquery.min.js') }}"></script>
@@ -295,7 +350,6 @@
     <script src="{{ asset('lib/fontawesome/all.js') }}"></script>
     <!-- User JS -->
     <script src="{{ asset('assets/users/js/user.js') }}"></script>
-
 </body>
 
 </html>

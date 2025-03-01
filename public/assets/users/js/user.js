@@ -439,7 +439,38 @@ $('#file-input').change(function (event) {
         }
     });
 
+ $(".anonymous-checkbox").on("change", function() {
+        const modalId = this.id.split("_").pop();
+        const donorNameInput = $(`#donor_name_${modalId}`);
 
+        if (this.checked) {
+            // Store the current value in a data attribute (if not already stored)
+            if (!donorNameInput.data("original-name")) {
+                donorNameInput.data("original-name", donorNameInput.val());
+            }
+            donorNameInput.val("Anonymous").prop("readonly", true);
+        } else {
+            // Restore the original name from the data attribute
+            donorNameInput.val(donorNameInput.data("original-name")).prop("readonly", false);
+        }
+    });
+
+    // Show/Hide Pickup Address Field based on method selection
+    $(".donation-method").on("change", function() {
+        const modalId = this.id.split("_").pop();
+        const pickupDiv = $(`#pickup_address_div_${modalId}`);
+
+        if (this.value === "pickup") {
+            pickupDiv.removeClass("d-none");
+        } else {
+            pickupDiv.addClass("d-none");
+        }
+    });
+
+
+    
+
+  
 /*  END WAG NA MAG DECLARE SA BABA NG JAVASCRIPT FILE */
  
 
@@ -2536,3 +2567,5 @@ $('#file-input').change(function (event) {
 
     
 });
+
+

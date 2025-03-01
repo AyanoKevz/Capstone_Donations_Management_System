@@ -22,6 +22,7 @@ class CashDonation extends Model
         'proof_payment',
         'transaction_reference',
         'status',
+        'cause',
     ];
 
     public function donor()
