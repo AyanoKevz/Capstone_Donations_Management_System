@@ -31,7 +31,7 @@ L.control.zoom({ position: 'topright' }).addTo(phMap);
 var zoomOutButton = new ZoomOutButton({ position: 'topright' });
 zoomOutButton.addTo(phMap);
 
-// Base path for icons
+
 var baseIconPath = "/assets/img/";
 
 // Define cause icons
@@ -73,56 +73,68 @@ var regionCoordinates = {
     "BARMM": { center: [7.2167, 124.2500], zoom: 8 }, // Bangsamoro Autonomous Region
 };
 
-// Layer group to manage markers
 var markersLayer = L.layerGroup().addTo(phMap);
 
 // Function to update the info sidebar with request details
 function updateInfoSidebar(request) {
     var sidebar = document.getElementById('infoSidebar');
     var requestInfo = document.getElementById('requestInfo');
-
-    // Generate the HTML for the sidebar
+    let urgencyColor = "";
+    if (request.urgency === "Low") {
+        urgencyColor = "text-success"; 
+    } else if (request.urgency === "Moderate") {
+        urgencyColor = "text-warning"; 
+    } else if (request.urgency === "Critical") {
+        urgencyColor = "text-danger"; 
+    }
+    
     var html = `
-        <h2 class="text-center">${request.cause} (${request.urgency})</h2>
+        <h2 class="text-center">${request.cause} 
+            <span class="${urgencyColor}">(${request.urgency})</span>
+        </h2>
         <p class="mb-2"><strong>Location:</strong> ${formatLocation(request.location.region, request.location.province, request.location.city_municipality, request.location.barangay)}</p>
-        <p class="mb-2"><strong>Status:</strong> ${request.status}</p>
+        <p class="mb-2"> <strong>Status:</strong> <span class="text-success fw-bold">${request.status}</span></p>
         <p><strong>Description:</strong> ${request.description}</p>
         <hr>
         <h4>Requested Items</h4>
-        <ul>
+        <ul class="list-group">
     `;
 
-    // Add requested items to the HTML
     request.items.forEach(item => {
-        html += `<li><strong>${item.item}:</strong> ${item.quantity}</li>`;
+        const donated = item.donated_quantity || 0;
+        html += `
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span><strong>${item.item}:</strong> ${item.quantity}</span>
+                <span class="badge bg-success">Donated: ${donated}</span>
+            </li>
+        `;
     });
 
     html += `</ul>`;
 
-    // Add proof photos and video if available
+    // Proof media
     if (request.proof_photo_1 || request.proof_photo_2 || request.proof_video) {
         html += `<hr><h4>Proof Media</h4>`;
 
-        // Display images side by side at the top
-        if (request.proof_photo_1 || request.proof_photo_2) {
-            html += `
-                <div class="row">
-                    <div class="col-6 mb-2">
-                        ${request.proof_photo_1 ? `<img src="/storage/${request.proof_photo_1}" alt="Proof Photo 1" class="img-fluid" style="width: 100%; height: 200px; object-fit: cover;">` : ''}
-                    </div>
-                    <div class="col-6 mb-2">
-                        ${request.proof_photo_2 ? `<img src="/storage/${request.proof_photo_2}" alt="Proof Photo 2" class="img-fluid" style="width: 100%; height: 200px; object-fit: cover;">` : ''}
-                    </div>
-                </div>
-            `;
-        }
+       if (request.proof_photo_1 || request.proof_photo_2) {
+    html += `
+        <div class="row">
+            <div class="col-6 mb-2">
+                ${request.proof_photo_1 ? `<img src="/storage/${request.proof_photo_1}" alt="Proof Photo 1" class="req-img">` : ''}
+            </div>
+            <div class="col-6 mb-2">
+                ${request.proof_photo_2 ? `<img src="/storage/${request.proof_photo_2}" alt="Proof Photo 2" class="req-img">` : ''}
+            </div>
+        </div>
+    `;
+}
 
-        // Display video below the images
+
         if (request.proof_video) {
             html += `
                 <div class="row">
                     <div class="col-12">
-                        <video controls class="img-fluid" style="width: 100%; height: 200px; object-fit: cover;">
+                        <video controls class="img-fluid rounded">
                             <source src="/storage/${request.proof_video}" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
@@ -132,9 +144,10 @@ function updateInfoSidebar(request) {
         }
     }
 
-    // Update the sidebar content
     requestInfo.innerHTML = html;
 }
+
+
 
 // Function to add markers to the map
 
@@ -148,7 +161,7 @@ function addMarkers(requests) {
 
             var icon = L.icon({
                 iconUrl: iconUrl,
-                iconSize: [30, 30], // Adjust marker size
+                iconSize: [30, 30], 
                 iconAnchor: [16, 32],
                 popupAnchor: [0, -32]
             });
@@ -170,16 +183,16 @@ function addMarkers(requests) {
                 .bindPopup(popupContent);
 
             // Add click event to update the sidebar and show the donate button
-            marker.on('click', function() {
-                updateInfoSidebar(request);
+           marker.on('click', function() {
+    updateInfoSidebar(request);
 
-                // Show the donate button
-                var donateBtn = document.getElementById('donateBtn');
-                donateBtn.style.display = 'block';
+    // Show the donate button
+    var donateBtn = document.getElementById('donateBtn');
+    donateBtn.style.display = 'block';
 
-                // Set the modal target dynamically
-                donateBtn.setAttribute('data-bs-target', '#donateNow-' + request.id);
-            });
+    // Set the modal target dynamically
+    donateBtn.setAttribute('data-bs-target', `#donateNow-${request.id}`);
+});
         }
     });
 }
@@ -213,7 +226,6 @@ document.getElementById('region-filter').addEventListener('change', function(eve
 });
 
 function filterRequests(region) {
-    // Simulate fetching filtered data (Replace this with an actual AJAX call)
     var filteredRequests = donationRequests.filter(request => request.location.region === region);
     addMarkers(filteredRequests);
 }
@@ -225,4 +237,224 @@ window.addEventListener('load', function() {
         var { center, zoom } = regionCoordinates[savedRegion];
         phMap.setView(center, zoom); // Restore zoom
     }
+});
+
+
+
+
+function initializePhotoCapture(requestId) {
+    const video = document.getElementById(`video-${requestId}`);
+    const canvas = document.getElementById(`overlay-${requestId}`);
+    const timerDisplay = document.getElementById(`timer-${requestId}`);
+    const toggleCameraBtn = document.getElementById(`toggleCameraBtn-${requestId}`);
+    const imageFileInput = document.getElementById(`imageFile-${requestId}`);
+    const preview = document.getElementById(`preview-${requestId}`);
+    canvas.style.background = 'black';
+
+    let videoStream = null;
+    let captureTimeout = null;
+    let countdown = 2;
+    let detecting = false;
+    let detectionInterval = null;
+
+    // Start webcam
+    async function startVideo() {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ video: {} });
+            videoStream = stream;
+            video.srcObject = videoStream;
+            video.style.display = 'block';
+            canvas.style.background = 'none';
+
+            video.onloadedmetadata = () => {
+                adjustOverlaySize();
+                detectFace();
+            };
+
+            detecting = true;
+            toggleCameraBtn.textContent = 'Turn Off Camera';
+        } catch (error) {
+            console.error('Error accessing webcam:', error);
+            alert('Unable to access the camera. Please check permissions.');
+        }
+    }
+
+    // Stop webcam
+    function stopVideo() {
+        if (videoStream) {
+            const tracks = videoStream.getTracks();
+            tracks.forEach(track => track.stop());
+        }
+        videoStream = null;
+        detecting = false;
+        video.style.display = 'none';
+        canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+        canvas.style.background = 'black';
+
+        if (detectionInterval) {
+            clearInterval(detectionInterval);
+            detectionInterval = null;
+        }
+
+        if (captureTimeout) {
+            clearInterval(captureTimeout);
+            captureTimeout = null;
+        }
+
+        resetCountdown();
+        toggleCameraBtn.textContent = 'Turn On Camera';
+    }
+
+    // Toggle camera on/off
+    toggleCameraBtn.addEventListener('click', () => {
+        if (detecting) {
+            stopVideo();
+        } else {
+            startVideo();
+        }
+    });
+
+    // Load face-api models
+    async function loadModels() {
+        try {
+            await faceapi.nets.tinyFaceDetector.loadFromUri('/lib/face-api.js/weights');
+            await faceapi.nets.faceLandmark68Net.loadFromUri('/lib/face-api.js/weights');
+            await faceapi.nets.faceRecognitionNet.loadFromUri('/lib/face-api.js/weights');
+        } catch (error) {
+            console.error('Error loading face-api models:', error);
+        }
+    }
+
+    // Adjust overlay canvas size
+    function adjustOverlaySize() {
+        const videoDisplaySize = video.getBoundingClientRect();
+        canvas.width = videoDisplaySize.width;
+        canvas.height = videoDisplaySize.height;
+        faceapi.matchDimensions(canvas, videoDisplaySize);
+    }
+
+    // Detect faces
+    async function detectFace() {
+        const displaySize = { width: video.clientWidth, height: video.clientHeight };
+        faceapi.matchDimensions(canvas, displaySize);
+
+        if (detectionInterval) {
+            clearInterval(detectionInterval);
+            detectionInterval = null;
+        }
+
+        detectionInterval = setInterval(async () => {
+            if (!detecting) {
+                clearInterval(detectionInterval);
+                detectionInterval = null;
+                return;
+            }
+
+            try {
+                const options = new faceapi.TinyFaceDetectorOptions({
+                    inputSize: 512,
+                    scoreThreshold: 0.5
+                });
+                const detections = await faceapi.detectAllFaces(video, options);
+
+                if (!detecting) {
+                    return;
+                }
+
+                const resizedDetections = faceapi.resizeResults(detections, displaySize);
+                const ctx = canvas.getContext('2d');
+                if (ctx) {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                }
+
+                if (resizedDetections.length > 0) {
+                    faceapi.draw.drawDetections(canvas, resizedDetections);
+                    startCountdown();
+                } else {
+                    resetCountdown();
+                }
+            } catch (error) {
+                console.error('Error during face detection:', error);
+            }
+        }, 100);
+    }
+
+    // Start countdown
+    function startCountdown() {
+        if (captureTimeout === null) {
+            timerDisplay.style.display = 'block';
+            countdown = 2;
+            timerDisplay.textContent = `Timer: ${countdown}`;
+
+            captureTimeout = setInterval(() => {
+                countdown--;
+                timerDisplay.textContent = `Timer: ${countdown}`;
+
+                if (countdown <= 0) {
+                    captureImage();
+                    resetCountdown();
+                }
+            }, 1000);
+        }
+    }
+
+    // Reset countdown
+    function resetCountdown() {
+        if (captureTimeout) {
+            clearInterval(captureTimeout);
+            captureTimeout = null;
+        }
+        countdown = 2;
+        timerDisplay.textContent = `Timer: ${countdown}`;
+        timerDisplay.style.display = 'none';
+    }
+
+    // Capture image
+    function captureImage() {
+        const context = canvas.getContext('2d');
+        if (context) {
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        }
+        const imageData = canvas.toDataURL('image/png');
+
+        const modalPreviewImg = document.getElementById(`reviewUserImage-${requestId}`);
+        if (modalPreviewImg) {
+            modalPreviewImg.src = imageData;
+        }
+
+        const file = dataURLtoFile(imageData, 'captured.png');
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(file);
+        imageFileInput.files = dataTransfer.files;
+
+        const img = document.createElement('img');
+        img.src = imageData;
+        img.width = 250;
+        img.height = 200;
+        preview.innerHTML = '';
+        preview.appendChild(img);
+
+        stopVideo();
+    }
+
+    // Convert base64 to file
+    function dataURLtoFile(dataurl, filename) {
+        const arr = dataurl.split(',');
+        const mime = arr[0].match(/:(.*?);/)[1];
+        const bstr = atob(arr[1]);
+        let n = bstr.length;
+        const u8arr = new Uint8Array(n);
+        while (n--) {
+            u8arr[n] = bstr.charCodeAt(n);
+        }
+        return new File([u8arr], filename, { type: mime });
+    }
+
+    // Initialize
+    loadModels();
+}
+
+// Initialize photo capture for each modal
+donationRequests.forEach(request => {
+    initializePhotoCapture(request.id);
 });

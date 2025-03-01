@@ -694,6 +694,7 @@ input.is-invalid, select.is-invalid {
 .blog .resources-item .resources-img img {
     padding: 10%;
     transition: 0.5s;
+    height: 300px;
 }
 
 .blog .resources-item {
@@ -1225,6 +1226,19 @@ input.is-invalid, select.is-invalid {
 @media (max-width: 550px) {
     form .fields .input-field{
         width: 100%;
+    }
+}
+
+
+@media (max-width: 380px) {
+    .no-padding {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    .no-padding .register-form {
+        margin-left: 0;
+        margin-right: 0;
     }
 }
 

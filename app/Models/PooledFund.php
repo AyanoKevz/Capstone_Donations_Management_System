@@ -5,22 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PooledResource extends Model
+class PooledFund extends Model
 {
     use HasFactory;
 
-    protected $table = 'pooled_resources';
+    protected $table = 'pooled_funds';
 
     protected $fillable = [
-        'item',
-        'quantity',
         'chapter_id',
+        'total_cash',
         'cause',
-        'status',
     ];
 
     public function chapter()
     {
-        return $this->belongsTo(Chapter::class);
+        return $this->belongsTo(Chapter::class, 'chapter_id');
     }
 }

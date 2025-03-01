@@ -18,7 +18,7 @@ class InquiryFactory extends Factory
         return [
             'name' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
-            'contact' => $this->faker->phoneNumber(),
+            'contact' => $this->faker->regexify('09[0-9]{9}'),
             'subject' => $this->faker->sentence(),
             'message' => $this->faker->paragraph(),
             'status' => $this->faker->randomElement(['read', 'unread']),
