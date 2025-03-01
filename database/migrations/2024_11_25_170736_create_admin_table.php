@@ -13,6 +13,17 @@ return new class extends Migration
      */
     public function up(): void
     {
+
+        Schema::create('chapter', function (Blueprint $table) {
+            $table->id();
+            $table->string('chapter_name', 100);
+            $table->string('address', 255);
+            $table->string('region', 100);
+            $table->decimal('latitude', 9, 6)->nullable();
+            $table->decimal('longitude', 9, 6)->nullable();
+            $table->timestamps();
+        });
+
         Schema::create('admin', function (Blueprint $table) {
             $table->id();
             $table->string('name', 100);
@@ -36,15 +47,7 @@ return new class extends Migration
         });
 
 
-        Schema::create('chapter', function (Blueprint $table) {
-            $table->id();
-            $table->string('chapter_name', 100);
-            $table->string('address', 255);
-            $table->string('region', 100);
-            $table->decimal('latitude', 9, 6)->nullable();
-            $table->decimal('longitude', 9, 6)->nullable();
-            $table->timestamps();
-        });
+
 
         Schema::create('inquiry', function (Blueprint $table) {
             $table->id();
@@ -58,16 +61,6 @@ return new class extends Migration
             $table->foreignId('handled_by_admin_id')->nullable()->constrained('admin')->onDelete('set null');
         });
 
-        DB::table('admin')->insert([
-            'name' => 'UniAid',
-            'username' => 'uniaid_admin',
-            'email' => 'uniaid2024@gmail.com',
-            'password' => Hash::make('uniaid123'),
-            'profile_image' => 'admin_photos/no_profile.png',
-            'chapter_id' => '2',
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
 
 
         DB::table('chapter')->insert([
@@ -152,6 +145,17 @@ return new class extends Migration
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+        ]);
+
+        DB::table('admin')->insert([
+            'name' => 'UniAid',
+            'username' => 'uniaid_admin',
+            'email' => 'uniaid2024@gmail.com',
+            'password' => Hash::make('uniaid123'),
+            'profile_image' => 'admin_photos/no_profile.png',
+            'chapter_id' => '2',
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
     }
 
