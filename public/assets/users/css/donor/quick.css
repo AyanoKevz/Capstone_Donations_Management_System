@@ -1257,7 +1257,7 @@ body:not(.layout-fixed) .main-sidebar .sidebar {
  
 .quick {
   position: relative;
-  width: 350px;
+  width: 450px;
   aspect-ratio: 16/9;
   background-color: #f2f2f2;
   border-radius: 10px;
@@ -1266,19 +1266,15 @@ body:not(.layout-fixed) .main-sidebar .sidebar {
   justify-content: center;
   overflow: hidden;
   perspective: 1000px;
-  box-shadow: 0 0 0 5px #ffffff80;
+  box-shadow: 0 0 0 5px #1b2a5f;
   transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
+  margin: 16px !important; /* Added margin for spacing */}
 
-.quick svg {
-  width: 48px;
-  fill: #333;
-  transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
 
 .quick__image {
   width: 100%;
   height: 100%;
+  object-fit: contain;
 }
 
 .quick:hover {
@@ -1287,14 +1283,14 @@ body:not(.layout-fixed) .main-sidebar .sidebar {
 }
 
 .quick__content {
-  position: absolute;
+   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  padding: 20px;
+  padding: 16px;
   box-sizing: border-box;
-  background-color: #f2f2f2;
+  background-color: rgba(255, 255, 255, 0.9);
   transform: rotateX(-90deg);
   transform-origin: bottom;
   transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -1306,7 +1302,7 @@ body:not(.layout-fixed) .main-sidebar .sidebar {
 
 .quick__title {
   margin: 0;
-  font-size: 20px;
+font-size: 24px; 
   color: #333;
   font-weight: 700;
 }
@@ -1316,22 +1312,26 @@ body:not(.layout-fixed) .main-sidebar .sidebar {
 }
 
 .quick__description {
-  margin: 10px 0 10px;
-  font-size: 12px;
+  margin: 10px 0 20px; /* Adjusted margin */
+  font-size: 14px; /* Increased font size */
   color: #777;
-  line-height: 1.4;
+  line-height: 1.6; /* Improved line height */
 }
 
 .quick__button {
-  padding: 15px;
-  border-radius: 8px;
-  background: #777;
+  padding: 12px 24px;
+  border-radius: 25px;
+  background: #1b2a5f;
   border: none;
   color: white;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s ease;
 }
 
-.secondary {
-  background: transparent;
-  color: #777;
-  border: 1px solid #777;
+.quick__button:hover {
+  background: white;
+  color: #1b2a5f;
+  transform: translateY(-2px);
 }

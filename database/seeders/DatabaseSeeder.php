@@ -14,7 +14,9 @@ class DatabaseSeeder extends Seeder
         $this->call([
             InquirySeeder::class,
             PooledResourceSeeder::class,
-            PooledFundSeeder::class
+            PooledFundSeeder::class,
+            UserAccountSeeder::class,
+            DonorSeeder::class,
         ]);
     }
 }

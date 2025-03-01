@@ -20,7 +20,6 @@ return new class extends Migration {
         Schema::create('volunteer_activity', function (Blueprint $table) {
             $table->id();
             $table->foreignId('volunteer_id')->constrained('volunteer')->onDelete('cascade');
-            $table->foreignId('resource_id')->constrained('resource')->onDelete('cascade');
             $table->text('task_description');
             $table->integer('hours_worked');
             $table->foreignId('event_id')->nullable()->constrained('event')->nullOnDelete();

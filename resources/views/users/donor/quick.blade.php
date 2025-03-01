@@ -301,31 +301,31 @@
                 <div class="container-fluid py-3">
                     <div class="row">
                         <h3 class="text-center">Select Type of Donations</h3>
-                        <div class="d-flex justify-content-center">
-                            <div class="quick my-3 mx-4">
-                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M20 5H4V19L13.2923 9.70649C13.6828 9.31595 14.3159 9.31591 14.7065 9.70641L20 15.0104V5ZM2 3.9934C2 3.44476 2.45531 3 2.9918 3H21.0082C21.556 3 22 3.44495 22 3.9934V20.0066C22 20.5552 21.5447 21 21.0082 21H2.9918C2.44405 21 2 20.5551 2 20.0066V3.9934ZM8 11C6.89543 11 6 10.1046 6 9C6 7.89543 6.89543 7 8 7C9.10457 7 10 7.89543 10 9C10 10.1046 9.10457 11 8 11Z"></path>
-                                </svg>
-                                <div class="quick__content ">
-                                    <p class="quick__title">Cash</p>
-                                    <p class="quick__description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
-                                    <button class="quick__button">Donate</button>
+                        <div class="d-flex justify-content-center align-items-center flex-wrap mt-3">
 
-                                </div>
-                            </div>
-
-                            <div class="quick m-2">
-                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M20 5H4V19L13.2923 9.70649C13.6828 9.31595 14.3159 9.31591 14.7065 9.70641L20 15.0104V5ZM2 3.9934C2 3.44476 2.45531 3 2.9918 3H21.0082C21.556 3 22 3.44495 22 3.9934V20.0066C22 20.5552 21.5447 21 21.0082 21H2.9918C2.44405 21 2 20.5551 2 20.0066V3.9934ZM8 11C6.89543 11 6 10.1046 6 9C6 7.89543 6.89543 7 8 7C9.10457 7 10 7.89543 10 9C10 10.1046 9.10457 11 8 11Z"></path>
-                                </svg>
+                            <div class="quick">
+                                <img src="{{ asset('assets/img/quick-cash.png') }}" alt="Cash" class="quick__image">
                                 <div class="quick__content">
-                                    <p class="quick__title">In-Kind items</p>
-                                    <p class="quick__description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
-                                    <button class="quick__button">Donate</button>
+                                    <p class="quick__title">Support with Cash</p>
+                                    <p class="quick__description">Your cash donation helps us provide immediate assistance to those in need. Every contribution makes a difference in improving lives and creating lasting change.</p>
+                                    <div class="d-flex justify-content-end my-4">
+                                        <a class="quick__button" href="#">Donate Now</a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
+                            <div class="quick">
+                                <img src="{{ asset('assets/img/quick-item.png') }}" alt="In-Kind Items" class="quick__image">
+                                <div class="quick__content">
+                                    <p class="quick__title">Donate In-Kind Items</p>
+                                    <p class="quick__description">Your in-kind donations, such as food, clothing, or supplies, directly support our community programs. Help us make a tangible impact today.</p>
+                                    <div class="d-flex justify-content-end my-4">
+                                        <a class="quick__button" href="#">Donate Now</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
 
