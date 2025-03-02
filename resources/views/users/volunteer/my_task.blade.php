@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="{{ asset('lib/bootstrap/css/bootstrap.min.css') }}">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('assets/users/css/volunteer/home_volunteer.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/users/css/volunteer/my_task.css') }}">
 </head>
 
 <!-- Spinner Start -->
@@ -259,8 +260,36 @@
 
             <!-- Main content -->
             <div class="content">
-                <div class="container">
+                <div class="container-fluid">
                     <div class="row">
+                    
+
+                    <div class="task-container">
+    <table>
+        <thead>
+            <tr>
+                <th>Task Description</th>
+                <th>Hours Worked</th>
+                <th>Created At</th>
+                <th>Updated At</th>
+            </tr>
+        </thead>
+        <tbody>
+            @forelse($tasks as $index => $task)
+                <tr>
+                    <td>{{ $task->task_description }}</td>
+                    <td>{{ $task->hours_worked }}</td>
+                    <td>{{ $task->created_at }}</td>
+                    <td>{{ $task->updated_at }}</td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="7" class="empty-message">No tasks assigned yet.</td>
+                </tr>
+            @endforelse
+        </tbody>
+    </table>
+</div>
 
                     </div>
 

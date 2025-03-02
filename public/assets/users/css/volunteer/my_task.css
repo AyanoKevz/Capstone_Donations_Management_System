@@ -1,0 +1,91 @@
+/* General Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+/* Page Title */
+h2 {
+    text-align: center;
+    color: #2c3e50;
+    margin: 20px 0;
+}
+
+/* Table Container */
+.task-container {
+    width: 90%;
+    margin: 0 auto;
+    overflow-x: auto;
+}
+
+/* Table Styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* Table Header */
+thead {
+    background: #002855; /* Updated to match navbar blue */
+    color: white;
+}
+
+th {
+    padding: 14px 18px;
+    text-transform: uppercase;
+    font-size: 14px;
+    text-align: center;
+}
+
+/* Table Body Rows */
+td {
+    padding: 12px 16px;
+    text-align: center;
+}
+
+/* Multiline Task Description */
+td:first-child {
+    white-space: normal;
+    word-break: break-word;
+}
+
+/* Zebra Striping */
+tbody tr:nth-child(even) {
+    background: #f9f9f9;
+}
+
+/* Hover Effect */
+tbody tr:hover {
+    background: #cce5ff; /* Updated to soft blue hover */
+    transition: background 0.3s ease;
+}
+
+/* Empty State Message */
+.empty-message {
+    text-align: center;
+    color: #888;
+    padding: 20px;
+}
+
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    th, td {
+        padding: 8px 10px;
+        font-size: 12px;
+    }
+
+    h2 {
+        font-size: 18px;
+    }
+}
