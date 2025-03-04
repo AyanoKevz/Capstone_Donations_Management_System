@@ -425,9 +425,6 @@ $('#toggle-opassword').on('click', function () {
   }
 });
         
-        
- 
-
 $('#file-input').change(function (event) {
         const file = event.target.files[0];
         if (file) {
@@ -439,26 +436,43 @@ $('#file-input').change(function (event) {
         }
     });
 
- $(".anonymous-checkbox").on("change", function() {
-        const modalId = this.id.split("_").pop();
-        const donorNameInput = $(`#donor_name_${modalId}`);
+$(".anonymous-checkbox").on("change", function () {
+    let donorNameInput;
 
-        if (this.checked) {
-            // Store the current value in a data attribute (if not already stored)
-            if (!donorNameInput.data("original-name")) {
-                donorNameInput.data("original-name", donorNameInput.val());
-            }
-            donorNameInput.val("Anonymous").prop("readonly", true);
-        } else {
-            // Restore the original name from the data attribute
-            donorNameInput.val(donorNameInput.data("original-name")).prop("readonly", false);
+    // Detect if the checkbox belongs to a modal
+    const modalMatch = this.id.match(/_(\d+)$/);
+    if (modalMatch) {
+        const modalId = modalMatch[1];
+        donorNameInput = $(`#donor_name_${modalId}`);
+    } else {
+        // Single form
+        donorNameInput = $("#donor_name");
+    }
+
+    if (this.checked) {
+        // Store the original name in data attribute before changing it
+        if (!donorNameInput.data("original-name")) {
+            donorNameInput.data("original-name", donorNameInput.val());
         }
-    });
+        donorNameInput.val("Anonymous").prop("readonly", true);
+    } else {
+        donorNameInput.val(donorNameInput.data("original-name")).prop("readonly", false);
+    }
+});
 
     // Show/Hide Pickup Address Field based on method selection
-    $(".donation-method").on("change", function() {
-        const modalId = this.id.split("_").pop();
-        const pickupDiv = $(`#pickup_address_div_${modalId}`);
+    $(".donation-method").on("change", function () {
+        let pickupDiv;
+
+        // Detect if the select belongs to a modal
+        const modalMatch = this.id.match(/_(\d+)$/);
+        if (modalMatch) {
+            const modalId = modalMatch[1];
+            pickupDiv = $(`#pickup_address_div_${modalId}`);
+        } else {
+            // Single form
+            pickupDiv = $("#pickup_address_div");
+        }
 
         if (this.value === "pickup") {
             pickupDiv.removeClass("d-none");
@@ -468,7 +482,136 @@ $('#file-input').change(function (event) {
     });
 
 
-    
+     const itemsByCategory = { 
+        "Basic Needs": ["Bottled Water", "Canned Goods", "5kg Packaged Rice", "Packed Biscuits", "Instant Noodles"],
+        "Clothing and Bedding": ["Blankets", "Towels", "Jackets/Sweaters", "New Clothes", "Slippers"],
+        "Hygiene Kits": ["Soap", "Sachet Shampoo", "Toothpaste", "Toothbrushes", "Baby Diapers", "Hand Sanitizers"],
+        "Medical Supplies": ["Adhesive Tape", "Bandages and Gauze", "Alcohol/Disinfectants", "Masks (N95 or surgical)"]
+    };
+
+    const assetBaseUrl = "/assets/img/"
+ const itemImages = {
+        "Bottled Water": assetBaseUrl + "/r4.png",
+        "Canned Goods": assetBaseUrl + "/r1.jpg",
+        "5kg Packaged Rice": assetBaseUrl + "/r5.png",
+        "Packed Biscuits": assetBaseUrl + "/r6.png",
+        "Instant Noodles": assetBaseUrl + "/r3.png",
+        "Blankets": assetBaseUrl + "/b1.png",
+        "Towels": assetBaseUrl + "/t1.png",
+        "Jackets/Sweaters": assetBaseUrl + "/c1.png",
+        "New Clothes": assetBaseUrl + "/r8.png",
+        "Slippers": assetBaseUrl + "/s1.png",
+        "Soap": assetBaseUrl + "/q2.png",
+        "Sachet Shampoo": assetBaseUrl + "/q3.png",
+        "Toothpaste": assetBaseUrl + "/q4.png",
+        "Toothbrushes": assetBaseUrl + "/q1.jpg",
+        "Baby Diapers": assetBaseUrl + "/q5.png",
+        "Hand Sanitizers": assetBaseUrl + "/q6.png",
+        "Adhesive Tape": assetBaseUrl + "/w1.jpg",
+        "Bandages and Gauze": assetBaseUrl + "/w2.png",
+        "Alcohol/Disinfectants": assetBaseUrl + "/w3.png",
+        "Masks (N95 or surgical)": assetBaseUrl + "/w4.png"
+    };
+
+// Function to create a new item entry
+const selectedItems = new Set(); // Track selected items
+
+// Function to create a new item entry
+function createItemEntry(isRemovable = true) {
+  const itemDiv = $("<div>").addClass("item-entry mb-3");
+
+  itemDiv.html(`
+    <div class="row g-2 align-items-center">
+      <div class="col-md-4">
+        <select class="form-select category-select" name="categories[]">
+          <option selected disabled>Select Category</option>
+          ${Object.keys(itemsByCategory).map(cat => `<option value="${cat}">${cat}</option>`).join("")}
+        </select>
+      </div>
+      <div class="col-md-4">
+        <select class="form-select item-select" name="items[]" disabled>
+          <option selected disabled>Select Item</option>
+        </select>
+      </div>
+      <div class="col-md-4 d-flex">
+        <button type="button" class="btn btn-success btn-sm add-item">Add Item</button>
+        ${isRemovable ? `<button type="button" class="btn btn-danger btn-sm remove-item ms-2">Remove Item</button>` : ""}
+      </div>
+    </div>
+
+    <div class="row mt-2 d-none item-details p-2 justify-content-center align-items-center" style="background-color: #f8f9fa;">
+      <div class="col-md-3 my-2 d-flex justify-content-center">
+        <img src="" class="item-image img-fluid" style="max-width: 100px; display: block;">
+      </div>
+      <div class="col-md-3 my-2 d-flex justify-content-center">
+        <input type="number" class="form-control quantity-input" name="quantities[]" placeholder="Quantity" min="1" value="1">
+      </div>
+    </div>
+  `);
+
+  // Enable item selection based on category
+  itemDiv.find(".category-select").on("change", function () {
+    const category = $(this).val();
+    const itemSelect = itemDiv.find(".item-select");
+    itemSelect.html('<option selected disabled>Select Item</option>');
+
+    itemsByCategory[category].forEach(item => {
+      const disabled = selectedItems.has(item) ? "disabled" : "";
+      itemSelect.append(`<option value="${item}" ${disabled}>${item}</option>`);
+    });
+
+    itemSelect.prop("disabled", false);
+  });
+
+  // Show image and quantity input when an item is selected
+  itemDiv.find(".item-select").on("change", function () {
+    const selectedItem = $(this).val();
+    const detailsDiv = itemDiv.find(".item-details");
+    detailsDiv.removeClass("d-none");
+    itemDiv.find(".item-image").attr("src", itemImages[selectedItem]);
+
+    selectedItems.add(selectedItem); // Add to selected items
+    updateItemOptions();
+  });
+
+  return itemDiv;
+}
+
+// Function to update all item dropdowns to disable already selected items
+function updateItemOptions() {
+  $(".item-select").each(function () {
+    const selectedValue = $(this).val();
+    $(this).find("option").each(function () {
+      if ($(this).val() && selectedItems.has($(this).val()) && $(this).val() !== selectedValue) {
+        $(this).prop("disabled", true);
+      } else {
+        $(this).prop("disabled", false);
+      }
+    });
+  });
+}
+
+// Initialize with one default item (cannot be removed)
+$("#requested-items").append(createItemEntry(false));
+
+// Add Item Button Click Event (inline per row)
+$("#requested-items").on("click", ".add-item", function () {
+  $("#requested-items").append(createItemEntry(true));
+  updateItemOptions();
+});
+
+// Remove item when clicking "Remove"
+$("#requested-items").on("click", ".remove-item", function () {
+  const itemDiv = $(this).closest(".item-entry");
+  const removedItem = itemDiv.find(".item-select").val();
+
+  if (removedItem) {
+    selectedItems.delete(removedItem); // Remove from selected list
+  }
+
+  itemDiv.remove();
+  updateItemOptions(); // Re-enable removed item in other dropdowns
+});
 
   
 /*  END WAG NA MAG DECLARE SA BABA NG JAVASCRIPT FILE */

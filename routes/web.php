@@ -79,7 +79,8 @@ Route::middleware(['admin', 'prevent-back-button'])->prefix('admin')->group(func
 
     // Request
     Route::get('donation/request', [DonationController::class, 'RequestForm'])->name('admin.request_form');
-    Route::post('donation/request', [DonationController::class, 'submitRequest'])->name('admin.request.submit');
+    Route::post('donation/submit-item-request', [DonationController::class, 'submitItemRequest'])->name('admin.request.submit');
+    Route::post('donation/submit-cash-request', [DonationController::class, 'submitCashRequest'])->name('submit.cash.request');
 
 
     //Manage Admin
@@ -142,11 +143,13 @@ Route::middleware(['auth', 'prevent-back-button'])->prefix('user')->group(functi
         Route::post('/donor/update/{id}', [user_profileController::class, 'updateDonorProfile'])->name('donor.updateProfile');
         Route::get('/prc-chapters', [DonorController::class, 'showChapters'])->name('prc-chapters');
         Route::get('/contact', [DonorController::class, 'showContactForm'])->name('donor.contact_form');
-        Route::view('/select-donations', 'users.donor.quick')->name('donor.quick_donation');
+        Route::view('quick/select-donations', 'users.donor.quick')->name('donor.quick_donation');
+        Route::get('quick/In-Kind', [DonorController::class, 'quickInKindForm'])->name('quick.inKindForm');
         Route::get('/testimonial', [DonorController::class, 'showTestimonialForm'])->name('donor.testi_form');
         Route::get('/learn-about-causes', [DonorController::class, 'causes'])->name('donor.causes');
-        Route::get('/request-map', [DonationController::class, 'RequestMap'])->name('donor.request_map');
-        Route::post('/request-map/donate', [DonationController::class, 'RequestMapDonate'])->name('donation.store');
+        Route::get('/request-map/items', [DonationController::class, 'RequestMapInKind'])->name('donor.request_map');
+        Route::post('/request-map/donate', [DonationController::class, 'RequestMapInKindDonate'])->name('donation.store');
+        Route::get('/request-map/cash', [DonationController::class, 'RequestMapCash'])->name('donor.reqCash_map');
     });
 
 

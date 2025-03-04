@@ -15,8 +15,10 @@ class DatabaseSeeder extends Seeder
             InquirySeeder::class,
             PooledResourceSeeder::class,
             PooledFundSeeder::class,
-            UserAccountSeeder::class,
             DonorSeeder::class,
+            VolunteerSeeder::class,
+            AdminSeeder::class,
+
         ]);
     }
 }

@@ -110,7 +110,17 @@ return new class extends Migration {
         Schema::create('fund_request', function (Blueprint $table) {
             $table->id();
             $table->foreignId('created_by_admin_id')->constrained('admin')->onDelete('cascade');
-            $table->foreignId('chapter_id')->constrained('chapter')->onDelete('cascade');
+            $table->enum('urgency', ['Low', 'Moderate', 'Critical']);
+            $table->foreignId('location_id')->constrained('location')->onDelete('cascade');
+            $table->enum('cause', [
+                'Fire',
+                'Flood',
+                'Typhoon',
+                'Earthquake',
+                'Volcanic Eruption',
+                'Feeding Program',
+                'General'
+            ]);
             $table->decimal('amount_needed', 10, 2);
             $table->text('description');
             $table->string('proof_photo_1')->nullable();
@@ -119,6 +129,7 @@ return new class extends Migration {
             $table->enum('status', ['pending', 'fulfilled', 'canceled'])->default('pending');
             $table->timestamps();
         });
+
 
         Schema::create('cash_donation', function (Blueprint $table) {
             $table->id();

@@ -378,7 +378,8 @@
                               <div class="d-flex gap-2 flex-wrap justify-content-center">
                                 <!-- Proof Photo 1 -->
                                 <div>
-                                  <input type="file" id="proof_photo_1" name="proof_photo_1" class="file-input" hidden>
+                                  <input type="file" id="proof_photo_1" name="proof_photo_1" class="file-input" hidden accept="image/*">
+
                                   <label for="proof_photo_1" class="open-file">
                                     <span class="file-wrapper">
                                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 71 67">
@@ -393,7 +394,7 @@
                                 </div>
                                 <!-- Proof Photo 2 -->
                                 <div>
-                                  <input type="file" id="proof_photo_2" name="proof_photo_2" class="file-input" hidden>
+                                  <input type="file" id="proof_photo_2" name="proof_photo_2" class="file-input" hidden accept="image/*">
                                   <label for="proof_photo_2" class="open-file">
                                     <span class="file-wrapper">
                                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 71 67">
@@ -408,7 +409,7 @@
                                 </div>
                                 <!-- Proof Video -->
                                 <div>
-                                  <input type="file" id="proof_video" name="proof_video" class="file-input" hidden>
+                                  <input type="file" id="proof_video" name="proof_video" class="file-input" hidden accept="video/*">
                                   <label for="proof_video" class="open-file">
                                     <span class="file-wrapper">
                                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 71 67">
@@ -442,17 +443,118 @@
                           </form>
                         </div>
                         <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
-                          <form method="POST" action="{{ route('admin.updateProfile', $Admin->id) }}" class="row gy-3 gy-xxl-4" enctype="multipart/form-data" id="admin_profile_form">
-                            <!-- Funds -->
+                          <form method="POST" action="{{ route('submit.cash.request') }}" class="row gy-3 gy-xxl-4" enctype="multipart/form-data" id="cashForm">
                             @csrf
                             <div class="col-12 col-md-6">
-                              <label for="inputFirstName" class="form-label">Name</label>
-                              <input type="text" class="form-control" id="inputFirstName" name="name" value="{{ $Admin->name }}">
+                              <label for="cash_cause" class="form-label">Cause</label>
+                              <select class="form-select" id="cash_cause" name="cause">
+                                <option selected disabled>Select Cause</option>
+                                <option value="Fire">Fire</option>
+                                <option value="Flood">Flood</option>
+                                <option value="Typhoon">Typhoon</option>
+                                <option value="Earthquake">Earthquake</option>
+                                <option value="Volcanic Eruption">Volcanic Eruption</option>
+                                <option value="Feeding Program">Feeding Program</option>
+                              </select>
                             </div>
                             <div class="col-12 col-md-6">
-                              <label for="inputLastName" class="form-label">Email</label>
-                              <input type="text" class="form-control" id="email" name="email" value="{{ $Admin->email }}">
+                              <label for="cash_urgency" class="form-label">Urgency</label>
+                              <select class="form-select" id="cash_urgency" name="urgency">
+                                <option selected disabled>Select Urgency</option>
+                                <option value="Low">Low</option>
+                                <option value="Moderate">Moderate</option>
+                                <option value="Critical">Critical</option>
+                              </select>
                             </div>
+                            <div class="col-12 col-md-6">
+                              <label for="cash_region" class="form-label">Region</label>
+                              <select class="form-select" id="cash_region" name="region" required>
+                                <option disabled selected value="">Select Region</option>
+                              </select>
+                              <input type="hidden" id="cash_region-name" name="region_name">
+                            </div>
+                            <div class="col-12 col-md-6">
+                              <label for="cash_province" class="form-label">Province</label>
+                              <select class="form-select" id="cash_province" name="province" required>
+                                <option disabled selected value="">Select Province</option>
+                              </select>
+                              <input type="hidden" id="cash_province-name" name="province_name">
+                            </div>
+                            <div class="col-12 col-md-6">
+                              <label for="cash_city" class="form-label">City/Municipality</label>
+                              <select class="form-select" id="cash_city" name="city" required>
+                                <option disabled selected value="">Select City</option>
+                              </select>
+                              <input type="hidden" id="cash_city-name" name="city_name">
+                            </div>
+                            <div class="col-12 col-md-6">
+                              <label for="cash_barangay" class="form-label">Barangay</label>
+                              <select class="form-select" id="cash_barangay" name="barangay" required>
+                                <option disabled selected value="">Select Barangay</option>
+                              </select>
+                              <input type="hidden" id="cash_barangay-name" name="barangay_name">
+                            </div>
+                            <div class="col-12 col-md-12">
+                              <p class="mt-0 my-3 text-center"><strong>Upload Proof Image and Video</strong></p>
+                              <div class="d-flex gap-2 flex-wrap justify-content-center">
+                                <!-- Proof Photo 1 -->
+                                <div>
+                                  <input type="file" id="cash_proof_photo_1" name="proof_photo_1" class="file-input" hidden accept="image/*">
+                                  <label for="cash_proof_photo_1" class="open-file">
+                                    <span class="file-wrapper">
+                                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 71 67">
+                                        <path stroke-width="5" stroke="black" d="M41.7322 11.7678L42.4645 12.5H43.5H68.5V64.5H2.5V2.5H32.4645L41.7322 11.7678Z"></path>
+                                      </svg>
+                                      <span class="file-front"></span>
+                                    </span>
+                                    Image 1
+                                  </label>
+                                  <!-- File name here below -->
+                                  <span id="cash_file-name-1" class="file-name"></span>
+                                </div>
+                                <!-- Proof Photo 2 -->
+                                <div>
+                                  <input type="file" id="cash_proof_photo_2" name="proof_photo_2" class="file-input" hidden>
+                                  <label for="cash_proof_photo_2" class="open-file">
+                                    <span class="file-wrapper">
+                                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 71 67">
+                                        <path stroke-width="5" stroke="black" d="M41.7322 11.7678L42.4645 12.5H43.5H68.5V64.5H2.5V2.5H32.4645L41.7322 11.7678Z"></path>
+                                      </svg>
+                                      <span class="file-front"></span>
+                                    </span>
+                                    Image 2
+                                  </label>
+                                  <!-- File name here below -->
+                                  <span id="cash_file-name-2" class="file-name"></span>
+                                </div>
+                                <!-- Proof Video -->
+                                <div>
+                                  <input type="file" id="cash_proof_video" name="proof_video" class="file-input" hidden accept="video/*">
+                                  <label for="cash_proof_video" class="open-file">
+                                    <span class="file-wrapper">
+                                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 71 67">
+                                        <path stroke-width="5" stroke="black" d="M41.7322 11.7678L42.4645 12.5H43.5H68.5V64.5H2.5V2.5H32.4645L41.7322 11.7678Z"></path>
+                                      </svg>
+                                      <span class="file-front"></span>
+                                    </span>
+                                    Video
+                                  </label>
+                                  <!-- File name here below -->
+                                  <span id="cash_file-name-video" class="file-name"></span>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-12 col-md-12">
+                              <label for="cash_barangay" class="form-label">Amount</label>
+                              <input type="number" class="form-control quantity-input" name="amount" placeholder="Amount" min="0">
+                            </div>
+                            <div class="col-12 col-md-12">
+                              <label for="floatingTextarea" class="form-label">Description</label>
+                              <textarea class="form-control" name="description" placeholder="Leave a details here:"></textarea>
+                            </div>
+
+                            <input type="hidden" id="cash_latitude" name="latitude">
+                            <input type="hidden" id="cash_longitude" name="longitude">
                             <div class="col-12">
                               <button type="submit" class="btn btn-primary">Submit</button>
                             </div>
@@ -464,6 +566,18 @@
                 </div>
                 <div class="col-12 col-lg-6 col-xl-6">
                   <div id="map"></div>
+                  <div class="row mt-3">
+                    <h2 id="uploadText" style="display: none; text-align: center;">Uploaded Files</h2>
+                    <div class="col-6 mb-2">
+                      <img id="preview-image-1" src="#" alt="Proof Photo 1" class="req-img" style="display: none; width: 100%; height: 150px; object-fit: cover;">
+                    </div>
+                    <div class="col-6 mb-2">
+                      <img id="preview-image-2" src="#" alt="Proof Photo 2" class="req-img" style="display: none; width: 100%; height: 150px; object-fit: cover;">
+                    </div>
+                    <div class="col-12">
+                      <video id="preview-video" controls class="img-fluid rounded" style="display: none; width: 100%; height: 150px; object-fit: cover;"></video>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

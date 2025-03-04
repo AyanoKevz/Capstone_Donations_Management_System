@@ -288,7 +288,7 @@
                     <div class="row">
 
                         <div class="col-12 col-md-6 mb-3 mb-md-0 p-3 bg-light-subtle">
-                            <form id="filterForm" method="GET" action="{{ route('donor.request_map') }}">
+                            <form id="filterForm" method="GET" action="{{ route('donor.reqCash_map') }}">
                                 <div class="row mb-3 align-items-center">
                                     <div class="col-auto">
                                         <h5 class="mb-0">Sort: </h5>
@@ -340,10 +340,10 @@
                                             </div>
                                             <div class="col-12 col-md-6">
                                                 <div class="d-flex flex-column flex-md-row align-items-center gap-2">
-                                                    <label for="item-filter" class="form-label mb-0">Type</label>
+                                                    <label for="item-filter" class="form-label mb-0">Donation Type</label>
                                                     <select class="form-select" id="item-filter" name="type">
-                                                        <option value="item" selected>In-Kind</option>
-                                                        <option value="cash">Funds</option>
+                                                        <option value="item">In-Kind</option>
+                                                        <option value="cash" selected>Funds</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -379,33 +379,7 @@
         </div>
         <!-- /.content wrapper -->
 
-
-        @php
-        $itemImages = [
-        'Bottled Water' => 'r4.png',
-        'Canned Goods' => 'r1.jpg',
-        '5kg Packaged Rice' => 'r5.png',
-        'Packed Biscuits' => 'r6.png',
-        'Instant Noodles' => 'r3.png',
-        'Blankets' => 'b1.png',
-        'Towels' => 't1.png',
-        'Jackets/Sweaters' => 'c1.png',
-        'New Clothes' => 'r8.png',
-        'Slippers' => 's1.png',
-        'Soap' => 'q2.png',
-        'Sachet Shampoo' => 'q3.png',
-        'Toothpaste' => 'q4.png',
-        'Toothbrushes' => 'q1.jpg',
-        'Baby Diapers' => 'q5.png',
-        'Hand Sanitizers' => 'q6.png',
-        'Adhesive Tape' => 'w1.jpg',
-        'Bandages and Gauze' => 'w2.png',
-        'Alcohol/Disinfectants' => 'w3.png',
-        'Masks (N95 or surgical)' => 'w4.png',
-        ];
-        @endphp
-
-        @foreach($donationRequests as $request)
+        @foreach($fundRequests as $request)
         <div class="modal fade" id="donateNow-{{ $request->id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
             aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -417,9 +391,10 @@
                         <div class="p-3">
 
                             {{-- Donation Form --}}
-                            <form method="POST" action="{{ route('donation.store') }}" enctype="multipart/form-data">
+                            <form method="POST" action="#" enctype="multipart/form-data">
                                 @csrf
-                                <input type="hidden" name="donation_request_id" value="{{ $request->id }}">
+                                <input type="hidden" name="fund_request_id" value="{{ $request->id }}">
+
                                 {{-- First Row: Cause | Donor Name --}}
                                 <div class="row mb-3">
                                     <div class="col">
@@ -433,7 +408,6 @@
                                         <label for="donor_name_{{ $request->id }}" class="form-label fw-bold">Your Name</label>
                                         <input type="text" class="form-control donor-name" id="donor_name_{{ $request->id }}"
                                             name="donor_name" value="{{ $donorFullName }}" data-original-name="{{ $donorFullName }}" required>
-
                                         <!-- Hidden field to always send anonymous_checkbox (even if unchecked) -->
                                         <input type="hidden" name="anonymous_checkbox" value="0">
 
@@ -447,32 +421,32 @@
                                     </div>
 
                                 </div>
-                                {{-- Second Row: Donation Method | Donation Date & Time --}}
+
+                                {{-- Second Row: Donation Amount | Payment Method --}}
                                 <div class="row mb-3">
                                     <div class="col">
-                                        <label class="form-label fw-bold">Donation Method</label>
-                                        <select class="form-select donation-method" id="donation_method_{{ $request->id }}" name="donation_method" required>
-                                            <option selected disabled>Select an option</option>
-                                            <option value="pickup">Pickup</option>
-                                            <option value="drop-off">Drop-off</option>
-                                        </select>
+                                        <label for="amount_{{ $request->id }}" class="form-label fw-bold">Donation Amount</label>
+                                        <input type="number" class="form-control" id="amount_{{ $request->id }}" name="amount" min="1" required>
                                     </div>
                                     <div class="col">
-                                        <label for="donation_datetime_{{ $request->id }}" class="form-label fw-bold">Donation Date & Time</label>
-                                        <input type="datetime-local" class="form-control" id="donation_datetime_{{ $request->id }}" name="donation_datetime" required>
+                                        <label for="payment_method_{{ $request->id }}" class="form-label fw-bold">Payment Method</label>
+                                        <select class="form-select" id="payment_method_{{ $request->id }}" name="payment_method" required>
+                                            <option selected disabled>Select an option</option>
+                                            <option value="gcash">GCash</option>
+                                            <option value="paymaya">PayMaya</option>
+                                            <option value="bank_transfer">Bank Transfer</option>
+                                            <option value="cash">Cash</option>
+                                        </select>
                                     </div>
                                 </div>
-                                @php
-                                $pickupAddress = $User->location->region === "NCR"
-                                ? "{$User->location->full_address}, {$User->location->barangay}, {$User->location->city_municipality}, Metro Manila, Philippines"
-                                : "{$User->location->full_address}, {$User->location->barangay}, {$User->location->city_municipality}, {$User->location->province}, {$User->location->region}, Philippines";
-                                @endphp
-                                {{-- Third Row (If Pickup Selected): Pickup Address --}}
-                                <div class="mb-3 pickup-address-div d-none" id="pickup_address_div_{{ $request->id }}">
-                                    <label for="pickup_address_{{ $request->id }}" class="form-label fw-bold">Pickup Address</label>
-                                    <input type="text" class="form-control pickup-address" id="pickup_address_{{ $request->id }}"
-                                        name="pickup_address" value="{{ $pickupAddress }}">
+
+                                {{-- Third Row: Proof of Payment --}}
+                                <div class="mb-3">
+                                    <label for="proof_payment_{{ $request->id }}" class="form-label fw-bold">Proof of Payment</label>
+                                    <input type="file" class="form-control" id="proof_payment_{{ $request->id }}" name="proof_payment" accept="image/*" required>
+                                    <small class="text-muted">Upload a screenshot or photo of your payment receipt.</small>
                                 </div>
+
                                 {{-- Chapter Selection --}}
                                 <div class="mb-3">
                                     <label for="chapter" class="form-label fw-bold">Select Chapter</label>
@@ -484,69 +458,7 @@
                                     </select>
                                 </div>
 
-                                {{-- Items Requested --}}
-                                <div class="items my-3">
-                                    @foreach($request->items as $item)
-                                    @php
-                                    $totalDonated = $request->donationItems()->where('item', $item->item)->sum('quantity');
-                                    $remainingQuantity = $item->quantity - $totalDonated;
-                                    @endphp
-
-                                    @if($remainingQuantity > 0)
-                                    <div class="item">
-                                        <!-- Item Image -->
-                                        <img src="{{ asset('assets/img/' . $itemImages[$item->item]) }}"
-                                            alt="{{ $item->item }}"
-                                            class="item-img bg-body-secondary p-2 rounded">
-
-                                        <!-- Item Details -->
-                                        <div class="item-details">
-                                            <span class="fw-bold">{{ $item->item }}</span>
-                                            <p class="text-muted mb-1">{{ $item->category }}</p>
-                                            <p class="text-success mb-0">Donated: {{ $totalDonated }}/{{ $item->quantity }}</p>
-                                        </div>
-
-                                        <!-- Quantity Input -->
-                                        <div class="quantity">
-                                            <input type="number" class="form-control quantity-input"
-                                                name="quantity[{{ $item->id }}]"
-                                                min="1"
-                                                max="{{ $remainingQuantity }}"
-                                                value="1"
-                                                placeholder="Quantity">
-                                        </div>
-                                    </div>
-                                    @endif
-                                    @endforeach
-                                </div>
-                                <!-- Photo Capture Section -->
-                                <div id="photoCapture-{{ $request->id }}" class="row g-3 photo-capture">
-                                    <h5><strong>Proof of Donation</strong> </h5>
-                                    <p class="my-0">Take a photo with your donation for verification. The system will snap a picture once it detects your face.</p>
-                                    <!-- Camera Column -->
-                                    <div class="col-md-6 d-flex flex-column align-items-center">
-                                        <div class="video-container">
-                                            <video id="video-{{ $request->id }}" class="video-stream" autoplay muted></video>
-                                            <canvas id="overlay-{{ $request->id }}" class="overlay"></canvas>
-                                            <div id="timer-{{ $request->id }}" class="timer"></div>
-                                        </div>
-                                        <button class="btn btn-secondary btn-sm my-3 toggle-camera-btn" type="button" id="toggleCameraBtn-{{ $request->id }}">Turn On Camera</button>
-                                    </div>
-
-                                    <!-- Preview Column -->
-                                    <div class="col-md-6 d-flex flex-column align-items-center">
-                                        <div id="preview-{{ $request->id }}" class="preview-container">
-                                            <img src="{{ asset('assets/img/donating.jpg') }}" class="preview-image" alt="Captured Photo">
-                                        </div>
-                                        <p class="my-3"><strong>Example</strong></p>
-                                        <!-- File Input Section -->
-                                        <div id="fileInputSection-{{ $request->id }}" style="display: none;">
-                                            <input type="file" id="imageFile-{{ $request->id }}" name="proof_image" class="preview-file">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Submit Button -->
+                                {{-- Submit Button --}}
                                 <div class="text-center">
                                     <button type="submit" class="btn btn-primary mt-3">Donate Now</button>
                                 </div>
@@ -557,9 +469,6 @@
             </div>
         </div>
         @endforeach
-
-
-
 
 
         <!-- Main Footer -->
@@ -582,8 +491,8 @@
     <!-- Leaflet -->
     <script src="{{ asset('lib/leaflet/leaflet.js') }}"></script>
     <script>
-        var donationRequests = @json($donationRequests); // For in-kind donations
-        var fundRequests = []; // Empty array for fund requests
+        var donationRequests = []; // Empty array for in-kind donations
+        var fundRequests = @json($fundRequests); // For cash donations
     </script>
 
     <!-- PH MAP JS -->

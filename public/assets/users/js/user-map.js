@@ -16,7 +16,7 @@ var ZoomOutButton = L.Control.extend({
         button.title = 'Zoom Out';
 
         L.DomEvent.on(button, 'click', function(e) {
-            L.DomEvent.stop(e); 
+            L.DomEvent.stop(e);
             phMap.setView([12.8797, 121.7740], 5);
         });
 
@@ -30,7 +30,6 @@ L.control.zoom({ position: 'topright' }).addTo(phMap);
 // Add the custom "Zoom Out" button control
 var zoomOutButton = new ZoomOutButton({ position: 'topright' });
 zoomOutButton.addTo(phMap);
-
 
 var baseIconPath = "/assets/img/";
 
@@ -76,60 +75,71 @@ var regionCoordinates = {
 var markersLayer = L.layerGroup().addTo(phMap);
 
 // Function to update the info sidebar with request details
-function updateInfoSidebar(request) {
+function updateInfoSidebar(request, isFundRequest = false) {
     var sidebar = document.getElementById('infoSidebar');
     var requestInfo = document.getElementById('requestInfo');
     let urgencyColor = "";
     if (request.urgency === "Low") {
-        urgencyColor = "text-success"; 
+        urgencyColor = "text-success";
     } else if (request.urgency === "Moderate") {
-        urgencyColor = "text-warning"; 
+        urgencyColor = "text-warning";
     } else if (request.urgency === "Critical") {
-        urgencyColor = "text-danger"; 
+        urgencyColor = "text-danger";
     }
-    
+var title = isFundRequest ? "Fund Request" : "In-Kind Request";
+var image = isFundRequest ? baseIconPath + "quick-cash.png" : baseIconPath + "quick-item.png";
+
     var html = `
-        <h2 class="text-center">${request.cause} 
+        <div class="d-flex align-items-center justify-content-center mb-4">
+          <h1 class="text-center mb-0">${title}</h1>
+            <img src="${image}" alt="${title}" style="width: 40px;  margin-left: 10px; vertical-align: middle">
+        </div>
+        <h2 class="text-center">${request.cause}
             <span class="${urgencyColor}">(${request.urgency})</span>
         </h2>
         <p class="mb-2"><strong>Location:</strong> ${formatLocation(request.location.region, request.location.province, request.location.city_municipality, request.location.barangay)}</p>
         <p class="mb-2"> <strong>Status:</strong> <span class="text-success fw-bold">${request.status}</span></p>
         <p><strong>Description:</strong> ${request.description}</p>
         <hr>
-        <h4>Requested Items</h4>
-        <ul class="list-group">
     `;
 
-    request.items.forEach(item => {
-        const donated = item.donated_quantity || 0;
+    if (isFundRequest) {
+        // Add fund request details
         html += `
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-                <span><strong>${item.item}:</strong> ${item.quantity}</span>
-                <span class="badge bg-success">Donated: ${donated}</span>
-            </li>
+            <h4>Fund Details</h4>
+            <p><strong>Amount Needed:</strong> ₱${request.amount_needed} / <strong>Amount Raised:</strong> ₱${request.amount_raised}</p>
         `;
-    });
-
-    html += `</ul>`;
+    } else {
+        // Add in-kind donation details
+        html += `
+            <h4>Requested Items</h4>
+            <ul class="list-group">
+                ${request.items.map(item => `
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span><strong>${item.item}:</strong> ${item.quantity}</span>
+                        <span class="badge bg-success">Donated: ${item.donated_quantity || 0}</span>
+                    </li>
+                `).join('')}
+            </ul>
+        `;
+    }
 
     // Proof media
     if (request.proof_photo_1 || request.proof_photo_2 || request.proof_video) {
         html += `<hr><h4>Proof Media</h4>`;
 
-       if (request.proof_photo_1 || request.proof_photo_2) {
-    html += `
-        <div class="row">
-            <div class="col-6 mb-2">
-                ${request.proof_photo_1 ? `<img src="/storage/${request.proof_photo_1}" alt="Proof Photo 1" class="req-img">` : ''}
-            </div>
-            <div class="col-6 mb-2">
-                ${request.proof_photo_2 ? `<img src="/storage/${request.proof_photo_2}" alt="Proof Photo 2" class="req-img">` : ''}
-            </div>
-        </div>
-    `;
-}
-
-
+        if (request.proof_photo_1 || request.proof_photo_2) {
+            html += `
+                <div class="row">
+                    <div class="col-6 mb-2">
+                        ${request.proof_photo_1 ? `<img src="/storage/${request.proof_photo_1}" alt="Proof Photo 1" class="req-img">` : ''}
+                    </div>
+                    <div class="col-6 mb-2">
+                        ${request.proof_photo_2 ? `<img src="/storage/${request.proof_photo_2}" alt="Proof Photo 2" class="req-img">` : ''}
+                    </div>
+                </div>
+            `;
+        }
         if (request.proof_video) {
             html += `
                 <div class="row">
@@ -147,12 +157,9 @@ function updateInfoSidebar(request) {
     requestInfo.innerHTML = html;
 }
 
-
-
 // Function to add markers to the map
-
-function addMarkers(requests) {
-    markersLayer.clearLayers(); 
+function addMarkers(requests, isFundRequest = false) {
+    markersLayer.clearLayers();
 
     requests.forEach(request => {
         if (request.location) {
@@ -161,7 +168,7 @@ function addMarkers(requests) {
 
             var icon = L.icon({
                 iconUrl: iconUrl,
-                iconSize: [30, 30], 
+                iconSize: [30, 30],
                 iconAnchor: [16, 32],
                 popupAnchor: [0, -32]
             });
@@ -169,7 +176,7 @@ function addMarkers(requests) {
             // Generate the popup content
             var popupContent = `
                 <h4 class='mb-1'>
-                    <img src="${iconUrl}" alt="${request.cause} icon" style="width: 22px; height: 22px; vertical-align: middle;"> 
+                    <img src="${iconUrl}" alt="${request.cause} icon" style="width: 22px; height: 22px; vertical-align: middle;">
                     <strong>${request.cause}</strong>
                     <span class="text-muted fw-semibold fs-6 align-middle">(${request.urgency})</span>
                 </h4>
@@ -183,22 +190,29 @@ function addMarkers(requests) {
                 .bindPopup(popupContent);
 
             // Add click event to update the sidebar and show the donate button
-           marker.on('click', function() {
-    updateInfoSidebar(request);
+            marker.on('click', function() {
+                updateInfoSidebar(request, isFundRequest);
 
-    // Show the donate button
-    var donateBtn = document.getElementById('donateBtn');
-    donateBtn.style.display = 'block';
+                // Show the donate button
+                var donateBtn = document.getElementById('donateBtn');
+                donateBtn.style.display = 'block';
 
-    // Set the modal target dynamically
-    donateBtn.setAttribute('data-bs-target', `#donateNow-${request.id}`);
-});
+                // Set the modal target dynamically for the request
+                donateBtn.setAttribute('data-bs-target', `#donateNow-${request.id}`);
+            });
         }
     });
 }
 
-// Initial load: Show markers from the backend
-addMarkers(donationRequests);
+// Determine if the current view is for cash donations
+var isCashView = fundRequests.length > 0;
+
+// Initial load: Show markers based on the current view
+if (isCashView) {
+    addMarkers(fundRequests, true); // For cash donations
+} else {
+    addMarkers(donationRequests); // For in-kind donations
+}
 
 // Submit the form when dropdowns change
 document.getElementById('cause').addEventListener('change', function() {
@@ -225,11 +239,33 @@ document.getElementById('region-filter').addEventListener('change', function(eve
     filterRequests(selectedRegion);
 });
 
+// Add event listener to the item-filter dropdown
+document.getElementById('item-filter').addEventListener('change', function(event) {
+    var selectedValue = event.target.value;
+
+    if (selectedValue === 'cash') {
+        // Redirect to the cash route
+        window.location.href = "/user/donor/request-map/cash";
+    } else {
+        // Redirect to the default items route
+        window.location.href = "/user/donor/request-map/items";
+    }
+});
+
+// Function to filter requests based on region
 function filterRequests(region) {
-    var filteredRequests = donationRequests.filter(request => request.location.region === region);
-    addMarkers(filteredRequests);
+    var filteredDonationRequests = donationRequests.filter(request => request.location.region === region);
+    var filteredFundRequests = fundRequests.filter(request => request.location.region === region);
+
+    // Clear existing markers
+    markersLayer.clearLayers();
+
+    // Add filtered markers
+    addMarkers(filteredDonationRequests); // For in-kind donations
+    addMarkers(filteredFundRequests, true); // For cash donations
 }
 
+// Restore the selected region on page load
 window.addEventListener('load', function() {
     var savedRegion = localStorage.getItem('selectedRegion');
 
@@ -238,7 +274,6 @@ window.addEventListener('load', function() {
         phMap.setView(center, zoom); // Restore zoom
     }
 });
-
 
 
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Testimonial;
 use App\Models\Inquiry;
+use App\Models\Chapter;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -161,5 +162,11 @@ class DonorController extends Controller
         $userTestimonial = Testimonial::where('user_id', $user->id)->first();
 
         return view('users.donor.testimonial', compact('testimonials', 'userTestimonial'));
+    }
+
+    public function quickInKindForm()
+    {
+        $chapters = Chapter::all();
+        return view('users.donor.quick_InKind', compact('chapters'));
     }
 }
