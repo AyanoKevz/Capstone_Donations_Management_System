@@ -447,10 +447,6 @@ $('#file-input').change(function (event) {
         });
 
 
-
-
-
-
   if ($("#inKindForm").length > 0) {
     $("#inKindForm").validate({
         rules: {

@@ -417,7 +417,7 @@
                         <div class="p-3">
 
                             {{-- Donation Form --}}
-                            <form method="POST" action="{{ route('donation.store') }}" enctype="multipart/form-data">
+                            <form method="POST" action="{{ route('donation.store') }}" enctype="multipart/form-data" class="donation-form">
                                 @csrf
                                 <input type="hidden" name="donation_request_id" value="{{ $request->id }}">
                                 {{-- First Row: Cause | Donor Name --}}
@@ -433,9 +433,6 @@
                                         <label for="donor_name_{{ $request->id }}" class="form-label fw-bold">Your Name</label>
                                         <input type="text" class="form-control donor-name" id="donor_name_{{ $request->id }}"
                                             name="donor_name" value="{{ $donorFullName }}" data-original-name="{{ $donorFullName }}" required>
-
-                                        <!-- Hidden field to always send anonymous_checkbox (even if unchecked) -->
-                                        <input type="hidden" name="anonymous_checkbox" value="0">
 
                                         <div class="form-check mt-2">
                                             <input class="form-check-input anonymous-checkbox" type="checkbox"
@@ -548,7 +545,7 @@
 
                                 <!-- Submit Button -->
                                 <div class="text-center">
-                                    <button type="submit" class="btn btn-primary mt-3">Donate Now</button>
+                                    <button type="submit" class="btn btn-primary mt-3 donate-now-button" id="donateNowButton-{{ $request->id }}" style="display: none; background: #1b2a5f !important;">Donate</button>
                                 </div>
                             </form>
                         </div>
@@ -557,9 +554,6 @@
             </div>
         </div>
         @endforeach
-
-
-
 
 
         <!-- Main Footer -->
@@ -571,8 +565,8 @@
     <!-- ./wrapper -->
 
     <!-- jQuery -->
-    <script src="{{ asset('lib/jquery/jquery.min.js') }}">
-    </script>
+    <script src="{{ asset('lib/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('lib/jquery/jquery.validate.min.js') }}"></script>
     <!-- Bootstrap 5 -->
     <script src="{{ asset('lib/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <!-- Fontawesome 6 -->

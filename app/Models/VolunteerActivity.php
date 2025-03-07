@@ -16,21 +16,25 @@ class VolunteerActivity extends Model
         'task_description',
         'hours_worked',
         'event_id',
-        'distribution_id'
+        'distribution_id',
+        'status',
     ];
+
 
     public function volunteer()
     {
-        return $this->belongsTo(Volunteer::class);
+        return $this->belongsTo(Volunteer::class, 'volunteer_id');
     }
 
+    // Relationship with Event
     public function event()
     {
-        return $this->belongsTo(Event::class)->withDefault();
+        return $this->belongsTo(Event::class, 'event_id');
     }
 
+    // Relationship with Distribution
     public function distribution()
     {
-        return $this->belongsTo(Distribution::class)->withDefault();
+        return $this->belongsTo(Distribution::class, 'distribution_id');
     }
 }

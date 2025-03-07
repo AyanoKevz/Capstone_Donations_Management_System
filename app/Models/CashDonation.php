@@ -21,20 +21,25 @@ class CashDonation extends Model
         'payment_method',
         'proof_payment',
         'transaction_reference',
+        'transaction_id',
+        'payment_status',
         'status',
         'cause',
     ];
 
+    // Relationship with Donor
     public function donor()
     {
         return $this->belongsTo(Donor::class, 'donor_id');
     }
 
+    // Relationship with Chapter
     public function chapter()
     {
         return $this->belongsTo(Chapter::class, 'chapter_id');
     }
 
+    // Relationship with FundRequest
     public function fundRequest()
     {
         return $this->belongsTo(FundRequest::class, 'fund_request_id');

@@ -9,16 +9,23 @@ class Event extends Model
 {
     use HasFactory;
 
-    protected $table = 'event'; // Explicitly defining table name
+    protected $table = 'event';
 
     protected $fillable = [
         'event_name',
         'event_description',
-        'event_date'
+        'event_date',
+        'task_reference'
     ];
+
+    public function declinedTask()
+    {
+        return $this->belongsTo(VolunteerActivity::class, 'task_reference');
+    }
+
 
     public function volunteerActivities()
     {
-        return $this->hasMany(VolunteerActivity::class);
+        return $this->hasMany(VolunteerActivity::class, 'event_id');
     }
 }

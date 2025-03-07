@@ -743,8 +743,6 @@ input.is-invalid, select.is-invalid {
   position: static;
 }
 
-
-
 .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
   color: #ff1f1f;
 }

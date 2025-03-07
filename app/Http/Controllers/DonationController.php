@@ -204,6 +204,65 @@ class DonationController extends Controller
         ]);
     }
 
+    public function RequestMapInKindDonate(Request $request)
+    {
+        try {
+            $user = Auth::user();
+            $donor = $user->donor;
+
+            if (!$donor) {
+                return redirect()->back()->with('error', 'Donor profile not found.');
+            }
+            $proofImagePath = $request->file('proof_image')->store('proof_donation', 'public');
+
+            // Create the donation record
+            $donation = Donation::create([
+                'donor_id' => $donor->id,
+                'donor_name' => $request->has('anonymous_checkbox') && $request->anonymous_checkbox == 1 ? 'Anonymous' : "{$donor->first_name} {$donor->last_name}",
+                'chapter_id' => $request->chapter_id,
+                'donation_request_id' => $request->donation_request_id,
+                'cause' => $request->cause,
+                'donation_method' => $request->donation_method,
+                'pickup_address' => $request->donation_method === 'pickup' ? $request->pickup_address : null,
+                'donation_datetime' => $request->donation_datetime,
+                'proof_image' => $proofImagePath,
+                'tracking_number' => strtoupper(uniqid('TRK-')),
+            ]);
+
+            // Save the donation items
+            foreach ($request->quantity as $itemId => $quantity) {
+                $item = DonationRequestItem::find($itemId);
+
+                if ($item && $quantity > 0) {
+                    // Calculate the total donated quantity for this item
+                    $totalDonated = DonationItem::where('donation_request_id', $item->donation_request_id)
+                        ->where('item', $item->item)
+                        ->sum('quantity');
+
+                    // Calculate the remaining quantity needed
+                    $remainingQuantity = $item->quantity - $totalDonated;
+
+                    // Ensure the donated quantity does not exceed the remaining quantity
+                    if ($quantity > $remainingQuantity) {
+                        return redirect()->back()->with('error', "Cannot donate more than {$remainingQuantity} for {$item->item}.");
+                    }
+
+                    // Create the donation item
+                    DonationItem::create([
+                        'donation_id' => $donation->id,
+                        'donation_request_id' => $item->donation_request_id,
+                        'category' => $item->category,
+                        'item' => $item->item,
+                        'quantity' => $quantity,
+                    ]);
+                }
+            }
+
+            return redirect()->back()->with('success', 'Donation submitted successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Something went wrong. Please try again.');
+        }
+    }
 
     public function RequestMapCash(Request $request)
     {
@@ -261,20 +320,8 @@ class DonationController extends Controller
         ]);
     }
 
-
-    public function RequestMapInKindDonate(Request $request)
+    public function quickInKindDonate(Request $request)
     {
-        $request->validate([
-            'cause' => 'required|string',
-            'donation_method' => 'required|in:pickup,drop-off',
-            'donation_datetime' => 'required|date',
-            'chapter_id' => 'required|exists:chapter,id',
-            'proof_image' => 'nullable|image|mimes:jpeg,png,jpg|max:5120',
-            'quantity' => 'required|array',
-            'quantity.*' => 'required|integer|min:1',
-            'donation_request_id' => 'required|exists:donation_request,id',
-        ]);
-
         try {
             $user = Auth::user();
             $donor = $user->donor;
@@ -282,19 +329,13 @@ class DonationController extends Controller
             if (!$donor) {
                 return redirect()->back()->with('error', 'Donor profile not found.');
             }
-
-            // Store the proof image
-            $proofImagePath = null;
-            if ($request->hasFile('proof_image')) {
-                $proofImagePath = $request->file('proof_image')->store('proof_donation', 'public');
-            }
+            $proofImagePath = $request->file('proof_image')->store('proof_donation', 'public');
 
             // Create the donation record
             $donation = Donation::create([
                 'donor_id' => $donor->id,
-                'donor_name' => $request->has('anonymous_checkbox') ? 'Anonymous' : "{$donor->first_name} {$donor->last_name}",
+                'donor_name' => $request->has('anonymous_checkbox') && $request->anonymous_checkbox == 1 ? 'Anonymous' : "{$donor->first_name} {$donor->last_name}",
                 'chapter_id' => $request->chapter_id,
-                'donation_request_id' => $request->donation_request_id,
                 'cause' => $request->cause,
                 'donation_method' => $request->donation_method,
                 'pickup_address' => $request->donation_method === 'pickup' ? $request->pickup_address : null,
@@ -304,35 +345,23 @@ class DonationController extends Controller
             ]);
 
             // Save the donation items
-            foreach ($request->quantity as $itemId => $quantity) {
-                $item = DonationRequestItem::find($itemId);
+            if ($request->has('categories')) {
+                foreach ($request->categories as $index => $category) {
+                    $item = $request->items[$index];
+                    $quantity = $request->quantities[$index];
 
-                if ($item && $quantity > 0) {
-                    // Calculate the total donated quantity for this item
-                    $totalDonated = DonationItem::where('donation_request_id', $item->donation_request_id)
-                        ->where('item', $item->item)
-                        ->sum('quantity');
-
-                    // Calculate the remaining quantity needed
-                    $remainingQuantity = $item->quantity - $totalDonated;
-
-                    // Ensure the donated quantity does not exceed the remaining quantity
-                    if ($quantity > $remainingQuantity) {
-                        return redirect()->back()->with('error', "Cannot donate more than {$remainingQuantity} for {$item->item}.");
+                    if ($item && $quantity > 0) {
+                        DonationItem::create([
+                            'donation_id' => $donation->id,
+                            'category' => $category,
+                            'item' => $item,
+                            'quantity' => $quantity,
+                        ]);
                     }
-
-                    // Create the donation item
-                    DonationItem::create([
-                        'donation_id' => $donation->id,
-                        'donation_request_id' => $item->donation_request_id,
-                        'category' => $item->category,
-                        'item' => $item->item,
-                        'quantity' => $quantity,
-                    ]);
                 }
             }
 
-            return redirect()->back()->with('success', 'Donation submitted successfully.');
+            return redirect()->back()->with('success', 'Quick donation submitted successfully.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Something went wrong. Please try again.');
         }

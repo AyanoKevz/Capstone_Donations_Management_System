@@ -1170,7 +1170,6 @@ body:not(.layout-fixed) .main-sidebar .sidebar {
 
 }
 
-
 .alert-success {
   color: #fff;
   border-color: #539753;
@@ -1197,11 +1196,15 @@ body:not(.layout-fixed) .main-sidebar .sidebar {
 
 .error {
     color: red !important; 
-    font-size: 10px !important; 
+    font-size: 12px !important; 
     font-weight: 500; 
     margin: 0; 
     position: absolute; 
     top: 100%;
     width: 100%; 
     text-align: center;
+}
+
+[id$="-error"] {
+    position: static;
 }

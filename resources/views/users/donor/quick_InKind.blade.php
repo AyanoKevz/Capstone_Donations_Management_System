@@ -315,7 +315,7 @@
                 <div class="container-fluid py-3">
                     <div class="container mb-3">
                         <div class="title">Quick In-Kind Form</div>
-                        <form method="POST" action="#" enctype="multipart/form-data">
+                        <form method="POST" action="{{ route('quickInKindDonate') }}" enctype="multipart/form-data" id="quickInKindForm">
                             @csrf
                             <div class="user-details">
                                 <!-- Donor Name -->
@@ -324,8 +324,6 @@
                                     <input type="text" class="form-control donor-name" id="donor_name" name="donor_name"
                                         value="{{ $User->donor->first_name }} {{ $User->donor->last_name }}"
                                         data-original-name="{{ $User->donor->first_name }} {{ $User->donor->last_name }}" required>
-                                    <!-- Hidden input to ensure the checkbox value is always sent -->
-                                    <input type="hidden" name="anonymous_checkbox" value="0">
                                     <div class="form-check mt-2">
                                         <input class="form-check-input anonymous-checkbox" type="checkbox" id="anonymous_checkbox" name="anonymous_checkbox" value="1">
                                         <label class="form-check-label text-muted" for="anonymous_checkbox">
@@ -425,12 +423,10 @@
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
-
                             <!-- Submit Button -->
                             <div class="button">
-                                <input type="submit" value="Donate Now">
+                                <input type="submit" value="Donate Now" id="submitButton" style="display: none;">
                             </div>
                         </form>
                     </div>
@@ -451,6 +447,7 @@
 
     <!-- jQuery -->
     <script src="{{ asset('lib/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('lib/jquery/jquery.validate.min.js') }}"></script>
     <!-- Bootstrap 5 -->
     <script src="{{ asset('lib/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <!-- Fontawesome 6 -->

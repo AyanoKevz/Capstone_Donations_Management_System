@@ -1267,6 +1267,30 @@ body:not(.layout-fixed) .main-sidebar .sidebar {
   font-size: 22px;
 }
 
+.error {
+    color: red !important; 
+    font-size: 12px !important; 
+    font-weight: 500; 
+    margin: 0; 
+    position: absolute; 
+    top: 100%;
+    width: 100%; 
+    text-align: center;
+}
+
+input.is-valid, select.is-valid {
+    border: 1.5px solid #06b400 !important;
+}
+
+input.is-invalid, select.is-invalid {
+    border: 1.5px solid #ff0000 !important; 
+}
+
+#donor_name-error, #cause-error, #donation_datetime-error, #donation_method-error, 
+#chapter-error, #pickup_address-error, #categories\[\]-error, #items\[\]-error, 
+#quantities\[\]-error, .error.text-danger {
+  position: static;
+}
 
 .video-container {
     position: relative;

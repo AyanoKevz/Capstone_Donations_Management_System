@@ -145,6 +145,7 @@ Route::middleware(['auth', 'prevent-back-button'])->prefix('user')->group(functi
         Route::get('/contact', [DonorController::class, 'showContactForm'])->name('donor.contact_form');
         Route::view('quick/select-donations', 'users.donor.quick')->name('donor.quick_donation');
         Route::get('quick/In-Kind', [DonorController::class, 'quickInKindForm'])->name('quick.inKindForm');
+        Route::post('/quick-in-kind-donate', [DonationController::class, 'quickInKindDonate'])->name('quickInKindDonate');
         Route::get('/testimonial', [DonorController::class, 'showTestimonialForm'])->name('donor.testi_form');
         Route::get('/learn-about-causes', [DonorController::class, 'causes'])->name('donor.causes');
         Route::get('/request-map/items', [DonationController::class, 'RequestMapInKind'])->name('donor.request_map');

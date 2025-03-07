@@ -196,7 +196,9 @@
             const dataTransfer = new DataTransfer();
             dataTransfer.items.add(file);
             imageFileInput.files = dataTransfer.files;
-
+           if (typeof window.updateSubmitButton === 'function') {
+        window.updateSubmitButton();
+    }
             // Update the preview
             const img = document.createElement('img');
             img.src = imageData;

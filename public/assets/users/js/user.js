@@ -460,6 +460,7 @@ $(".anonymous-checkbox").on("change", function () {
     }
 });
 
+
     // Show/Hide Pickup Address Field based on method selection
     $(".donation-method").on("change", function () {
         let pickupDiv;
@@ -489,7 +490,7 @@ $(".anonymous-checkbox").on("change", function () {
         "Medical Supplies": ["Adhesive Tape", "Bandages and Gauze", "Alcohol/Disinfectants", "Masks (N95 or surgical)"]
     };
 
-    const assetBaseUrl = "/assets/img/"
+  const assetBaseUrl = "/assets/img/"
  const itemImages = {
         "Bottled Water": assetBaseUrl + "/r4.png",
         "Canned Goods": assetBaseUrl + "/r1.jpg",
@@ -556,8 +557,9 @@ function createItemEntry(isRemovable = true) {
     itemSelect.html('<option selected disabled>Select Item</option>');
 
     itemsByCategory[category].forEach(item => {
-      const disabled = selectedItems.has(item) ? "disabled" : "";
-      itemSelect.append(`<option value="${item}" ${disabled}>${item}</option>`);
+      if (!$(`.item-select option[value="${item}"]:selected`).length) {
+        itemSelect.append(`<option value="${item}">${item}</option>`);
+      }
     });
 
     itemSelect.prop("disabled", false);
@@ -570,22 +572,33 @@ function createItemEntry(isRemovable = true) {
     detailsDiv.removeClass("d-none");
     itemDiv.find(".item-image").attr("src", itemImages[selectedItem]);
 
-    selectedItems.add(selectedItem); // Add to selected items
-    updateItemOptions();
+    updateAvailableItems();
   });
 
   return itemDiv;
 }
 
 // Function to update all item dropdowns to disable already selected items
-function updateItemOptions() {
+function updateAvailableItems() {
+  let selectedItems = [];
   $(".item-select").each(function () {
-    const selectedValue = $(this).val();
-    $(this).find("option").each(function () {
-      if ($(this).val() && selectedItems.has($(this).val()) && $(this).val() !== selectedValue) {
-        $(this).prop("disabled", true);
-      } else {
-        $(this).prop("disabled", false);
+    let selectedValue = $(this).val();
+    if (selectedValue) {
+      selectedItems.push(selectedValue);
+    }
+  });
+
+  $(".item-select").each(function () {
+    let category = $(this).closest(".item-entry").find(".category-select").val();
+    if (!category) return;
+
+    let itemSelect = $(this);
+    let selectedValue = itemSelect.val();
+
+    itemSelect.html(`<option selected disabled>Select Item</option>`);
+    itemsByCategory[category].forEach(item => {
+      if (!selectedItems.includes(item) || item === selectedValue) {
+        itemSelect.append(`<option value="${item}" ${item === selectedValue ? "selected" : ""}>${item}</option>`);
       }
     });
   });
@@ -597,21 +610,122 @@ $("#requested-items").append(createItemEntry(false));
 // Add Item Button Click Event (inline per row)
 $("#requested-items").on("click", ".add-item", function () {
   $("#requested-items").append(createItemEntry(true));
-  updateItemOptions();
+  updateAvailableItems();
 });
 
 // Remove item when clicking "Remove"
 $("#requested-items").on("click", ".remove-item", function () {
-  const itemDiv = $(this).closest(".item-entry");
-  const removedItem = itemDiv.find(".item-select").val();
-
-  if (removedItem) {
-    selectedItems.delete(removedItem); // Remove from selected list
-  }
-
-  itemDiv.remove();
-  updateItemOptions(); // Re-enable removed item in other dropdowns
+  $(this).closest(".item-entry").remove();
+  updateAvailableItems();
 });
+
+
+if ($("#quickInKindForm").length > 0) {
+        $("#quickInKindForm").validate({
+            rules: {
+                donor_name: { required: true },
+                cause: { required: true },
+                donation_datetime: { required: true },
+                donation_method: { required: true },
+                chapter_id: { required: true },
+                pickup_address: {
+                    required: function () {
+                        return $("#donation_method").val() === "pickup";
+                    }
+                },
+                proof_image: { required: true },
+                "categories[]": { required: true },
+                "items[]": { required: true }
+            },
+            messages: {
+                donor_name: { required: "Please enter your name." },
+                cause: { required: "Please select a cause." },
+                donation_datetime: { required: "Please select the date and time of donation." },
+                donation_method: { required: "Please select a donation method." },
+                chapter_id: { required: "Please select a chapter." },
+                pickup_address: { required: "Pickup address is required when using pickup method." },
+                proof_image: { required: "Please upload proof of donation." },
+                "categories[]": { required: "Please select a category." },
+                "items[]": { required: "Please select an item." }
+            },
+            highlight: function (element) {
+                $(element).addClass("is-invalid").removeClass("is-valid");
+            },
+            unhighlight: function (element) {
+                $(element).removeClass("is-invalid").addClass("is-valid");
+                $(element).next(".error").remove();
+            },
+            errorPlacement: function (error, element) {
+                // Insert error message only if it doesn't already exist
+                if (!element.next(".error").length) {
+                    error.insertAfter(element);
+                }
+            },
+            onfocusout: function (element) {
+                $(element).valid(); // Trigger validation only when the user interacts with the input
+            },
+            submitHandler: function (form) {
+                let valid = true;
+
+                $(".item-entry").each(function () {
+                    const category = $(this).find(".category-select");
+                    const item = $(this).find(".item-select");
+
+                    // Remove existing error messages before adding new ones
+                    category.next(".error").remove();
+                    item.next(".error").remove();
+
+                    if (!category.val()) {
+                        category.addClass("is-invalid");
+                        category.after('<label class="error text-danger">Please select a category.</label>');
+                        valid = false;
+                    } else {
+                        category.removeClass("is-invalid").addClass("is-valid");
+                    }
+
+                    if (!item.val()) {
+                        item.addClass("is-invalid");
+                        item.after('<label class="error text-danger">Please select an item.</label>');
+                        valid = false;
+                    } else {
+                        item.removeClass("is-invalid").addClass("is-valid");
+                    }
+                });
+
+                if (valid) {
+                    form.submit();
+                }
+            }
+        });
+
+        // Show/hide pickup address based on donation method
+        $("#donation_method").change(function () {
+            if ($(this).val() === "pickup") {
+                $("#pickup_address_div").removeClass("d-none");
+            } else {
+                $("#pickup_address_div").addClass("d-none");
+                $("#pickup_address").val("");
+            }
+        });
+
+          const fileInput = $('#imageFile');
+    const submitButton = $('#submitButton');
+
+    // Function to update the button's visibility
+    function updateSubmitButtonVisibility() {
+        if (fileInput[0].files && fileInput[0].files.length > 0) {
+            // If a file is selected, show the button
+            submitButton.css('display', 'inline-block');
+        } else {
+            // If no file is selected, hide the button
+            submitButton.css('display', 'none');
+        }
+    }
+
+    fileInput.on('change', updateSubmitButtonVisibility);
+    window.updateSubmitButton = updateSubmitButtonVisibility;
+    updateSubmitButtonVisibility();
+    }
 
   
 /*  END WAG NA MAG DECLARE SA BABA NG JAVASCRIPT FILE */

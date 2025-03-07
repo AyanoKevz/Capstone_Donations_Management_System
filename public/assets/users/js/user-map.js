@@ -275,6 +275,94 @@ window.addEventListener('load', function() {
     }
 });
 
+    $(".donation-form").each(function () {
+        $(this).validate({
+            rules: {
+                donor_name: {
+                    required: true,
+                    minlength: 2
+                },
+                donation_method: {
+                    required: true
+                },
+                donation_datetime: {
+                    required: true
+                },
+                chapter_id: {
+                    required: true
+                },
+                pickup_address: {
+                    required: {
+                        depends: function (element) {
+                            return $(element).closest("form").find(".donation_method").val() === "pickup";
+                        }
+                    }
+                }
+            },
+            messages: {
+                donor_name: {
+                    required: "Please enter your name",
+                    minlength: "Your name must be at least 2 characters long"
+                },
+                donation_method: {
+                    required: "Please select a donation method"
+                },
+                donation_datetime: {
+                    required: "Please select a donation date and time"
+                },
+                chapter_id: {
+                    required: "Please select a chapter"
+                },
+                pickup_address: {
+                    required: "Please enter the pickup address"
+                }
+            },
+            highlight: function (element) {
+                $(element).addClass('is-invalid').removeClass('is-valid');
+            },
+            unhighlight: function (element) {
+                $(element).addClass('is-valid').removeClass('is-invalid');
+            },
+            errorPlacement: function (error, element) {
+                error.insertAfter(element);
+            },
+            submitHandler: function (form) {
+                form.submit();
+            }
+        });
+    });
+
+    // Handle pickup address visibility dynamically for each modal
+    $(document).on("change", ".donation_method", function () {
+        const form = $(this).closest("form");
+        const pickupAddressDiv = form.find(".pickup_address_div");
+        if ($(this).val() === "pickup") {
+            pickupAddressDiv.removeClass("d-none");
+        } else {
+            pickupAddressDiv.addClass("d-none");
+            form.find(".pickup_address").val(""); // Clear the pickup address field
+        }
+    });
+
+    // Function to show/hide submit button when file is selected
+    function updateSubmitButtonVisibility(modalId) {
+        const fileInput = $(`#imageFile-${modalId}`);
+        const submitButton = $(`#donateNowButton-${modalId}`);
+
+        if (fileInput[0].files && fileInput[0].files.length > 0) {
+            submitButton.css('display', 'inline-block');
+        } else {
+            submitButton.css('display', 'none');
+        }
+    }
+
+    // Monitor file input changes dynamically
+    $(document).on('change', '[id^="imageFile-"]', function () {
+        const modalId = this.id.split('-')[1]; // Extract modal ID
+        updateSubmitButtonVisibility(modalId);
+    });
+
+    window.updateSubmitButtonVisibility = updateSubmitButtonVisibility;
 
 
 function initializePhotoCapture(requestId) {
@@ -461,6 +549,9 @@ function initializePhotoCapture(requestId) {
         const dataTransfer = new DataTransfer();
         dataTransfer.items.add(file);
         imageFileInput.files = dataTransfer.files;
+        if (typeof window.updateSubmitButtonVisibility === 'function') {
+        window.updateSubmitButtonVisibility(requestId);
+        }
 
         const img = document.createElement('img');
         img.src = imageData;
@@ -485,11 +576,10 @@ function initializePhotoCapture(requestId) {
         return new File([u8arr], filename, { type: mime });
     }
 
-    // Initialize
     loadModels();
 }
 
-// Initialize photo capture for each modal
 donationRequests.forEach(request => {
     initializePhotoCapture(request.id);
 });
+

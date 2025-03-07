@@ -74,7 +74,7 @@
                 </form>
               </li>
               <li>
-                <a class="dropdown-item d-flex justify-content-center align-items-center" href="my_profile">My profile
+                <a class="dropdown-item d-flex justify-content-center align-items-center" href="{{route('admin.profile')}}">My profile
                   <i class="fas fa-user ms-2"></i>
                 </a>
               </li>
