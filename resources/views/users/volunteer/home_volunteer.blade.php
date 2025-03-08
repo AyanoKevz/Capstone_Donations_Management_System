@@ -16,6 +16,19 @@
     <link rel="stylesheet" href="{{ asset('lib/bootstrap/css/bootstrap.min.css') }}">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('assets/users/css/volunteer/home_volunteer.css') }}">
+
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar/index.global.min.js'></script>
+    <script>
+
+      document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+          initialView: 'dayGridMonth'
+        });
+        calendar.render();
+      });
+
+    </script>
 </head>
 
 <!-- Spinner Start -->
@@ -260,9 +273,7 @@
             <!-- Main content -->
             <div class="content">
                 <div class="container">
-                    <div class="row">
-
-                    </div>
+                <div id='calendar'></div>
 
                 </div>
 
