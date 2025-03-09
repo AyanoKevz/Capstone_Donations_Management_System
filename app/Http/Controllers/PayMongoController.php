@@ -1,0 +1,114 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use App\Models\CashDonation;
+use App\Services\PayMongoService;
+use Illuminate\Support\Str;
+
+class PayMongoController extends Controller
+{
+    public function createCheckout(Request $request)
+    {
+        $user = Auth::user();
+        $donor = $user->donor;
+
+        // Determine donor name based on anonymous checkbox
+        $donorName = ($request->has('anonymous_checkbox') && $request->anonymous_checkbox == 1)
+            ? 'Anonymous'
+            : "{$donor->first_name} {$donor->last_name}";
+
+        // Store donation details in session instead of inserting into DB
+        session([
+            'donation_data' => [
+                'donor_id' => $donor->id,
+                'donor_name' => $donorName, // Store the correct donor name
+                'chapter_id' => $request->chapter_id,
+                'fund_request_id' => $request->fund_request_id,
+                'cause' => $request->cause,
+                'amount' => $request->amount,
+                'donation_method' => 'online',
+                'payment_method' => $request->payment_method,
+            ]
+        ]);
+
+        // PayMongo API request
+        $response = Http::withHeaders([
+            'Authorization' => 'Basic ' . base64_encode(env('PAYMONGO_SECRET_KEY')),
+            'Content-Type' => 'application/json'
+        ])->post('https://api.paymongo.com/v1/checkout_sessions', [
+            'data' => [
+                'attributes' => [
+                    'billing' => [
+                        'email' => $user->email,
+                        'phone' => ltrim($donor->contact, '0'),
+                        'name' => $donorName, // Use the correct donor name
+                    ],
+                    'send_email_receipt' => true,
+                    'description' => "Donation for {$request->cause}",
+                    'line_items' => [
+                        [
+                            'currency' => 'PHP',
+                            'amount' => (int) ($request->amount * 100),
+                            'name' => "Donation for {$request->cause} at {$request->request_location}",
+                            'quantity' => 1
+                        ]
+                    ],
+                    'payment_method_types' => ['gcash', 'card', 'paymaya'],
+                    'success_url' => route('paymongoMap.success'),
+                    'cancel_url' => route('paymongoMap.cancel')
+                ]
+            ]
+        ]);
+
+        if ($response->successful()) {
+            $checkoutData = $response->json();
+            return redirect()->away($checkoutData['data']['attributes']['checkout_url']);
+        } else {
+            return back()->with('error', 'Failed to initiate PayMongo checkout.');
+        }
+    }
+
+    public function handleSuccess(Request $request)
+    {
+        $donationData = session('donation_data');
+
+        if (!$donationData) {
+            return redirect()->route('donor.reqCash_map')->with('error', 'No pending donation found.');
+        }
+
+        $transactionId = 'Pay-' . now()->format('Ymd-His') . '-' . strtoupper(Str::random(6));
+
+        // Insert data into the database only after successful payment
+        $donation = CashDonation::create([
+            'donor_id' => $donationData['donor_id'],
+            'donor_name' => $donationData['donor_name'],
+            'chapter_id' => $donationData['chapter_id'],
+            'fund_request_id' => $donationData['fund_request_id'],
+            'cause' => $donationData['cause'],
+            'amount' => $donationData['amount'],
+            'donation_method' => 'online',
+            'payment_method' => $donationData['payment_method'],
+            'payment_status' => 'completed', // Mark as completed
+            'status' => 'received', // Update status to "received"
+            'transaction_id' => $transactionId, // Use generated transaction ID
+        ]);
+
+        // Clear session after inserting
+        session()->forget('donation_data');
+
+        return redirect()->route('donor.reqCash_map')->with('success', 'Donation successful! Thank you for your support.');
+    }
+
+    public function handleCancel(Request $request)
+    {
+        // Clear session if payment is canceled
+        session()->forget('donation_data');
+
+        return redirect()->route('donor.reqCash_map')->with('error', 'Payment was canceled.');
+    }
+}

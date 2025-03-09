@@ -472,13 +472,10 @@
                                 </div>
                                 {{-- Chapter Selection --}}
                                 <div class="mb-3">
-                                    <label for="chapter" class="form-label fw-bold">Select Chapter</label>
-                                    <select class="form-select" id="chapter" name="chapter_id" required>
-                                        <option selected disabled>Select Chapter</option>
-                                        @foreach($chapters as $chapter)
-                                        <option value="{{ $chapter->id }}">{{ $chapter->chapter_name }}</option>
-                                        @endforeach
-                                    </select>
+                                    <label for="chapter" class="form-label fw-bold">Chapter</label>
+                                    <input type="text" class="form-control" id="chapter_display"
+                                        value="{{ $request->admin->chapter->chapter_name }}" readonly>
+                                    <input type="hidden" name="chapter_id" value="{{ $request->admin->chapter->id }}">
                                 </div>
 
                                 {{-- Items Requested --}}
