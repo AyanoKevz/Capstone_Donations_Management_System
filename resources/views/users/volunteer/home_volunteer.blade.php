@@ -271,15 +271,42 @@
             <!-- End content-header -->
 
             <!-- Main content -->
-            <div class="content">
+                <div class="content">
                 <div class="container">
-                <div id='calendar'></div>
 
+                        <!-- Cards Section -->
+                        <div class="row mb-5">
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Assigned Task:</h5>
+                                        <p class="card-text">Some content for the first card.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Total Events:</h5>
+                                        <p class="card-text">Some content for the second card.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Total hours</h5>
+                                        <p class="card-text">Some content for the third card.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Calendar Section -->
+                        <div id="calendar"></div>
+
+                    </div>
                 </div>
-
-            </div>
-
-        </div>
 
 
 

@@ -727,6 +727,27 @@ if ($("#quickInKindForm").length > 0) {
     updateSubmitButtonVisibility();
     }
 
+/*calendas*/
+document.addEventListener('DOMContentLoaded', function() {
+  var calendarEl = document.getElementById('calendar');
+  var calendar = new FullCalendar.Calendar(calendarEl, {
+      initialView: 'dayGridMonth',  // Default view is Month
+      headerToolbar: {
+          left: 'prev,next today',  // Navigation buttons (previous, next, today)
+          center: 'title',          // Title of the calendar
+          right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'  // Buttons to switch between Month, Week, Day, and List views
+      },
+      views: {
+          listWeek: {  // Configuration for the List view
+              buttonText: 'list'  // Button label for List view
+          }
+      }
+  });
+  calendar.render();
+});
+
+
+
   
 /*  END WAG NA MAG DECLARE SA BABA NG JAVASCRIPT FILE */
  
