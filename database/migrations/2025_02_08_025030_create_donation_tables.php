@@ -148,14 +148,13 @@ return new class extends Migration {
             ]);
             $table->decimal('amount', 10, 2);
             $table->enum('donation_method', ['online', 'drop-off']);
-            $table->enum('payment_method', ['bank_transfer', 'credit_card', 'paypal', 'gcash', 'cash'])->nullable();
-            $table->string('proof_payment')->nullable();
-            $table->string('transaction_reference', 100)->nullable();
-            $table->string('transaction_id')->nullable();
-            $table->enum('payment_status', ['pending', 'completed', 'failed'])->default('pending');
+            $table->enum('payment_method', ['credit_card', 'gcash', 'paymaya'])->nullable();
+            $table->string('transaction_id')->nullable(); // PayMongo transaction ID
+            $table->enum('payment_status', ['pending', 'completed', 'failed'])->nullable()->default('pending');
             $table->enum('status', ['pending', 'received', 'ongoing', 'distributed'])->default('pending');
             $table->timestamps();
         });
+
 
         Schema::create('distribution', function (Blueprint $table) {
             $table->id();

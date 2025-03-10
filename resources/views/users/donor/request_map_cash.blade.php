@@ -380,6 +380,14 @@
         <!-- /.content wrapper -->
 
         @foreach($fundRequests as $request)
+        @php
+        $location = $request->location; // Directly fetch location from fund request
+
+        if ($location) {
+        $formattedLocation = $location->region === "NCR" ? "{$location->full_address}, {$location->barangay}, {$location->city_municipality}, Metro Manila, Philippines"
+        : "{$location->full_address}, {$location->barangay}, {$location->city_municipality}, {$location->province}, {$location->region}, Philippines";
+        }
+        @endphp
         <div class="modal fade" id="donateNow-{{ $request->id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
             aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -391,9 +399,16 @@
                         <div class="p-3">
 
                             {{-- Donation Form --}}
-                            <form method="POST" action="#" enctype="multipart/form-data">
+                            <form id="donationForm-{{ $request->id }}"
+                                method="POST"
+                                action="{{ route('dropoffMap.donation') }}"
+                                class="cash-donation-form"
+                                data-online="{{ route('paymongoMap.checkout') }}"
+                                data-dropoff="{{ route('dropoffMap.donation') }}">
                                 @csrf
                                 <input type="hidden" name="fund_request_id" value="{{ $request->id }}">
+                                <input type="hidden" name="payment_method" id="selected_payment_method_{{ $request->id }}">
+                                <input type="hidden" name="request_location" value="{{$formattedLocation}}">
 
                                 {{-- First Row: Cause | Donor Name --}}
                                 <div class="row mb-3">
@@ -408,9 +423,6 @@
                                         <label for="donor_name_{{ $request->id }}" class="form-label fw-bold">Your Name</label>
                                         <input type="text" class="form-control donor-name" id="donor_name_{{ $request->id }}"
                                             name="donor_name" value="{{ $donorFullName }}" data-original-name="{{ $donorFullName }}" required>
-                                        <!-- Hidden field to always send anonymous_checkbox (even if unchecked) -->
-                                        <input type="hidden" name="anonymous_checkbox" value="0">
-
                                         <div class="form-check mt-2">
                                             <input class="form-check-input anonymous-checkbox" type="checkbox"
                                                 id="anonymous_checkbox_{{ $request->id }}" name="anonymous_checkbox" value="1">
@@ -419,48 +431,57 @@
                                             </label>
                                         </div>
                                     </div>
-
                                 </div>
 
-                                {{-- Second Row: Donation Amount | Payment Method --}}
+                                {{-- Second Row: Chapter | Donation Method --}}
+                                <div class="row mb-3">
+                                    <div class="col">
+                                        <label for="chapter" class="form-label fw-bold">Chapter</label>
+                                        <input type="text" class="form-control" id="chapter_display"
+                                            value="{{ $request->admin->chapter->chapter_name }}" readonly>
+                                        <input type="hidden" name="chapter_id" value="{{ $request->admin->chapter->id }}">
+                                    </div>
+
+                                    <div class="col">
+                                        <label for="donation_method_{{ $request->id }}" class="form-label fw-bold">Donation Method</label>
+                                        <select class="form-select donation-method_cash" id="donation_method_{{ $request->id }}" name="donation_method" required>
+                                            <option selected disabled>Select an option</option>
+                                            <option value="online">Online</option>
+                                            <option value="drop-off">Drop-off</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                {{-- Third Row: Payment Method (Only for Online Donations) --}}
+                                <div class="row mb-3 payment-method-row d-none" id="payment_method_row_{{ $request->id }}">
+                                    <div class="col">
+                                        <label for="payment_method_{{ $request->id }}" class="form-label fw-bold">Payment Method</label>
+                                        {{-- Payment Method Logos --}}
+                                        <div class="d-flex justify-content-center gap-3 mb-3">
+                                            <img src="{{ asset('assets/img/credit-card.jpg') }}" alt="Credit Card" class="payment-logo">
+                                            <img src="{{ asset('assets/img/gcashLogo.jpg') }}" alt="GCash" class="payment-logo">
+                                            <img src="{{ asset('assets/img/paymayaLogo.png') }}" alt="PayMaya" class="payment-logo">
+                                        </div>
+                                        <select class="form-select" id="payment_method_{{ $request->id }}" name="payment_method">
+                                            <option selected disabled>Select an option</option>
+                                            <option value="credit_card">Credit/Debit Card</option>
+                                            <option value="gcash">GCash</option>
+                                            <option value="paymaya">PayMaya</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                {{-- Fourth Row: Amount --}}
                                 <div class="row mb-3">
                                     <div class="col">
                                         <label for="amount_{{ $request->id }}" class="form-label fw-bold">Donation Amount</label>
                                         <input type="number" class="form-control" id="amount_{{ $request->id }}" name="amount" min="1" required>
                                     </div>
-                                    <div class="col">
-                                        <label for="payment_method_{{ $request->id }}" class="form-label fw-bold">Payment Method</label>
-                                        <select class="form-select" id="payment_method_{{ $request->id }}" name="payment_method" required>
-                                            <option selected disabled>Select an option</option>
-                                            <option value="gcash">GCash</option>
-                                            <option value="paymaya">PayMaya</option>
-                                            <option value="bank_transfer">Bank Transfer</option>
-                                            <option value="cash">Cash</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                {{-- Third Row: Proof of Payment --}}
-                                <div class="mb-3">
-                                    <label for="proof_payment_{{ $request->id }}" class="form-label fw-bold">Proof of Payment</label>
-                                    <input type="file" class="form-control" id="proof_payment_{{ $request->id }}" name="proof_payment" accept="image/*" required>
-                                    <small class="text-muted">Upload a screenshot or photo of your payment receipt.</small>
-                                </div>
-
-                                {{-- Chapter Selection --}}
-                                <div class="mb-3">
-                                    <label for="chapter" class="form-label fw-bold">Select Chapter</label>
-                                    <select class="form-select" id="chapter" name="chapter_id" required>
-                                        <option selected disabled>Select Chapter</option>
-                                        @foreach($chapters as $chapter)
-                                        <option value="{{ $chapter->id }}">{{ $chapter->chapter_name }}</option>
-                                        @endforeach
-                                    </select>
                                 </div>
 
                                 {{-- Submit Button --}}
                                 <div class="text-center">
-                                    <button type="submit" class="btn btn-primary mt-3">Donate Now</button>
+                                    <button type="submit" class="btn btn-primary mt-3">Proceed to Payment</button>
                                 </div>
                             </form>
                         </div>
@@ -480,8 +501,9 @@
     <!-- ./wrapper -->
 
     <!-- jQuery -->
-    <script src="{{ asset('lib/jquery/jquery.min.js') }}">
-    </script>
+    <script src="https://js.paymongo.com/v1"></script>
+    <script src="{{ asset('lib/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('lib/jquery/jquery.validate.min.js') }}"></script>
     <!-- Bootstrap 5 -->
     <script src="{{ asset('lib/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <!-- Fontawesome 6 -->
@@ -496,6 +518,7 @@
     </script>
 
     <!-- PH MAP JS -->
+
     <script src="{{ asset('assets/users/js/user-map.js') }}"></script>
 
 </body>

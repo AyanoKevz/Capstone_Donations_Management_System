@@ -727,6 +727,7 @@ if ($("#quickInKindForm").length > 0) {
     updateSubmitButtonVisibility();
     }
 
+<<<<<<< HEAD
 /*calendas*/
 document.addEventListener('DOMContentLoaded', function() {
   var calendarEl = document.getElementById('calendar');
@@ -746,6 +747,40 @@ document.addEventListener('DOMContentLoaded', function() {
   calendar.render();
 });
 
+=======
+
+$(".donation-method_cash").on("change", function () {
+    const modalMatch = this.id.match(/_(\d+)$/);
+    let form, paymentMethodRow;
+
+    if (modalMatch) {
+        // Handling Modal Form
+        const modalId = modalMatch[1];
+        form = $(`#donationForm-${modalId}`);
+        paymentMethodRow = $(`#payment_method_row_${modalId}`);
+    } else {
+        // Handling Single Form
+        form = $("#singleDonationForm");
+        paymentMethodRow = $("#payment_method_row");
+    }
+
+    // Get the correct routes from data attributes
+    const onlineRoute = form.attr("data-online");
+    const dropoffRoute = form.attr("data-dropoff");
+
+    if (this.value === "online") {
+        form.attr("action", onlineRoute);
+        paymentMethodRow.removeClass("d-none");
+    } else {
+        form.attr("action", dropoffRoute);
+        paymentMethodRow.addClass("d-none");
+    }
+});
+
+console.log($("#singleDonationForm").attr("data-online"));
+console.log($("#singleDonationForm").attr("data-dropoff"));
+
+>>>>>>> main
 
 
   

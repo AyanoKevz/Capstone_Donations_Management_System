@@ -275,6 +275,88 @@ window.addEventListener('load', function() {
     }
 });
 
+ $(".cash-donation-form").each(function () {
+        $(this).validate({
+            rules: {
+                donor_name: {
+                    required: true,
+                    minlength: 2
+                },
+                chapter_id: {
+                    required: true
+                },
+                donation_method: {
+                    required: true
+                },
+                payment_method: {
+                    required: function (element) {
+                        return $(element).closest("form").find(".donation-method").val() === "online";
+                    }
+                },
+                amount: {
+                    required: true,
+                    min: 1
+                }
+            },
+            messages: {
+                donor_name: {
+                    required: "Please enter your name",
+                    minlength: "Your name must be at least 2 characters long"
+                },
+                chapter_id: {
+                    required: "Please select a chapter"
+                },
+                donation_method: {
+                    required: "Please select a donation method"
+                },
+                payment_method: {
+                    required: "Please select a payment method for online donations"
+                },
+                amount: {
+                    required: "Please enter a donation amount",
+                    min: "Donation amount must be at least 1"
+                }
+            },
+            highlight: function (element) {
+                $(element).addClass("is-invalid").removeClass("is-valid");
+            },
+            unhighlight: function (element) {
+                $(element).removeClass("is-invalid").addClass("is-valid");
+            },
+            errorPlacement: function (error, element) {
+                error.insertAfter(element);
+            },
+            submitHandler: function (form) {
+                form.submit();
+            }
+        });
+    });
+
+    // Handle Anonymous Checkbox Logic
+    $(".anonymous-checkbox").on("change", function () {
+        let form = $(this).closest("form");
+        let donorNameInput = form.find(".donor-name");
+        
+        if ($(this).is(":checked")) {
+            donorNameInput.val("Anonymous").prop("readonly", true);
+        } else {
+            donorNameInput.val(donorNameInput.data("original-name")).prop("readonly", false);
+        }
+    });
+
+    // Show Payment Method dropdown when "Online" is selected
+    $(".donation-method").on("change", function () {
+        let form = $(this).closest("form");
+        let paymentRow = form.find(".payment-method-row");
+
+        if ($(this).val() === "online") {
+            paymentRow.removeClass("d-none");
+        } else {
+            paymentRow.addClass("d-none");
+            form.find("[name='payment_method']").val(""); // Reset selection
+        }
+    });
+
     $(".donation-form").each(function () {
         $(this).validate({
             rules: {
@@ -363,6 +445,8 @@ window.addEventListener('load', function() {
     });
 
     window.updateSubmitButtonVisibility = updateSubmitButtonVisibility;
+
+    
 
 
 function initializePhotoCapture(requestId) {

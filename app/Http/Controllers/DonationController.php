@@ -14,6 +14,7 @@ use App\Models\FundRequest;
 use App\Models\DonationRequestItem;
 use App\Models\Location;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 
 
 use Illuminate\Http\Request;
@@ -91,9 +92,9 @@ class DonationController extends Controller
     {
         // Validate only the proof media
         $validated = $request->validate([
-            'proof_photo_1' => 'nullable|file|mimes:jpeg,jpg,png|max:5120', // Optional
-            'proof_photo_2' => 'nullable|file|mimes:jpeg,jpg,png|max:5120', // Optional
-            'proof_video' => 'nullable|file|mimes:mp4,mov,avi|max:30720', // Optional
+            'proof_photo_1' => 'nullable|file|mimes:jpeg,jpg,png|max:5120',
+            'proof_photo_2' => 'nullable|file|mimes:jpeg,jpg,png|max:5120',
+            'proof_video' => 'nullable|file|mimes:mp4,mov,avi|max:30720',
         ]);
 
         try {
@@ -166,7 +167,7 @@ class DonationController extends Controller
             ->toArray();
 
         // Start with a base query for pending requests
-        $query = DonationRequest::with(['location', 'items'])
+        $query = DonationRequest::with(['location', 'items', 'admin.chapter'])
             ->where('status', 'Pending')
             ->whereNotIn('id', $pendingDonations); // Hide requests where the donor has a pending donation
 
@@ -199,8 +200,7 @@ class DonationController extends Controller
 
         return view('users.donor.request_map', [
             'donationRequests' => $donationRequests,
-            'regions' => $regionNames,
-            'chapters' => $chapters
+            'regions' => $regionNames
         ]);
     }
 
@@ -266,7 +266,7 @@ class DonationController extends Controller
 
     public function RequestMapCash(Request $request)
     {
-        // Fetch the list of regions from the PSGC API
+        // Fetch regions from the PSGC API
         $regions = Http::get('https://psgc.gitlab.io/api/regions')->json();
         $regionNames = collect($regions)->pluck('name')->unique()->values()->toArray();
 
@@ -285,9 +285,9 @@ class DonationController extends Controller
             ->toArray();
 
         // Start with a base query for fund requests
-        $query = FundRequest::with(['location', 'cashDonations'])
+        $query = FundRequest::with(['location', 'cashDonations', 'admin.chapter']) // Include the admin's chapter
             ->where('status', 'Pending')
-            ->whereNotIn('id', $pendingCashDonations); // Exclude requests where the donor has a pending cash donation
+            ->whereNotIn('id', $pendingCashDonations);
 
         // Apply filters
         if ($request->has('cause') && $request->cause !== 'General') {
@@ -311,13 +311,41 @@ class DonationController extends Controller
             $fundRequest->amount_raised = $fundRequest->cashDonations->sum('amount');
         });
 
-        $chapters = Chapter::all();
-
         return view('users.donor.request_map_cash', [
             'fundRequests' => $fundRequests,
             'regions' => $regionNames,
-            'chapters' => $chapters
         ]);
+    }
+
+
+    public function MapDropOffDonateCash(Request $request)
+    {
+        $user = Auth::user();
+        $donor = $user->donor;
+
+        if (!$donor) {
+            return back()->with('error', 'Donor profile not found.');
+        }
+
+        // Generate a transaction ID for tracking
+        $transactionId = 'DropOff-' . now()->format('Ymd-His') . '-' . strtoupper(Str::random(6));
+
+        // Insert drop-off donation into the database
+        $donation = CashDonation::create([
+            'donor_id' => $donor->id,
+            'donor_name' => $request->has('anonymous_checkbox') && $request->anonymous_checkbox == 1 ? 'Anonymous' : "{$donor->first_name} {$donor->last_name}",
+            'chapter_id' => $request->chapter_id,
+            'fund_request_id' => $request->fund_request_id,
+            'cause' => $request->cause,
+            'amount' => $request->amount,
+            'donation_method' => 'drop-off',
+            'payment_method' => null,
+            'payment_status' => null,
+            'status' => 'pending',
+            'transaction_id' => $transactionId,
+        ]);
+
+        return redirect()->route('donor.reqCash_map')->with('success', 'Donation successful! Thank you for your support.');
     }
 
     public function quickInKindDonate(Request $request)

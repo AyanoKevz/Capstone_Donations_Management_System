@@ -11,6 +11,7 @@ use App\Http\Controllers\DonorController;
 use App\Http\Controllers\userLoginController;
 use App\Http\Controllers\VolunteerController;
 use App\Http\Controllers\user_profileController;
+use App\Http\Controllers\PayMongoController;
 
 
 //  HOMEPAGE ROUTES:
@@ -151,6 +152,10 @@ Route::middleware(['auth', 'prevent-back-button'])->prefix('user')->group(functi
         Route::get('/request-map/items', [DonationController::class, 'RequestMapInKind'])->name('donor.request_map');
         Route::post('/request-map/donate', [DonationController::class, 'RequestMapInKindDonate'])->name('donation.store');
         Route::get('/request-map/cash', [DonationController::class, 'RequestMapCash'])->name('donor.reqCash_map');
+        Route::post('/donate/paymongo', [PayMongoController::class, 'createCheckout'])->name('paymongoMap.checkout');
+        Route::get('/donate/paymongo/success', [PayMongoController::class, 'handleSuccess'])->name('paymongoMap.success');
+        Route::get('/donate/paymongo/cancel', [PayMongoController::class, 'handleCancel'])->name('paymongoMap.cancel');
+        Route::post('/dropoff-donation', [DonationController::class, 'MapDropOffDonateCash'])->name('dropoffMap.donation');
     });
 
 
