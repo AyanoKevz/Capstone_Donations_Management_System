@@ -76,10 +76,13 @@
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                         <li>
-                            <a class="dropdown-item d-flex justify-content-center align-items-center"
-                                href="logout.php">Logout
-                                <i class="fas fa-right-from-bracket ms-2"></i>
-                            </a>
+                            <form action="{{ route('user.logout') }}" method="POST" id="logout-form">
+                                @csrf
+                                <button type="submit" class="dropdown-item d-flex justify-content-center align-items-center">
+                                    Logout
+                                    <i class="fas fa-right-from-bracket ms-2"></i>
+                                </button>
+                            </form>
                         </li>
                         <li>
                             <a class="dropdown-item d-flex justify-content-center align-items-center"
@@ -486,7 +489,7 @@
                                     $remainingQuantity = $item->quantity - $totalDonated;
                                     @endphp
 
-                                    @if($remainingQuantity > 0)
+                                    @if($request->status ==='Pending' && $remainingQuantity > 0)
                                     <div class="item">
                                         <!-- Item Image -->
                                         <img src="{{ asset('assets/img/' . $itemImages[$item->item]) }}"
@@ -501,13 +504,16 @@
                                         </div>
 
                                         <!-- Quantity Input -->
-                                        <div class="quantity">
+                                        <div class="quantity d-flex flex-column">
                                             <input type="number" class="form-control quantity-input"
                                                 name="quantity[{{ $item->id }}]"
                                                 min="1"
                                                 max="{{ $remainingQuantity }}"
                                                 value="1"
                                                 placeholder="Quantity">
+                                            <small class="text-muted text-center">
+                                                Max donation: {{ $remainingQuantity }}
+                                            </small>
                                         </div>
                                     </div>
                                     @endif

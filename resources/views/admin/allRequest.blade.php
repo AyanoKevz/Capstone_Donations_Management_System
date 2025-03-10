@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Admin | Inquiries</title>
+  <title>Admin | All Request</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -15,7 +15,8 @@
     href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <link rel="icon" href="{{ asset ('assets/img/systemLogo.png') }}" type="image/png">
   <link rel="stylesheet" href="{{ asset('lib/bootstrap/css/bootstrap.min.css') }}">
-  <link rel="stylesheet" href="{{ asset ('assets/admin/css/inquiries.css') }}">
+  <link rel="stylesheet" href="{{ asset('lib/datatables/datatables.min.css') }}">
+  <link rel="stylesheet" href="{{ asset ('assets/admin/css/list.css') }}">
 
 </head>
 
@@ -139,7 +140,7 @@
             </div>
 
             <!-- Manage Users -->
-            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#manage-users"
+            <a class="nav-link collapsed active" href="#" data-bs-toggle="collapse" data-bs-target="#manage-users"
               aria-expanded="false" aria-controls="manage-users" title="Manage Users">
               <div class="sb-nav-link-icon">
                 <i class="fas fa-users"></i>
@@ -151,9 +152,9 @@
             </a>
             <div class="collapse" id="manage-users" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
               <nav class="sb-sidenav-menu-nested nav">
-                <a class="nav-link" href="{{ route('admin.donorList') }}" title="Donors">
+                <a class="nav-link active" href="{{ route('admin.donorList') }}" title="Donors">
                   <div class="sb-nav-link-icon">
-                    <i class="far fa-circle nav-icon"></i>
+                    <i class="fas fa-circle-arrow-right nav-icon"></i>
                   </div>
                   <span>Donors</span>
                 </a>
@@ -245,7 +246,7 @@
             </a>
 
             <!-- Inquiries -->
-            <a class="nav-link active" href="{{ route('admin.inquiries') }}" title="Inquiries">
+            <a class="nav-link" href="{{ route('admin.inquiries') }}" title="Inquiries">
               <div class="sb-nav-link-icon">
                 <i class="fas fa-envelope"></i>
               </div>
@@ -283,7 +284,7 @@
         </div>
         @endif
         @if(session('error'))
-        <div id="alert-error" class="alert alert-error" style=" position: absolute; right: 10px; top: 40px;">
+        <div id="alert-error" class="alert alert-danger" style=" position: absolute; right: 10px; top: 40px;">
           <i class=" fa-solid fa-circle-xmark fa-xl me-3"></i>{{ session('error') }}
         </div>
         @endif
@@ -291,82 +292,96 @@
           <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item active"></li>
           </ol>
-          <h1 class="my-2">Inquiries Inbox</h1>
-          <!-- /. CONTENT -->
-          <section class="content mb-2">
-            <div class="container-fluid ps-0">
-              <div class="card card-primary card-outline">
-                <div class="card-header">
-                  <h3 class="card-title">Inbox</h3>
-                </div>
-                <div class="card-body p-0">
-                  <form method="POST" action="{{ route('inquiries.delete') }}">
-                    @csrf
-                    <div class="mailbox-controls d-flex justify-content-between align-items-center border-bottom border-secondary-subtle border-2">
-                      <div>
-                        <button type="button" class="btn email-btn btn-sm checkbox-toggle" title="Check All">
-                          <i class="far fa-square"></i>
-                        </button>
-                        <button type="submit" class="btn email-btn btn-sm" title="Delete">
-                          <i class="far fa-trash-alt"></i>
-                        </button>
-                      </div>
-                      <div>
-                        <a href="{{ route('admin.inquiries', ['status' => 'all']) }}"
-                          class="btn email-btn btn-sm {{ $status === 'all' ? 'custom-active' : '' }}">
-                          All
-                        </a>
-                        <a href="{{ route('admin.inquiries', ['status' => 'unread']) }}"
-                          class="btn email-btn btn-sm {{ $status === 'unread' ? 'custom-active' : '' }}">
-                          Unread
-                        </a>
-                        <a href="{{ route('admin.inquiries', ['status' => 'read']) }}"
-                          class="btn email-btn btn-sm {{ $status === 'read' ? 'custom-active' : '' }}">
-                          Read
-                        </a>
-                      </div>
-                    </div>
-                    <div class="table-responsive mailbox-messages">
-                      <table class="table table-hover table-striped">
-                        <tbody>
-                          @forelse($inquiries as $inquiry)
-                          <tr>
-                            <td>
-                              <div class="icheck-primary">
-                                <input type="checkbox" name="selected[]" value="{{ $inquiry->id }}" id="check{{ $inquiry->id }}">
-                                <label for="check{{ $inquiry->id }}"></label>
-                              </div>
-                            </td>
-                            <td class="mailbox-name">
-                              <a href="{{ route('inquiries.read', $inquiry->id) }}" class="{{ $inquiry->status === 'unread' ? 'fw-bold' : 'text-secondary' }}">{{ $inquiry->name }}</a>
-                            </td>
-                            <td class="mailbox-subject {{ $inquiry->status === 'unread' ? 'fw-bold' : 'text-secondary' }}">{{ $inquiry->subject }}</td>
-                            <td class="mailbox-date">{{ $inquiry->submitted_at->format('d M Y h:i A') }}</td>
-                            <td class="{{ $inquiry->status === 'unread' ? 'fw-bold' : 'text-secondary' }}">
-                              {{ ucfirst($inquiry->status) }}
-                            </td>
-                          </tr>
-                          @empty
-                          <tr>
-                            <td colspan="6" class="text-center">No inquiries available for {{ ucfirst($status ?? 'All') }}.</td>
-                          </tr>
-                          @endforelse
-                        </tbody>
-                      </table>
-                    </div>
-                  </form>
-                </div>
-                <div class="card-footer px-2">
-                  <div class="mailbox-controls d-flex justify-content-between align-items-center">
-                    Total Inquiries: {{ $total }}
-                    <div class="mt-2"> {{ $inquiries->links() }}</div>
-                  </div>
-                </div>
-              </div>
+          <h1 class="my-2">Our Donors</h1>
+          <div class="d-flex justify-content-end mb-1">
+            <a href="{{ route('admin.requestList', ['type' => 'all']) }}"
+              class="btn table-btn btn-sm {{ $filter === 'all' ? 'custom-active' : '' }}">
+              All
+            </a>
+            <a href="{{ route('admin.requestList', ['type' => 'cash']) }}"
+              class="btn table-btn btn-sm {{ $filter === 'cash' ? 'custom-active' : '' }}">
+              Cash
+            </a>
+            <a href="{{ route('admin.requestList', ['type' => 'in-kind']) }}"
+              class="btn table-btn btn-sm {{ $filter === 'in-kind' ? 'custom-active' : '' }}">
+              In-Kind
+            </a>
+          </div>
+          <div class="card card-primary card-outline">
+            <div class="card-header">
+              <h3 class="card-title">Currently Active Donor</h3>
             </div>
-          </section>
+            <div class="card-body">
+              <table id="example1" class="table table-bordered table-hover table-striped">
+                <thead>
+                  <tr>
+                    <th>Cause</th>
+                    <th>Location</th>
+                    <th>Urgency</th>
+                    <th>Type</th> <!-- Cash / In-Kind -->
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @forelse($fundRequests as $fundRequest)
+                  <tr>
+                    <td>{{ $fundRequest->cause }}</td>
+                    <td>
+                      @php
+                      $location = $fundRequest->location;
+                      $formattedLocation = $location->region === "NCR"
+                      ? "{$location->barangay}, {$location->city_municipality}, Metro Manila, Philippines"
+                      : "{$location->barangay}, {$location->city_municipality}, {$location->province}, {$location->region}, Philippines";
+                      @endphp
+                      {{ $formattedLocation }}
+                    </td>
+                    <td>{{ $fundRequest->urgency }}</td>
+                    <td><span class="badge bg-primary">Cash</span></td>
+                    <td>
+                      <a href="{{ route('view_details', $fundRequest->id) }}" class="btn btn-success btn-sm">View</a>
+                    </td>
+                  </tr>
+                  @empty
+                  @if ($filter === 'cash')
+                  <tr>
+                    <td colspan="5" class="text-center">No Cash Requests Available</td>
+                  </tr>
+                  @endif
+                  @endforelse
+
+                  @forelse($donationRequests as $donationRequest)
+                  <tr>
+                    <td>{{ $donationRequest->cause }}</td>
+                    <td>
+                      @php
+                      $location = $donationRequest->location;
+                      $formattedLocation = $location->region === "NCR"
+                      ? "{$location->barangay}, {$location->city_municipality}, Metro Manila, Philippines"
+                      : "{$location->barangay}, {$location->city_municipality}, {$location->province}, {$location->region}, Philippines";
+                      @endphp
+                      {{ $formattedLocation }}
+                    </td>
+                    <td>{{ $donationRequest->urgency }}</td>
+                    <td><span class="badge bg-warning">In-Kind</span></td>
+                    <td>
+                      <a href="{{ route('view_details', $donationRequest->id) }}" class="btn btn-success btn-sm">View</a>
+                    </td>
+                  </tr>
+                  @empty
+                  @if ($filter === 'in-kind')
+                  <tr>
+                    <td colspan="5" class="text-center">No In-Kind Requests Available</td>
+                  </tr>
+                  @endif
+                  @endforelse
+                </tbody>
+              </table>
+
+            </div>
+          </div>
         </div>
       </main>
+
       <footer class="py-3 bg-dark mt-3">
         <div class="container-fluid ps-4">
           <div class="d-flex align-items-center justify-content-between">
@@ -381,6 +396,7 @@
   <script src="{{ asset('lib/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
   <script src="{{ asset('lib/fontawesome/all.js') }}"></script>
   <script src="{{ asset('lib/jquery/jquery.min.js') }}"></script>
+  <script src="{{ asset('lib/datatables/datatables.min.js') }}"></script>
   <script src="{{ asset('assets/admin/js/admin.js') }}"></script>
 
   <script>

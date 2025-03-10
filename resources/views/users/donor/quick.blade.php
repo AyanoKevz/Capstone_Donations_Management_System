@@ -309,12 +309,12 @@
                                     <p class="quick__title">Support with Cash</p>
                                     <p class="quick__description">Your cash donation helps us provide immediate assistance to those in need. Every contribution makes a difference in improving lives and creating lasting change.</p>
                                     <div class="d-flex justify-content-end my-4">
-                                        <a class="quick__button" href="#">Donate Now</a>
+                                        <a class="quick__button" href="{{ route('quick.cashForm') }}">Donate Now</a>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="quick">
+                            <div class=" quick">
                                 <img src="{{ asset('assets/img/quick-item.png') }}" alt="In-Kind Items" class="quick__image">
                                 <div class="quick__content">
                                     <p class="quick__title">Donate In-Kind Items</p>

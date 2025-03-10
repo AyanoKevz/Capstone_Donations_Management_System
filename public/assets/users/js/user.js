@@ -620,6 +620,68 @@ $("#requested-items").on("click", ".remove-item", function () {
 });
 
 
+  if($("#quickCashForm").length > 0) {
+   $("#quickCashForm").each(function() {
+        $(this).validate({
+            rules: {
+                donor_name: {
+                    required: true,
+                    minlength: 2
+                },
+                chapter_id: {
+                    required: true
+                },
+                donation_method: {
+                    required: true
+                },
+                payment_method: {
+                    required: {
+                        depends: function(element) {
+                            return $(element).closest("form").find(".donation-method_cash").val() === "online";
+                        }
+                    }
+                },
+                amount: {
+                    required: true,
+                    min: 1
+                }
+            },
+            messages: {
+                donor_name: {
+                    required: "Please enter your name",
+                    minlength: "Your name must be at least 2 characters long"
+                },
+                chapter_id: {
+                    required: "Please select a chapter"
+                },
+                donation_method: {
+                    required: "Please select a donation method"
+                },
+                payment_method: {
+                    required: "Please select a payment method for online donations"
+                },
+                amount: {
+                    required: "Please enter a donation amount",
+                    min: "Donation amount must be at least 1"
+                }
+            },
+            highlight: function(element) {
+                $(element).addClass("is-invalid").removeClass("is-valid");
+            },
+            unhighlight: function(element) {
+                $(element).removeClass("is-invalid").addClass("is-valid");
+            },
+            errorPlacement: function(error, element) {
+                error.insertAfter(element);
+            },
+            submitHandler: function(form) {
+                form.submit();
+            }
+        });
+    });
+  }
+
+
 if ($("#quickInKindForm").length > 0) {
         $("#quickInKindForm").validate({
             rules: {
@@ -727,6 +789,7 @@ if ($("#quickInKindForm").length > 0) {
     updateSubmitButtonVisibility();
     }
 
+<<<<<<< HEAD
 
 $(".donation-method_cash").on("change", function () {
     const modalMatch = this.id.match(/_(\d+)$/);
@@ -759,6 +822,10 @@ $(".donation-method_cash").on("change", function () {
 console.log($("#singleDonationForm").attr("data-online"));
 console.log($("#singleDonationForm").attr("data-dropoff"));
 
+=======
+<<<<<<< HEAD
+/*calendas*/
+>>>>>>> e77da8b3f3f512b82069ca0e041b98897e17dbca
 document.addEventListener('DOMContentLoaded', function() {
   var calendarEl = document.getElementById('calendar');
   var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -777,7 +844,35 @@ document.addEventListener('DOMContentLoaded', function() {
   calendar.render();
 });
 
+<<<<<<< HEAD
+=======
 
+>>>>>>> e77da8b3f3f512b82069ca0e041b98897e17dbca
+
+=======
+
+$(".donation-method_cash").on("change", function () {
+    const modalMatch = this.id.match(/_(\d+)$/);
+    let form, paymentMethodRow;
+
+    if (modalMatch) {
+        // Handling Modal Form
+        const modalId = modalMatch[1];
+        form = $(`#donationForm-${modalId}`);
+        paymentMethodRow = $(`#payment_method_row_${modalId}`);
+    } else {
+        // Handling Single Form
+        form = $("#quickCashForm");
+        paymentMethodRow = $("#payment_method_row");
+    }
+
+    // Get the correct routes from data attributes
+    const isOnline = this.value === "online";
+    form.attr("action", isOnline ? form.attr("data-online") : form.attr("data-dropoff"));
+    paymentMethodRow.toggleClass("d-none", !isOnline);
+});
+
+>>>>>>> de5741419d467089be1302b93ad00d04637958c2
   
 /*  END WAG NA MAG DECLARE SA BABA NG JAVASCRIPT FILE */
  

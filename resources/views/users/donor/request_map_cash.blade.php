@@ -76,10 +76,13 @@
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                         <li>
-                            <a class="dropdown-item d-flex justify-content-center align-items-center"
-                                href="logout.php">Logout
-                                <i class="fas fa-right-from-bracket ms-2"></i>
-                            </a>
+                            <form action="{{ route('user.logout') }}" method="POST" id="logout-form">
+                                @csrf
+                                <button type="submit" class="dropdown-item d-flex justify-content-center align-items-center">
+                                    Logout
+                                    <i class="fas fa-right-from-bracket ms-2"></i>
+                                </button>
+                            </form>
                         </li>
                         <li>
                             <a class="dropdown-item d-flex justify-content-center align-items-center"
@@ -384,8 +387,8 @@
         $location = $request->location; // Directly fetch location from fund request
 
         if ($location) {
-        $formattedLocation = $location->region === "NCR" ? "{$location->full_address}, {$location->barangay}, {$location->city_municipality}, Metro Manila, Philippines"
-        : "{$location->full_address}, {$location->barangay}, {$location->city_municipality}, {$location->province}, {$location->region}, Philippines";
+        $formattedLocation = $location->region === "NCR" ? "{$location->full_address} {$location->barangay}, {$location->city_municipality}, Metro Manila, Philippines"
+        : "{$location->full_address} {$location->barangay}, {$location->city_municipality}, {$location->province}, {$location->region}, Philippines";
         }
         @endphp
         <div class="modal fade" id="donateNow-{{ $request->id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -473,9 +476,16 @@
 
                                 {{-- Fourth Row: Amount --}}
                                 <div class="row mb-3">
-                                    <div class="col">
+                                    <div class="col d-flex flex-column">
                                         <label for="amount_{{ $request->id }}" class="form-label fw-bold">Donation Amount</label>
-                                        <input type="number" class="form-control" id="amount_{{ $request->id }}" name="amount" min="1" required>
+                                        <input type="number" class="form-control"
+                                            id="amount_{{ $request->id }}"
+                                            name="amount"
+                                            max="{{ $request->remaining_amount}}"
+                                            required>
+                                        <small class="text-muted text-center">
+                                            Max donation: ₱{{ number_format($request->remaining_amount, 2) }}
+                                        </small>
                                     </div>
                                 </div>
 

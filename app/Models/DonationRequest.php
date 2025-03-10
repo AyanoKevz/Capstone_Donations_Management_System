@@ -47,4 +47,28 @@ class DonationRequest extends Model
     {
         return $this->hasMany(DonationItem::class, 'donation_request_id');
     }
+
+    public function checkIfFulfilled()
+    {
+        // Get all requested items
+        $allItems = $this->items;
+
+        foreach ($allItems as $item) {
+            $donatedQuantity = DonationItem::where('donation_request_id', $this->id)
+                ->where('item', $item->item)
+                ->whereHas('donation', function ($q) {
+                    $q->where('status', '!=', 'pending');
+                })
+                ->sum('quantity');
+
+            if ($donatedQuantity < $item->quantity) {
+                return false;
+            }
+        }
+
+        // If all items are fulfilled, update status
+        $this->status = 'Fulfilled';
+        $this->save();
+        return true;
+    }
 }
