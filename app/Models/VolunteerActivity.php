@@ -12,13 +12,6 @@ class VolunteerActivity extends Model
     protected $table = 'volunteer_activity';
 
     protected $fillable = [
-<<<<<<< HEAD
-        'task_description',
-        'hours_worked',
-        'created_at',
-        'updated_at',
-    ];
-=======
         'volunteer_id',
         'task_description',
         'hours_worked',
@@ -44,5 +37,4 @@ class VolunteerActivity extends Model
     {
         return $this->belongsTo(Distribution::class, 'distribution_id');
     }
->>>>>>> main
 }

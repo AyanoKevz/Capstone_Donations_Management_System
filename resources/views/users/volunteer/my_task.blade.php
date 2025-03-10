@@ -272,6 +272,7 @@
                 <th>Hours Worked</th>
                 <th>Created At</th>
                 <th>Updated At</th>
+                <th>Status</th>
             </tr>
         </thead>
         <tbody>
@@ -281,6 +282,7 @@
                     <td>{{ $task->hours_worked }}</td>
                     <td>{{ $task->created_at }}</td>
                     <td>{{ $task->updated_at }}</td>
+                    <td>{{ $task->status}}</td>
                 </tr>
             @empty
                 <tr>
