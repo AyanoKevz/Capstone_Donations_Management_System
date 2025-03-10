@@ -727,27 +727,6 @@ if ($("#quickInKindForm").length > 0) {
     updateSubmitButtonVisibility();
     }
 
-<<<<<<< HEAD
-/*calendas*/
-document.addEventListener('DOMContentLoaded', function() {
-  var calendarEl = document.getElementById('calendar');
-  var calendar = new FullCalendar.Calendar(calendarEl, {
-      initialView: 'dayGridMonth',  // Default view is Month
-      headerToolbar: {
-          left: 'prev,next today',  // Navigation buttons (previous, next, today)
-          center: 'title',          // Title of the calendar
-          right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'  // Buttons to switch between Month, Week, Day, and List views
-      },
-      views: {
-          listWeek: {  // Configuration for the List view
-              buttonText: 'list'  // Button label for List view
-          }
-      }
-  });
-  calendar.render();
-});
-
-=======
 
 $(".donation-method_cash").on("change", function () {
     const modalMatch = this.id.match(/_(\d+)$/);
@@ -780,7 +759,23 @@ $(".donation-method_cash").on("change", function () {
 console.log($("#singleDonationForm").attr("data-online"));
 console.log($("#singleDonationForm").attr("data-dropoff"));
 
->>>>>>> main
+document.addEventListener('DOMContentLoaded', function() {
+  var calendarEl = document.getElementById('calendar');
+  var calendar = new FullCalendar.Calendar(calendarEl, {
+      initialView: 'dayGridMonth',  // Default view is Month
+      headerToolbar: {
+          left: 'prev,next today',  // Navigation buttons (previous, next, today)
+          center: 'title',          // Title of the calendar
+          right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'  // Buttons to switch between Month, Week, Day, and List views
+      },
+      views: {
+          listWeek: {  // Configuration for the List view
+              buttonText: 'list'  // Button label for List view
+          }
+      }
+  });
+  calendar.render();
+});
 
 
   
