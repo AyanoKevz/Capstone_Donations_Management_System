@@ -1278,6 +1278,7 @@ body:not(.layout-fixed) .main-sidebar .sidebar {
     background-color: #f9f9f9; /* Light background for the content area */
     padding: 30px 0; /* Add padding around the content */
     margin-bottom: 40px;
+    margin-top: 20px;
 }
 
 .container {
