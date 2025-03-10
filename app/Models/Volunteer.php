@@ -43,4 +43,9 @@ class Volunteer extends Model
     {
         return $this->hasMany(Appointment::class, 'volunteer_id');
     }
+
+    public function volunteerActivities()
+    {
+        return $this->hasMany(VolunteerActivity::class);
+    }
 }

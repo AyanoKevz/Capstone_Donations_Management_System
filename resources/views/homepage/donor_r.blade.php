@@ -589,6 +589,7 @@
     <script src="{{ asset('lib/jquery/jquery.validate.min.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js"></script>
     <script src="{{ asset('assets/homepage/js/main.js') }}"></script>
+    <script src="{{ asset('assets/users/js/faceapi.js') }}"></script>
 </body>
 
 </html>

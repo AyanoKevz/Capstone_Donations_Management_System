@@ -15,7 +15,8 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="{{ asset('lib/bootstrap/css/bootstrap.min.css') }}">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{ asset('assets/users/css/donor/quick.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/users/css/donor/quick_InKind.css') }}">
+    <script src="{{ asset('lib/face-api.js/dist/face-api.min.js') }}"></script>
 </head>
 
 <!-- Spinner Start -->
@@ -173,7 +174,7 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link active">
+                                    <a href="{{route ('donor.quick_donation') }}" class="nav-link active">
                                         <i class="fas fa-circle-arrow-right nav-icon"></i>
                                         <p>Quick Donation</p>
                                     </a>
@@ -285,13 +286,26 @@
                                 <li class="breadcrumb-item">
                                     <a href="{{ route('donor.home') }}">Home</a>
                                 </li>
-                                <li class="breadcrumb-item active">
+                                <li class="breadcrumb-item ">
                                     Quick Donation
+                                </li>
+                                <li class="breadcrumb-item active">
+                                    In-Kind Donation
                                 </li>
                             </ol>
                         </div>
                     </div>
                 </div>
+                @if(session('error'))
+                <div id="alert-error" class="alert alert-error" style=" position: absolute; ; right: 10px; top: 90px;">
+                    <i class=" fa-solid fa-circle-xmark fa-xl me-3"></i>{{ session('error') }}
+                </div>
+                @endif
+                @if(session('success'))
+                <div id="alert-success" class="alert alert-success" style=" position: absolute; ; right: 10px; top: 90px;">
+                    <i class="fa-solid fa-circle-check fa-xl me-3"></i>{{ session('success') }}
+                </div>
+                @endif
             </div>
 
             <!-- End content-header -->
@@ -299,33 +313,122 @@
             <!-- Main content -->
             <div class="content">
                 <div class="container-fluid py-3">
-                    <div class="row">
-                        <h3 class="text-center">Select Type of Donations</h3>
-                        <div class="d-flex justify-content-center align-items-center flex-wrap mt-3">
+                    <div class="container mb-3">
+                        <div class="title">Quick In-Kind Form</div>
+                        <form method="POST" action="{{ route('quickInKindDonate') }}" enctype="multipart/form-data" id="quickInKindForm">
+                            @csrf
+                            <div class="user-details">
+                                <!-- Donor Name -->
+                                <div class="input-box">
+                                    <span class="details">Donor Name</span>
+                                    <input type="text" class="form-control donor-name" id="donor_name" name="donor_name"
+                                        value="{{ $User->donor->first_name }} {{ $User->donor->last_name }}"
+                                        data-original-name="{{ $User->donor->first_name }} {{ $User->donor->last_name }}" required>
+                                    <div class="form-check mt-2">
+                                        <input class="form-check-input anonymous-checkbox" type="checkbox" id="anonymous_checkbox" name="anonymous_checkbox" value="1">
+                                        <label class="form-check-label text-muted" for="anonymous_checkbox">
+                                            Anonymous
+                                        </label>
+                                    </div>
+                                </div>
 
-                            <div class="quick">
-                                <img src="{{ asset('assets/img/quick-cash.png') }}" alt="Cash" class="quick__image">
-                                <div class="quick__content">
-                                    <p class="quick__title">Support with Cash</p>
-                                    <p class="quick__description">Your cash donation helps us provide immediate assistance to those in need. Every contribution makes a difference in improving lives and creating lasting change.</p>
-                                    <div class="d-flex justify-content-end my-4">
-                                        <a class="quick__button" href="#">Donate Now</a>
+                                <!-- Cause and Donation Date & Time -->
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="input-box">
+                                            <span class="details">Cause</span>
+                                            <select class="form-select" id="cause" name="cause">
+                                                <option value="General">General</option>
+                                                <option value="Fire">Fire</option>
+                                                <option value="Flood">Flood</option>
+                                                <option value="Typhoon">Typhoon</option>
+                                                <option value="Earthquake">Earthquake</option>
+                                                <option value="Volcanic Eruption">Volcanic Eruption</option>
+                                                <option value="Feeding Program">Feeding Program</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="input-box">
+                                            <span class="details">Donation Date & Time</span>
+                                            <input type="datetime-local" class="form-control" id="donation_datetime" name="donation_datetime" required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Donation Method and Chapter -->
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="input-box">
+                                            <span class="details">Donation Method</span>
+                                            <select class="form-select donation-method" id="donation_method" name="donation_method" required>
+                                                <option selected disabled>Select an option</option>
+                                                <option value="pickup">Pickup</option>
+                                                <option value="drop-off">Drop-off</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="input-box">
+                                            <span class="details">Select Chapter</span>
+                                            <select class="form-select" id="chapter" name="chapter_id" required>
+                                                <option selected disabled>Select Chapter</option>
+                                                @foreach($chapters as $chapter)
+                                                <option value="{{ $chapter->id }}">{{ $chapter->chapter_name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Pickup Address (Hidden by Default) -->
+                                @php
+                                $pickupAddress = $User->location->region === "NCR"
+                                ? "{$User->location->full_address}, {$User->location->barangay}, {$User->location->city_municipality}, Metro Manila, Philippines"
+                                : "{$User->location->full_address}, {$User->location->barangay}, {$User->location->city_municipality}, {$User->location->province}, {$User->location->region}, Philippines";
+                                @endphp
+                                <div class="input-box pickup-address-div d-none" id="pickup_address_div">
+                                    <span class="details">Pickup Address</span>
+                                    <input type="text" class="form-control pickup-address" id="pickup_address" name="pickup_address" value="{{ $pickupAddress }}">
+                                </div>
+
+                                <div class="col-12 col-md-12">
+                                    <p class="text-center"><strong>Requested Items</strong></p>
+                                    <div class="row g-2 gy-2" id="requested-items">
+                                        <!-- First item will be inserted here -->
+                                    </div>
+                                </div>
+
+                                <div id="photoCapture" class="row g-3 photo-capture">
+                                    <h5><strong>Proof of Donation</strong> </h5>
+                                    <p class="my-0">Take a photo with your donation for verification. The system will snap a picture once it detects your face.</p>
+                                    <!-- Camera Column -->
+                                    <div class="col-md-6 d-flex flex-column align-items-center">
+                                        <div class="video-container">
+                                            <video id="video" class="video-stream" autoplay muted></video>
+                                            <canvas id="overlay" class="overlay"></canvas>
+                                            <div id="timer" class="timer"></div>
+                                        </div>
+                                        <button class="btn btn-secondary btn-sm my-3 toggle-camera-btn" type="button" id="toggleCameraBtn">Turn On Camera</button>
+                                    </div>
+
+                                    <!-- Preview Column -->
+                                    <div class="col-md-6 d-flex flex-column align-items-center">
+                                        <div id="preview" class="preview-container">
+                                            <img src="{{ asset('assets/img/donating.jpg') }}" class="preview-image" alt="Captured Photo">
+                                        </div>
+                                        <p class="my-3"><strong>Example</strong></p>
+                                        <!-- File Input Section -->
+                                        <div id="fileInputSection" style="display: none;">
+                                            <input type="file" id="imageFile" name="proof_image" class="preview-file">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="quick">
-                                <img src="{{ asset('assets/img/quick-item.png') }}" alt="In-Kind Items" class="quick__image">
-                                <div class="quick__content">
-                                    <p class="quick__title">Donate In-Kind Items</p>
-                                    <p class="quick__description">Your in-kind donations, such as food, clothing, or supplies, directly support our community programs. Help us make a tangible impact today.</p>
-                                    <div class="d-flex justify-content-end my-4">
-                                        <a class="quick__button" href="{{ route('quick.inKindForm') }}">Donate Now</a>
-                                    </div>
-                                </div>
+                            <!-- Submit Button -->
+                            <div class="button">
+                                <input type="submit" value="Donate Now" id="submitButton" style="display: none;">
                             </div>
-
-                        </div>
+                        </form>
                     </div>
                 </div>
 
@@ -344,12 +447,18 @@
 
     <!-- jQuery -->
     <script src="{{ asset('lib/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('lib/jquery/jquery.validate.min.js') }}"></script>
     <!-- Bootstrap 5 -->
     <script src="{{ asset('lib/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <!-- Fontawesome 6 -->
     <script src="{{ asset('lib/fontawesome/all.js') }}"></script>
     <!-- User JS -->
     <script src="{{ asset('assets/users/js/user.js') }}"></script>
+    <script src="{{ asset('assets/users/js/faceapi.js') }}"></script>
+
+    <script>
+
+    </script>
 </body>
 
 </html>

@@ -13,7 +13,9 @@ class FundRequest extends Model
 
     protected $fillable = [
         'created_by_admin_id',
-        'chapter_id',
+        'location_id',
+        'cause',
+        'urgency',
         'amount_needed',
         'description',
         'proof_photo_1',
@@ -27,9 +29,9 @@ class FundRequest extends Model
         return $this->belongsTo(Admin::class, 'created_by_admin_id');
     }
 
-    public function chapter()
+    public function location()
     {
-        return $this->belongsTo(Chapter::class, 'chapter_id');
+        return $this->belongsTo(Location::class, 'location_id');
     }
 
     public function cashDonations()

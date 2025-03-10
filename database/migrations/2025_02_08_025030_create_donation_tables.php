@@ -110,22 +110,8 @@ return new class extends Migration {
         Schema::create('fund_request', function (Blueprint $table) {
             $table->id();
             $table->foreignId('created_by_admin_id')->constrained('admin')->onDelete('cascade');
-            $table->foreignId('chapter_id')->constrained('chapter')->onDelete('cascade');
-            $table->decimal('amount_needed', 10, 2);
-            $table->text('description');
-            $table->string('proof_photo_1')->nullable();
-            $table->string('proof_photo_2')->nullable();
-            $table->string('proof_video')->nullable();
-            $table->enum('status', ['pending', 'fulfilled', 'canceled'])->default('pending');
-            $table->timestamps();
-        });
-
-        Schema::create('cash_donation', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('donor_id')->constrained('donor')->onDelete('cascade');
-            $table->string('donor_name');
-            $table->foreignId('chapter_id')->constrained('chapter')->onDelete('cascade');
-            $table->foreignId('fund_request_id')->nullable()->constrained('fund_request')->onDelete('cascade');
+            $table->enum('urgency', ['Low', 'Moderate', 'Critical']);
+            $table->foreignId('location_id')->constrained('location')->onDelete('cascade');
             $table->enum('cause', [
                 'Fire',
                 'Flood',
@@ -135,21 +121,65 @@ return new class extends Migration {
                 'Feeding Program',
                 'General'
             ]);
+            $table->decimal('amount_needed', 10, 2);
+            $table->text('description');
+            $table->string('proof_photo_1')->nullable();
+            $table->string('proof_photo_2')->nullable();
+            $table->string('proof_video')->nullable();
+            $table->enum('status', ['pending', 'fulfilled', 'canceled'])->default('pending');
+            $table->timestamps();
+        });
+
+
+        Schema::create('cash_donation', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('donor_id')->constrained('donor')->onDelete('cascade');
+            $table->string('donor_name');
+            $table->foreignId('chapter_id')->constrained('chapter')->onDelete('cascade');
+            $table->foreignId('fund_request_id')->nullable()->constrained('fund_request')->onDelete('cascade');
+            $table->enum('cause', [
+                'Fire Victims',
+                'Flood Victims',
+                'Typhoon Victims',
+                'Earthquake Victims',
+                'Volcanic Eruption Victims',
+                'Feeding Program',
+                'General'
+            ]);
             $table->decimal('amount', 10, 2);
             $table->enum('donation_method', ['online', 'drop-off']);
-            $table->enum('payment_method', ['bank_transfer', 'credit_card', 'paypal', 'gcash'])->nullable();
-            $table->string('proof_payment')->nullable();
-            $table->string('transaction_reference', 100)->nullable();
+            $table->enum('payment_method', ['credit_card', 'gcash', 'paymaya'])->nullable();
+            $table->string('transaction_id')->nullable(); // PayMongo transaction ID
+            $table->enum('payment_status', ['pending', 'completed', 'failed'])->nullable()->default('pending');
             $table->enum('status', ['pending', 'received', 'ongoing', 'distributed'])->default('pending');
             $table->timestamps();
         });
 
+
         Schema::create('distribution', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('donation_request_id')->constrained('donation_request')->onDelete('cascade');
+            $table->foreignId('donation_request_id')->nullable()->constrained('donation_request')->onDelete('cascade');
             $table->foreignId('chapter_id')->constrained('chapter')->onDelete('cascade');
             $table->foreignId('distributed_by_admin_id')->constrained('admin')->onDelete('cascade');
             $table->timestamp('distributed_at')->useCurrent();
+            $table->enum('distribution_type', ['in-kind', 'cash'])->default('in-kind');
+        });
+
+        Schema::create('distribution_items', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('distribution_id')->constrained('distribution')->onDelete('cascade');
+            $table->string('item', 100);
+            $table->integer('quantity');
+            $table->enum('source', ['pooled_resources', 'donation_items']);
+            $table->timestamps();
+        });
+
+        Schema::create('distribution_funds', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('distribution_id')->constrained('distribution')->onDelete('cascade');
+            $table->foreignId('fund_request_id')->constrained('fund_request')->onDelete('cascade');
+            $table->decimal('amount', 10, 2);
+            $table->timestamps();
         });
     }
 
@@ -164,5 +194,7 @@ return new class extends Migration {
         Schema::dropIfExists('fund_request');
         Schema::dropIfExists('pooled_funds');
         Schema::dropIfExists('distribution');
+        Schema::dropIfExists('distribution_items');
+        Schema::dropIfExists('distribution_funds');
     }
 };

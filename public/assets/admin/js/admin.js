@@ -407,6 +407,46 @@ if ($("#news_form_update").length > 0) {
             });
         }
 
+
+
+$('#file-input').change(function (event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                $('#imagePreview').attr('src', e.target.result);
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    $('#image1').change(function (event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                $('#imagePreviewOne').attr('src', e.target.result);
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+     $('#image2').change(function (event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                $('#imagePreviewTwo').attr('src', e.target.result);
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+     $('#toggle-password-section').click(function () {
+            $('#password-section').toggle();
+        });
+
+
   if ($("#inKindForm").length > 0) {
     $("#inKindForm").validate({
         rules: {
@@ -482,74 +522,130 @@ if ($("#news_form_update").length > 0) {
     });
 }
 
-// Show selected file names
-$(".file-input").change(function () {
-    let fileInput = $(this)[0];
-    let fileName = fileInput.files.length > 0 ? fileInput.files[0].name : "";
-    let fileLabel = $(this).attr("id"); // Get input ID
+if ($("#cashForm").length > 0) {
+    $("#cashForm").validate({
+        rules: {
+            cause: { required: true },
+            urgency: { required: true },
+            region: { required: true },
+            province: { required: true },
+            city: { required: true },
+            barangay: { required: true },
+            description: {
+                required: true,
+                minlength: 10,
+            },
+            amount: { required: true, min: 0 },
+        },
+        messages: {
+            cause: { required: "Please select a cause." },
+            urgency: { required: "Please select the urgency level." },
+            region: { required: "Please select a region." },
+            province: { required: "Please select a province." },
+            city: { required: "Please select a city/municipality." },
+            barangay: { required: "Please select a barangay." },
+            description: {
+                required: "Please provide a description.",
+                minlength: "Description must be at least 10 characters long.",
+            },
+            amount: {
+                required: "Please enter an amount.",
+                min: "Amount must be a positive number.",
+            },
+        },
+        highlight: function (element) {
+            $(element).addClass("is-invalid").removeClass("is-valid");
+        },
+        unhighlight: function (element) {
+            $(element).removeClass("is-invalid").addClass("is-valid");
+            $(element).next(".error").remove();
+        },
+        errorPlacement: function (error, element) {
+            error.insertAfter(element);
+        },
+        submitHandler: function (form) {
+            // Submit the form if all validations pass
+            form.submit();
+        },
+    });
+}
 
-    if (fileLabel === "proof_photo_1") {
-        $("#file-name-1").text(fileName);
-    } else if (fileLabel === "proof_photo_2") {
-        $("#file-name-2").text(fileName);
-    } else if (fileLabel === "proof_video") {
-        $("#file-name-video").text(fileName);
+// Show selected file names for both forms
+$(".file-input").on("change", function () {
+    let fileInput = $(this)[0]; // Get the file input element
+    let file = fileInput.files[0]; // Get the uploaded file
+    let fileLabel = $(this).attr("id"); // Get the ID of the file input
+
+    // Show the "Uploaded Files" text
+    $("#uploadText").show();
+
+    // Validate file type based on the input ID
+    if (file) {
+        if (fileLabel.includes("photo")) {
+            // Validate image files
+            if (!file.type.startsWith("image/")) {
+                alert("Please upload a valid image file (e.g., JPG, PNG).");
+                $(this).val(""); // Clear the file input
+                return; // Stop further execution
+            }
+        } else if (fileLabel.includes("video")) {
+            // Validate video files
+            if (!file.type.startsWith("video/")) {
+                alert("Please upload a valid video file (e.g., MP4, MOV).");
+                $(this).val(""); // Clear the file input
+                return; // Stop further execution
+            }
+        }
+    }
+
+    // Map file input IDs to their corresponding file name display IDs
+    const fileDisplayMap = {
+        "proof_photo_1": "#file-name-1",
+        "proof_photo_2": "#file-name-2",
+        "proof_video": "#file-name-video",
+        "cash_proof_photo_1": "#cash_file-name-1",
+        "cash_proof_photo_2": "#cash_file-name-2",
+        "cash_proof_video": "#cash_file-name-video"
+    };
+
+    // Update the corresponding file name display
+    if (fileDisplayMap[fileLabel]) {
+        $(fileDisplayMap[fileLabel]).text(file.name);
+    }
+
+    // Handle image and video previews
+    if (file) {
+        const reader = new FileReader();
+
+        if (file.type.startsWith("image/")) {
+            reader.onload = function (e) {
+                // Update the corresponding image preview
+                if (fileLabel === "proof_photo_1" || fileLabel === "cash_proof_photo_1") {
+                    $("#preview-image-1").attr("src", e.target.result).show();
+                } else if (fileLabel === "proof_photo_2" || fileLabel === "cash_proof_photo_2") {
+                    $("#preview-image-2").attr("src", e.target.result).show();
+                }
+            };
+            reader.readAsDataURL(file);
+        } else if (file.type.startsWith("video/")) {
+            // Update the video preview
+            $("#preview-video").attr("src", URL.createObjectURL(file)).show();
+        }
     }
 });
 
-
-
-$('#file-input').change(function (event) {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                $('#imagePreview').attr('src', e.target.result);
-            };
-            reader.readAsDataURL(file);
-        }
-    });
-
-    $('#image1').change(function (event) {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                $('#imagePreviewOne').attr('src', e.target.result);
-            };
-            reader.readAsDataURL(file);
-        }
-    });
-
-     $('#image2').change(function (event) {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                $('#imagePreviewTwo').attr('src', e.target.result);
-            };
-            reader.readAsDataURL(file);
-        }
-    });
-
-     $('#toggle-password-section').click(function () {
-            $('#password-section').toggle();
-        });
-
 const API_BASE_URL = "https://psgc.gitlab.io/api";
 
+// Initialize dropdowns for both forms
 initializeRegionDropdown();
-$('#region').on('change', handleRegionChange);
-$('#province').on('change', handleProvinceChange);
-$('#city').on('change', handleCityChange);
-$('#barangay').on('change', handleBarangayChange);
+$('#region, #cash_region').on('change', handleRegionChange);
+$('#province, #cash_province').on('change', handleProvinceChange);
+$('#city, #cash_city').on('change', handleCityChange);
+$('#barangay, #cash_barangay').on('change', handleBarangayChange);
 
-/**
- * Initialize the Region dropdown by fetching data from the PSGC API.
- */
 function initializeRegionDropdown() {
     $.getJSON(`${API_BASE_URL}/regions/`, function(data) {
-        const regionDropdown = $('#region');
+        const regionDropdown = $('#region, #cash_region');
         regionDropdown.empty().append('<option disabled selected value="">Select Region</option>');
         data.forEach(region => {
             regionDropdown.append(`<option value="${region.code}" data-name="${region.name}">${region.name}</option>`);
@@ -559,47 +655,43 @@ function initializeRegionDropdown() {
     });
 }
 
-/**
- * Handle region selection and load corresponding provinces or cities directly for NCR.
- */
+// Handle region selection
 function handleRegionChange() {
-    const regionCode = this.value;  // Get the selected region code
-    const regionName = $('option:selected', this).text(); // Get the name from the selected option
-    
-    if (!regionCode) return;  // Exit if no region is selected
+    const regionCode = this.value;
+    const regionName = $('option:selected', this).text();
 
-    // Store the region name in a hidden input field
-    $('#region-name').val(regionName);  // Assuming you have a hidden input field with id="region-name"
-    
-    // Special handling for NCR (no provinces)
+    if (!regionCode) return;
+
+    if (this.id === "region") {
+        $('#region-name').val(regionName);
+    } else if (this.id === "cash_region") {
+        $('#cash_region-name').val(regionName);
+    }
+
     if (regionCode === "130000000") { // NCR region code
-        handleNCRRegion();
+        handleNCRRegion(this.id);
     } else {
-        loadProvinces(regionCode);  // Use the region code to load provinces
+        loadProvinces(regionCode, this.id);
     }
 }
 
-/**
- * Handle NCR region by skipping the province dropdown and directly loading cities.
- */
-function handleNCRRegion() {
-    // Set "N/A" for province dropdown
-    $('#province').empty().append('<option selected value="N/A">N/A</option>');
-    
-    // Set the hidden input to "N/A"
-    $('#province-name').val('N/A');
-    
-    // Load cities directly for NCR
-    loadCitiesForRegion("130000000");
+// Handle NCR region
+function handleNCRRegion(formId) {
+    if (formId === "region") {
+        $('#province').empty().append('<option selected value="N/A">N/A</option>');
+        $('#province-name').val('N/A');
+        loadCitiesForRegion("130000000", formId);
+    } else if (formId === "cash_region") {
+        $('#cash_province').empty().append('<option selected value="N/A">N/A</option>');
+        $('#cash_province-name').val('N/A');
+        loadCitiesForRegion("130000000", formId);
+    }
 }
 
-/**
- * Load provinces for the selected region.
- * @param {string} regionCode - The region code for which to fetch provinces.
- */
-function loadProvinces(regionCode) {
+// Load provinces
+function loadProvinces(regionCode, formId) {
     $.getJSON(`${API_BASE_URL}/regions/${regionCode}/provinces/`, function(data) {
-        const provinceDropdown = $('#province');
+        const provinceDropdown = formId === "region" ? $('#province') : $('#cash_province');
         provinceDropdown.empty().append('<option disabled selected value="">Select Province</option>');
         if (data.length > 0) {
             data.forEach(province => {
@@ -610,33 +702,38 @@ function loadProvinces(regionCode) {
             provinceDropdown.append('<option disabled selected value="">N/A</option>');
         }
 
-        resetDropdown('#city', 'Select City');
-        resetDropdown('#barangay', 'Select Barangay');
+        if (formId === "region") {
+            resetDropdown('#city', 'Select City');
+            resetDropdown('#barangay', 'Select Barangay');
+        } else if (formId === "cash_region") {
+            resetDropdown('#cash_city', 'Select City');
+            resetDropdown('#cash_barangay', 'Select Barangay');
+        }
     }).fail(function() {
         console.error("Failed to load provinces for the selected region.");
     });
 }
 
-/**
- * Handle province selection and load corresponding cities/municipalities.
- */
+// Handle province selection
 function handleProvinceChange() {
     const provinceCode = this.value;
-    const provinceName = $('option:selected', this).text(); // Get the name from the selected option
-    
+    const provinceName = $('option:selected', this).text();
+
     if (provinceCode) {
-        $('#province-name').val(provinceName);  // Store the province name in the hidden input field
-        loadCitiesForProvince(provinceCode);  // Load cities for the selected province
+        if (this.id === "province") {
+            $('#province-name').val(provinceName);
+            loadCitiesForProvince(provinceCode, this.id);
+        } else if (this.id === "cash_province") {
+            $('#cash_province-name').val(provinceName);
+            loadCitiesForProvince(provinceCode, this.id);
+        }
     }
 }
 
-/**
- * Load cities/municipalities for the selected province.
- * @param {string} provinceCode - The province code for which to fetch cities.
- */
-function loadCitiesForProvince(provinceCode) {
+// Load cities for province
+function loadCitiesForProvince(provinceCode, formId) {
     $.getJSON(`${API_BASE_URL}/provinces/${provinceCode}/cities-municipalities/`, function(data) {
-        const cityDropdown = $('#city');
+        const cityDropdown = formId === "province" ? $('#city') : $('#cash_city');
         cityDropdown.empty().append('<option disabled selected value="">Select City</option>');
         if (data.length > 0) {
             data.forEach(city => {
@@ -646,19 +743,20 @@ function loadCitiesForProvince(provinceCode) {
             console.warn('No cities found for this province.');
         }
 
-        resetDropdown('#barangay', 'Select Barangay');
+        if (formId === "province") {
+            resetDropdown('#barangay', 'Select Barangay');
+        } else if (formId === "cash_province") {
+            resetDropdown('#cash_barangay', 'Select Barangay');
+        }
     }).fail(function() {
         console.error("Failed to load cities for the selected province.");
     });
 }
 
-/**
- * Load cities/municipalities for regions like NCR that don't have provinces.
- * @param {string} regionCode - The region code for which to fetch cities.
- */
-function loadCitiesForRegion(regionCode) {
+// Load cities for region (NCR)
+function loadCitiesForRegion(regionCode, formId) {
     $.getJSON(`${API_BASE_URL}/regions/${regionCode}/cities-municipalities/`, function(data) {
-        const cityDropdown = $('#city');
+        const cityDropdown = formId === "region" ? $('#city') : $('#cash_city');
         cityDropdown.empty().append('<option disabled selected value="">Select City</option>');
         if (data.length > 0) {
             data.forEach(city => {
@@ -668,32 +766,36 @@ function loadCitiesForRegion(regionCode) {
             console.warn('No cities found for this region.');
         }
 
-        resetDropdown('#barangay', 'Select Barangay');
+        if (formId === "region") {
+            resetDropdown('#barangay', 'Select Barangay');
+        } else if (formId === "cash_region") {
+            resetDropdown('#cash_barangay', 'Select Barangay');
+        }
     }).fail(function() {
         console.error("Failed to load cities for the selected region.");
     });
 }
 
-/**
- * Handle city/municipality selection and load corresponding barangays.
- */
+// Handle city selection
 function handleCityChange() {
     const cityCode = this.value;
-    const cityName = $('option:selected', this).text(); // Get the name from the selected option
-    
+    const cityName = $('option:selected', this).text();
+
     if (cityCode) {
-        $('#city-name').val(cityName);  // Store the city name in the hidden input field
-        loadBarangays(cityCode);  // Load barangays for the selected city
+        if (this.id === "city") {
+            $('#city-name').val(cityName);
+            loadBarangays(cityCode, this.id);
+        } else if (this.id === "cash_city") {
+            $('#cash_city-name').val(cityName);
+            loadBarangays(cityCode, this.id);
+        }
     }
 }
 
-/**
- * Load barangays for the selected city/municipality.
- * @param {string} cityCode - The city/municipality code for which to fetch barangays.
- */
-function loadBarangays(cityCode) {
+// Load barangays
+function loadBarangays(cityCode, formId) {
     $.getJSON(`${API_BASE_URL}/cities-municipalities/${cityCode}/barangays/`, function(data) {
-        const barangayDropdown = $('#barangay');
+        const barangayDropdown = formId === "city" ? $('#barangay') : $('#cash_barangay');
         barangayDropdown.empty().append('<option disabled selected value="">Select Barangay</option>');
         if (data.length > 0) {
             data.forEach(barangay => {
@@ -707,26 +809,38 @@ function loadBarangays(cityCode) {
     });
 }
 
-/**
- * Handle barangay selection and store the barangay name.
- */
+// Handle barangay selection
 function handleBarangayChange() {
     const barangayCode = this.value;
-    const barangayName = $('option:selected', this).text(); // Get the name from the selected option
-    
+    const barangayName = $('option:selected', this).text();
+
     if (barangayCode) {
-        $('#barangay-name').val(barangayName);  // Store the barangay name in the hidden input field
+        if (this.id === "barangay") {
+            $('#barangay-name').val(barangayName);
+        } else if (this.id === "cash_barangay") {
+            $('#cash_barangay-name').val(barangayName);
+        }
     }
 }
 
-/**
- * Reset a dropdown to its default option.
- * @param {string} selector - The selector of the dropdown to reset.
- * @param {string} defaultText - The default option text.
- */
+// Reset dropdown
 function resetDropdown(selector, defaultText) {
     $(selector).empty().append(`<option disabled selected value="">${defaultText}</option>`);
 }
+
+// Handle tab switching
+$('button[data-bs-toggle="tab"]').on('shown.bs.tab', function (e) {
+    const target = $(e.target).attr("href"); // Get the target tab pane ID
+
+    if (target === "#profile-tab-pane") {
+        // Reinitialize dropdowns and event listeners for the cashForm
+        initializeRegionDropdown();
+        $('#cash_region').on('change', handleRegionChange);
+        $('#cash_province').on('change', handleProvinceChange);
+        $('#cash_city').on('change', handleCityChange);
+        $('#cash_barangay').on('change', handleBarangayChange);
+    }
+});
 
 var map = L.map("map").setView([12.8797, 121.7740], 5);
 var marker, circle;
@@ -774,8 +888,14 @@ function updateMap(lat, lng, cause, fullAddress) {
     map.setView([lat, lng], 15);
   }, 200);
 
-  document.getElementById("latitude").value = lat;
-  document.getElementById("longitude").value = lng;
+  // Update latitude and longitude for the active form
+  if ($("#inKindForm").is(":visible")) {
+    $("#latitude").val(lat);
+    $("#longitude").val(lng);
+  } else if ($("#cashForm").is(":visible")) {
+    $("#cash_latitude").val(lat);
+    $("#cash_longitude").val(lng);
+  }
 }
 
 function formatAddress(region, province, city, barangay) {
@@ -797,11 +917,21 @@ async function fetchAndUpdateLocation() {
   abortController = new AbortController();
   const signal = abortController.signal;
 
-  var barangay = $("#barangay option:selected").text().trim();
-  var city = $("#city option:selected").text().trim();
-  var province = $("#province option:selected").text().trim();
-  var region = $("#region option:selected").text().trim();
-  var selectedCause = $("#cause option:selected").text().trim();
+  // Determine which form is active
+  let barangay, city, province, region, selectedCause;
+  if ($("#inKindForm").is(":visible")) {
+    barangay = $("#barangay option:selected").text().trim();
+    city = $("#city option:selected").text().trim();
+    province = $("#province option:selected").text().trim();
+    region = $("#region option:selected").text().trim();
+    selectedCause = $("#cause option:selected").text().trim();
+  } else if ($("#cashForm").is(":visible")) {
+    barangay = $("#cash_barangay option:selected").text().trim();
+    city = $("#cash_city option:selected").text().trim();
+    province = $("#cash_province option:selected").text().trim();
+    region = $("#cash_region option:selected").text().trim();
+    selectedCause = $("#cash_cause option:selected").text().trim();
+  }
 
   if (!city || !selectedCause) return;
 
@@ -856,9 +986,13 @@ async function getCoordinates(address, signal) {
   return null;
 }
 
-// Event listeners
+// Event listeners for inKindForm
 $("#region, #province, #city, #barangay").on("change", fetchAndUpdateLocation);
 $("#cause").on("change", fetchAndUpdateLocation);
+
+// Event listeners for cashForm
+$("#cash_region, #cash_province, #cash_city, #cash_barangay").on("change", fetchAndUpdateLocation);
+$("#cash_cause").on("change", fetchAndUpdateLocation);
 
 
 
@@ -899,9 +1033,13 @@ function createItemEntry(isRemovable = true) {
     const category = $(this).val();
     const itemSelect = itemDiv.find(".item-select");
     itemSelect.html(`<option selected disabled>Select Item</option>`);
+
     itemsByCategory[category].forEach(item => {
-      itemSelect.append(`<option value="${item}">${item}</option>`);
+      if (!$(`.item-select option[value="${item}"]:selected`).length) {
+        itemSelect.append(`<option value="${item}">${item}</option>`);
+      }
     });
+
     itemSelect.prop("disabled", false);
   });
 
@@ -909,10 +1047,37 @@ function createItemEntry(isRemovable = true) {
   itemDiv.find(".item-select").on("change", function () {
     const quantityInput = itemDiv.find(".quantity-input");
     quantityInput.prop("disabled", false);
-    quantityInput.val(1); // Set the default quantity to 1
+    quantityInput.val(1);
+    updateAvailableItems();
   });
 
   return itemDiv;
+}
+
+// Function to update item availability in all dropdowns
+function updateAvailableItems() {
+  let selectedItems = [];
+  $(".item-select").each(function () {
+    let selectedValue = $(this).val();
+    if (selectedValue) {
+      selectedItems.push(selectedValue);
+    }
+  });
+
+  $(".item-select").each(function () {
+    let category = $(this).closest(".item-entry").find(".category-select").val();
+    if (!category) return;
+
+    let itemSelect = $(this);
+    let selectedValue = itemSelect.val();
+
+    itemSelect.html(`<option selected disabled>Select Item</option>`);
+    itemsByCategory[category].forEach(item => {
+      if (!selectedItems.includes(item) || item === selectedValue) {
+        itemSelect.append(`<option value="${item}" ${item === selectedValue ? "selected" : ""}>${item}</option>`);
+      }
+    });
+  });
 }
 
 // Initialize with one default item (cannot be removed)
@@ -926,6 +1091,7 @@ $("#add-item").on("click", function () {
 // Remove item when clicking "Remove"
 $("#requested-items").on("click", ".remove-item", function () {
   $(this).closest(".item-entry").remove();
+  updateAvailableItems();
 });
 
         

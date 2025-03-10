@@ -12,9 +12,37 @@ class VolunteerActivity extends Model
     protected $table = 'volunteer_activity';
 
     protected $fillable = [
+<<<<<<< HEAD
         'task_description',
         'hours_worked',
         'created_at',
         'updated_at',
     ];
+=======
+        'volunteer_id',
+        'task_description',
+        'hours_worked',
+        'event_id',
+        'distribution_id',
+        'status',
+    ];
+
+
+    public function volunteer()
+    {
+        return $this->belongsTo(Volunteer::class, 'volunteer_id');
+    }
+
+    // Relationship with Event
+    public function event()
+    {
+        return $this->belongsTo(Event::class, 'event_id');
+    }
+
+    // Relationship with Distribution
+    public function distribution()
+    {
+        return $this->belongsTo(Distribution::class, 'distribution_id');
+    }
+>>>>>>> main
 }

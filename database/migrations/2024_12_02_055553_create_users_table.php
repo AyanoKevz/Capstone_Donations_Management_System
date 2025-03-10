@@ -77,7 +77,7 @@ return new class extends Migration
             $table->string('id_image', 255);
             $table->string('user_photo', 255);
             $table->foreignId('chapter_id')->nullable()->constrained('chapter')->onDelete('set null');
-            $table->enum('pref_services', ['Collect Donations', 'Relief Operations', 'Health Welfware', 'Emergency Response', 'General'])->nullable();
+            $table->enum('pref_services', ['Collect Donations', 'Relief Operations', 'Health Welfare', 'Emergency Response', 'General'])->nullable();
             $table->enum('availability', ['Weekday', 'Weekend', 'Holiday', 'In time of Disasters']);
             $table->enum('availability_time', ['Morning', 'Afternoon', 'Night', 'On-Call', 'Whole-Day']);
             $table->timestamps();

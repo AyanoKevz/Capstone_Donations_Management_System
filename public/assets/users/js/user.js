@@ -425,9 +425,6 @@ $('#toggle-opassword').on('click', function () {
   }
 });
         
-        
- 
-
 $('#file-input').change(function (event) {
         const file = event.target.files[0];
         if (file) {
@@ -439,26 +436,44 @@ $('#file-input').change(function (event) {
         }
     });
 
- $(".anonymous-checkbox").on("change", function() {
-        const modalId = this.id.split("_").pop();
-        const donorNameInput = $(`#donor_name_${modalId}`);
+$(".anonymous-checkbox").on("change", function () {
+    let donorNameInput;
 
-        if (this.checked) {
-            // Store the current value in a data attribute (if not already stored)
-            if (!donorNameInput.data("original-name")) {
-                donorNameInput.data("original-name", donorNameInput.val());
-            }
-            donorNameInput.val("Anonymous").prop("readonly", true);
-        } else {
-            // Restore the original name from the data attribute
-            donorNameInput.val(donorNameInput.data("original-name")).prop("readonly", false);
+    // Detect if the checkbox belongs to a modal
+    const modalMatch = this.id.match(/_(\d+)$/);
+    if (modalMatch) {
+        const modalId = modalMatch[1];
+        donorNameInput = $(`#donor_name_${modalId}`);
+    } else {
+        // Single form
+        donorNameInput = $("#donor_name");
+    }
+
+    if (this.checked) {
+        // Store the original name in data attribute before changing it
+        if (!donorNameInput.data("original-name")) {
+            donorNameInput.data("original-name", donorNameInput.val());
         }
-    });
+        donorNameInput.val("Anonymous").prop("readonly", true);
+    } else {
+        donorNameInput.val(donorNameInput.data("original-name")).prop("readonly", false);
+    }
+});
+
 
     // Show/Hide Pickup Address Field based on method selection
-    $(".donation-method").on("change", function() {
-        const modalId = this.id.split("_").pop();
-        const pickupDiv = $(`#pickup_address_div_${modalId}`);
+    $(".donation-method").on("change", function () {
+        let pickupDiv;
+
+        // Detect if the select belongs to a modal
+        const modalMatch = this.id.match(/_(\d+)$/);
+        if (modalMatch) {
+            const modalId = modalMatch[1];
+            pickupDiv = $(`#pickup_address_div_${modalId}`);
+        } else {
+            // Single form
+            pickupDiv = $("#pickup_address_div");
+        }
 
         if (this.value === "pickup") {
             pickupDiv.removeClass("d-none");
@@ -468,7 +483,283 @@ $('#file-input').change(function (event) {
     });
 
 
-    
+     const itemsByCategory = { 
+        "Basic Needs": ["Bottled Water", "Canned Goods", "5kg Packaged Rice", "Packed Biscuits", "Instant Noodles"],
+        "Clothing and Bedding": ["Blankets", "Towels", "Jackets/Sweaters", "New Clothes", "Slippers"],
+        "Hygiene Kits": ["Soap", "Sachet Shampoo", "Toothpaste", "Toothbrushes", "Baby Diapers", "Hand Sanitizers"],
+        "Medical Supplies": ["Adhesive Tape", "Bandages and Gauze", "Alcohol/Disinfectants", "Masks (N95 or surgical)"]
+    };
+
+  const assetBaseUrl = "/assets/img/"
+ const itemImages = {
+        "Bottled Water": assetBaseUrl + "/r4.png",
+        "Canned Goods": assetBaseUrl + "/r1.jpg",
+        "5kg Packaged Rice": assetBaseUrl + "/r5.png",
+        "Packed Biscuits": assetBaseUrl + "/r6.png",
+        "Instant Noodles": assetBaseUrl + "/r3.png",
+        "Blankets": assetBaseUrl + "/b1.png",
+        "Towels": assetBaseUrl + "/t1.png",
+        "Jackets/Sweaters": assetBaseUrl + "/c1.png",
+        "New Clothes": assetBaseUrl + "/r8.png",
+        "Slippers": assetBaseUrl + "/s1.png",
+        "Soap": assetBaseUrl + "/q2.png",
+        "Sachet Shampoo": assetBaseUrl + "/q3.png",
+        "Toothpaste": assetBaseUrl + "/q4.png",
+        "Toothbrushes": assetBaseUrl + "/q1.jpg",
+        "Baby Diapers": assetBaseUrl + "/q5.png",
+        "Hand Sanitizers": assetBaseUrl + "/q6.png",
+        "Adhesive Tape": assetBaseUrl + "/w1.jpg",
+        "Bandages and Gauze": assetBaseUrl + "/w2.png",
+        "Alcohol/Disinfectants": assetBaseUrl + "/w3.png",
+        "Masks (N95 or surgical)": assetBaseUrl + "/w4.png"
+    };
+
+// Function to create a new item entry
+const selectedItems = new Set(); // Track selected items
+
+// Function to create a new item entry
+function createItemEntry(isRemovable = true) {
+  const itemDiv = $("<div>").addClass("item-entry mb-3");
+
+  itemDiv.html(`
+    <div class="row g-2 align-items-center">
+      <div class="col-md-4">
+        <select class="form-select category-select" name="categories[]">
+          <option selected disabled>Select Category</option>
+          ${Object.keys(itemsByCategory).map(cat => `<option value="${cat}">${cat}</option>`).join("")}
+        </select>
+      </div>
+      <div class="col-md-4">
+        <select class="form-select item-select" name="items[]" disabled>
+          <option selected disabled>Select Item</option>
+        </select>
+      </div>
+      <div class="col-md-4 d-flex">
+        <button type="button" class="btn btn-success btn-sm add-item">Add Item</button>
+        ${isRemovable ? `<button type="button" class="btn btn-danger btn-sm remove-item ms-2">Remove Item</button>` : ""}
+      </div>
+    </div>
+
+    <div class="row mt-2 d-none item-details p-2 justify-content-center align-items-center" style="background-color: #f8f9fa;">
+      <div class="col-md-3 my-2 d-flex justify-content-center">
+        <img src="" class="item-image img-fluid" style="max-width: 100px; display: block;">
+      </div>
+      <div class="col-md-3 my-2 d-flex justify-content-center">
+        <input type="number" class="form-control quantity-input" name="quantities[]" placeholder="Quantity" min="1" value="1">
+      </div>
+    </div>
+  `);
+
+  // Enable item selection based on category
+  itemDiv.find(".category-select").on("change", function () {
+    const category = $(this).val();
+    const itemSelect = itemDiv.find(".item-select");
+    itemSelect.html('<option selected disabled>Select Item</option>');
+
+    itemsByCategory[category].forEach(item => {
+      if (!$(`.item-select option[value="${item}"]:selected`).length) {
+        itemSelect.append(`<option value="${item}">${item}</option>`);
+      }
+    });
+
+    itemSelect.prop("disabled", false);
+  });
+
+  // Show image and quantity input when an item is selected
+  itemDiv.find(".item-select").on("change", function () {
+    const selectedItem = $(this).val();
+    const detailsDiv = itemDiv.find(".item-details");
+    detailsDiv.removeClass("d-none");
+    itemDiv.find(".item-image").attr("src", itemImages[selectedItem]);
+
+    updateAvailableItems();
+  });
+
+  return itemDiv;
+}
+
+// Function to update all item dropdowns to disable already selected items
+function updateAvailableItems() {
+  let selectedItems = [];
+  $(".item-select").each(function () {
+    let selectedValue = $(this).val();
+    if (selectedValue) {
+      selectedItems.push(selectedValue);
+    }
+  });
+
+  $(".item-select").each(function () {
+    let category = $(this).closest(".item-entry").find(".category-select").val();
+    if (!category) return;
+
+    let itemSelect = $(this);
+    let selectedValue = itemSelect.val();
+
+    itemSelect.html(`<option selected disabled>Select Item</option>`);
+    itemsByCategory[category].forEach(item => {
+      if (!selectedItems.includes(item) || item === selectedValue) {
+        itemSelect.append(`<option value="${item}" ${item === selectedValue ? "selected" : ""}>${item}</option>`);
+      }
+    });
+  });
+}
+
+// Initialize with one default item (cannot be removed)
+$("#requested-items").append(createItemEntry(false));
+
+// Add Item Button Click Event (inline per row)
+$("#requested-items").on("click", ".add-item", function () {
+  $("#requested-items").append(createItemEntry(true));
+  updateAvailableItems();
+});
+
+// Remove item when clicking "Remove"
+$("#requested-items").on("click", ".remove-item", function () {
+  $(this).closest(".item-entry").remove();
+  updateAvailableItems();
+});
+
+
+if ($("#quickInKindForm").length > 0) {
+        $("#quickInKindForm").validate({
+            rules: {
+                donor_name: { required: true },
+                cause: { required: true },
+                donation_datetime: { required: true },
+                donation_method: { required: true },
+                chapter_id: { required: true },
+                pickup_address: {
+                    required: function () {
+                        return $("#donation_method").val() === "pickup";
+                    }
+                },
+                proof_image: { required: true },
+                "categories[]": { required: true },
+                "items[]": { required: true }
+            },
+            messages: {
+                donor_name: { required: "Please enter your name." },
+                cause: { required: "Please select a cause." },
+                donation_datetime: { required: "Please select the date and time of donation." },
+                donation_method: { required: "Please select a donation method." },
+                chapter_id: { required: "Please select a chapter." },
+                pickup_address: { required: "Pickup address is required when using pickup method." },
+                proof_image: { required: "Please upload proof of donation." },
+                "categories[]": { required: "Please select a category." },
+                "items[]": { required: "Please select an item." }
+            },
+            highlight: function (element) {
+                $(element).addClass("is-invalid").removeClass("is-valid");
+            },
+            unhighlight: function (element) {
+                $(element).removeClass("is-invalid").addClass("is-valid");
+                $(element).next(".error").remove();
+            },
+            errorPlacement: function (error, element) {
+                // Insert error message only if it doesn't already exist
+                if (!element.next(".error").length) {
+                    error.insertAfter(element);
+                }
+            },
+            onfocusout: function (element) {
+                $(element).valid(); // Trigger validation only when the user interacts with the input
+            },
+            submitHandler: function (form) {
+                let valid = true;
+
+                $(".item-entry").each(function () {
+                    const category = $(this).find(".category-select");
+                    const item = $(this).find(".item-select");
+
+                    // Remove existing error messages before adding new ones
+                    category.next(".error").remove();
+                    item.next(".error").remove();
+
+                    if (!category.val()) {
+                        category.addClass("is-invalid");
+                        category.after('<label class="error text-danger">Please select a category.</label>');
+                        valid = false;
+                    } else {
+                        category.removeClass("is-invalid").addClass("is-valid");
+                    }
+
+                    if (!item.val()) {
+                        item.addClass("is-invalid");
+                        item.after('<label class="error text-danger">Please select an item.</label>');
+                        valid = false;
+                    } else {
+                        item.removeClass("is-invalid").addClass("is-valid");
+                    }
+                });
+
+                if (valid) {
+                    form.submit();
+                }
+            }
+        });
+
+        // Show/hide pickup address based on donation method
+        $("#donation_method").change(function () {
+            if ($(this).val() === "pickup") {
+                $("#pickup_address_div").removeClass("d-none");
+            } else {
+                $("#pickup_address_div").addClass("d-none");
+                $("#pickup_address").val("");
+            }
+        });
+
+          const fileInput = $('#imageFile');
+    const submitButton = $('#submitButton');
+
+    // Function to update the button's visibility
+    function updateSubmitButtonVisibility() {
+        if (fileInput[0].files && fileInput[0].files.length > 0) {
+            // If a file is selected, show the button
+            submitButton.css('display', 'inline-block');
+        } else {
+            // If no file is selected, hide the button
+            submitButton.css('display', 'none');
+        }
+    }
+
+    fileInput.on('change', updateSubmitButtonVisibility);
+    window.updateSubmitButton = updateSubmitButtonVisibility;
+    updateSubmitButtonVisibility();
+    }
+
+
+$(".donation-method_cash").on("change", function () {
+    const modalMatch = this.id.match(/_(\d+)$/);
+    let form, paymentMethodRow;
+
+    if (modalMatch) {
+        // Handling Modal Form
+        const modalId = modalMatch[1];
+        form = $(`#donationForm-${modalId}`);
+        paymentMethodRow = $(`#payment_method_row_${modalId}`);
+    } else {
+        // Handling Single Form
+        form = $("#singleDonationForm");
+        paymentMethodRow = $("#payment_method_row");
+    }
+
+    // Get the correct routes from data attributes
+    const onlineRoute = form.attr("data-online");
+    const dropoffRoute = form.attr("data-dropoff");
+
+    if (this.value === "online") {
+        form.attr("action", onlineRoute);
+        paymentMethodRow.removeClass("d-none");
+    } else {
+        form.attr("action", dropoffRoute);
+        paymentMethodRow.addClass("d-none");
+    }
+});
+
+console.log($("#singleDonationForm").attr("data-online"));
+console.log($("#singleDonationForm").attr("data-dropoff"));
+
+
 
   
 /*  END WAG NA MAG DECLARE SA BABA NG JAVASCRIPT FILE */

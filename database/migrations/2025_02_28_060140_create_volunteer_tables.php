@@ -13,6 +13,7 @@ return new class extends Migration {
             $table->string('event_name', 100);
             $table->text('event_description')->nullable();
             $table->dateTime('event_date');
+            $table->foreignId('task_reference')->nullable()->constrained('volunteer_activity')->nullOnDelete(); // New column
             $table->timestamps();
         });
 
@@ -24,6 +25,7 @@ return new class extends Migration {
             $table->integer('hours_worked');
             $table->foreignId('event_id')->nullable()->constrained('event')->nullOnDelete();
             $table->foreignId('distribution_id')->nullable()->constrained('distribution')->nullOnDelete();
+            $table->enum('status', ['pending', 'accepted', 'declined', 'completed'])->default('pending'); // New column
             $table->timestamps();
         });
     }
