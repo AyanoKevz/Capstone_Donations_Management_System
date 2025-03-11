@@ -789,6 +789,67 @@ if ($("#quickInKindForm").length > 0) {
     updateSubmitButtonVisibility();
     }
 
+<<<<<<< HEAD
+
+$(".donation-method_cash").on("change", function () {
+    const modalMatch = this.id.match(/_(\d+)$/);
+    let form, paymentMethodRow;
+
+    if (modalMatch) {
+        // Handling Modal Form
+        const modalId = modalMatch[1];
+        form = $(`#donationForm-${modalId}`);
+        paymentMethodRow = $(`#payment_method_row_${modalId}`);
+    } else {
+        // Handling Single Form
+        form = $("#singleDonationForm");
+        paymentMethodRow = $("#payment_method_row");
+    }
+
+    // Get the correct routes from data attributes
+    const onlineRoute = form.attr("data-online");
+    const dropoffRoute = form.attr("data-dropoff");
+
+    if (this.value === "online") {
+        form.attr("action", onlineRoute);
+        paymentMethodRow.removeClass("d-none");
+    } else {
+        form.attr("action", dropoffRoute);
+        paymentMethodRow.addClass("d-none");
+    }
+});
+
+console.log($("#singleDonationForm").attr("data-online"));
+console.log($("#singleDonationForm").attr("data-dropoff"));
+
+=======
+<<<<<<< HEAD
+/*calendas*/
+>>>>>>> e77da8b3f3f512b82069ca0e041b98897e17dbca
+document.addEventListener('DOMContentLoaded', function() {
+  var calendarEl = document.getElementById('calendar');
+  var calendar = new FullCalendar.Calendar(calendarEl, {
+      initialView: 'dayGridMonth',  // Default view is Month
+      headerToolbar: {
+          left: 'prev,next today',  // Navigation buttons (previous, next, today)
+          center: 'title',          // Title of the calendar
+          right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'  // Buttons to switch between Month, Week, Day, and List views
+      },
+      views: {
+          listWeek: {  // Configuration for the List view
+              buttonText: 'list'  // Button label for List view
+          }
+      }
+  });
+  calendar.render();
+});
+
+<<<<<<< HEAD
+=======
+
+>>>>>>> e77da8b3f3f512b82069ca0e041b98897e17dbca
+
+=======
 
 $(".donation-method_cash").on("change", function () {
     const modalMatch = this.id.match(/_(\d+)$/);
@@ -811,6 +872,7 @@ $(".donation-method_cash").on("change", function () {
     paymentMethodRow.toggleClass("d-none", !isOnline);
 });
 
+>>>>>>> de5741419d467089be1302b93ad00d04637958c2
   
 /*  END WAG NA MAG DECLARE SA BABA NG JAVASCRIPT FILE */
  

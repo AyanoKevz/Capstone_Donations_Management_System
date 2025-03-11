@@ -16,6 +16,19 @@
     <link rel="stylesheet" href="{{ asset('lib/bootstrap/css/bootstrap.min.css') }}">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('assets/users/css/volunteer/home_volunteer.css') }}">
+
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar/index.global.min.js'></script>
+    <script>
+
+      document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+          initialView: 'dayGridMonth'
+        });
+        calendar.render();
+      });
+
+    </script>
 </head>
 
 <!-- Spinner Start -->
@@ -258,17 +271,42 @@
             <!-- End content-header -->
 
             <!-- Main content -->
-            <div class="content">
+                <div class="content">
                 <div class="container">
-                    <div class="row">
+
+                        <!-- Cards Section -->
+                        <div class="row mb-5">
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Assigned Task:</h5>
+                                        <p class="card-text">Some content for the first card.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Total Events:</h5>
+                                        <p class="card-text">Some content for the second card.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Total hours</h5>
+                                        <p class="card-text">Some content for the third card.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Calendar Section -->
+                        <div id="calendar"></div>
 
                     </div>
-
                 </div>
-
-            </div>
-
-        </div>
 
 
 

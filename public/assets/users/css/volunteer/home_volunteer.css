@@ -1270,3 +1270,65 @@ body:not(.layout-fixed) .main-sidebar .sidebar {
   font-weight: 700;
   font-size: 22px;
 }
+
+
+
+/* General styling for the content */
+.content {
+    background-color: #f9f9f9; /* Light background for the content area */
+    padding: 30px 0; /* Add padding around the content */
+    margin-bottom: 40px;
+    margin-top: 20px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto; /* Center the container */
+}
+
+/* Card section styling */
+.card {
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow effect */
+    margin-bottom: 20px; /* Space between cards */
+}
+
+.card-body {
+    padding: 25px; /* Add padding inside the card */
+}
+
+.card-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 15px; /* Add space below the title */
+}
+
+.card-text {
+    font-size: 14px;
+    color: #555; /* Dark gray text for readability */
+}
+
+/* Styling for the row of cards */
+.row.mb-5 {
+    margin-bottom: 40px; /* Space below the row of cards */
+}
+
+/* Calendar section styling */
+#calendar {
+    margin-top: 30px; /* Space between the calendar and the cards */
+    background-color: #fff; /* White background for the calendar */
+    border: 2px solid #ddd; /* Light border around the calendar */
+    border-radius: 10px; /* Rounded corners for the calendar */
+    padding: 20px; /* Add padding inside the calendar */
+}
+
+/* Responsive design for small screens */
+@media (max-width: 767px) {
+    .col-md-4 {
+        margin-bottom: 20px; /* Space between cards on small screens */
+    }
+
+    .card-body {
+        padding: 15px; /* Adjust padding inside cards for smaller screens */
+    }
+}
