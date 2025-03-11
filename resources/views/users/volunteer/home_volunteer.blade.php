@@ -16,19 +16,6 @@
     <link rel="stylesheet" href="{{ asset('lib/bootstrap/css/bootstrap.min.css') }}">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('assets/users/css/volunteer/home_volunteer.css') }}">
-
-    <script src='https://cdn.jsdelivr.net/npm/fullcalendar/index.global.min.js'></script>
-    <script>
-
-      document.addEventListener('DOMContentLoaded', function() {
-        var calendarEl = document.getElementById('calendar');
-        var calendar = new FullCalendar.Calendar(calendarEl, {
-          initialView: 'dayGridMonth'
-        });
-        calendar.render();
-      });
-
-    </script>
 </head>
 
 <!-- Spinner Start -->
@@ -210,7 +197,7 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href=" " class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>My Task</p>
                                     </a>
@@ -270,8 +257,8 @@
 
             <!-- End content-header -->
 
-            <!-- Main content -->
-                <div class="content">
+        <!-- Main content -->
+        <div class="content">
                 <div class="container">
 
                         <!-- Cards Section -->
@@ -329,6 +316,18 @@
     <script src="{{ asset('lib/fontawesome/all.js') }}"></script>
     <!-- User JS -->
     <script src="{{ asset('assets/users/js/user.js') }}"></script>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar/index.global.min.js'></script>
+     <script>
+ 
+       document.addEventListener('DOMContentLoaded', function() {
+         var calendarEl = document.getElementById('calendar');
+         var calendar = new FullCalendar.Calendar(calendarEl, {
+           initialView: 'dayGridMonth'
+         });
+         calendar.render();
+       });
+ 
+     </script>
 </body>
 
 </html>

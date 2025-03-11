@@ -300,7 +300,7 @@
             <div class="content">
                 <div class="container-fluid py-3">
                     <div class="row">
-
+                    
                     </div>
                 </div>
 

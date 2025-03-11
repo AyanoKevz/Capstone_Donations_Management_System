@@ -789,8 +789,6 @@ if ($("#quickInKindForm").length > 0) {
     updateSubmitButtonVisibility();
     }
 
-<<<<<<< HEAD
-
 $(".donation-method_cash").on("change", function () {
     const modalMatch = this.id.match(/_(\d+)$/);
     let form, paymentMethodRow;
@@ -819,13 +817,7 @@ $(".donation-method_cash").on("change", function () {
     }
 });
 
-console.log($("#singleDonationForm").attr("data-online"));
-console.log($("#singleDonationForm").attr("data-dropoff"));
 
-=======
-<<<<<<< HEAD
-/*calendas*/
->>>>>>> e77da8b3f3f512b82069ca0e041b98897e17dbca
 document.addEventListener('DOMContentLoaded', function() {
   var calendarEl = document.getElementById('calendar');
   var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -844,12 +836,6 @@ document.addEventListener('DOMContentLoaded', function() {
   calendar.render();
 });
 
-<<<<<<< HEAD
-=======
-
->>>>>>> e77da8b3f3f512b82069ca0e041b98897e17dbca
-
-=======
 
 $(".donation-method_cash").on("change", function () {
     const modalMatch = this.id.match(/_(\d+)$/);
@@ -872,7 +858,6 @@ $(".donation-method_cash").on("change", function () {
     paymentMethodRow.toggleClass("d-none", !isOnline);
 });
 
->>>>>>> de5741419d467089be1302b93ad00d04637958c2
   
 /*  END WAG NA MAG DECLARE SA BABA NG JAVASCRIPT FILE */
  
