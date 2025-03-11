@@ -138,11 +138,11 @@ return new class extends Migration {
             $table->foreignId('chapter_id')->constrained('chapter')->onDelete('cascade');
             $table->foreignId('fund_request_id')->nullable()->constrained('fund_request')->onDelete('cascade');
             $table->enum('cause', [
-                'Fire Victims',
-                'Flood Victims',
-                'Typhoon Victims',
-                'Earthquake Victims',
-                'Volcanic Eruption Victims',
+                'Fire',
+                'Flood',
+                'Typhoon',
+                'Earthquake',
+                'Volcanic Eruption',
                 'Feeding Program',
                 'General'
             ]);

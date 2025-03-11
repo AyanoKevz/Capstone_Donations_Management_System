@@ -96,8 +96,9 @@
                 <img src="{{ asset('storage/' . $Admin->profile_image) }}" alt="image">
                 <span class="availability-status online"></span>
               </div>
-              <div class="nav-profile-text">
-                <p> {{ $Admin->username }}</p>
+              <div class="nav-profile-text text-center">
+                <p>{{ $Admin->username }}</p>
+                <small class="text-white">{{ $Admin->chapter->chapter_name }}</small>
               </div>
             </div>
 
@@ -218,7 +219,7 @@
                   </div>
                   <span>Create Request</span>
                 </a>
-                <a class="nav-link" href="" title="View All Requests">
+                <a class="nav-link" href="{{ route('admin.requestList') }}" title="View All Requests">
                   <div class="sb-nav-link-icon">
                     <i class="far fa-circle nav-icon"></i>
                   </div>
@@ -374,6 +375,60 @@
             <!-- ./col -->
           </div>
 
+          <div class="row">
+
+            <div class="row">
+              <div class="col-12 text-center">
+                <h2>Chapter Available Resources</h2>
+              </div>
+            </div>
+
+            <div class="card-container">
+              <div class="card-pool">
+                <div class="image" style="background-image: url('{{ asset('assets/img/f2.jpg') }}');"></div>
+                <span class="resource-name">Available Resource</span>
+                <span class="left">Fire</span>
+              </div>
+
+              <div class="card-pool">
+                <div class="image" style="background-image: url('{{ asset('assets/img/ff2.jpeg') }}');"></div>
+                <span class="resource-name">Available Resource</span>
+                <span class="left">Flood</span>
+              </div>
+
+              <div class="card-pool">
+                <div class="image" style="background-image: url('{{ asset('assets/img/t3.jpeg') }}');"></div>
+                <span class="resource-name">Available Resource</span>
+                <span class="left">Typhoon</span>
+              </div>
+
+              <div class="card-pool">
+                <div class="image" style="background-image: url('{{ asset('assets/img/e3.jpg') }}');"></div>
+                <span class="resource-name">Available Resource</span>
+                <span class="left">Earthquake</span>
+              </div>
+
+              <div class="card-pool">
+                <div class="image" style="background-image: url('{{ asset('assets/img/v4.jpg') }}');"></div>
+                <span class="resource-name">Available Resource</span>
+                <span class="left">Volcanic Eruption</span>
+              </div>
+
+              <div class="card-pool">
+                <div class="image" style="background-image: url('{{ asset('assets/img/q6.jpg') }}');"></div>
+                <span class="resource-name">Available Resource</span>
+                <span class="left">Feeding Program</span>
+              </div>
+
+              <div class="card-pool">
+                <div class="image" style="background-image: url('{{ asset('assets/img/hero-2.jfif') }}');"></div>
+                <span class="resource-name">Available Resource</span>
+                <span class="left">General</span>
+              </div>
+
+            </div>
+
+          </div>
         </div>
       </main>
       <footer class="py-3 bg-dark mt-3">

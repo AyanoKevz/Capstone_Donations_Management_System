@@ -620,6 +620,68 @@ $("#requested-items").on("click", ".remove-item", function () {
 });
 
 
+  if($("#quickCashForm").length > 0) {
+   $("#quickCashForm").each(function() {
+        $(this).validate({
+            rules: {
+                donor_name: {
+                    required: true,
+                    minlength: 2
+                },
+                chapter_id: {
+                    required: true
+                },
+                donation_method: {
+                    required: true
+                },
+                payment_method: {
+                    required: {
+                        depends: function(element) {
+                            return $(element).closest("form").find(".donation-method_cash").val() === "online";
+                        }
+                    }
+                },
+                amount: {
+                    required: true,
+                    min: 1
+                }
+            },
+            messages: {
+                donor_name: {
+                    required: "Please enter your name",
+                    minlength: "Your name must be at least 2 characters long"
+                },
+                chapter_id: {
+                    required: "Please select a chapter"
+                },
+                donation_method: {
+                    required: "Please select a donation method"
+                },
+                payment_method: {
+                    required: "Please select a payment method for online donations"
+                },
+                amount: {
+                    required: "Please enter a donation amount",
+                    min: "Donation amount must be at least 1"
+                }
+            },
+            highlight: function(element) {
+                $(element).addClass("is-invalid").removeClass("is-valid");
+            },
+            unhighlight: function(element) {
+                $(element).removeClass("is-invalid").addClass("is-valid");
+            },
+            errorPlacement: function(error, element) {
+                error.insertAfter(element);
+            },
+            submitHandler: function(form) {
+                form.submit();
+            }
+        });
+    });
+  }
+
+
 if ($("#quickInKindForm").length > 0) {
         $("#quickInKindForm").validate({
             rules: {
@@ -739,27 +801,15 @@ $(".donation-method_cash").on("change", function () {
         paymentMethodRow = $(`#payment_method_row_${modalId}`);
     } else {
         // Handling Single Form
-        form = $("#singleDonationForm");
+        form = $("#quickCashForm");
         paymentMethodRow = $("#payment_method_row");
     }
 
     // Get the correct routes from data attributes
-    const onlineRoute = form.attr("data-online");
-    const dropoffRoute = form.attr("data-dropoff");
-
-    if (this.value === "online") {
-        form.attr("action", onlineRoute);
-        paymentMethodRow.removeClass("d-none");
-    } else {
-        form.attr("action", dropoffRoute);
-        paymentMethodRow.addClass("d-none");
-    }
+    const isOnline = this.value === "online";
+    form.attr("action", isOnline ? form.attr("data-online") : form.attr("data-dropoff"));
+    paymentMethodRow.toggleClass("d-none", !isOnline);
 });
-
-console.log($("#singleDonationForm").attr("data-online"));
-console.log($("#singleDonationForm").attr("data-dropoff"));
-
-
 
   
 /*  END WAG NA MAG DECLARE SA BABA NG JAVASCRIPT FILE */

@@ -98,11 +98,11 @@
                 <img src="{{ asset('storage/' . $Admin->profile_image) }}" alt="image">
                 <span class="availability-status online"></span>
               </div>
-              <div class="nav-profile-text">
-                <p> {{ $Admin->username }}</p>
+              <div class="nav-profile-text text-center">
+                <p>{{ $Admin->username }}</p>
+                <small class="text-white">{{ $Admin->chapter->chapter_name }}</small>
               </div>
             </div>
-
             <!-- Dashboard -->
             <a class="nav-link" href="{{ route('admin.dashboard') }}" title="Dashboard">
               <div class="sb-nav-link-icon">
@@ -220,7 +220,7 @@
                   </div>
                   <span>Create Request</span>
                 </a>
-                <a class="nav-link" href="" title="View All Requests">
+                <a class="nav-link" href="{{ route('admin.requestList') }}" title="View All Requests">
                   <div class="sb-nav-link-icon">
                     <i class="far fa-circle nav-icon"></i>
                   </div>

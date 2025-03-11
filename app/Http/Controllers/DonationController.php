@@ -193,6 +193,9 @@ class DonationController extends Controller
             $request->items->each(function ($item) use ($request) {
                 $donatedQuantity = DonationItem::where('donation_request_id', $request->id)
                     ->where('item', $item->item)
+                    ->whereHas('donation', function ($q) {
+                        $q->where('status', '!=', 'pending');
+                    })
                     ->sum('quantity');
                 $item->donated_quantity = $donatedQuantity;
             });
@@ -204,6 +207,8 @@ class DonationController extends Controller
         ]);
     }
 
+
+
     public function RequestMapInKindDonate(Request $request)
     {
         try {
@@ -213,12 +218,15 @@ class DonationController extends Controller
             if (!$donor) {
                 return redirect()->back()->with('error', 'Donor profile not found.');
             }
+
             $proofImagePath = $request->file('proof_image')->store('proof_donation', 'public');
 
             // Create the donation record
             $donation = Donation::create([
                 'donor_id' => $donor->id,
-                'donor_name' => $request->has('anonymous_checkbox') && $request->anonymous_checkbox == 1 ? 'Anonymous' : "{$donor->first_name} {$donor->last_name}",
+                'donor_name' => $request->has('anonymous_checkbox') && $request->anonymous_checkbox == 1
+                    ? 'Anonymous'
+                    : "{$donor->first_name} {$donor->last_name}",
                 'chapter_id' => $request->chapter_id,
                 'donation_request_id' => $request->donation_request_id,
                 'cause' => $request->cause,
@@ -227,6 +235,7 @@ class DonationController extends Controller
                 'donation_datetime' => $request->donation_datetime,
                 'proof_image' => $proofImagePath,
                 'tracking_number' => strtoupper(uniqid('TRK-')),
+                'status' => 'pending', // Ensure it starts as pending
             ]);
 
             // Save the donation items
@@ -234,19 +243,6 @@ class DonationController extends Controller
                 $item = DonationRequestItem::find($itemId);
 
                 if ($item && $quantity > 0) {
-                    // Calculate the total donated quantity for this item
-                    $totalDonated = DonationItem::where('donation_request_id', $item->donation_request_id)
-                        ->where('item', $item->item)
-                        ->sum('quantity');
-
-                    // Calculate the remaining quantity needed
-                    $remainingQuantity = $item->quantity - $totalDonated;
-
-                    // Ensure the donated quantity does not exceed the remaining quantity
-                    if ($quantity > $remainingQuantity) {
-                        return redirect()->back()->with('error', "Cannot donate more than {$remainingQuantity} for {$item->item}.");
-                    }
-
                     // Create the donation item
                     DonationItem::create([
                         'donation_id' => $donation->id,
@@ -258,11 +254,19 @@ class DonationController extends Controller
                 }
             }
 
+            if ($donation->donation_request_id) {
+                $donationRequest = DonationRequest::find($donation->donation_request_id);
+                if ($donationRequest) {
+                    $donationRequest->checkIfFulfilled(); // Check and update the request status
+                }
+            }
+
             return redirect()->back()->with('success', 'Donation submitted successfully.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Something went wrong. Please try again.');
         }
     }
+
 
     public function RequestMapCash(Request $request)
     {
@@ -308,8 +312,14 @@ class DonationController extends Controller
 
         // Calculate amount_raised for each fund request
         $fundRequests->each(function ($fundRequest) {
-            $fundRequest->amount_raised = $fundRequest->cashDonations->sum('amount');
+            // Get total cash donations for this fund request
+            $totalDonated = $fundRequest->cashDonations()->sum('amount');
+
+            // Attach calculated values
+            $fundRequest->amount_raised = $totalDonated; // Store the raised amount
+            $fundRequest->remaining_amount = max(0, ($fundRequest->amount_needed ?? 0) - $totalDonated);
         });
+
 
         return view('users.donor.request_map_cash', [
             'fundRequests' => $fundRequests,
@@ -389,9 +399,39 @@ class DonationController extends Controller
                 }
             }
 
-            return redirect()->back()->with('success', 'Quick donation submitted successfully.');
+            return redirect()->back()->with('success', 'Quick donation submitted successfully. A receipt will be provided to your email once the donation is verified.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Something went wrong. Please try again.');
         }
+    }
+
+
+    public function quickDropOff(Request $request)
+    {
+        $user = Auth::user();
+        $donor = $user->donor;
+
+        if (!$donor) {
+            return back()->with('error', 'Donor profile not found.');
+        }
+
+        // Generate a transaction ID for tracking
+        $transactionId = 'DropOff-' . now()->format('Ymd-His') . '-' . strtoupper(Str::random(6));
+
+        // Insert Quick Drop-off Donation into the Database
+        CashDonation::create([
+            'donor_id' => $donor->id,
+            'donor_name' => $request->has('anonymous_checkbox') && $request->anonymous_checkbox == 1 ? 'Anonymous' : "{$donor->first_name} {$donor->last_name}",
+            'chapter_id' => $request->chapter_id,
+            'cause' => $request->cause,
+            'amount' => $request->amount,
+            'donation_method' => 'drop-off',
+            'payment_method' => null, // No payment method for drop-off
+            'payment_status' => null, // No payment status for drop-off
+            'status' => 'pending', // Set to pending until admin confirms
+            'transaction_id' => $transactionId,
+        ]);
+
+        return redirect()->route('quick.cashForm')->with('success', 'Quick donation submitted successfully. A receipt will be provided to your email once the donation is verified.');
     }
 }
