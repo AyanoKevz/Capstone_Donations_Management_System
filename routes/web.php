@@ -11,6 +11,7 @@ use App\Http\Controllers\DonorController;
 use App\Http\Controllers\userLoginController;
 use App\Http\Controllers\VolunteerController;
 use App\Http\Controllers\user_profileController;
+use App\Http\Controllers\PayMongoController;
 
 
 //  HOMEPAGE ROUTES:
@@ -121,8 +122,10 @@ Route::middleware(['admin', 'prevent-back-button'])->prefix('admin')->group(func
     Route::get('/admin/news/form', [AdminController::class, 'NewsForm'])->name('admin.news.form');
     Route::get('/admin/news/form/{id}', [AdminController::class, 'EditNewsForm'])->name('admin.news.form.edit');
     Route::post('/admin/news/update/{id}', [AdminController::class, 'UpdateNews'])->name('admin.news.update');
-
     Route::post('/admin/news/delete', [AdminController::class, 'deleteNews'])->name('news.delete');
+
+    // Request List
+    Route::get('/Request-List', [AdminController::class, 'allRequest'])->name('admin.requestList');
 });
 
 
@@ -145,12 +148,22 @@ Route::middleware(['auth', 'prevent-back-button'])->prefix('user')->group(functi
         Route::get('/contact', [DonorController::class, 'showContactForm'])->name('donor.contact_form');
         Route::view('quick/select-donations', 'users.donor.quick')->name('donor.quick_donation');
         Route::get('quick/In-Kind', [DonorController::class, 'quickInKindForm'])->name('quick.inKindForm');
+        Route::get('quick/cash', [DonorController::class, 'quickcashForm'])->name('quick.cashForm');
         Route::post('/quick-in-kind-donate', [DonationController::class, 'quickInKindDonate'])->name('quickInKindDonate');
         Route::get('/testimonial', [DonorController::class, 'showTestimonialForm'])->name('donor.testi_form');
         Route::get('/learn-about-causes', [DonorController::class, 'causes'])->name('donor.causes');
         Route::get('/request-map/items', [DonationController::class, 'RequestMapInKind'])->name('donor.request_map');
         Route::post('/request-map/donate', [DonationController::class, 'RequestMapInKindDonate'])->name('donation.store');
         Route::get('/request-map/cash', [DonationController::class, 'RequestMapCash'])->name('donor.reqCash_map');
+        Route::post('/donate/paymongo', [PayMongoController::class, 'createCheckout'])->name('paymongoMap.checkout');
+        Route::get('/donate/paymongo/success', [PayMongoController::class, 'handleSuccess'])->name('paymongoMap.success');
+        Route::get('/donate/paymongo/cancel', [PayMongoController::class, 'handleCancel'])->name('paymongoMap.cancel');
+        Route::post('/dropoff-donation', [DonationController::class, 'MapDropOffDonateCash'])->name('dropoffMap.donation');
+
+        Route::post('/quick-donation/paymongo', [PayMongoController::class, 'quickPayMongo'])->name('quickCash.paymongo');
+        Route::post('/quick-donation/dropoff', [DonationController::class, 'quickDropOff'])->name('quickCash.dropoff');
+        Route::get('/quick-donation/cash/success', [PayMongoController::class, 'quickPayMongoSuccess'])->name('quickCash.success');
+        Route::get('/quick-donation/cash/cancel', [PayMongoController::class, 'quickPayMongoCancel'])->name('quickCash.cancel');
     });
 
 

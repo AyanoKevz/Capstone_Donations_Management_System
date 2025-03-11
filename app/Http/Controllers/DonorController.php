@@ -169,4 +169,10 @@ class DonorController extends Controller
         $chapters = Chapter::all();
         return view('users.donor.quick_InKind', compact('chapters'));
     }
+
+    public function quickcashForm()
+    {
+        $chapters = Chapter::all();
+        return view('users.donor.quick_cash', compact('chapters'));
+    }
 }

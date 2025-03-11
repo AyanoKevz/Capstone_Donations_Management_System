@@ -1286,10 +1286,20 @@ input.is-invalid, select.is-invalid {
     border: 1.5px solid #ff0000 !important; 
 }
 
-#donor_name-error, #cause-error, #donation_datetime-error, #donation_method-error, 
-#chapter-error, #pickup_address-error, #categories\[\]-error, #items\[\]-error, 
-#quantities\[\]-error, .error.text-danger {
+#donor_name-error, 
+#cause-error, 
+#chapter-error, 
+#amount-error, 
+#donation_method-error,
+ #donation_datetime-error, 
+#payment_method-error, 
+#pickup_address-error, 
+#categories\[\]-error, 
+#items\[\]-error, 
+#quantities\[\]-error, 
+.error.text-danger {
   position: static;
+  
 }
 
 .video-container {
@@ -1466,4 +1476,9 @@ form .button input:hover {
     }
 }
 
-
+.payment-logo {
+  border: 1px solid #3e3e3e;
+  background: #fff;
+  width: 100px;
+  height: 80px;
+}

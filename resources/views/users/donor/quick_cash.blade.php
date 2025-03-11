@@ -15,7 +15,8 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="{{ asset('lib/bootstrap/css/bootstrap.min.css') }}">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{ asset('assets/users/css/donor/home_donor.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/users/css/donor/quick_InKind.css') }}">
+    <script src="{{ asset('lib/face-api.js/dist/face-api.min.js') }}"></script>
 </head>
 
 <!-- Spinner Start -->
@@ -64,7 +65,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active rounded-pill" aria-current="page" href="{{route('donor.home')}}">Home</a>
+                            <a class="nav-link  rounded-pill" aria-current="page" href="{{route('donor.home')}}">Home</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link " aria-current="page" href="{{route('prc-chapters')}}">Chapters</a>
@@ -148,7 +149,7 @@
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <!-- Home -->
                         <li class="nav-item">
-                            <a href="{{route ('donor.home') }}" class="nav-link active">
+                            <a href="{{route ('donor.home') }}" class="nav-link ">
                                 <i class="nav-icon fas fa-house"></i>
                                 <p>Home</p>
                             </a>
@@ -164,7 +165,7 @@
 
                         <!-- Make a Donation -->
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="#" class="nav-link active">
                                 <i class="nav-icon fas fa-hand-holding-heart"></i>
                                 <p>
                                     Make a Donation
@@ -173,8 +174,8 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{route ('donor.quick_donation') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
+                                    <a href="{{route ('donor.quick_donation') }}" class="nav-link active">
+                                        <i class="fas fa-circle-arrow-right nav-icon"></i>
                                         <p>Quick Donation</p>
                                     </a>
                                 </li>
@@ -204,7 +205,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{route('prc-chapters')}}" class="nav-link">
+                                    <a href="route{{'prc-chapters'}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>PRC Chapters</p>
                                     </a>
@@ -280,6 +281,19 @@
                                 Donor Portal
                             </h1>
                         </div>
+                        <div class="col-5 d-flex justify-content-end align-items-center">
+                            <ol class="breadcrumb mb-0">
+                                <li class="breadcrumb-item">
+                                    <a href="{{ route('donor.home') }}">Home</a>
+                                </li>
+                                <li class="breadcrumb-item ">
+                                    Quick Donation
+                                </li>
+                                <li class="breadcrumb-item active">
+                                    Cash Donation
+                                </li>
+                            </ol>
+                        </div>
                     </div>
                 </div>
                 @if(session('error'))
@@ -299,8 +313,97 @@
             <!-- Main content -->
             <div class="content">
                 <div class="container-fluid py-3">
-                    <div class="row">
+                    <div class="container mb-3">
+                        <div class="title">Quick Cash Form</div>
+                        <form id="quickCashForm"
+                            method="POST"
+                            action="{{ route('quickCash.paymongo') }}"
+                            class="cash-donation-form"
+                            data-online="{{ route('quickCash.paymongo') }}"
+                            data-dropoff="{{ route('quickCash.dropoff') }}">
+                            @csrf
+                            <div class="user-details">
+                                <!-- Donor Name -->
+                                <div class="input-box">
+                                    <span class="details">Donor Name</span>
+                                    <input type="text" class="form-control donor-name" id="donor_name" name="donor_name"
+                                        value="{{ $User->donor->first_name }} {{ $User->donor->last_name }}"
+                                        data-original-name="{{ $User->donor->first_name }} {{ $User->donor->last_name }}" required>
+                                    <div class="form-check mt-2">
+                                        <input class="form-check-input anonymous-checkbox" type="checkbox" id="anonymous_checkbox" name="anonymous_checkbox" value="1">
+                                        <label class="form-check-label text-muted" for="anonymous_checkbox">
+                                            Anonymous
+                                        </label>
+                                    </div>
+                                </div>
 
+                                <!-- Cause and Chapter -->
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="input-box">
+                                            <span class="details">Cause</span>
+                                            <select class="form-select" id="cause" name="cause">
+                                                <option value="General">General</option>
+                                                <option value="Fire">Fire</option>
+                                                <option value="Flood">Flood</option>
+                                                <option value="Typhoon">Typhoon</option>
+                                                <option value="Earthquake">Earthquake</option>
+                                                <option value="Volcanic Eruption">Volcanic Eruption</option>
+                                                <option value="Feeding Program">Feeding Program</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="input-box">
+                                            <span class="details">Chapter</span>
+                                            <select class="form-select" id="chapter" name="chapter_id" required>
+                                                <option selected disabled>Select Chapter</option>
+                                                @foreach($chapters as $chapter)
+                                                <option value="{{ $chapter->id }}">{{ $chapter->chapter_name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Donation Amount -->
+                                <div class="input-box">
+                                    <span class="details">Donation Amount</span>
+                                    <input type="number" class="form-control" id="amount" name="amount" min="1" required>
+                                </div>
+
+                                <!-- Donation Method -->
+                                <div class="input-box">
+                                    <span class="details">Donation Method</span>
+                                    <select class="form-select  donation-method_cash" id="donation_method" name="donation_method" required>
+                                        <option selected disabled>Select an option</option>
+                                        <option value="online">Online</option>
+                                        <option value="drop-off">Drop-off</option>
+                                    </select>
+                                </div>
+
+                                <!-- Payment Method (Only for Online Donations) -->
+                                <div class="input-box payment-method-row d-none" id="payment_method_row">
+                                    <span class="details">Payment Method</span>
+                                    <div class="d-flex justify-content-center gap-3 mb-3">
+                                        <img src="{{ asset('assets/img/credit-card.jpg') }}" alt="Credit Card" class="payment-logo">
+                                        <img src="{{ asset('assets/img/gcashLogo.jpg') }}" alt="GCash" class="payment-logo">
+                                        <img src="{{ asset('assets/img/paymayaLogo.png') }}" alt="PayMaya" class="payment-logo">
+                                    </div>
+                                    <select class="form-select" id="payment_method" name="payment_method">
+                                        <option selected disabled>Select an option</option>
+                                        <option value="credit_card">Credit/Debit Card</option>
+                                        <option value="gcash">GCash</option>
+                                        <option value="paymaya">PayMaya</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <div class="button">
+                                <input type="submit" value="Donate Now" id="submitButton">
+                            </div>
+                        </form>
                     </div>
                 </div>
 
@@ -319,6 +422,7 @@
 
     <!-- jQuery -->
     <script src="{{ asset('lib/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('lib/jquery/jquery.validate.min.js') }}"></script>
     <!-- Bootstrap 5 -->
     <script src="{{ asset('lib/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <!-- Fontawesome 6 -->

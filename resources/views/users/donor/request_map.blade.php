@@ -76,10 +76,13 @@
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                         <li>
-                            <a class="dropdown-item d-flex justify-content-center align-items-center"
-                                href="logout.php">Logout
-                                <i class="fas fa-right-from-bracket ms-2"></i>
-                            </a>
+                            <form action="{{ route('user.logout') }}" method="POST" id="logout-form">
+                                @csrf
+                                <button type="submit" class="dropdown-item d-flex justify-content-center align-items-center">
+                                    Logout
+                                    <i class="fas fa-right-from-bracket ms-2"></i>
+                                </button>
+                            </form>
                         </li>
                         <li>
                             <a class="dropdown-item d-flex justify-content-center align-items-center"
@@ -472,13 +475,10 @@
                                 </div>
                                 {{-- Chapter Selection --}}
                                 <div class="mb-3">
-                                    <label for="chapter" class="form-label fw-bold">Select Chapter</label>
-                                    <select class="form-select" id="chapter" name="chapter_id" required>
-                                        <option selected disabled>Select Chapter</option>
-                                        @foreach($chapters as $chapter)
-                                        <option value="{{ $chapter->id }}">{{ $chapter->chapter_name }}</option>
-                                        @endforeach
-                                    </select>
+                                    <label for="chapter" class="form-label fw-bold">Chapter</label>
+                                    <input type="text" class="form-control" id="chapter_display"
+                                        value="{{ $request->admin->chapter->chapter_name }}" readonly>
+                                    <input type="hidden" name="chapter_id" value="{{ $request->admin->chapter->id }}">
                                 </div>
 
                                 {{-- Items Requested --}}
@@ -489,7 +489,7 @@
                                     $remainingQuantity = $item->quantity - $totalDonated;
                                     @endphp
 
-                                    @if($remainingQuantity > 0)
+                                    @if($request->status ==='Pending' && $remainingQuantity > 0)
                                     <div class="item">
                                         <!-- Item Image -->
                                         <img src="{{ asset('assets/img/' . $itemImages[$item->item]) }}"
@@ -504,13 +504,16 @@
                                         </div>
 
                                         <!-- Quantity Input -->
-                                        <div class="quantity">
+                                        <div class="quantity d-flex flex-column">
                                             <input type="number" class="form-control quantity-input"
                                                 name="quantity[{{ $item->id }}]"
                                                 min="1"
                                                 max="{{ $remainingQuantity }}"
                                                 value="1"
                                                 placeholder="Quantity">
+                                            <small class="text-muted text-center">
+                                                Max donation: {{ $remainingQuantity }}
+                                            </small>
                                         </div>
                                     </div>
                                     @endif

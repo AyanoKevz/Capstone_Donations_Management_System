@@ -12,6 +12,8 @@ use App\Models\Appointment;
 use App\Models\Admin;
 use App\Models\Volunteer;
 use App\Models\News;
+use App\Models\FundRequest;
+use App\Models\DonationRequest;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\AccountUpdated;
 use Illuminate\Support\Facades\Log;
@@ -672,5 +674,30 @@ class AdminController extends Controller
         }
 
         return redirect()->back()->with('error', 'News not found.');
+    }
+
+
+    public function allRequest(Request $request)
+    {
+        $admin = Auth::guard('admin')->user();
+        $filter = $request->input('type', 'all'); // Default is 'all'
+
+        // Fetch fund and donation requests only for the admin's chapter
+        $fundRequests = FundRequest::where('created_by_admin_id', $admin->id);
+        $donationRequests = DonationRequest::where('created_by_admin_id', $admin->id);
+
+        // Apply filters
+        if ($filter === 'cash') {
+            $fundRequests = $fundRequests->get();
+            $donationRequests = collect(); // Empty collection for In-Kind
+        } elseif ($filter === 'in-kind') {
+            $donationRequests = $donationRequests->get();
+            $fundRequests = collect(); // Empty collection for Cash
+        } else {
+            $fundRequests = $fundRequests->get();
+            $donationRequests = $donationRequests->get();
+        }
+
+        return view('admin.allRequest', compact('fundRequests', 'donationRequests', 'filter'));
     }
 }

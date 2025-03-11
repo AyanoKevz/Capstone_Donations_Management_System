@@ -19,8 +19,6 @@ class CashDonation extends Model
         'amount',
         'donation_method',
         'payment_method',
-        'proof_payment',
-        'transaction_reference',
         'transaction_id',
         'payment_status',
         'status',

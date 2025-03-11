@@ -138,24 +138,23 @@ return new class extends Migration {
             $table->foreignId('chapter_id')->constrained('chapter')->onDelete('cascade');
             $table->foreignId('fund_request_id')->nullable()->constrained('fund_request')->onDelete('cascade');
             $table->enum('cause', [
-                'Fire Victims',
-                'Flood Victims',
-                'Typhoon Victims',
-                'Earthquake Victims',
-                'Volcanic Eruption Victims',
+                'Fire',
+                'Flood',
+                'Typhoon',
+                'Earthquake',
+                'Volcanic Eruption',
                 'Feeding Program',
                 'General'
             ]);
             $table->decimal('amount', 10, 2);
             $table->enum('donation_method', ['online', 'drop-off']);
-            $table->enum('payment_method', ['bank_transfer', 'credit_card', 'paypal', 'gcash', 'cash'])->nullable();
-            $table->string('proof_payment')->nullable();
-            $table->string('transaction_reference', 100)->nullable();
-            $table->string('transaction_id')->nullable();
-            $table->enum('payment_status', ['pending', 'completed', 'failed'])->default('pending');
+            $table->enum('payment_method', ['credit_card', 'gcash', 'paymaya'])->nullable();
+            $table->string('transaction_id')->nullable(); // PayMongo transaction ID
+            $table->enum('payment_status', ['pending', 'completed', 'failed'])->nullable()->default('pending');
             $table->enum('status', ['pending', 'received', 'ongoing', 'distributed'])->default('pending');
             $table->timestamps();
         });
+
 
         Schema::create('distribution', function (Blueprint $table) {
             $table->id();
