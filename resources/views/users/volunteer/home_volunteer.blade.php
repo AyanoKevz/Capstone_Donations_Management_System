@@ -317,17 +317,7 @@
     <!-- User JS -->
     <script src="{{ asset('assets/users/js/user.js') }}"></script>
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar/index.global.min.js'></script>
-     <script>
- 
-       document.addEventListener('DOMContentLoaded', function() {
-         var calendarEl = document.getElementById('calendar');
-         var calendar = new FullCalendar.Calendar(calendarEl, {
-           initialView: 'dayGridMonth'
-         });
-         calendar.render();
-       });
- 
-     </script>
+
 </body>
 
 </html>
