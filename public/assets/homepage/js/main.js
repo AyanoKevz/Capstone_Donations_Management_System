@@ -898,6 +898,22 @@ $('#imageFile').on('change', function (event) {
     }
 });
 
+ $('#proofUpload').on('change', function (event) {
+            const file = event.target.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#reviewIdImage').attr('src', e.target.result);
+                };
+
+                reader.readAsDataURL(file);
+            } else {
+                $('#reviewIdImage').attr('src', '{{ asset("assets/img/no_image.jpg") }}');
+            }
+        });
+
 // Validate inputs and show/hide Confirm button
 function validateInputs() {
     let isValid = true;
@@ -922,6 +938,7 @@ function validateInputs() {
 
     // Toggle the "Confirm" button visibility based on validation
     $('#confirmBtn').toggle(isValid);
+    $('#input-filled').toggle(isValid);
 }
 
 
@@ -960,10 +977,15 @@ $('[data-bs-target="#staticBackdrop"]').click(function () {
     if (accountType === 'Organization') {
         $('#reviewLname').closest('p').hide();
         $('#reviewFname').prev('strong').text('Organization Name:');
+        $('#reviewIdType').prev('strong').text('Documents Type:');
+        $('#identityImg').text('Documents Image:');
+        $('#userLogo').text('Organization Logo:');
         $('#reviewGender').prev('strong').hide();
     } else {
         $('#reviewLname').closest('p').show();
         $('#reviewFname').prev('strong').text('First Name:');
+        $('#identityImg').text('ID Image:');
+        $('#userLogo').text('User Image:');
         $('#reviewGender').text($('select[name="gender"]').val());
     }
 });

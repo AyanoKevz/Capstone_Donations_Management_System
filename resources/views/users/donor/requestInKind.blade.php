@@ -15,7 +15,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="{{ asset('lib/bootstrap/css/bootstrap.min.css') }}">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{ asset('assets/users/css/donor/home_donor.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/users/css/donor/requestInKind.css') }}">
 </head>
 
 <!-- Spinner Start -->
@@ -148,7 +148,7 @@
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <!-- Home -->
                         <li class="nav-item">
-                            <a href="{{route ('donor.home') }}" class="nav-link active">
+                            <a href="{{route ('donor.home') }}" class="nav-link">
                                 <i class="nav-icon fas fa-house"></i>
                                 <p>Home</p>
                             </a>
@@ -164,7 +164,7 @@
 
                         <!-- Make a Donation -->
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="#" class="nav-link active">
                                 <i class="nav-icon fas fa-hand-holding-heart"></i>
                                 <p>
                                     Make a Donation
@@ -179,7 +179,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{route ('donor.requestInKind') }}" class="nav-link">
+                                    <a href="{{route ('donor.requestInKind') }}" class="nav-link active">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Donation Requests</p>
                                     </a>
@@ -280,6 +280,19 @@
                                 Donor Portal
                             </h1>
                         </div>
+                        <div class="col-5 d-flex justify-content-end align-items-center">
+                            <ol class="breadcrumb mb-0">
+                                <li class="breadcrumb-item">
+                                    <a href="{{ route('donor.home') }}">Home</a>
+                                </li>
+                                <li class="breadcrumb-item ">
+                                    Donation Request
+                                </li>
+                                <li class="breadcrumb-item active">
+                                    In-Kind Request
+                                </li>
+                            </ol>
+                        </div>
                     </div>
                 </div>
                 @if(session('error'))
@@ -300,10 +313,47 @@
             <div class="content">
                 <div class="container-fluid py-3">
                     <div class="row">
+                        @foreach($donationRequests as $request)
+                        <div class="request-card">
+                            <!-- Proof Photo 1 -->
+                            <div class="card-image" style="background-image: url('{{ asset($request->proof_photo_1) }}');"></div>
 
+                            <div class="card-content">
+                                <!-- Urgency with color -->
+                                <div class="urgency" style="color: {{ $request->urgency === 'Critical' ? 'red' : ($request->urgency === 'Moderate' ? 'orange' : 'green') }}">
+                                    {{ $request->urgency }}
+                                </div>
+
+                                <!-- Cause -->
+                                <div class="cause">
+                                    {{ $request->cause }}
+                                </div>
+
+                                <!-- Description -->
+                                <div class="description">
+                                    {{ $request->description }}
+                                </div>
+
+                                <!-- Location -->
+                                <div class="location">
+                                    @php
+                                    $location = $request->location; // Directly fetch location from donation request
+                                    $formattedLocation = $location->region === "NCR"
+                                    ? "{$location->full_address} {$location->barangay}, {$location->city_municipality}, Metro Manila, Philippines"
+                                    : "{$location->full_address} {$location->barangay}, {$location->city_municipality}, {$location->province}, {$location->region}, Philippines";
+                                    @endphp
+                                    {{ $formattedLocation }}
+                                </div>
+
+                                <!-- More Details Button -->
+                                <a href="#" class="more-details-btn">
+                                    More Details
+                                </a>
+                            </div>
+                        </div>
+                        @endforeach
                     </div>
                 </div>
-
             </div>
 
         </div>

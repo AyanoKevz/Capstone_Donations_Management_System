@@ -375,8 +375,7 @@
             <!-- ./col -->
           </div>
 
-          <div class="row">
-
+          <div class="row my-3">
             <div class="row">
               <div class="col-12 text-center">
                 <h2>Chapter Available Resources</h2>

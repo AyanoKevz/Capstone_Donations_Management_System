@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Admin | Admin List</title>
+  <title>Admin | All Request</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -112,7 +112,7 @@
             </a>
 
             <!-- Admin Settings -->
-            <a class="nav-link collapsed active" href="#" data-bs-toggle="collapse" data-bs-target="#admin-settings"
+            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#admin-settings"
               aria-expanded="false" aria-controls="admin-settings" title="Admin Settings">
               <div class="sb-nav-link-icon">
                 <i class="fas fa-user-cog"></i>
@@ -130,9 +130,9 @@
                   </div>
                   <span>Admin Profile</span>
                 </a>
-                <a class="nav-link active" href="{{ route('admin.list') }}" title="Admin Accounts">
+                <a class="nav-link" href="{{ route('admin.list') }}" title="Admin Accounts">
                   <div class="sb-nav-link-icon">
-                    <i class="fas fa-circle-arrow-right nav-icon"></i>
+                    <i class="far fa-circle nav-icon"></i>
                   </div>
                   <span>Admin Accounts</span>
                 </a>
@@ -202,7 +202,7 @@
             </div>
 
             <!-- Manage Donation Requests -->
-            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#manage-requests"
+            <a class="nav-link collapsed active" href="#" data-bs-toggle="collapse" data-bs-target="#manage-requests"
               aria-expanded="false" aria-controls="manage-requests" title="Manage Donation Requests">
               <div class="sb-nav-link-icon">
                 <i class="fas fa-clipboard-list"></i>
@@ -214,15 +214,15 @@
             </a>
             <div class="collapse" id="manage-requests" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
               <nav class="sb-sidenav-menu-nested nav">
-                <a class="nav-link" href="" title="Create Request">
+                <a class="nav-link" href="{{ route('admin.request_form') }}" title="Create Request">
                   <div class="sb-nav-link-icon">
                     <i class="far fa-circle nav-icon"></i>
                   </div>
                   <span>Create Request</span>
                 </a>
-                <a class="nav-link" href="{{ route('admin.requestList') }}" title="View All Requests">
+                <a class="nav-link active" href="{{ route('admin.requestList') }}" title="View All Requests">
                   <div class="sb-nav-link-icon">
-                    <i class="far fa-circle nav-icon"></i>
+                    <i class="fas fa-circle-arrow-right nav-icon"></i>
                   </div>
                   <span>View All Requests</span>
                 </a>
@@ -238,7 +238,7 @@
             </a>
 
             <!-- Chapters -->
-            <a class="nav-link" href="{{ route('admin.chapters') }}" title="Chapters">
+            <a class="nav-link " href="{{ route('admin.chapters') }}" title="Chapters">
               <div class="sb-nav-link-icon">
                 <i class="fas fa-map-marker-alt"></i>
               </div>
@@ -269,7 +269,6 @@
               <span>Reports</span>
             </a>
           </div>
-
         </div>
         <div class="sb-sidenav-footer bg-logo1">
           <div>Admin Menu</div>
@@ -284,117 +283,212 @@
           <i class="fa-solid fa-circle-check fa-xl me-3"></i>{{ session('success') }}
         </div>
         @endif
-        @if($errors->any())
-        <div id="alert-error" class="alert alert-error" style=" position: absolute; right: 10px; top: 40px;">
-          <ul>
-            @foreach ($errors->all() as $error)
-            <li><i class="fa-solid fa-circle-xmark fa-xl"></i> {{ $error }}</li>
-            @endforeach
-          </ul>
+        @if(session('error'))
+        <div id="alert-error" class="alert alert-danger" style=" position: absolute; right: 10px; top: 40px;">
+          <i class=" fa-solid fa-circle-xmark fa-xl me-3"></i>{{ session('error') }}
         </div>
         @endif
         <div class="container-fluid px-3 py-2">
           <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item active"></li>
           </ol>
-          <h1 class="my-2">Admin List</h1>
-          <div class="d-flex justify-content-end mb-1">
-            <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#create"><i class="fas fa-plus fa-1x me-1" style="color:white;"></i>Create Admin</button>
-          </div>
-          <div class="card card-primary card-outline">
-            <div class="card-header">
-              <h3 class="card-title">UniAid Admins</h3>
-            </div>
-            <div class="card-body">
-              <table id="example1" class="table table-bordered table-hover table-striped">
-                <thead>
-                  <tr>
-                    <th>Username</th>
-                    <th>Full Name</th>
-                    <th>Email</th>
-                    <th>Profile Picture</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  @forelse($admins as $admin)
-                  <tr>
-                    <td class="align-middle">{{ $admin->username }}</td>
-                    <td class="align-middle">{{ $admin->name }}</td>
-                    <td class="align-middle">{{ $admin->email }}</td>
-                    <td class="align-middle">
-                      <img src="{{ asset('storage/' . $admin->profile_image) }}" alt="Profile Picture" class="img-fluid border border-black bg-white" style="width: 60px;">
-                    </td>
-                    <td class="align-middle">
-                      <!-- Delete Button -->
-                      <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $admin->id }}" title="Delete">
-                        <i class="fas fa-trash fa-1x" style="color:white;"></i>
-                      </button>
-                    </td>
-                  </tr>
+          <h1 class="my-2">Request Details</h1>
+          <div class="container mb-3">
+            <div class="row">
+              <!-- Request Information Card -->
+              <div class="col-md-6">
+                <div class="card shadow-sm">
+                  <div class="card-header bg-transparent border-0">
+                    <h3 class="mb-0"><i class="far fa-clone pr-1"></i> Request Information</h3>
+                  </div>
+                  <div class="card-body pt-0">
+                    <table class="table table-bordered">
+                      <tr>
+                        <th width="30%">Cause</th>
+                        <td width="2%">:</td>
+                        <td>{{ $request->cause }}</td>
+                      </tr>
+                      <tr>
+                        <th width="30%">Urgency</th>
+                        <td width="2%">:</td>
+                        <td>
+                          <span class="badge bg-{{ $request->urgency == 'Critical' ? 'danger' : 'warning' }}">
+                            {{ $request->urgency }}
+                          </span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th width="30%">Description</th>
+                        <td width="2%">:</td>
+                        <td>{{ $request->description }}</td>
+                      </tr>
+                      <tr>
+                        <th width="30%">Status</th>
+                        <td width="2%">:</td>
+                        <td>
+                          <span class="badge bg-warning text-dark">{{ ucfirst($request->status) }}</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th width="30%">Location</th>
+                        <td width="2%">:</td>
+                        <td>{{ $formattedLocation }}</td>
+                      </tr>
+                    </table>
 
-                  <!-- Delete Modal -->
-                  <div class="modal fade" id="deleteModal{{ $admin->id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
-                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                      <div class="modal-content">
-                        <div class="modal-header text-center">
-                          <h1 class="modal-title fs-4">Delete Admin</h1>
-                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body text-center">
-                          <p class="m-0">Are you sure you want to delete the admin "{{ $admin->name }}"?</p>
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                          <form action="{{ route('admin.delete') }}" method="POST">
-                            @csrf
-                            <input type="hidden" name="id" value="{{ $admin->id }}">
-                            <button type="submit" class="btn btn-danger">Delete</button>
-                          </form>
-                        </div>
+                    @if ($isCashRequest)
+                    <div class="card-header bg-transparent border-0">
+                      <h3 class="mb-0"><i class="far fa-clone pr-1"></i> Cash Request</h3>
+                    </div>
+                    <table class="table table-bordered">
+                      <thead>
+                        <tr>
+                          <th width="50%">Requested Amount</th>
+                          <th width="50%">Total Donated</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>₱{{ number_format($request->amount_needed, 2) }}</td>
+                          <td class="text-success">₱{{ number_format($totalCashDonated, 2) }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    @else
+                    <div class="card-header bg-transparent border-0">
+                      <h3 class="mb-0"><i class="far fa-clone pr-1"></i> Requested Items</h3>
+                    </div>
+                    <table class="table table-bordered">
+                      <thead class="table-primary">
+                        <tr>
+                          <th>Category</th>
+                          <th>Item</th>
+                          <th>Quantity</th>
+                          <th>Donated</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        @foreach($requestedItems as $item)
+                        <tr>
+                          <td>{{ $item->category }}</td>
+                          <td>{{ $item->item }}</td>
+                          <td>{{ $item->quantity }}</td>
+                          <td>{{ $inKindDonations->where('item', $item->item)->sum('donated_quantity') }}</td>
+                        </tr>
+                        @endforeach
+                      </tbody>
+                    </table>
+                    @endif
+                  </div>
+                </div>
+              </div>
+
+              <!-- Proof Media Card -->
+              <div class="col-md-6">
+                <div class="card shadow-sm">
+                  <div class="card-header bg-transparent border-0">
+                    <h3 class="mb-0"><i class="far fa-clone pr-1"></i> Proof Media</h3>
+                  </div>
+                  <div class="card-body pt-0">
+                    <div class="row mb-3">
+                      <div class="col-md-6 mb-2">
+                        <img src="{{ asset('storage/' . $request->proof_photo_1) }}" alt="Proof Photo 1" class="img-fluid rounded" style="width: 100%; height: 150px; object-fit: cover;">
+                      </div>
+                      <div class="col-md-6 mb-2">
+                        <img src="{{ asset('storage/' . $request->proof_photo_2) }}" alt="Proof Photo 2" class="img-fluid rounded" style="width: 100%; height: 150px; object-fit: cover;">
+                      </div>
+                      <div class="col-md-12">
+                        <video controls class="rounded" style="width: 100%; height: 200px; object-fit: cover;">
+                          <source src="{{ asset('storage/' . $request->proof_video) }}" type="video/mp4">
+                          Your browser does not support the video tag.
+                        </video>
                       </div>
                     </div>
                   </div>
-                  @empty
-                  <tr>
-                    <td colspan="5" class="text-center">No Admin Available</td>
-                  </tr>
-                  @endforelse
-                </tbody>
-              </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Table who donated to the request -->
+          <div class="container ">
+            <div class="row">
+              <div class="d-flex justify-content-end mb-1">
+                <a href="{{ route('request_details', ['id' => $id, 'type' => $isCashRequest ? 'cash' : 'in-kind']) }}?status=all"
+                  class="btn table-btn btn-sm {{ $status === 'all' ? 'custom-active' : '' }}">
+                  All
+                </a>
+
+                <a href="{{ route('request_details', ['id' => $id, 'type' => $isCashRequest ? 'cash' : 'in-kind']) }}?status=pending"
+                  class="btn table-btn btn-sm {{ $status === 'pending' ? 'custom-active' : '' }}">
+                  Pending
+                </a>
+
+                <a href="{{ route('request_details', ['id' => $id, 'type' => $isCashRequest ? 'cash' : 'in-kind']) }}?status=received"
+                  class="btn table-btn btn-sm {{ $status === 'received' ? 'custom-active' : '' }}">
+                  Received
+                </a>
+
+                <a href="{{ route('request_details', ['id' => $id, 'type' => $isCashRequest ? 'cash' : 'in-kind']) }}?status=ongoing"
+                  class="btn table-btn btn-sm {{ $status === 'ongoing' ? 'custom-active' : '' }}">
+                  Ongoing
+                </a>
+              </div>
+
+              <div class="card card-primary card-outline">
+                <div class="card-header">
+                  <h3 class="card-title">Donors for This Request</h3>
+                </div>
+                <div class="card-body">
+                  <table id="example1" class="table table-bordered table-hover table-striped">
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Method</th>
+                        @if($cashDonations->count() > 0)
+                        <th>Amount</th>
+                        <th>Payment Method</th>
+                        @endif
+                        <th>Date & Time</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @if($cashDonations)
+                      @foreach($cashDonations as $cashDonation)
+                      <tr>
+                        <td>{{ $cashDonation->donor_name }}</td>
+                        <td>Cash</td>
+                        <td>{{ $cashDonation->amount }}</td>
+                        <td>{{ $cashDonation->payment_method }}</td>
+                        <td>{{ $cashDonation->created_at }}</td>
+                        <td>{{ $cashDonation->status }}</td>
+                        <td>
+                          <a href="{{ route('cash.donation.details', $cashDonation->id) }}" class="btn btn-sm btn-primary">View</a>
+                        </td>
+                      </tr>
+                      @endforeach
+                      @else
+                      @foreach($inKindDonations as $inKindDonation)
+                      <tr>
+                        <td>{{ $inKindDonation->donor_name }}</td>
+                        <td>In-Kind</td>
+                        <td>{{ $inKindDonation->donation_datetime }}</td>
+                        <td>{{ $inKindDonation->status }}</td>
+                        <td>
+                          <a href="{{ route('inkind.donation.details', $inKindDonation->id) }}" class="btn btn-sm btn-primary">View</a>
+                        </td>
+                      </tr>
+                      @endforeach
+                      @endif
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </main>
-
-      <!-- Create Admin Modal -->
-      <div class="modal fade" id="create" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h1 class="modal-title fs-4">Create New Admin Account</h1>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form action="{{ route('admin.store') }}" method="POST">
-              @csrf
-              <div class="modal-body">
-                <div class="form-group mb-3">
-                  <label for="name">Admin Full Name <span class="text-danger fs-6">*</span></label>
-                  <input type="text" class="form-control" id="name" name="name" required>
-                </div>
-                <div class="form-group mb-2">
-                  <label for="email">Email <span class="text-danger fs-6">*</span> <span style="font-size: small; color: #aaa;">(Must be active)</span></label>
-                  <input type="email" class="form-control" id="email" name="email" required>
-                </div>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="submit" class="btn btn-success">Create</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
 
       <footer class="py-3 bg-dark mt-3">
         <div class="container-fluid ps-4">

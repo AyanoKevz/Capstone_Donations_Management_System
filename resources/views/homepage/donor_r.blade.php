@@ -328,6 +328,7 @@
                                     <select id="validID" name="id_type" required>
                                         <option disabled selected value="">Select ID</option>
                                         <option value="Philippine Passport">Philippine Passport</option>
+                                        <option value="National ID">National ID</option>
                                         <option value="Driver's License">Driver's License</option>
                                         <option value="SSS ID">SSS ID</option>
                                         <option value="UMID">UMID</option>
@@ -450,7 +451,7 @@
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Review Your Details</h1>
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Review Your Details <small id="input-filled" class="text-success" style="display: none;">(Form Complete)</small></h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -482,13 +483,13 @@
                     <h5>Identity Details</h5>
                     <div class="ms-3">
                         <p><strong>ID Type:</strong> <span id="reviewIdType"></span></p>
-                        <p><strong>ID Image:</strong></p>
-                        <img id="reviewIdImage" class="border border-secondary" src="{{ asset ('assets/img/no_image.jpg') }}" alt="ID Image" style="width: 200px; height:200px; margin-bottom: 16px;" />
+                        <p><strong id="identityImg">ID Image:</strong></p>
+                        <img id="reviewIdImage" class="border border-secondary  ms-3" src="{{ asset ('assets/img/no_image.jpg') }}" alt="ID Image" style="width: 200px; height:200px; margin-bottom: 16px;" />
                     </div>
 
                     <div class="ms-3">
-                        <p><strong>User Image:</strong></p>
-                        <img id="reviewUserImage" class="border border-secondary" src="{{ asset ('assets/img/no_image.jpg') }}" alt="User Image" style="width: 200px; height:200px;" />
+                        <p><strong id="userLogo">User Image:</strong></p>
+                        <img id="reviewUserImage" class="border border-secondary ms-3" src="{{ asset ('assets/img/no_image.jpg') }}" alt="User Image" style="width: 200px; height:200px;" />
                     </div>
                 </div>
                 <div class="modal-footer">

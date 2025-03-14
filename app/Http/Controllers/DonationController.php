@@ -207,8 +207,6 @@ class DonationController extends Controller
         ]);
     }
 
-
-
     public function RequestMapInKindDonate(Request $request)
     {
         try {
@@ -289,7 +287,7 @@ class DonationController extends Controller
             ->toArray();
 
         // Start with a base query for fund requests
-        $query = FundRequest::with(['location', 'cashDonations', 'admin.chapter']) // Include the admin's chapter
+        $query = FundRequest::with(['location', 'cashDonations', 'admin.chapter'])
             ->where('status', 'Pending')
             ->whereNotIn('id', $pendingCashDonations);
 

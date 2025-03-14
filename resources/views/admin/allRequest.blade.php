@@ -140,7 +140,7 @@
             </div>
 
             <!-- Manage Users -->
-            <a class="nav-link collapsed active" href="#" data-bs-toggle="collapse" data-bs-target="#manage-users"
+            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#manage-users"
               aria-expanded="false" aria-controls="manage-users" title="Manage Users">
               <div class="sb-nav-link-icon">
                 <i class="fas fa-users"></i>
@@ -152,9 +152,9 @@
             </a>
             <div class="collapse" id="manage-users" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
               <nav class="sb-sidenav-menu-nested nav">
-                <a class="nav-link active" href="{{ route('admin.donorList') }}" title="Donors">
+                <a class="nav-link" href="{{ route('admin.donorList') }}" title="Donors">
                   <div class="sb-nav-link-icon">
-                    <i class="fas fa-circle-arrow-right nav-icon"></i>
+                    <i class="far fa-circle nav-icon"></i>
                   </div>
                   <span>Donors</span>
                 </a>
@@ -202,7 +202,7 @@
             </div>
 
             <!-- Manage Donation Requests -->
-            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#manage-requests"
+            <a class="nav-link collapsed active" href="#" data-bs-toggle="collapse" data-bs-target="#manage-requests"
               aria-expanded="false" aria-controls="manage-requests" title="Manage Donation Requests">
               <div class="sb-nav-link-icon">
                 <i class="fas fa-clipboard-list"></i>
@@ -220,9 +220,9 @@
                   </div>
                   <span>Create Request</span>
                 </a>
-                <a class="nav-link" href="{{ route('admin.requestList') }}" title="View All Requests">
+                <a class="nav-link active" href="{{ route('admin.requestList') }}" title="View All Requests">
                   <div class="sb-nav-link-icon">
-                    <i class="far fa-circle nav-icon"></i>
+                    <i class="fas fa-circle-arrow-right nav-icon"></i>
                   </div>
                   <span>View All Requests</span>
                 </a>
@@ -292,7 +292,7 @@
           <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item active"></li>
           </ol>
-          <h1 class="my-2">Our Donors</h1>
+          <h1 class="my-2">All Request Made</h1>
           <div class="d-flex justify-content-end mb-1">
             <a href="{{ route('admin.requestList', ['type' => 'all']) }}"
               class="btn table-btn btn-sm {{ $filter === 'all' ? 'custom-active' : '' }}">
@@ -335,10 +335,21 @@
                       @endphp
                       {{ $formattedLocation }}
                     </td>
-                    <td>{{ $fundRequest->urgency }}</td>
+                    <td>
+                      @php
+                      $urgencyLevel = strtolower($fundRequest->urgency); // Convert to lowercase for consistency
+                      $urgencyClass = match($urgencyLevel) {
+                      'critical' => 'bg-danger text-white', // Red for high urgency
+                      'moderate' => 'bg-warning text-dark', // Yellow for medium urgency
+                      'low' => 'bg-success text-white', // Green for low urgency
+                      default => 'bg-secondary text-white' // Gray for undefined urgency
+                      };
+                      @endphp
+                      <span class="badge {{ $urgencyClass }}">{{ ucfirst($fundRequest->urgency) }}</span>
+                    </td>
                     <td><span class="badge bg-primary">Cash</span></td>
                     <td>
-                      <a href="{{ route('view_details', $fundRequest->id) }}" class="btn btn-success btn-sm">View</a>
+                      <a href="{{ route('request_details', ['id' => $fundRequest->id, 'type' => 'cash']) }}" class="btn btn-success btn-sm">View</a>
                     </td>
                   </tr>
                   @empty
@@ -361,10 +372,21 @@
                       @endphp
                       {{ $formattedLocation }}
                     </td>
-                    <td>{{ $donationRequest->urgency }}</td>
+                    <td>
+                      @php
+                      $urgencyLevel = strtolower($donationRequest->urgency); // Convert to lowercase for consistency
+                      $urgencyClass = match($urgencyLevel) {
+                      'critical' => 'bg-danger text-white', // Red for high urgency
+                      'moderate' => 'bg-warning text-dark', // Yellow for medium urgency
+                      'low' => 'bg-success text-white', // Green for low urgency
+                      default => 'bg-secondary text-white' // Gray for undefined urgency
+                      };
+                      @endphp
+                      <span class="badge {{ $urgencyClass }}">{{ ucfirst($donationRequest->urgency) }}</span>
+                    </td>
                     <td><span class="badge bg-warning">In-Kind</span></td>
                     <td>
-                      <a href="{{ route('view_details', $donationRequest->id) }}" class="btn btn-success btn-sm">View</a>
+                      <a href="{{ route('request_details', ['id' => $donationRequest->id, 'type' => 'in-kind']) }}" class="btn btn-success btn-sm">View</a>
                     </td>
                   </tr>
                   @empty
@@ -376,7 +398,6 @@
                   @endforelse
                 </tbody>
               </table>
-
             </div>
           </div>
         </div>

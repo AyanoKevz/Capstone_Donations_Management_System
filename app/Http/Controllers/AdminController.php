@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\Chapter;
 use App\Models\UserAccount;
 use App\Models\Donor;
+use App\Models\CashDonation;
+use App\Models\Donation;
+use App\Models\DonationItem;
 use App\Models\Appointment;
 use App\Models\Admin;
 use App\Models\Volunteer;
@@ -385,8 +388,7 @@ class AdminController extends Controller
     public function adminList()
     {
         $admins = Admin::all();
-        $chapters = Chapter::all();
-        return view('admin.admin_list', compact('admins', 'chapters'));
+        return view('admin.admin_list', compact('admins'));
     }
 
 
@@ -408,11 +410,13 @@ class AdminController extends Controller
 
     public function CreateAdmin(Request $request)
     {
-        // Validate the request
+        // Get the currently logged-in admin
+        $loggedInAdmin = Auth::guard('admin')->user();
+
+        // Validate the request (excluding 'chapter' since it will be auto-assigned)
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:admin,email',
-            'chapter' => 'required|exists:chapter,id',
         ]);
 
         // Generate username and password
@@ -431,7 +435,7 @@ class AdminController extends Controller
             'username' => $username,
             'password' => bcrypt($password),
             'profile_image' => $profileImagePath,
-            'chapter_id' => $request->chapter, // Include chapter_id
+            'chapter_id' => $loggedInAdmin->chapter_id, // Assign the logged-in admin's chapter_id
         ]);
 
         // Prepare email details
@@ -440,7 +444,7 @@ class AdminController extends Controller
             'username' => $username,
             'password' => $password,
             'logoPath' => public_path('assets/img/systemLogo.png'),
-            'chapter' => Chapter::find($request->chapter)->chapter_name, // Include chapter name
+            'chapter' => $loggedInAdmin->chapter->chapter_name, // Include chapter name from the logged-in admin
         ];
 
         // Send email
@@ -699,5 +703,65 @@ class AdminController extends Controller
         }
 
         return view('admin.allRequest', compact('fundRequests', 'donationRequests', 'filter'));
+    }
+
+    public function requestDetails($id, $type)
+    {
+        $status = request()->query('status', 'all');
+
+        if ($type === 'cash') {
+            $fundRequest = FundRequest::find($id);
+            $donationRequest = null;
+        } else {
+            $fundRequest = null;
+            $donationRequest = DonationRequest::find($id);
+        }
+
+        $requestedItems = $donationRequest ? $donationRequest->items : collect();
+
+        $cashDonations = $fundRequest ? $fundRequest->cashDonations()
+            ->when($status !== 'all', function ($query) use ($status) {
+                return $query->where('status', $status);
+            })->get() : collect();
+
+        $totalCashDonated = $fundRequest ? $fundRequest->cashDonations()->sum('amount') : 0;
+
+        $inKindDonations = $donationRequest ? $donationRequest->donations()
+            ->when($status !== 'all', function ($query) use ($status) {
+                return $query->where('status', $status);
+            })->get() : collect();
+
+        $isCashRequest = ($type === 'cash');
+
+        // Get location details
+        $request = $fundRequest ?? $donationRequest;
+        $location = $request->location;
+        $formattedLocation = $location->region === "NCR"
+            ? "{$location->barangay}, {$location->city_municipality}, Metro Manila, Philippines"
+            : "{$location->barangay}, {$location->city_municipality}, {$location->province}, {$location->region}, Philippines";
+
+        return view('admin.requestDetails', compact(
+            'cashDonations',
+            'inKindDonations',
+            'totalCashDonated',
+            'status',
+            'id',
+            'isCashRequest',
+            'formattedLocation',
+            'request',
+            'requestedItems'
+        ));
+    }
+
+    public function showCashDonationDetails($id)
+    {
+        $cashDonation = CashDonation::findOrFail($id);
+        return view('admin.cash_details', compact('cashDonation'));
+    }
+
+    public function showInKindDonationDetails($id)
+    {
+        $inKindDonation = Donation::with('donationItems')->findOrFail($id);
+        return view('admin.inkind_details', compact('inKindDonation'));
     }
 }

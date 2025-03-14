@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Admin | Admin List</title>
+  <title>Admin | All Request</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -15,8 +15,7 @@
     href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <link rel="icon" href="{{ asset ('assets/img/systemLogo.png') }}" type="image/png">
   <link rel="stylesheet" href="{{ asset('lib/bootstrap/css/bootstrap.min.css') }}">
-  <link rel="stylesheet" href="{{ asset('lib/datatables/datatables.min.css') }}">
-  <link rel="stylesheet" href="{{ asset ('assets/admin/css/list.css') }}">
+  <link rel="stylesheet" href="{{ asset ('assets/admin/css/cash_details.css') }}">
 
 </head>
 
@@ -112,7 +111,7 @@
             </a>
 
             <!-- Admin Settings -->
-            <a class="nav-link collapsed active" href="#" data-bs-toggle="collapse" data-bs-target="#admin-settings"
+            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#admin-settings"
               aria-expanded="false" aria-controls="admin-settings" title="Admin Settings">
               <div class="sb-nav-link-icon">
                 <i class="fas fa-user-cog"></i>
@@ -130,9 +129,9 @@
                   </div>
                   <span>Admin Profile</span>
                 </a>
-                <a class="nav-link active" href="{{ route('admin.list') }}" title="Admin Accounts">
+                <a class="nav-link" href="{{ route('admin.list') }}" title="Admin Accounts">
                   <div class="sb-nav-link-icon">
-                    <i class="fas fa-circle-arrow-right nav-icon"></i>
+                    <i class="far fa-circle nav-icon"></i>
                   </div>
                   <span>Admin Accounts</span>
                 </a>
@@ -202,7 +201,7 @@
             </div>
 
             <!-- Manage Donation Requests -->
-            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#manage-requests"
+            <a class="nav-link collapsed " href="#" data-bs-toggle="collapse" data-bs-target="#manage-requests"
               aria-expanded="false" aria-controls="manage-requests" title="Manage Donation Requests">
               <div class="sb-nav-link-icon">
                 <i class="fas fa-clipboard-list"></i>
@@ -214,7 +213,7 @@
             </a>
             <div class="collapse" id="manage-requests" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
               <nav class="sb-sidenav-menu-nested nav">
-                <a class="nav-link" href="" title="Create Request">
+                <a class="nav-link" href="{{ route('admin.request_form') }}" title="Create Request">
                   <div class="sb-nav-link-icon">
                     <i class="far fa-circle nav-icon"></i>
                   </div>
@@ -238,7 +237,7 @@
             </a>
 
             <!-- Chapters -->
-            <a class="nav-link" href="{{ route('admin.chapters') }}" title="Chapters">
+            <a class="nav-link " href="{{ route('admin.chapters') }}" title="Chapters">
               <div class="sb-nav-link-icon">
                 <i class="fas fa-map-marker-alt"></i>
               </div>
@@ -269,7 +268,6 @@
               <span>Reports</span>
             </a>
           </div>
-
         </div>
         <div class="sb-sidenav-footer bg-logo1">
           <div>Admin Menu</div>
@@ -284,117 +282,73 @@
           <i class="fa-solid fa-circle-check fa-xl me-3"></i>{{ session('success') }}
         </div>
         @endif
-        @if($errors->any())
-        <div id="alert-error" class="alert alert-error" style=" position: absolute; right: 10px; top: 40px;">
-          <ul>
-            @foreach ($errors->all() as $error)
-            <li><i class="fa-solid fa-circle-xmark fa-xl"></i> {{ $error }}</li>
-            @endforeach
-          </ul>
+        @if(session('error'))
+        <div id="alert-error" class="alert alert-danger" style=" position: absolute; right: 10px; top: 40px;">
+          <i class=" fa-solid fa-circle-xmark fa-xl me-3"></i>{{ session('error') }}
         </div>
         @endif
         <div class="container-fluid px-3 py-2">
           <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item active"></li>
           </ol>
-          <h1 class="my-2">Admin List</h1>
-          <div class="d-flex justify-content-end mb-1">
-            <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#create"><i class="fas fa-plus fa-1x me-1" style="color:white;"></i>Create Admin</button>
-          </div>
-          <div class="card card-primary card-outline">
-            <div class="card-header">
-              <h3 class="card-title">UniAid Admins</h3>
+          <h1 class="my-2">Our Donors</h1>
+          <div class="card shadow-sm">
+            <div class="card-header bg-transparent border-0">
+              <h3 class="mb-0"><i class="far fa-clone pr-1"></i> Cash Donation Details</h3>
             </div>
-            <div class="card-body">
-              <table id="example1" class="table table-bordered table-hover table-striped">
-                <thead>
-                  <tr>
-                    <th>Username</th>
-                    <th>Full Name</th>
-                    <th>Email</th>
-                    <th>Profile Picture</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  @forelse($admins as $admin)
-                  <tr>
-                    <td class="align-middle">{{ $admin->username }}</td>
-                    <td class="align-middle">{{ $admin->name }}</td>
-                    <td class="align-middle">{{ $admin->email }}</td>
-                    <td class="align-middle">
-                      <img src="{{ asset('storage/' . $admin->profile_image) }}" alt="Profile Picture" class="img-fluid border border-black bg-white" style="width: 60px;">
-                    </td>
-                    <td class="align-middle">
-                      <!-- Delete Button -->
-                      <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $admin->id }}" title="Delete">
-                        <i class="fas fa-trash fa-1x" style="color:white;"></i>
-                      </button>
-                    </td>
-                  </tr>
-
-                  <!-- Delete Modal -->
-                  <div class="modal fade" id="deleteModal{{ $admin->id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
-                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                      <div class="modal-content">
-                        <div class="modal-header text-center">
-                          <h1 class="modal-title fs-4">Delete Admin</h1>
-                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body text-center">
-                          <p class="m-0">Are you sure you want to delete the admin "{{ $admin->name }}"?</p>
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                          <form action="{{ route('admin.delete') }}" method="POST">
-                            @csrf
-                            <input type="hidden" name="id" value="{{ $admin->id }}">
-                            <button type="submit" class="btn btn-danger">Delete</button>
-                          </form>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  @empty
-                  <tr>
-                    <td colspan="5" class="text-center">No Admin Available</td>
-                  </tr>
-                  @endforelse
-                </tbody>
+            <div class="card-body pt-0">
+              <table class="table table-bordered">
+                <tr>
+                  <th width="30%">Donor Name</th>
+                  <td width="2%">:</td>
+                  <td>{{ $cashDonation->donor_name }}</td>
+                </tr>
+                <tr>
+                  <th width="30%">Amount</th>
+                  <td width="2%">:</td>
+                  <td>₱{{ number_format($cashDonation->amount, 2) }}</td>
+                </tr>
+                <tr>
+                  <th width="30%">Donation Method</th>
+                  <td width="2%">:</td>
+                  <td>{{ $cashDonation->donation_method }}</td>
+                </tr>
+                @if($cashDonation->donation_method === 'online')
+                <tr>
+                  <th width="30%">Payment Method</th>
+                  <td width="2%">:</td>
+                  <td>{{ $cashDonation->payment_method }}</td>
+                </tr>
+                @endif
+                <tr>
+                  <th width="30%">Transaction ID</th>
+                  <td width="2%">:</td>
+                  <td>{{ $cashDonation->transaction_id }}</td>
+                </tr>
+                <tr>
+                  <th width="30%">Status</th>
+                  <td width="2%">:</td>
+                  <td>{{ $cashDonation->status }}</td>
+                </tr>
+                <tr>
+                  <th width="30%">Date & Time</th>
+                  <td width="2%">:</td>
+                  <td>{{ $cashDonation->created_at }}</td>
+                </tr>
               </table>
+
+              <!-- Add Verify/Decline Buttons if Status is Pending -->
+              @if($cashDonation->status === 'pending')
+              <div class="mt-4">
+                <button class="btn btn-success">Verify</button>
+                <button class="btn btn-danger">Decline</button>
+              </div>
+              @endif
             </div>
           </div>
+
         </div>
       </main>
-
-      <!-- Create Admin Modal -->
-      <div class="modal fade" id="create" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h1 class="modal-title fs-4">Create New Admin Account</h1>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form action="{{ route('admin.store') }}" method="POST">
-              @csrf
-              <div class="modal-body">
-                <div class="form-group mb-3">
-                  <label for="name">Admin Full Name <span class="text-danger fs-6">*</span></label>
-                  <input type="text" class="form-control" id="name" name="name" required>
-                </div>
-                <div class="form-group mb-2">
-                  <label for="email">Email <span class="text-danger fs-6">*</span> <span style="font-size: small; color: #aaa;">(Must be active)</span></label>
-                  <input type="email" class="form-control" id="email" name="email" required>
-                </div>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="submit" class="btn btn-success">Create</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
 
       <footer class="py-3 bg-dark mt-3">
         <div class="container-fluid ps-4">
@@ -410,7 +364,6 @@
   <script src="{{ asset('lib/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
   <script src="{{ asset('lib/fontawesome/all.js') }}"></script>
   <script src="{{ asset('lib/jquery/jquery.min.js') }}"></script>
-  <script src="{{ asset('lib/datatables/datatables.min.js') }}"></script>
   <script src="{{ asset('assets/admin/js/admin.js') }}"></script>
 
   <script>
