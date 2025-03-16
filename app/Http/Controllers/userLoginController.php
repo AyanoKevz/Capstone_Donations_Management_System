@@ -71,7 +71,7 @@ class userLoginController extends Controller
             // Check if account is verified
             if (!$user->is_verified) {
                 Auth::logout();
-                return redirect()->route('mobile-login')->with('error', 'You account is not verified yet.');
+                return redirect()->route('mobile-login')->with('error', 'Your account is not active. An email will be sent to you once it is active. ');
             }
 
             switch ($user->role_name) {

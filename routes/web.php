@@ -92,9 +92,10 @@ Route::middleware(['admin', 'prevent-back-button'])->prefix('admin')->group(func
     // Admin Donor List
     Route::get('/active-donors', [AdminController::class, 'allDonors'])->name('admin.donorList');
     Route::post('/active-donors/{userId}', [AdminController::class, 'deleteDonor'])->name('donors.delete');
+    Route::post('/donors/deactivate/{userId}', [AdminController::class, 'deactivateDonor'])->name('donors.deactivate');
     // Admin Volunteer List
     Route::get('/active-volunteer', [AdminController::class, 'allVolunteers'])->name('admin.volunteerList');
-    Route::post('/volunteers/delete/{id}', [AdminController::class, 'deleteVolunteer'])->name('volunteers.delete');
+    Route::post('/volunteers/deactivate/{userId}', [AdminController::class, 'deactivateVolunteer'])->name('volunteers.deactivate');
 
     // Admin Inquiries
     Route::get('/inquiries', [InquiryController::class, 'inbox'])->name('admin.inquiries');

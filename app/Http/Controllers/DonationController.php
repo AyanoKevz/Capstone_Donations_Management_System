@@ -424,9 +424,9 @@ class DonationController extends Controller
             'cause' => $request->cause,
             'amount' => $request->amount,
             'donation_method' => 'drop-off',
-            'payment_method' => null, // No payment method for drop-off
-            'payment_status' => null, // No payment status for drop-off
-            'status' => 'pending', // Set to pending until admin confirms
+            'payment_method' => null,
+            'payment_status' => null,
+            'status' => 'pending',
             'transaction_id' => $transactionId,
         ]);
 
