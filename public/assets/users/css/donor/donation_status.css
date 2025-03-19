@@ -1271,115 +1271,23 @@ body:not(.layout-fixed) .main-sidebar .sidebar {
   font-size: 22px;
 }
 
-#calendar {
-    max-width: 900px;
-    margin: 0 auto;
-    border: 2px solid #b92f2f;
-    padding: 10px;
-    border-radius: 5px;
-    background-color: white;
+
+.table-btn {
+ background-color: #f8f9fa;
+    border-color: #ddd;
+    color: #444;
+}
+.table-btn:hover {
+ background-color: #d4d4d4;
 }
 
-.fc-view-harness {
-    border: 1px solid #b92f2f !important;
+.custom-active {
+    background-color: #14204b ;
+    color: white;
+    border-color: #14204b;
 }
 
-.fc .fc-toolbar-title {
-    color: #1b2a5f !important;
-    font-weight: bold;
-}
-
-.fc .fc-button {
-    background-color: #1b2a5f !important;
-    border: none !important;
-    color: white !important;
-}
-
-.fc .fc-button:hover {
-    background-color: #14204b !important;
-}
-
-.fc .fc-button-active {
-    background-color: #14204b !important;
-}
-
-.fc-daygrid-day-number, 
-.fc-col-header-cell-cushion {
-    color: #1b2a5f !important;
-    font-weight: bold;
-}
-
-.fc-daygrid-day {
-    border: 1px solid #b92f2f !important;
-}
-
-.fc-col-header-cell {
-    border: 1px solid #b92f2f !important;
-    background-color: #ffffff;
-    padding: 5px 0;
-    font-weight: bold;
-}
-
-.fc-event {
-    background-color: #1b2a5f !important;
-    border: 1px solid #b92f2f !important;
-    color: white !important;
-}
-
-
-
-
-.info-box {
-  box-shadow: 0 0 1px rgba(0, 0, 0, 0.125), 0 1px 3px rgba(0, 0, 0, 0.2);
-  border-radius: 0.25rem;
-  background-color: #fff;
-  display: -ms-flexbox;
-  display: flex;
-  margin-bottom: 1rem;
-  min-height: 80px;
-  padding: .5rem;
-  position: relative;
-  width: 100%;
-}
-
-.info-box .info-box-icon {
-  border-radius: 0.25rem;
-  -ms-flex-align: center;
-  align-items: center;
-  display: -ms-flexbox;
-  display: flex;
-  font-size: 1.875rem;
-  -ms-flex-pack: center;
-  justify-content: center;
-  text-align: center;
-  width: 70px;
-}
-
-.info-box .info-box-content {
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -ms-flex-pack: center;
-  justify-content: center;
-  line-height: 1.8;
-  -ms-flex: 1;
-  flex: 1;
-  padding: 0 10px;
-  overflow: hidden;
-}
-
-.info-box .info-box-number {
-  display: block;
-  margin-top: .25rem;
-  font-weight: 700;
-}
-
-.info-box .progress-description,
-.info-box .info-box-text {
-  display: block;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font-weight: bold;
+.custom-active:hover {
+    background-color: #040e32 !important;
+    color: white;
 }

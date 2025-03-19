@@ -710,13 +710,17 @@ class AdminController extends Controller
     public function allRequest(Request $request)
     {
         $admin = Auth::guard('admin')->user();
+
+        // Retrieve filter values from the request
         $filter = $request->input('type', 'all'); // Default is 'all'
+        $urgencyFilter = $request->input('urgency', 'all'); // Default is 'all'
+        $statusFilter = $request->input('status', 'Pending'); // Default is 'Pending'
 
         // Fetch fund and donation requests only for the admin's chapter
         $fundRequests = FundRequest::where('created_by_admin_id', $admin->id);
         $donationRequests = DonationRequest::where('created_by_admin_id', $admin->id);
 
-        // Apply filters
+        // Apply type filter
         if ($filter === 'cash') {
             $fundRequests = $fundRequests->get();
             $donationRequests = collect(); // Empty collection for In-Kind
@@ -728,7 +732,27 @@ class AdminController extends Controller
             $donationRequests = $donationRequests->get();
         }
 
-        return view('admin.allRequest', compact('fundRequests', 'donationRequests', 'filter'));
+        // Apply urgency filter
+        if ($urgencyFilter !== 'all') {
+            $fundRequests = $fundRequests->filter(function ($request) use ($urgencyFilter) {
+                return $request->urgency === $urgencyFilter;
+            });
+            $donationRequests = $donationRequests->filter(function ($request) use ($urgencyFilter) {
+                return $request->urgency === $urgencyFilter;
+            });
+        }
+
+        // Apply status filter
+        if ($statusFilter !== 'all') {
+            $fundRequests = $fundRequests->filter(function ($request) use ($statusFilter) {
+                return $request->status === $statusFilter;
+            });
+            $donationRequests = $donationRequests->filter(function ($request) use ($statusFilter) {
+                return $request->status === $statusFilter;
+            });
+        }
+
+        return view('admin.allRequest', compact('fundRequests', 'donationRequests', 'filter', 'urgencyFilter', 'statusFilter'));
     }
 
     public function requestDetails($id, $type)

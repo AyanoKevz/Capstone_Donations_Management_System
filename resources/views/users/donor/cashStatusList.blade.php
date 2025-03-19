@@ -14,6 +14,7 @@
         rel="stylesheet">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="{{ asset('lib/bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('lib/datatables/datatables.min.css') }}">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('assets/users/css/donor/home_donor.css') }}">
 </head>
@@ -300,7 +301,36 @@
             <div class="content">
                 <div class="container-fluid py-3">
                     <div class="row">
+                        <div class="d-flex justify-content-between">
 
+                            <div class="d-flex mb-1">
+                                <!-- Filter for Donation Request Type -->
+                                <a href="{{ route('admin.requestList)}}"
+                                    class="btn table-btn btn-sm">
+                                    Cash
+                                </a>
+                                <a href="{{ route('admin.requestList', ['type' => 'in-kind', 'urgency' => $urgencyFilter, 'status' => $statusFilter]) }}"
+                                    class="btn table-btn btn-sm custom-active">
+                                    In-Kind
+                                </a>
+                            </div>
+                            <div class="d-flex mb-1">
+                                <!-- Filter for Status -->
+                                <a href="{{ route('admin.requestList', ['type' => $filter, 'urgency' => $urgencyFilter, 'status' => 'Pending']) }}"
+                                    class="btn table-btn btn-sm {{ $statusFilter === 'Pending' ? 'custom-active' : '' }}">
+                                    All
+                                </a>
+                                <a href="{{ route('admin.requestList', ['type' => $filter, 'urgency' => $urgencyFilter, 'status' => 'pending']) }}"
+                                    class="btn table-btn btn-sm {{ $statusFilter === 'Fulfilled' ? 'custom-active' : '' }}">
+                                    Pending
+                                </a>
+                                <a href="{{ route('admin.requestList', ['type' => $filter, 'urgency' => $urgencyFilter, 'status' => 'ongoing']) }}"
+                                    class="btn table-btn btn-sm {{ $statusFilter === 'Unfulfilled' ? 'custom-active' : '' }}">
+                                    Ongoing
+                                </a>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
 
@@ -323,8 +353,10 @@
     <script src="{{ asset('lib/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <!-- Fontawesome 6 -->
     <script src="{{ asset('lib/fontawesome/all.js') }}"></script>
+    <script src="{{ asset('lib/datatables/datatables.min.js') }}"></script>
     <!-- User JS -->
     <script src="{{ asset('assets/users/js/user.js') }}"></script>
+
 </body>
 
 </html>

@@ -17,7 +17,7 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('assets/users/css/volunteer/home_volunteer.css') }}">
 
-    
+
 </head>
 
 <!-- Spinner Start -->
@@ -259,77 +259,81 @@
 
             <!-- End content-header -->
 
-        <!-- Main content -->
-        <div class="content">
-                <div class="container">
-
-                        <!-- Cards Section -->
-                        <div class="row mb-5">
-                            <div class="col-md-4">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Assigned Task:</h5>
-                                        <p class="card-text">Some content for the first card.</p>
-                                    </div>
+            <!-- Main content -->
+            <div class="content p-3">
+                <div class="container-fluid">
+                    <!-- Cards Section -->
+                    <div class="row">
+                        <div class="col-md-4 col-sm-6 col-12">
+                            <div class="info-box">
+                                <span class="info-box-icon bg-info"><i class="fa-solid fa-list-check" style="color: #ffffff;"></i></span>
+                                <div class="info-box-content">
+                                    <h5 class="info-box-text">Assigned Task</h5>
+                                    <span class="info-box-number">{{ $assignedTasks }}</span>
                                 </div>
+                                <!-- /.info-box-content -->
                             </div>
-                            <div class="col-md-4">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Total Events:</h5>
-                                        <p class="card-text">Some content for the second card.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Total hours</h5>
-                                        <p class="card-text">Some content for the third card.</p>
-                                    </div>
-                                </div>
-                            </div>
+                            <!-- /.info-box -->
                         </div>
+                        <!-- /.col -->
+                        <div class="col-md-4 col-sm-6 col-12">
+                            <div class="info-box">
+                                <span class="info-box-icon bg-success"><i class="fa-solid fa-calendar" style="color: #ffffff;"></i></span>
+                                <div class="info-box-content">
+                                    <h5 class="info-box-text">Available Event</h5>
+                                    <span class="info-box-number">{{ $availableEvents }}</span>
+                                </div>
+                                <!-- /.info-box-content -->
+                            </div>
+                            <!-- /.info-box -->
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-md-4 col-sm-6 col-12">
+                            <div class="info-box">
+                                <span class="info-box-icon bg-warning"><i class="fa-solid fa-clock" style="color: #ffffff;"></i></span>
+                                <div class="info-box-content">
+                                    <h5 class="info-box-text">Total Hours</h5>
+                                    <span class="info-box-number">{{ $totalHoursWorked }}</span>
+                                </div>
+                                <!-- /.info-box-content -->
+                            </div>
+                            <!-- /.info-box -->
+                        </div>
+                        <!-- /.col -->
+                    </div>
 
-                        <!-- Calendar Section -->
-                        <div id="calendar"></div>
-
+                    <!-- Calendar Section -->
+                    <div class="row">
+                        <h1 class="fw-bolder my-3">Your Calendar Activity</h1>
+                        <div class="col-md-12">
+                            <div id="calendar"></div>
+                        </div>
                     </div>
                 </div>
+            </div>
+            <!-- /.content wrapper -->
 
+            <!-- Main Footer -->
+            <footer class="main-footer">
+                <strong>Copyright &copy; 2024 UniAid - Community Donations and Resource Distribution.</strong>
+                All rights reserved.
+            </footer>
+        </div>
+        <!-- ./wrapper -->
 
-
-
-        <!-- /.content wrapper -->
-
-        <!-- Main Footer -->
-        <footer class="main-footer">
-            <strong>Copyright &copy; 2024 UniAid - Community Donations and Resource Distribution.</strong>
-            All rights reserved.
-        </footer>
-    </div>
-    <!-- ./wrapper -->
-
-    <!-- jQuery -->
-    <script src="{{ asset('lib/jquery/jquery.min.js') }}"></script>
-    <!-- Bootstrap 5 -->
-    <script src="{{ asset('lib/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-    <!-- Fontawesome 6 -->
-    <script src="{{ asset('lib/fontawesome/all.js') }}"></script>
-    <!-- User JS -->
-    <script src="{{ asset('assets/users/js/user.js') }}"></script>
-    <script src='https://cdn.jsdelivr.net/npm/fullcalendar/index.global.min.js'></script>
-     <script>
- 
-       document.addEventListener('DOMContentLoaded', function() {
-         var calendarEl = document.getElementById('calendar');
-         var calendar = new FullCalendar.Calendar(calendarEl, {
-           initialView: 'dayGridMonth'
-         });
-         calendar.render();
-       });
- 
-     </script>
+        <!-- jQuery -->
+        <script src="{{ asset('lib/jquery/jquery.min.js') }}"></script>
+        <!-- Bootstrap 5 -->
+        <script src="{{ asset('lib/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+        <!-- Fontawesome 6 -->
+        <script src="{{ asset('lib/fontawesome/all.js') }}"></script>
+        <!-- Full Calendar -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.15/index.global.js"></script>
+        <script>
+            window.calendarEvents = @json($calendarEvents ?? []);
+        </script>
+        <!-- User JS -->
+        <script src=" {{ asset('assets/users/js/user.js') }}"></script>
 </body>
 
 </html>

@@ -11,6 +11,7 @@ use App\Models\UserAccount;
 use App\Models\Appointment;
 use App\Models\Volunteer;
 use Illuminate\Http\Request;
+use App\Helpers\SmsHelper;
 
 class VerifyAcct extends Controller
 {
@@ -90,7 +91,6 @@ class VerifyAcct extends Controller
         }
     }
 
-
     public function create_appointment(Request $request, $id)
     {
         $request->validate([
@@ -116,7 +116,13 @@ class VerifyAcct extends Controller
             $volunteer->chapter->chapter_name
         ));
 
+        // **Send SMS notification**
+        if (!empty($volunteer->contact)) {
+            $message = "Hello {$volunteer->first_name}, your appointment is confirmed for {$request->appointment_date} at {$request->appointment_time} at {$volunteer->chapter->chapter_name}. Please check your email for details.";
+            SmsHelper::sendSmsNotification($volunteer->contact, $message);
+        }
+
         // Redirect with a success message
-        return redirect()->route('admin.appointments')->with('success', 'Appointment set successfully and email sent.');
+        return redirect()->route('admin.appointments')->with('success', 'Appointment set successfully. Email and SMS sent.');
     }
 }

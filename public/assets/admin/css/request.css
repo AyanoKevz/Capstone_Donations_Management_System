@@ -738,7 +738,7 @@ input.is-invalid, select.is-invalid {
 #barangay-error, #description-error, #quantities\[\]-error, .error.text-danger,
 #categories\[\]-error, #items\[\]-error, #cash_cause-error, #cash_amount-error,
 #cash_description-error, #cash_urgency-error, #cash_region-error, #cash_province-error,
-#cash_city-error, #cash_barangay-error, #amount-error
+#cash_city-error, #cash_barangay-error, #casualty_cost, #valid_until-error
 {
   position: static;
 }

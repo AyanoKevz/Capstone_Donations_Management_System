@@ -180,6 +180,10 @@ Route::middleware(['auth', 'prevent-back-button'])->prefix('user')->group(functi
         Route::post('/quick-donation/dropoff', [DonationController::class, 'quickDropOff'])->name('quickCash.dropoff');
         Route::get('/quick-donation/cash/success', [PayMongoController::class, 'quickPayMongoSuccess'])->name('quickCash.success');
         Route::get('/quick-donation/cash/cancel', [PayMongoController::class, 'quickPayMongoCancel'])->name('quickCash.cancel');
+
+
+        Route::get('/donation/status/inkind', [DonorController::class, 'inkindStatusList'])->name('donor.donationStatus');
+        Route::get('/donation/status/cash', [DonorController::class, 'cashStatusList'])->name('donor.cashStatus');
     });
 
 

@@ -17,6 +17,7 @@ class Chapter extends Model
         'region',
         'latitude',
         'longitude',
+        'is_active',
     ];
 
     public $timestamps = true;

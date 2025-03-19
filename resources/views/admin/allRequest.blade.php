@@ -293,19 +293,56 @@
             <li class="breadcrumb-item active"></li>
           </ol>
           <h1 class="my-2">All Request Made</h1>
-          <div class="d-flex justify-content-end mb-1">
-            <a href="{{ route('admin.requestList', ['type' => 'all']) }}"
-              class="btn table-btn btn-sm {{ $filter === 'all' ? 'custom-active' : '' }}">
-              All
-            </a>
-            <a href="{{ route('admin.requestList', ['type' => 'cash']) }}"
-              class="btn table-btn btn-sm {{ $filter === 'cash' ? 'custom-active' : '' }}">
-              Cash
-            </a>
-            <a href="{{ route('admin.requestList', ['type' => 'in-kind']) }}"
-              class="btn table-btn btn-sm {{ $filter === 'in-kind' ? 'custom-active' : '' }}">
-              In-Kind
-            </a>
+          <div class="d-flex justify-content-between">
+            <div class="d-flex mb-1">
+              <!-- Filter for Urgency -->
+              <a href="{{ route('admin.requestList', ['type' => $filter, 'urgency' => 'all', 'status' => $statusFilter]) }}"
+                class="btn table-btn btn-sm {{ $urgencyFilter === 'all' ? 'custom-active' : '' }}">
+                All
+              </a>
+              <a href="{{ route('admin.requestList', ['type' => $filter, 'urgency' => 'Low', 'status' => $statusFilter]) }}"
+                class="btn table-btn btn-sm {{ $urgencyFilter === 'Low' ? 'custom-active' : '' }}">
+                Low
+              </a>
+              <a href="{{ route('admin.requestList', ['type' => $filter, 'urgency' => 'Moderate', 'status' => $statusFilter]) }}"
+                class="btn table-btn btn-sm {{ $urgencyFilter === 'Moderate' ? 'custom-active' : '' }}">
+                Moderate
+              </a>
+              <a href="{{ route('admin.requestList', ['type' => $filter, 'urgency' => 'Critical', 'status' => $statusFilter]) }}"
+                class="btn table-btn btn-sm {{ $urgencyFilter === 'Critical' ? 'custom-active' : '' }}">
+                Critical
+              </a>
+            </div>
+            <div class="d-flex mb-1">
+              <!-- Filter for Status -->
+              <a href="{{ route('admin.requestList', ['type' => $filter, 'urgency' => $urgencyFilter, 'status' => 'Pending']) }}"
+                class="btn table-btn btn-sm {{ $statusFilter === 'Pending' ? 'custom-active' : '' }}">
+                Pending
+              </a>
+              <a href="{{ route('admin.requestList', ['type' => $filter, 'urgency' => $urgencyFilter, 'status' => 'Fulfilled']) }}"
+                class="btn table-btn btn-sm {{ $statusFilter === 'Fulfilled' ? 'custom-active' : '' }}">
+                Fulfilled
+              </a>
+              <a href="{{ route('admin.requestList', ['type' => $filter, 'urgency' => $urgencyFilter, 'status' => 'Unfulfilled']) }}"
+                class="btn table-btn btn-sm {{ $statusFilter === 'Unfulfilled' ? 'custom-active' : '' }}">
+                Unfulfilled
+              </a>
+            </div>
+            <div class="d-flex mb-1">
+              <!-- Filter for Donation Request Type -->
+              <a href="{{ route('admin.requestList', ['type' => 'all', 'urgency' => $urgencyFilter, 'status' => $statusFilter]) }}"
+                class="btn table-btn btn-sm {{ $filter === 'all' ? 'custom-active' : '' }}">
+                All
+              </a>
+              <a href="{{ route('admin.requestList', ['type' => 'cash', 'urgency' => $urgencyFilter, 'status' => $statusFilter]) }}"
+                class="btn table-btn btn-sm {{ $filter === 'cash' ? 'custom-active' : '' }}">
+                Cash
+              </a>
+              <a href="{{ route('admin.requestList', ['type' => 'in-kind', 'urgency' => $urgencyFilter, 'status' => $statusFilter]) }}"
+                class="btn table-btn btn-sm {{ $filter === 'in-kind' ? 'custom-active' : '' }}">
+                In-Kind
+              </a>
+            </div>
           </div>
           <div class="card card-primary card-outline">
             <div class="card-header">
@@ -319,6 +356,7 @@
                     <th>Location</th>
                     <th>Urgency</th>
                     <th>Type</th> <!-- Cash / In-Kind -->
+                    <th>Status</th>
                     <th>Action</th>
                   </tr>
                 </thead>
@@ -349,13 +387,24 @@
                     </td>
                     <td><span class="badge bg-primary">Cash</span></td>
                     <td>
+                      @php
+                      $statusClass = match($fundRequest->status) {
+                      'Pending' => 'bg-secondary text-white',
+                      'Fulfilled' => 'bg-success text-white',
+                      'Unfulfilled' => 'bg-danger text-white',
+                      default => 'bg-secondary text-white'
+                      };
+                      @endphp
+                      <span class="badge {{ $statusClass }}">{{ $fundRequest->status }}</span>
+                    </td>
+                    <td>
                       <a href="{{ route('request_details', ['id' => $fundRequest->id, 'type' => 'cash']) }}" class="btn btn-success btn-sm">View</a>
                     </td>
                   </tr>
                   @empty
                   @if ($filter === 'cash')
                   <tr>
-                    <td colspan="5" class="text-center">No Cash Requests Available</td>
+                    <td colspan="6" class="text-center">No Cash Requests Available</td>
                   </tr>
                   @endif
                   @endforelse
@@ -386,13 +435,24 @@
                     </td>
                     <td><span class="badge bg-warning">In-Kind</span></td>
                     <td>
+                      @php
+                      $statusClass = match($donationRequest->status) {
+                      'Pending' => 'bg-secondary text-white',
+                      'Fulfilled' => 'bg-success text-white',
+                      'Unfulfilled' => 'bg-danger text-white',
+                      default => 'bg-secondary text-white'
+                      };
+                      @endphp
+                      <span class="badge {{ $statusClass }}">{{ $donationRequest->status }}</span>
+                    </td>
+                    <td>
                       <a href="{{ route('request_details', ['id' => $donationRequest->id, 'type' => 'in-kind']) }}" class="btn btn-success btn-sm">View</a>
                     </td>
                   </tr>
                   @empty
                   @if ($filter === 'in-kind')
                   <tr>
-                    <td colspan="5" class="text-center">No In-Kind Requests Available</td>
+                    <td colspan="6" class="text-center">No In-Kind Requests Available</td>
                   </tr>
                   @endif
                   @endforelse

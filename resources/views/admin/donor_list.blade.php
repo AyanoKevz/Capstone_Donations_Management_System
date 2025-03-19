@@ -296,30 +296,30 @@
           <div class="d-flex justify-content-between">
             <div class="d-flex justify-content-end mb-1">
               <!-- Filter for Active/Inactive/All -->
-              <a href="{{ route('admin.donorList', ['status' => 'all']) }}"
+              <a href="{{ route('admin.donorList', ['status' => 'all', 'account_type' => $accountTypeFilter]) }}"
                 class="btn table-btn btn-sm {{ $statusFilter === 'all' ? 'custom-active' : '' }}">
                 All
               </a>
-              <a href="{{ route('admin.donorList', ['status' => 'active']) }}"
+              <a href="{{ route('admin.donorList', ['status' => 'active', 'account_type' => $accountTypeFilter]) }}"
                 class="btn table-btn btn-sm {{ $statusFilter === 'active' ? 'custom-active' : '' }}">
                 Active
               </a>
-              <a href="{{ route('admin.donorList', ['status' => 'inactive']) }}"
+              <a href="{{ route('admin.donorList', ['status' => 'inactive', 'account_type' => $accountTypeFilter]) }}"
                 class="btn table-btn btn-sm {{ $statusFilter === 'inactive' ? 'custom-active' : '' }}">
                 Inactive
               </a>
             </div>
             <div class="d-flex justify-content-end mb-1">
               <!-- Filter for Account Type -->
-              <a href="{{ route('admin.donorList', ['account_type' => 'all']) }}"
+              <a href="{{ route('admin.donorList', ['account_type' => 'all', 'status' => $statusFilter]) }}"
                 class="btn table-btn btn-sm {{ $accountTypeFilter === 'all' ? 'custom-active' : '' }}">
                 All
               </a>
-              <a href="{{ route('admin.donorList', ['account_type' => 'Individual']) }}"
+              <a href="{{ route('admin.donorList', ['account_type' => 'Individual', 'status' => $statusFilter]) }}"
                 class="btn table-btn btn-sm {{ $accountTypeFilter === 'Individual' ? 'custom-active' : '' }}">
                 Individual
               </a>
-              <a href="{{ route('admin.donorList', ['account_type' => 'Organization']) }}"
+              <a href="{{ route('admin.donorList', ['account_type' => 'Organization', 'status' => $statusFilter]) }}"
                 class="btn table-btn btn-sm {{ $accountTypeFilter === 'Organization' ? 'custom-active' : '' }}">
                 Organization
               </a>

@@ -818,22 +818,75 @@ $(".donation-method_cash").on("change", function () {
 });
 
 
-document.addEventListener('DOMContentLoaded', function() {
-  var calendarEl = document.getElementById('calendar');
-  var calendar = new FullCalendar.Calendar(calendarEl, {
-      initialView: 'dayGridMonth',  // Default view is Month
-      headerToolbar: {
-          left: 'prev,next today',  // Navigation buttons (previous, next, today)
-          center: 'title',          // Title of the calendar
-          right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'  // Buttons to switch between Month, Week, Day, and List views
-      },
-      views: {
-          listWeek: {  // Configuration for the List view
-              buttonText: 'list'  // Button label for List view
-          }
-      }
-  });
-  calendar.render();
+ var calendarEl = document.getElementById('calendar');
+
+    if (calendarEl) {
+        // Debugging: Log window.calendarEvents to verify its value
+        console.log('window.calendarEvents:', window.calendarEvents);
+
+        // Ensure window.calendarEvents is an array
+        if (!Array.isArray(window.calendarEvents)) {
+            console.error('window.calendarEvents is not an array:', window.calendarEvents);
+            window.calendarEvents = []; // Default to an empty array
+        }
+
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+            },
+            events: window.calendarEvents, // Use the global variable
+            eventClick: function (info) {
+                // Display task details when an event is clicked
+                alert(
+                    'Task: ' + info.event.title + '\n' +
+                    'Date: ' + info.event.start.toLocaleDateString() + '\n' +
+                    'Hours Worked: ' + info.event.extendedProps.hours_worked
+                );
+            },
+            dayCellContent: function (info) {
+                // Preserve the default date number
+                var dateNumber = document.createElement('div');
+                dateNumber.innerText = info.dayNumberText;
+
+                // Check if there are any events for this day
+                var hasEvent = window.calendarEvents.some(function (event) {
+                    return event.start === info.date.toISOString().split('T')[0];
+                });
+
+                // If no events, append "No Task" below the date number
+                if (!hasEvent) {
+                    var noTaskMessage = document.createElement('div');
+                    noTaskMessage.style.color = '#999';
+                    noTaskMessage.style.fontSize = '0.9em';
+                    noTaskMessage.innerText = 'No Task';
+
+                    var container = document.createElement('div');
+                    container.appendChild(dateNumber);
+                    container.appendChild(noTaskMessage);
+
+                    return { domNodes: [container] };
+                }
+
+                // If there are events, return only the date number
+                return { domNodes: [dateNumber] };
+            },
+        });
+
+        calendar.render();
+    }
+
+     $(function () {
+    if ($("#example1").length) {
+        $("#example1").DataTable({
+            responsive: true,
+            lengthChange: false,
+            autoWidth: false,
+            buttons: ["copy", "csv", "excel", "pdf", "print"],
+        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+    }
 });
 
 

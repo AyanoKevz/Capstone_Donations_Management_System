@@ -19,7 +19,7 @@ class userLoginController extends Controller
             if (!$user->is_verified) {
                 Auth::logout();
                 return redirect()->route('home')
-                    ->with('error', 'You account is not verified yet.')
+                    ->with('error', 'Your account is not active. An email will be sent to you once it is active.')
                     ->withInput()
                     ->header('Location', route('home') . '#portals');
             }
