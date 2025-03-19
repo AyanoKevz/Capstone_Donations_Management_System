@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="{{ asset('lib/bootstrap/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('lib/datatables/datatables.min.css') }}">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{ asset('assets/users/css/donor/home_donor.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/users/css/donor/donation_status.css') }}">
 </head>
 
 <!-- Spinner Start -->
@@ -302,34 +302,89 @@
                 <div class="container-fluid py-3">
                     <div class="row">
                         <div class="d-flex justify-content-between">
-
                             <div class="d-flex mb-1">
                                 <!-- Filter for Donation Request Type -->
-                                <a href="{{ route('admin.requestList)}}"
-                                    class="btn table-btn btn-sm">
+                                <a href="{{ route('donor.donationStatus') }}" class="btn table-btn btn-sm">
+                                    In-Kind
+                                </a>
+                                <a href="{{ route('donor.cashStatus') }}" class="btn table-btn btn-sm custom-active">
                                     Cash
                                 </a>
-                                <a href="{{ route('admin.requestList', ['type' => 'in-kind', 'urgency' => $urgencyFilter, 'status' => $statusFilter]) }}"
-                                    class="btn table-btn btn-sm custom-active">
-                                    In-Kind
+                            </div>
+                            <div class="d-flex mb-1">
+                                <!-- Filter if they donate to request or quick -->
+                                <a href="{{ route('donor.cashStatus') }}" class="btn table-btn btn-sm {{ request('type') === null ? 'custom-active' : '' }}">
+                                    All
+                                </a>
+                                <a href="{{ route('donor.cashStatus', ['type' => 'request']) }}" class="btn table-btn btn-sm {{ request('type') === 'request' ? 'custom-active' : '' }}">
+                                    From Request
+                                </a>
+                                <a href="{{ route('donor.cashStatus', ['type' => 'quick']) }}" class="btn table-btn btn-sm {{ request('type') === 'quick' ? 'custom-active' : '' }}">
+                                    From Quick
                                 </a>
                             </div>
                             <div class="d-flex mb-1">
                                 <!-- Filter for Status -->
-                                <a href="{{ route('admin.requestList', ['type' => $filter, 'urgency' => $urgencyFilter, 'status' => 'Pending']) }}"
-                                    class="btn table-btn btn-sm {{ $statusFilter === 'Pending' ? 'custom-active' : '' }}">
+                                <a href="{{ route('donor.cashStatus') }}" class="btn table-btn btn-sm {{ request('status') === null ? 'custom-active' : '' }}">
                                     All
                                 </a>
-                                <a href="{{ route('admin.requestList', ['type' => $filter, 'urgency' => $urgencyFilter, 'status' => 'pending']) }}"
-                                    class="btn table-btn btn-sm {{ $statusFilter === 'Fulfilled' ? 'custom-active' : '' }}">
+                                <a href="{{ route('donor.cashStatus', ['status' => 'pending']) }}" class="btn table-btn btn-sm {{ request('status') === 'pending' ? 'custom-active' : '' }}">
                                     Pending
                                 </a>
-                                <a href="{{ route('admin.requestList', ['type' => $filter, 'urgency' => $urgencyFilter, 'status' => 'ongoing']) }}"
-                                    class="btn table-btn btn-sm {{ $statusFilter === 'Unfulfilled' ? 'custom-active' : '' }}">
+                                <a href="{{ route('donor.cashStatus', ['status' => 'ongoing']) }}" class="btn table-btn btn-sm {{ request('status') === 'ongoing' ? 'custom-active' : '' }}">
                                     Ongoing
                                 </a>
                             </div>
+                        </div>
 
+                        <div class="card card-primary card-outline">
+                            <div class="card-header">
+                                <h3 class="card-title">Your Cash Donations</h3>
+                            </div>
+                            <div class="card-body">
+                                <table id="example1" class="table table-bordered table-hover table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Cause</th>
+                                            <th>Method</th>
+                                            <th>Amount</th>
+                                            <th>Chapter</th>
+                                            <th>Type</th>
+                                            <th>Status</th>
+                                            <th>Transaction No.</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($cashDonations as $donation)
+                                        <tr>
+                                            <td>{{ $donation->donor_name }}</td>
+                                            <td>{{ $donation->cause }}</td>
+                                            <td>
+                                                <span class="badge bg-primary">Drop-off</span>
+                                            </td>
+                                            <td>{{ number_format($donation->amount, 2) }}</td>
+                                            <td>{{ $donation->chapter->chapter_name }}</td>
+                                            <td>
+                                                <span class="badge bg-{{ $donation->fund_request_id ? 'info' : 'warning' }}">
+                                                    {{ $donation->fund_request_id ? 'Request' : 'Quick' }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-{{ $donation->status === 'pending' ? 'warning' : ($donation->status === 'ongoing' ? 'primary' : 'success') }}">
+                                                    {{ ucfirst($donation->status) }}
+                                                </span>
+                                            </td>
+                                            <td>{{ $donation->transaction_id }}</td>
+                                            <td>
+                                                <a href="#" class="btn btn-sm btn-primary">View</a>
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
