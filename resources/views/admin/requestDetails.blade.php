@@ -336,6 +336,13 @@
                         <td width="2%">:</td>
                         <td>{{ $formattedLocation }}</td>
                       </tr>
+                      @if($request->casualty_cost !== null)
+                      <tr>
+                        <th width="30%">Casualty Cost</th>
+                        <td width="2%">:</td>
+                        <td>₱{{ number_format( $request->casualty_cost, 2) }}</td>
+                      </tr>
+                      @endif
                     </table>
 
                     @if ($isCashRequest)
@@ -345,13 +352,11 @@
                     <table class="table table-bordered">
                       <thead>
                         <tr>
-                          <th width="50%">Requested Amount</th>
                           <th width="50%">Total Donated</th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr>
-                          <td>₱{{ number_format($request->amount_needed, 2) }}</td>
                           <td class="text-success">₱{{ number_format($totalCashDonated, 2) }}</td>
                         </tr>
                       </tbody>

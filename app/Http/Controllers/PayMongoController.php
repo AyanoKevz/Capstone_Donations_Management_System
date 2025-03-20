@@ -105,7 +105,7 @@ class PayMongoController extends Controller
             $donorContact = $donationData['contact'] ?? null;
 
             if ($donorContact) {
-                $message = "Hello {$donation->donor_name}, your cash donation of PHP " . number_format($donation->amount, 2) .
+                $message = "Hello {$donation->donor_name}, your cash donation of ₱ " . number_format($donation->amount, 2) .
                     " via {$donation->payment_method} was received. Check your email for the receipt. Thank you!";
                 SmsHelper::sendSmsNotification($donorContact, $message);
             }
