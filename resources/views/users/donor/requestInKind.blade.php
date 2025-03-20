@@ -222,7 +222,7 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="{{route ('donor.donationStatus') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Donation Status</p>
                                     </a>
@@ -311,14 +311,14 @@
 
             <!-- Main content -->
             <div class="content">
-            <button class="Btn">
-  
-  <div class="sign"><i class="fa-solid fa-location-dot"></i></div>
-  
-  <div class="text">Map</div>
-</button>
+                <button class="Btn">
+
+                    <div class="sign"><i class="fa-solid fa-location-dot"></i></div>
+
+                    <div class="text">Map</div>
+                </button>
                 <div class="container-fluid py-3">
-                    
+
 
 
                     <div class="row">
