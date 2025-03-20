@@ -341,16 +341,17 @@
                                                     </select>
                                                 </div>
                                             </div>
+
+                                            <!-- Type Dropdown -->
                                             <div class="col-12 col-md-6">
                                                 <div class="d-flex flex-column flex-md-row align-items-center gap-2">
-                                                    <label for="item-filter" class="form-label mb-0">Donation Type</label>
+                                                    <label for="item-filter" class="form-label mb-0">Type</label>
                                                     <select class="form-select" id="item-filter" name="type">
                                                         <option value="item">In-Kind</option>
                                                         <option value="cash" selected>Funds</option>
                                                     </select>
                                                 </div>
                                             </div>
-
                                         </div>
                                     </div>
                                 </div>
@@ -481,10 +482,10 @@
                                         <input type="number" class="form-control"
                                             id="amount_{{ $request->id }}"
                                             name="amount"
-                                            max="{{ $request->remaining_amount}}"
+                                            min="1"
                                             required>
                                         <small class="text-muted text-center">
-                                            Max donation: ₱{{ number_format($request->remaining_amount, 2) }}
+                                            Amount Raised: ₱{{ number_format($request->amount_raised, 2) }}
                                         </small>
                                     </div>
                                 </div>

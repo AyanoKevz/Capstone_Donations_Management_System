@@ -341,6 +341,8 @@
                                                     </select>
                                                 </div>
                                             </div>
+
+                                            <!-- Type Dropdown -->
                                             <div class="col-12 col-md-6">
                                                 <div class="d-flex flex-column flex-md-row align-items-center gap-2">
                                                     <label for="item-filter" class="form-label mb-0">Type</label>
@@ -350,7 +352,6 @@
                                                     </select>
                                                 </div>
                                             </div>
-
                                         </div>
                                     </div>
                                 </div>

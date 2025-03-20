@@ -326,7 +326,9 @@
                         <th width="30%">Status</th>
                         <td width="2%">:</td>
                         <td>
-                          <span class="badge bg-warning text-dark">{{ ucfirst($request->status) }}</span>
+                          <span class="badge bg-{{ $request->status == 'Pending' ? 'success' : ($request->status == 'Unfulfilled' ? 'danger' : 'secondary') }}">
+                            {{ ucfirst($request->status) }}
+                          </span>
                         </td>
                       </tr>
                       <tr>
@@ -444,7 +446,7 @@
                       <tr>
                         <th>Name</th>
                         <th>Method</th>
-                        @if($cashDonations->count() > 0)
+                        @if($isCashRequest)
                         <th>Amount</th>
                         <th>Payment Method</th>
                         @endif
@@ -454,27 +456,29 @@
                       </tr>
                     </thead>
                     <tbody>
-                      @if($cashDonations)
+                      {{-- Show cash donations if request type is cash --}}
+                      @if($isCashRequest)
                       @foreach($cashDonations as $cashDonation)
                       <tr>
                         <td>{{ $cashDonation->donor_name }}</td>
-                        <td>Cash</td>
+                        <td>{{ ucfirst($cashDonation->donation_method) }}</td>
                         <td>{{ $cashDonation->amount }}</td>
                         <td>{{ $cashDonation->payment_method }}</td>
-                        <td>{{ $cashDonation->created_at }}</td>
-                        <td>{{ $cashDonation->status }}</td>
+                        <td>{{ \Carbon\Carbon::parse($cashDonation->created_at)->format('M d, Y h:i A') }}</td>
+                        <td>{{ ucfirst($cashDonation->status) }}</td>
                         <td>
                           <a href="{{ route('cash.donation.details', $cashDonation->id) }}" class="btn btn-sm btn-primary">View</a>
                         </td>
                       </tr>
                       @endforeach
                       @else
+                      {{-- Show in-kind donations if request type is in-kind --}}
                       @foreach($inKindDonations as $inKindDonation)
                       <tr>
                         <td>{{ $inKindDonation->donor_name }}</td>
-                        <td>In-Kind</td>
-                        <td>{{ $inKindDonation->donation_datetime }}</td>
-                        <td>{{ $inKindDonation->status }}</td>
+                        <td>{{ ucfirst($inKindDonation->donation_method) }}</td>
+                        <td>{{ \Carbon\Carbon::parse($inKindDonation->donation_datetime)->format('M d, Y h:i A') }}</td>
+                        <td>{{ ucfirst($inKindDonation->status) }}</td>
                         <td>
                           <a href="{{ route('inkind.donation.details', $inKindDonation->id) }}" class="btn btn-sm btn-primary">View</a>
                         </td>

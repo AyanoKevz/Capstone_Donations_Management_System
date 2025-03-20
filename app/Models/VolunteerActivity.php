@@ -13,13 +13,13 @@ class VolunteerActivity extends Model
 
     protected $fillable = [
         'volunteer_id',
+        'activity_date', // Added this
         'task_description',
         'hours_worked',
         'event_id',
         'distribution_id',
         'status',
     ];
-
 
     public function volunteer()
     {

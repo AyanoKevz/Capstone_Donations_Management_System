@@ -311,13 +311,21 @@
 
             <!-- Main content -->
             <div class="content">
+            <button class="Btn">
+  
+  <div class="sign"><i class="fa-solid fa-location-dot"></i></div>
+  
+  <div class="text">Map</div>
+</button>
                 <div class="container-fluid py-3">
+                    
+
+
                     <div class="row">
                         @foreach($donationRequests as $request)
                         <div class="request-card">
                             <!-- Proof Photo 1 -->
-                            <div class="card-image" style="background-image: url('{{ asset($request->proof_photo_1) }}');"></div>
-
+                            <div class="card-image" style="background-image: url('{{ asset('storage/' . $request->proof_photo_1) }}');"></div>
                             <div class="card-content">
                                 <!-- Urgency with color -->
                                 <div class="urgency" style="color: {{ $request->urgency === 'Critical' ? 'red' : ($request->urgency === 'Moderate' ? 'orange' : 'green') }}">

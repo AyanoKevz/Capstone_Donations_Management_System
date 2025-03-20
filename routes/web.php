@@ -92,9 +92,10 @@ Route::middleware(['admin', 'prevent-back-button'])->prefix('admin')->group(func
     // Admin Donor List
     Route::get('/active-donors', [AdminController::class, 'allDonors'])->name('admin.donorList');
     Route::post('/active-donors/{userId}', [AdminController::class, 'deleteDonor'])->name('donors.delete');
+    Route::post('/donors/deactivate/{userId}', [AdminController::class, 'deactivateDonor'])->name('donors.deactivate');
     // Admin Volunteer List
     Route::get('/active-volunteer', [AdminController::class, 'allVolunteers'])->name('admin.volunteerList');
-    Route::post('/volunteers/delete/{id}', [AdminController::class, 'deleteVolunteer'])->name('volunteers.delete');
+    Route::post('/volunteers/deactivate/{userId}', [AdminController::class, 'deactivateVolunteer'])->name('volunteers.deactivate');
 
     // Admin Inquiries
     Route::get('/inquiries', [InquiryController::class, 'inbox'])->name('admin.inquiries');
@@ -179,6 +180,10 @@ Route::middleware(['auth', 'prevent-back-button'])->prefix('user')->group(functi
         Route::post('/quick-donation/dropoff', [DonationController::class, 'quickDropOff'])->name('quickCash.dropoff');
         Route::get('/quick-donation/cash/success', [PayMongoController::class, 'quickPayMongoSuccess'])->name('quickCash.success');
         Route::get('/quick-donation/cash/cancel', [PayMongoController::class, 'quickPayMongoCancel'])->name('quickCash.cancel');
+
+
+        Route::get('/donation/status/inkind', [DonorController::class, 'inkindStatusList'])->name('donor.donationStatus');
+        Route::get('/donation/status/cash', [DonorController::class, 'cashStatusList'])->name('donor.cashStatus');
     });
 
 

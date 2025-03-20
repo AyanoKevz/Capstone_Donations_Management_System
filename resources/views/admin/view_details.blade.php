@@ -421,12 +421,12 @@
             <div class="col text-center">
               @if($role === 'Donor')
               <button type="button" class="btn btn-success me-3" data-bs-toggle="modal" data-bs-target="#verify" data-user-id="{{ $user->id }}">
-                Verify
+                Activate
               </button>
               @elseif($role === 'Volunteer')
               @if($appointmentExists)
               <button type="button" class="btn btn-success me-3" data-bs-toggle="modal" data-bs-target="#verify" data-user-id="{{ $user->id }}">
-                Verify
+                Activate
               </button>
               @else
               <button type="button" class="btn btn-success me-3" data-bs-toggle="modal" data-bs-target="#appointment" data-user-id="{{ $user->id }}">
@@ -448,7 +448,7 @@
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
           <div class="modal-content">
             <div class="modal-header">
-              <h1 class="modal-title fs-4">Do you want to verify?</h1>
+              <h1 class="modal-title fs-4">Do you want to activate?</h1>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body text-center">

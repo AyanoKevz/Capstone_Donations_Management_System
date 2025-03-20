@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('region', 100);
             $table->decimal('latitude', 9, 6)->nullable();
             $table->decimal('longitude', 9, 6)->nullable();
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
 
@@ -32,9 +33,9 @@ return new class extends Migration
             $table->string('password', 100);
             $table->string('profile_image');
             $table->foreignId('chapter_id')->nullable()->constrained('chapter')->onDelete('set null');
+            $table->boolean('is_active')->default(true); // Added this
             $table->timestamps();
         });
-
         Schema::create('news', function (Blueprint $table) {
             $table->id();
             $table->foreignId('admin_id')->constrained('admin')->onDelete('cascade');

@@ -16,12 +16,13 @@ class FundRequest extends Model
         'location_id',
         'cause',
         'urgency',
-        'amount_needed',
+        'casualty_cost',
         'description',
         'proof_photo_1',
         'proof_photo_2',
         'proof_video',
         'status',
+        'valid_until',
     ];
 
     public function admin()

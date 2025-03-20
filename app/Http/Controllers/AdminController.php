@@ -459,83 +459,109 @@ class AdminController extends Controller
     //Donor LIST
     public function allDonors(Request $request)
     {
-        // Get the filter from the request (default is 'all')
-        $filter = $request->input('account_type', 'all');
+        // Get the filters from the request
+        $statusFilter = $request->input('status', 'all'); // Default: all
+        $accountTypeFilter = $request->input('account_type', 'all'); // Default: all
 
-        // Fetch active donors based on the filter
-        $activeDonors = UserAccount::with(['roles', 'donor'])
+        // Fetch donors based on the filters
+        $donors = UserAccount::with(['roles', 'donor'])
             ->whereHas('roles', function ($query) {
                 $query->where('role_name', 'Donor');
             })
-            ->where('is_verified', true)
-            ->when($filter !== 'all', function ($query) use ($filter) {
-                $query->where('account_type', $filter);
+            ->when($statusFilter !== 'all', function ($query) use ($statusFilter) {
+                if ($statusFilter === 'active') {
+                    $query->where('is_verified', true);
+                } elseif ($statusFilter === 'inactive') {
+                    $query->where('is_verified', false);
+                }
+            })
+            ->when($accountTypeFilter !== 'all', function ($query) use ($accountTypeFilter) {
+                $query->where('account_type', $accountTypeFilter);
             })
             ->get();
 
-        return view('admin.donor_list', compact('activeDonors', 'filter'));
+        return view('admin.donor_list', compact('donors', 'statusFilter', 'accountTypeFilter'));
     }
 
-
-    public function deleteDonor($userId)
+    public function deactivateDonor($userId)
     {
-        // Find the donor via user_id
-        $donor = Donor::where('user_id', $userId)->firstOrFail();
-        if ($donor->id_image && Storage::disk('public')->exists($donor->id_image)) {
-            Storage::disk('public')->delete($donor->id_image);
-        }
-
-        if ($donor->user_photo && Storage::disk('public')->exists($donor->user_photo)) {
-            Storage::disk('public')->delete($donor->user_photo);
-        }
-
-        $donor->delete();
-
+        // Find the user
         $user = UserAccount::find($userId);
+
         if ($user) {
-            $user->delete();
+            // Deactivate the user
+            $user->update(['is_verified' => false]);
+
+            // Prepare email details
+            $details = [
+                'username' => $user->username,
+                'role' => $user->roles->first()->role_name, // Assuming the user has a role relationship
+                'logoPath' => public_path('assets/img/systemLogo.png'), // Path to your logo
+            ];
+
+            // Send email notification
+            Mail::send('emails.account_deactivate', $details, function ($message) use ($user) {
+                $message->to($user->email)
+                    ->subject('Your Account Has Been Deactivated');
+            });
         }
 
-        return redirect()->route('admin.donorList')->with('success', 'Donor account deleted successfully!');
+        return redirect()->route('admin.donorList')->with('success', 'Donor deactivated successfully!');
     }
-
 
     //VOLUNTEERS LIST
-    public function allVolunteers()
+    public function allVolunteers(Request $request)
     {
-        // Fetch active volunteers (is_verified = true)
-        $activeVolunteers = UserAccount::with(['roles', 'volunteer.chapter'])
+        // Get the logged-in admin
+        $admin = Auth::guard('admin')->user();
+
+        // Get the filter from the request (default is 'all')
+        $statusFilter = $request->input('status', 'all');
+
+        // Fetch volunteers based on the filter and the admin's chapter
+        $volunteers = UserAccount::with(['roles', 'volunteer.chapter'])
             ->whereHas('roles', function ($query) {
                 $query->where('role_name', 'Volunteer');
             })
-            ->where('is_verified', true)
+            ->whereHas('volunteer', function ($query) use ($admin) {
+                $query->where('chapter_id', $admin->chapter_id); // Filter by admin's chapter
+            })
+            ->when($statusFilter !== 'all', function ($query) use ($statusFilter) {
+                if ($statusFilter === 'active') {
+                    $query->where('is_verified', true);
+                } elseif ($statusFilter === 'inactive') {
+                    $query->where('is_verified', false);
+                }
+            })
             ->get();
 
-        return view('admin.volunteer_list', compact('activeVolunteers'));
+        return view('admin.volunteer_list', compact('volunteers', 'statusFilter'));
     }
 
-    public function deleteVolunteer($userId)
+    public function deactivateVolunteer($userId)
     {
-
-        $volunteer = Volunteer::where('user_id', $userId)->firstOrFail();
-
-        if (
-            $volunteer->id_image && Storage::disk('public')->exists($volunteer->id_image)
-        ) {
-            Storage::disk('public')->delete($volunteer->id_image);
-        }
-
-        if ($volunteer->user_photo && Storage::disk('public')->exists($volunteer->user_photo)) {
-            Storage::disk('public')->delete($volunteer->user_photo);
-        }
-
-        $volunteer->delete();
+        // Find the user
         $user = UserAccount::find($userId);
+
         if ($user) {
-            $user->delete();
+            // Deactivate the user
+            $user->update(['is_verified' => false]);
+
+            // Prepare email details
+            $details = [
+                'username' => $user->username,
+                'role' => $user->roles->first()->role_name, // Assuming the user has a role relationship
+                'logoPath' => public_path('assets/img/systemLogo.png'), // Path to your logo
+            ];
+
+            // Send email notification
+            Mail::send('emails.account_deactivate', $details, function ($message) use ($user) {
+                $message->to($user->email)
+                    ->subject('Your Account Has Been Deactivated');
+            });
         }
 
-        return redirect()->route('admin.volunteerList')->with('success', 'Volunteer account deleted successfully!');
+        return redirect()->route('admin.volunteerList')->with('success', 'Volunteer deactivated successfully!');
     }
 
 
@@ -684,13 +710,17 @@ class AdminController extends Controller
     public function allRequest(Request $request)
     {
         $admin = Auth::guard('admin')->user();
+
+        // Retrieve filter values from the request
         $filter = $request->input('type', 'all'); // Default is 'all'
+        $urgencyFilter = $request->input('urgency', 'all'); // Default is 'all'
+        $statusFilter = $request->input('status', 'Pending'); // Default is 'Pending'
 
         // Fetch fund and donation requests only for the admin's chapter
         $fundRequests = FundRequest::where('created_by_admin_id', $admin->id);
         $donationRequests = DonationRequest::where('created_by_admin_id', $admin->id);
 
-        // Apply filters
+        // Apply type filter
         if ($filter === 'cash') {
             $fundRequests = $fundRequests->get();
             $donationRequests = collect(); // Empty collection for In-Kind
@@ -702,7 +732,27 @@ class AdminController extends Controller
             $donationRequests = $donationRequests->get();
         }
 
-        return view('admin.allRequest', compact('fundRequests', 'donationRequests', 'filter'));
+        // Apply urgency filter
+        if ($urgencyFilter !== 'all') {
+            $fundRequests = $fundRequests->filter(function ($request) use ($urgencyFilter) {
+                return $request->urgency === $urgencyFilter;
+            });
+            $donationRequests = $donationRequests->filter(function ($request) use ($urgencyFilter) {
+                return $request->urgency === $urgencyFilter;
+            });
+        }
+
+        // Apply status filter
+        if ($statusFilter !== 'all') {
+            $fundRequests = $fundRequests->filter(function ($request) use ($statusFilter) {
+                return $request->status === $statusFilter;
+            });
+            $donationRequests = $donationRequests->filter(function ($request) use ($statusFilter) {
+                return $request->status === $statusFilter;
+            });
+        }
+
+        return view('admin.allRequest', compact('fundRequests', 'donationRequests', 'filter', 'urgencyFilter', 'statusFilter'));
     }
 
     public function requestDetails($id, $type)

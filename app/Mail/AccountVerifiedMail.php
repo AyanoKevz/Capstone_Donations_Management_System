@@ -28,7 +28,7 @@ class AccountVerifiedMail extends Mailable
     public function build()
     {
         $logoPath = public_path('assets/img/systemLogo.png');
-        return $this->subject("Your Account Has Been Verified")
+        return $this->subject("Your Account Has Been Active")
             ->view('emails.account_verified')
             ->with([
                 'logoPath' => $logoPath,

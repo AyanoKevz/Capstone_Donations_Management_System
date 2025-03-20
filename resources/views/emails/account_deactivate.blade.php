@@ -114,10 +114,12 @@
 
       <!-- Card Body -->
       <div class="card">
-        <h1>Congratulations, {{ $username }}!</h1>
-        <p>Your account with the role of <strong>{{ $role }}</strong> has been successfully verified and activated.
-          You can now login and access the {{ $role }} portal. Thank you for joining us!</p>
-        <a href="{{ route('home') }}" class="button">Get Started</a>
+        <h1>Account Deactivated</h1>
+        <p>Dear <strong>{{ $username }}</strong>,</p>
+        <p>Your account with the role of <strong>{{ $role }}</strong> has been deactivated.
+          You will no longer be able to access the {{ $role }} portal.</p>
+        <p>If you believe this is a mistake, please contact our support team.</p>
+        <a href="{{ route('home') }}" class="button">Visit Our Website</a>
       </div>
 
       <!-- Footer -->

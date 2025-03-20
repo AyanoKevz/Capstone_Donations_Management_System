@@ -89,6 +89,12 @@ function updateInfoSidebar(request, isFundRequest = false) {
 var title = isFundRequest ? "Fund Request" : "In-Kind Request";
 var image = isFundRequest ? baseIconPath + "quick-cash.png" : baseIconPath + "quick-item.png";
 
+function formatDate(dateString) {
+    var options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString('en-US', options);
+}
+
+
     var html = `
         <div class="d-flex align-items-center justify-content-center mb-4">
           <h1 class="text-center mb-0">${title}</h1>
@@ -100,6 +106,8 @@ var image = isFundRequest ? baseIconPath + "quick-cash.png" : baseIconPath + "qu
         <p class="mb-2"><strong>Location:</strong> ${formatLocation(request.location.region, request.location.province, request.location.city_municipality, request.location.barangay)}</p>
         <p class="mb-2"> <strong>Status:</strong> <span class="text-success fw-bold">${request.status}</span></p>
         <p><strong>Description:</strong> ${request.description}</p>
+        <p><strong>Valid Until:</strong> ${formatDate(request.valid_until)}</p>
+        ${request.casualty_cost ? `<p><strong>Estimated Casualty Cost:</strong> ${formatCurrency(request.casualty_cost)}</p>` : ""}
         <hr>
     `;
 
@@ -114,7 +122,6 @@ var image = isFundRequest ? baseIconPath + "quick-cash.png" : baseIconPath + "qu
 if (isFundRequest) {
     html += `
         <h4>Fund Details</h4>
-        <p><strong>Amount Needed:</strong> ${formatCurrency(request.amount_needed)} / 
         <strong class="text-success">Amount Raised:  ${formatCurrency(request.amount_raised)} </strong></p>
     `;
 } else {
@@ -166,122 +173,108 @@ if (isFundRequest) {
 }
 
 // Function to add markers to the map
-function addMarkers(requests, isFundRequest = false) {
-    markersLayer.clearLayers();
+    function addMarkers(requests, isFundRequest = false) {
+        markersLayer.clearLayers();
 
-    requests.forEach(request => {
-        if (request.location) {
-            var { region, province, city_municipality, barangay, latitude, longitude } = request.location;
-            var iconUrl = baseIconPath + (causeIcons[request.cause] || "default.png");
+        requests.forEach(request => {
+            if (request.location) {
+                var { region, province, city_municipality, barangay, latitude, longitude } = request.location;
+                var iconUrl = baseIconPath + (causeIcons[request.cause] || "default.png");
 
-            var icon = L.icon({
-                iconUrl: iconUrl,
-                iconSize: [30, 30],
-                iconAnchor: [16, 32],
-                popupAnchor: [0, -32]
-            });
+                var icon = L.icon({
+                    iconUrl: iconUrl,
+                    iconSize: [30, 30],
+                    iconAnchor: [16, 32],
+                    popupAnchor: [0, -32]
+                });
 
-            // Generate the popup content
-            var popupContent = `
-                <h4 class='mb-1'>
-                    <img src="${iconUrl}" alt="${request.cause} icon" style="width: 22px; height: 22px; vertical-align: middle;">
-                    <strong>${request.cause}</strong>
-                    <span class="text-muted fw-semibold fs-6 align-middle">(${request.urgency})</span>
-                </h4>
-                <strong>Location:</strong> ${formatLocation(region, province, city_municipality, barangay)} <br>
-                <strong>Status:</strong> ${request.status} <br>
-            `;
+                // Generate the popup content
+                var popupContent = `
+                    <h4 class='mb-1'>
+                        <img src="${iconUrl}" alt="${request.cause} icon" style="width: 22px; height: 22px; vertical-align: middle;">
+                        <strong>${request.cause}</strong>
+                        <span class="text-muted fw-semibold fs-6 align-middle">(${request.urgency})</span>
+                    </h4>
+                    <strong>Location:</strong> ${formatLocation(region, province, city_municipality, barangay)} <br>
+                    <strong>Status:</strong> ${request.status} <br>
+                `;
 
-            // Add the marker to the map
-            var marker = L.marker([latitude, longitude], { icon: icon })
-                .addTo(markersLayer)
-                .bindPopup(popupContent);
+                // Add the marker to the map
+                var marker = L.marker([latitude, longitude], { icon: icon })
+                    .addTo(markersLayer)
+                    .bindPopup(popupContent);
 
-            // Add click event to update the sidebar and show the donate button
-            marker.on('click', function() {
-                updateInfoSidebar(request, isFundRequest);
+                // Add click event to update the sidebar and show the donate button
+                marker.on('click', function() {
+                    updateInfoSidebar(request, isFundRequest);
 
-                // Show the donate button
-                var donateBtn = document.getElementById('donateBtn');
-                donateBtn.style.display = 'block';
+                    // Show the donate button
+                    var donateBtn = document.getElementById('donateBtn');
+                    donateBtn.style.display = 'block';
 
-                // Set the modal target dynamically for the request
-                donateBtn.setAttribute('data-bs-target', `#donateNow-${request.id}`);
-            });
-        }
+                    // Set the modal target dynamically for the request
+                    donateBtn.setAttribute('data-bs-target', `#donateNow-${request.id}`);
+                });
+            }
+        });
+    }
+
+    // Determine if the current view is for cash donations
+    var isCashView = fundRequests.length > 0;
+
+    // Initial load: Show markers based on the current view
+    if (isCashView) {
+        addMarkers(fundRequests, true); // For cash donations
+    } else {
+        addMarkers(donationRequests); // For in-kind donations
+    }
+
+    // Submit the form when dropdowns change
+    document.getElementById('cause').addEventListener('change', function() {
+        document.getElementById('filterForm').submit();
     });
-}
 
-// Determine if the current view is for cash donations
-var isCashView = fundRequests.length > 0;
+    document.getElementById('urgency').addEventListener('change', function() {
+        document.getElementById('filterForm').submit();
+    });
 
-// Initial load: Show markers based on the current view
-if (isCashView) {
-    addMarkers(fundRequests, true); // For cash donations
-} else {
-    addMarkers(donationRequests); // For in-kind donations
-}
+    // Submit the form when region dropdown changes
+    document.getElementById('region-filter').addEventListener('change', function() {
+    document.getElementById('filterForm').submit(); // Submit form and reload page
+    });
 
-// Submit the form when dropdowns change
-document.getElementById('cause').addEventListener('change', function() {
-    localStorage.setItem('selectedRegion', document.getElementById('region-filter').value);
-    document.getElementById('filterForm').submit();
-});
-
-document.getElementById('urgency').addEventListener('change', function() {
-    localStorage.setItem('selectedRegion', document.getElementById('region-filter').value);
-    document.getElementById('filterForm').submit();
-});
-
-// Zoom in to the selected region
-document.getElementById('region-filter').addEventListener('change', function(event) {
-    var selectedRegion = event.target.value;
+    var selectedRegion = document.getElementById('region-filter').value;
 
     if (regionCoordinates[selectedRegion]) {
-        var { center, zoom } = regionCoordinates[selectedRegion];
-        phMap.setView(center, zoom); // Zoom in without refreshing
-    } else {
-        phMap.setView([12.8797, 121.7740], 5);
+        var coords = regionCoordinates[selectedRegion];
+        phMap.setView(coords.center, coords.zoom); // Zoom to the selected region
     }
 
-    filterRequests(selectedRegion);
-});
+    // Add event listener to the item-filter dropdown
+    document.getElementById('item-filter').addEventListener('change', function(event) {
+        var selectedValue = event.target.value;
 
-// Add event listener to the item-filter dropdown
-document.getElementById('item-filter').addEventListener('change', function(event) {
-    var selectedValue = event.target.value;
+        if (selectedValue === 'cash') {
+            // Redirect to the cash route
+            window.location.href = "/user/donor/request-map/cash";
+        } else {
+            // Redirect to the default items route
+            window.location.href = "/user/donor/request-map/items";
+        }
+    });
 
-    if (selectedValue === 'cash') {
-        // Redirect to the cash route
-        window.location.href = "/user/donor/request-map/cash";
-    } else {
-        // Redirect to the default items route
-        window.location.href = "/user/donor/request-map/items";
+    // Function to filter requests based on region
+    function filterRequests(region) {
+        var filteredDonationRequests = donationRequests.filter(request => request.location.region === region);
+        var filteredFundRequests = fundRequests.filter(request => request.location.region === region);
+
+        // Clear existing markers
+        markersLayer.clearLayers();
+
+        // Add filtered markers
+        addMarkers(filteredDonationRequests); // For in-kind donations
+        addMarkers(filteredFundRequests, true); // For cash donations
     }
-});
-
-// Function to filter requests based on region
-function filterRequests(region) {
-    var filteredDonationRequests = donationRequests.filter(request => request.location.region === region);
-    var filteredFundRequests = fundRequests.filter(request => request.location.region === region);
-
-    // Clear existing markers
-    markersLayer.clearLayers();
-
-    // Add filtered markers
-    addMarkers(filteredDonationRequests); // For in-kind donations
-    addMarkers(filteredFundRequests, true); // For cash donations
-}
-
-// Restore the selected region on page load
-window.addEventListener('load', function() {
-    var savedRegion = localStorage.getItem('selectedRegion');
-
-    if (savedRegion && regionCoordinates[savedRegion]) {
-        var { center, zoom } = regionCoordinates[savedRegion];
-        phMap.setView(center, zoom); // Restore zoom
-    }
-});
 
 $(".cash-donation-form").each(function () {
     $(this).validate({
@@ -304,10 +297,7 @@ $(".cash-donation-form").each(function () {
                     }
                 }
             },
-            amount: {
-                required: true,
-                min: 1
-            }
+    
         },
         messages: {
             donor_name: {

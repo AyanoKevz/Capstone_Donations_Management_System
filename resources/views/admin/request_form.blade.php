@@ -292,6 +292,11 @@
           </ul>
         </div>
         @endif
+        @if(session('error'))
+        <div id="alert-error" class="alert alert-error" style=" position: absolute; right: 10px; top: 40px;">
+          <i class=" fa-solid fa-circle-xmark fa-xl me-3"></i>{{ session('error') }}
+        </div>
+        @endif
         @if(session('info'))
         <div id="alert-info" class="alert alert-info" style=" position: absolute; right: 10px; top: 40px;">
           {{ session('info') }}
@@ -323,7 +328,7 @@
                           <form method="POST" action="{{ route('admin.request.submit') }}" class="row gy-3 gy-xxl-4" enctype="multipart/form-data" id="inKindForm">
                             @csrf
                             <div class="col-12 col-md-6">
-                              <label for="cause" class="form-label">Cause</label>
+                              <label for="cause" class="form-label fw-bold">Cause</label>
                               <select class="form-select" id="cause" name="cause">
                                 <option selected disabled>Select Cause</option>
                                 <option value="Fire">Fire</option>
@@ -335,7 +340,7 @@
                               </select>
                             </div>
                             <div class="col-12 col-md-6">
-                              <label for="urgency" class="form-label">Urgency</label>
+                              <label for="urgency" class="form-label fw-bold">Urgency</label>
                               <select class="form-select" id="urgency" name="urgency">
                                 <option selected disabled>Select Urgency</option>
                                 <option value="Low">Low</option>
@@ -344,28 +349,28 @@
                               </select>
                             </div>
                             <div class="col-12 col-md-6">
-                              <label for="urgency" class="form-label">Region</label>
+                              <label for="urgency" class="form-label fw-bold">Region</label>
                               <select class="form-select" id="region" name="region" required>
                                 <option disabled selected value="">Select Region</option>
                               </select>
                               <input type="hidden" id="region-name" name="region_name">
                             </div>
                             <div class="col-12 col-md-6">
-                              <label for="province" class="form-label">Province</label>
+                              <label for="province" class="form-label fw-bold">Province</label>
                               <select class="form-select" id="province" name="province" required>
                                 <option disabled selected value="">Select Province</option>
                               </select>
                               <input type="hidden" id="province-name" name="province_name">
                             </div>
                             <div class="col-12 col-md-6">
-                              <label for="city" class="form-label">City/Municipality</label>
+                              <label for="city" class="form-label fw-bold">City/Municipality</label>
                               <select class="form-select" id="city" name="city" required>
                                 <option disabled selected value="">Select City</option>
                               </select>
                               <input type="hidden" id="city-name" name="city_name">
                             </div>
                             <div class="col-12 col-md-6">
-                              <label for="barangay" class="form-label">Barangay</label>
+                              <label for="barangay" class="form-label fw-bold">Barangay</label>
                               <select class="form-select" id="barangay" name="barangay" required>
                                 <option disabled selected value="">Select Barangay</option>
                               </select>
@@ -373,6 +378,11 @@
                             </div>
                             <input type="hidden" id="latitude" name="latitude">
                             <input type="hidden" id="longitude" name="longitude">
+
+                            <div class="col-12 col-md-12">
+                              <label for="valid_until" class="form-label fw-bold">Request Valid Until</label>
+                              <input type="date" class="form-control quantity-input" name="valid_until">
+                            </div>
 
                             <div class="col-12 col-md-12">
                               <p class="mt-0 my-3 text-center"><strong>Upload Proof Image and Video</strong></p>
@@ -435,7 +445,7 @@
                               </div>
                             </div>
                             <div class="col-12 col-md-12">
-                              <label for="floatingTextarea" class="form-label">Description</label>
+                              <label for="floatingTextarea" class="form-label fw-bold">Description</label>
                               <textarea class="form-control" name="description" placeholder="Leave a details here:"></textarea>
                             </div>
                             <div class="col-12">
@@ -447,7 +457,7 @@
                           <form method="POST" action="{{ route('submit.cash.request') }}" class="row gy-3 gy-xxl-4" enctype="multipart/form-data" id="cashForm">
                             @csrf
                             <div class="col-12 col-md-6">
-                              <label for="cash_cause" class="form-label">Cause</label>
+                              <label for="cash_cause" class="form-label fw-bold">Cause</label>
                               <select class="form-select" id="cash_cause" name="cause">
                                 <option selected disabled>Select Cause</option>
                                 <option value="Fire">Fire</option>
@@ -459,7 +469,7 @@
                               </select>
                             </div>
                             <div class="col-12 col-md-6">
-                              <label for="cash_urgency" class="form-label">Urgency</label>
+                              <label for="cash_urgency" class="form-label fw-bold">Urgency</label>
                               <select class="form-select" id="cash_urgency" name="urgency">
                                 <option selected disabled>Select Urgency</option>
                                 <option value="Low">Low</option>
@@ -468,33 +478,38 @@
                               </select>
                             </div>
                             <div class="col-12 col-md-6">
-                              <label for="cash_region" class="form-label">Region</label>
+                              <label for="cash_region" class="form-label fw-bold">Region</label>
                               <select class="form-select" id="cash_region" name="region" required>
                                 <option disabled selected value="">Select Region</option>
                               </select>
                               <input type="hidden" id="cash_region-name" name="region_name">
                             </div>
                             <div class="col-12 col-md-6">
-                              <label for="cash_province" class="form-label">Province</label>
+                              <label for="cash_province" class="form-label fw-bold">Province</label>
                               <select class="form-select" id="cash_province" name="province" required>
                                 <option disabled selected value="">Select Province</option>
                               </select>
                               <input type="hidden" id="cash_province-name" name="province_name">
                             </div>
                             <div class="col-12 col-md-6">
-                              <label for="cash_city" class="form-label">City/Municipality</label>
+                              <label for="cash_city" class="form-label fw-bold">City/Municipality</label>
                               <select class="form-select" id="cash_city" name="city" required>
                                 <option disabled selected value="">Select City</option>
                               </select>
                               <input type="hidden" id="cash_city-name" name="city_name">
                             </div>
                             <div class="col-12 col-md-6">
-                              <label for="cash_barangay" class="form-label">Barangay</label>
+                              <label for="cash_barangay" class="form-label fw-bold">Barangay</label>
                               <select class="form-select" id="cash_barangay" name="barangay" required>
                                 <option disabled selected value="">Select Barangay</option>
                               </select>
                               <input type="hidden" id="cash_barangay-name" name="barangay_name">
                             </div>
+                            <div class="col-12 col-md-12">
+                              <label for="valid_until" class="form-label fw-bold">Request Valid Until</label>
+                              <input type="date" class="form-control quantity-input" name="valid_until">
+                            </div>
+
                             <div class="col-12 col-md-12">
                               <p class="mt-0 my-3 text-center"><strong>Upload Proof Image and Video</strong></p>
                               <div class="d-flex gap-2 flex-wrap justify-content-center">
@@ -546,11 +561,11 @@
                               </div>
                             </div>
                             <div class="col-12 col-md-12">
-                              <label for="cash_barangay" class="form-label">Amount</label>
-                              <input type="number" class="form-control quantity-input" name="amount" placeholder="Amount" min="0">
+                              <label for="cash_barangay" class="form-label fw-bold">Estimated Casualty Cost</label>
+                              <input type="number" class="form-control quantity-input" name="casualty_cost" placeholder="Amount" min="0">
                             </div>
                             <div class="col-12 col-md-12">
-                              <label for="floatingTextarea" class="form-label">Description</label>
+                              <label for="floatingTextarea" class="form-label fw-bold">Description</label>
                               <textarea class="form-control" name="description" placeholder="Leave a details here:"></textarea>
                             </div>
 

@@ -184,8 +184,6 @@ class DonorController extends Controller
         return view('users.donor.quick_cash', compact('chapters'));
     }
 
-
-
     public function requestInKind(Request $request)
     {
         // Fetch the list of regions from the PSGC API
@@ -245,5 +243,49 @@ class DonorController extends Controller
             'donationRequests' => $donationRequests,
             'regions' => $regionNames
         ]);
+    }
+
+    public function inkindStatusList()
+    {
+        $user = Auth::user(); // Get the authenticated user
+        $donorId = $user->id; // Assuming the user is a donor and their ID is stored in the `id` field
+
+        $donations = Donation::where('donor_id', $donorId)
+            ->whereIn('status', ['pending', 'ongoing']) // Only include pending and ongoing donations
+            ->when(request('status'), function ($query, $status) {
+                return $query->where('status', $status); // Apply status filter if provided
+            })
+            ->when(request('type'), function ($query, $type) {
+                if ($type === 'request') {
+                    return $query->whereNotNull('donation_request_id'); // Filter by request type
+                } elseif ($type === 'quick') {
+                    return $query->whereNull('donation_request_id'); // Filter by quick type
+                }
+            })
+            ->get();
+
+        return view('users.donor.inkindStatusList', compact('donations'));
+    }
+
+    public function cashStatusList()
+    {
+        $user = Auth::user(); // Get the authenticated user
+        $donorId = $user->id; // Assuming the user is a donor and their ID is stored in the `id` field
+
+        $cashDonations = CashDonation::where('donor_id', $donorId)
+            ->whereIn('status', ['pending', 'ongoing']) // Only include pending and ongoing donations
+            ->when(request('status'), function ($query, $status) {
+                return $query->where('status', $status); // Apply status filter if provided
+            })
+            ->when(request('type'), function ($query, $type) {
+                if ($type === 'request') {
+                    return $query->whereNotNull('fund_request_id'); // Filter by request type
+                } elseif ($type === 'quick') {
+                    return $query->whereNull('fund_request_id'); // Filter by quick type
+                }
+            })
+            ->get();
+
+        return view('users.donor.cashStatusList', compact('cashDonations'));
     }
 }

@@ -293,9 +293,23 @@
             <li class="breadcrumb-item active"></li>
           </ol>
           <h1 class="my-2">Our Volunteer</h1>
+          <div class="d-flex justify-content-end mb-1">
+            <a href="{{ route('admin.volunteerList', ['status' => 'all']) }}"
+              class="btn table-btn btn-sm {{ $statusFilter === 'all' ? 'custom-active' : '' }}">
+              All
+            </a>
+            <a href="{{ route('admin.volunteerList', ['status' => 'active']) }}"
+              class="btn table-btn btn-sm {{ $statusFilter === 'active' ? 'custom-active' : '' }}">
+              Active
+            </a>
+            <a href="{{ route('admin.volunteerList', ['status' => 'inactive']) }}"
+              class="btn table-btn btn-sm {{ $statusFilter === 'inactive' ? 'custom-active' : '' }}">
+              Inactive
+            </a>
+          </div>
           <div class="card card-primary card-outline">
             <div class="card-header">
-              <h3 class="card-title">Currently Active Volunteer</h3>
+              <h3 class="card-title">Volunteer List</h3>
             </div>
             <div class="card-body">
               <table id="example1" class="table table-bordered table-hover table-striped">
@@ -309,41 +323,47 @@
                   </tr>
                 </thead>
                 <tbody>
-                  @forelse($activeVolunteers as $volunteer)
+                  @forelse($volunteers as $volunteer)
                   <tr>
                     <td>{{ $volunteer->role_name }}</td>
                     <td>{{ $volunteer->username }}</td>
                     <td>{{ $volunteer->volunteer->chapter->chapter_name ?? 'No Chapter' }}</td>
                     <td>
+                      @if($volunteer->is_verified)
                       <p class="bg-success-subtle text-success-emphasis m-0 p-1 fw-bold">Active</p>
+                      @else
+                      <p class="bg-danger-subtle text-danger-emphasis m-0 p-1 fw-bold">Inactive</p>
+                      @endif
                     </td>
                     <td>
                       <!-- Action Buttons -->
-                      <button type="button" class="btn btn-success btn-sm" title="View Details">
+                      <button type="button" class="btn btn-success btn-sm me-2" title="View Details">
                         <a href="{{ route('view_details', $volunteer->id) }}" style="color: white; text-decoration:none;">View</a>
                       </button>
-                      <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $volunteer->id }}" title="Delete">
-                        Delete
+                      @if($volunteer->is_verified)
+                      <button type="button" class="btn btn-danger btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#deactivateModal{{ $volunteer->id }}" title="Deactivate">
+                        Deactivate
                       </button>
+                      @endif
                     </td>
                   </tr>
 
-                  <!-- Delete Modal -->
-                  <div class="modal fade" id="deleteModal{{ $volunteer->id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+                  <!-- Deactivate Modal -->
+                  <div class="modal fade" id="deactivateModal{{ $volunteer->id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
                     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                       <div class="modal-content">
-                        <form action="{{ route('volunteers.delete', $volunteer->id) }}" method="POST">
+                        <form action="{{ route('volunteers.deactivate', $volunteer->id) }}" method="POST">
                           @csrf
                           <div class="modal-header">
-                            <h5 class="modal-title">Delete Volunteer</h5>
+                            <h5 class="modal-title">Deactivate Volunteer</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                           </div>
                           <div class="modal-body text-center">
-                            Are you sure you want to delete this volunteer?
+                            Are you sure you want to deactivate this volunteer?
                           </div>
                           <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-danger">Delete</button>
+                            <button type="submit" class="btn btn-danger">Deactivate</button>
                           </div>
                         </form>
                       </div>
@@ -351,7 +371,7 @@
                   </div>
                   @empty
                   <tr>
-                    <td colspan="5" class="text-center">No Active Volunteers Available</td>
+                    <td colspan="5" class="text-center">No Volunteers Available</td>
                   </tr>
                   @endforelse
                 </tbody>

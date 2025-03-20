@@ -24,9 +24,12 @@ return new class extends Migration {
             $table->string('proof_photo_1')->nullable();
             $table->string('proof_photo_2')->nullable();
             $table->string('proof_video')->nullable();
-            $table->enum('status', ['Pending', 'Fulfilled', 'Canceled'])->default('pending');
+            $table->enum('status', ['Pending', 'Fulfilled', 'Canceled', 'Unfulfilled'])->default('Pending');
             $table->foreignId('location_id')->constrained('location')->onDelete('cascade');
+            $table->date('valid_until')->nullable();
             $table->timestamps();
+            // Add composite unique index
+            $table->unique(['location_id', 'cause', 'status'], 'donation_request_location_cause_status_unique');
         });
 
         Schema::create('donation_request_items', function (Blueprint $table) {
@@ -121,15 +124,17 @@ return new class extends Migration {
                 'Feeding Program',
                 'General'
             ]);
-            $table->decimal('amount_needed', 10, 2);
+            $table->decimal('casualty_cost', 10, 2)->nullable();
             $table->text('description');
             $table->string('proof_photo_1')->nullable();
             $table->string('proof_photo_2')->nullable();
             $table->string('proof_video')->nullable();
-            $table->enum('status', ['pending', 'fulfilled', 'canceled'])->default('pending');
+            $table->enum('status', ['Pending', 'Fulfilled', 'Canceled', 'Unfulfilled'])->default('Pending');
+            $table->date('valid_until')->nullable();
             $table->timestamps();
+            // Add composite unique index
+            $table->unique(['location_id', 'cause', 'status']);
         });
-
 
         Schema::create('cash_donation', function (Blueprint $table) {
             $table->id();

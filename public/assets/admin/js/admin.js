@@ -455,6 +455,7 @@ $('#file-input').change(function (event) {
             region: { required: true },
             province: { required: true },
             city: { required: true },
+            valid_until: { required: true },
             barangay: { required: true },
             description: {
                 required: true,
@@ -470,6 +471,7 @@ $('#file-input').change(function (event) {
             province: { required: "Please select a province." },
             city: { required: "Please select a city/municipality." },
             barangay: { required: "Please select a barangay." },
+            valid_until: { required: "Please select a date." },
             description: {
                 required: "Please provide a description.",
                 minlength: "Description must be at least 10 characters long.",
@@ -535,7 +537,8 @@ if ($("#cashForm").length > 0) {
                 required: true,
                 minlength: 10,
             },
-            amount: { required: true, min: 0 },
+            casualty_cost: { required: true, min: 0 },
+            valid_until: { required: true },
         },
         messages: {
             cause: { required: "Please select a cause." },
@@ -544,11 +547,12 @@ if ($("#cashForm").length > 0) {
             province: { required: "Please select a province." },
             city: { required: "Please select a city/municipality." },
             barangay: { required: "Please select a barangay." },
+            valid_until: { required: "Please select a date." },
             description: {
                 required: "Please provide a description.",
                 minlength: "Description must be at least 10 characters long.",
             },
-            amount: {
+            casualty_cost: {
                 required: "Please enter an amount.",
                 min: "Amount must be a positive number.",
             },
@@ -567,6 +571,18 @@ if ($("#cashForm").length > 0) {
             // Submit the form if all validations pass
             form.submit();
         },
+    });
+
+    $("input[name='casualty_cost']").closest(".col-12").hide();
+
+    $("#cash_cause").change(function () {
+      var selectedCause = $(this).val();
+      
+      if (selectedCause === "Feeding Program") {
+        $("input[name='casualty_cost']").closest(".col-12").hide();
+      } else {
+        $("input[name='casualty_cost']").closest(".col-12").show();
+      }
     });
 }
 

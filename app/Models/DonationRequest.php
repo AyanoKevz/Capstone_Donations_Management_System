@@ -21,6 +21,7 @@ class DonationRequest extends Model
         'proof_video',
         'status',
         'location_id',
+        'valid_until',
     ];
 
     public function admin()

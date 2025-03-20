@@ -293,23 +293,41 @@
             <li class="breadcrumb-item active"></li>
           </ol>
           <h1 class="my-2">Our Donors</h1>
-          <div class="d-flex justify-content-end mb-1">
-            <a href="{{ route('admin.donorList', ['account_type' => 'all']) }}"
-              class="btn table-btn btn-sm {{ $filter === 'all' ? 'custom-active' : '' }}">
-              All
-            </a>
-            <a href="{{ route('admin.donorList', ['account_type' => 'Individual']) }}"
-              class="btn table-btn btn-sm {{ $filter === 'Individual' ? 'custom-active' : '' }}">
-              Individual
-            </a>
-            <a href="{{ route('admin.donorList', ['account_type' => 'Organization']) }}"
-              class="btn table-btn btn-sm {{ $filter === 'Organization' ? 'custom-active' : '' }}">
-              Organization
-            </a>
+          <div class="d-flex justify-content-between">
+            <div class="d-flex justify-content-end mb-1">
+              <!-- Filter for Active/Inactive/All -->
+              <a href="{{ route('admin.donorList', ['status' => 'all', 'account_type' => $accountTypeFilter]) }}"
+                class="btn table-btn btn-sm {{ $statusFilter === 'all' ? 'custom-active' : '' }}">
+                All
+              </a>
+              <a href="{{ route('admin.donorList', ['status' => 'active', 'account_type' => $accountTypeFilter]) }}"
+                class="btn table-btn btn-sm {{ $statusFilter === 'active' ? 'custom-active' : '' }}">
+                Active
+              </a>
+              <a href="{{ route('admin.donorList', ['status' => 'inactive', 'account_type' => $accountTypeFilter]) }}"
+                class="btn table-btn btn-sm {{ $statusFilter === 'inactive' ? 'custom-active' : '' }}">
+                Inactive
+              </a>
+            </div>
+            <div class="d-flex justify-content-end mb-1">
+              <!-- Filter for Account Type -->
+              <a href="{{ route('admin.donorList', ['account_type' => 'all', 'status' => $statusFilter]) }}"
+                class="btn table-btn btn-sm {{ $accountTypeFilter === 'all' ? 'custom-active' : '' }}">
+                All
+              </a>
+              <a href="{{ route('admin.donorList', ['account_type' => 'Individual', 'status' => $statusFilter]) }}"
+                class="btn table-btn btn-sm {{ $accountTypeFilter === 'Individual' ? 'custom-active' : '' }}">
+                Individual
+              </a>
+              <a href="{{ route('admin.donorList', ['account_type' => 'Organization', 'status' => $statusFilter]) }}"
+                class="btn table-btn btn-sm {{ $accountTypeFilter === 'Organization' ? 'custom-active' : '' }}">
+                Organization
+              </a>
+            </div>
           </div>
           <div class="card card-primary card-outline">
             <div class="card-header">
-              <h3 class="card-title">Currently Active Donor</h3>
+              <h3 class="card-title">Donor List</h3>
             </div>
             <div class="card-body">
               <table id="example1" class="table table-bordered table-hover table-striped">
@@ -323,50 +341,55 @@
                   </tr>
                 </thead>
                 <tbody>
-                  @forelse($activeDonors as $donor)
+                  @forelse($donors as $donor)
                   <tr>
                     <td>{{ $donor->role_name }}</td>
                     <td>{{ $donor->username }}</td>
                     <td>{{ $donor->account_type }}</td>
                     <td>
+                      @if($donor->is_verified)
                       <p class="bg-success-subtle text-success-emphasis m-0 p-1 fw-bold">Active</p>
+                      @else
+                      <p class="bg-danger-subtle text-danger-emphasis m-0 p-1 fw-bold">Inactive</p>
+                      @endif
                     </td>
                     <td>
                       <!-- Action Buttons -->
-                      <button type="button" class="btn btn-success btn-sm" title="View Details">
+                      <button type="button" class="btn btn-success btn-sm me-2" title="View Details">
                         <a href="{{ route('view_details', $donor->id) }}" style="color: white; text-decoration:none;">View</a>
                       </button>
-                      <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $donor->id }}" title="Delete">
-                        Delete
+                      @if($donor->is_verified)
+                      <button type="button" class="btn btn-danger btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#deactivateModal{{ $donor->id }}" title="Deactivate">
+                        Deactivate
                       </button>
+                      @endif
                     </td>
                   </tr>
 
-                  <!-- Delete Modal -->
-                  <div class="modal fade" id="deleteModal{{ $donor->id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+                  <!-- Deactivate Modal -->
+                  <div class="modal fade" id="deactivateModal{{ $donor->id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
                     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                       <div class="modal-content">
-                        <form action="{{ route('donors.delete', $donor->id) }}" method="POST">
+                        <form action="{{ route('donors.deactivate', $donor->id) }}" method="POST">
                           @csrf
                           <div class="modal-header">
-                            <h5 class="modal-title">Delete Donor</h5>
+                            <h5 class="modal-title">Deactivate Donor</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                           </div>
                           <div class="modal-body text-center">
-                            Are you sure you want to delete this donor?
+                            Are you sure you want to deactivate this donor?
                           </div>
                           <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-danger">Delete</button>
+                            <button type="submit" class="btn btn-danger">Deactivate</button>
                           </div>
                         </form>
-
                       </div>
                     </div>
                   </div>
                   @empty
                   <tr>
-                    <td colspan="5" class="text-center">No Active Donors Available</td>
+                    <td colspan="5" class="text-center">No Donors Available</td>
                   </tr>
                   @endforelse
                 </tbody>
