@@ -186,6 +186,7 @@ class DonationController extends Controller
         // Get request IDs where the donor has donated but the donation is NOT received
         $pendingDonations = Donation::where('donor_id', $donor->id)
             ->where('status', '!=', 'Received') // Status is NOT received
+            ->whereNotNull('donation_request_id') // Exclude donations with no request ID
             ->pluck('donation_request_id')
             ->toArray();
 
@@ -314,6 +315,7 @@ class DonationController extends Controller
         // Get fund request IDs where the donor has already donated cash
         $pendingCashDonations = CashDonation::where('donor_id', $donor->id)
             ->where('status', '!=', 'Received') // Status is NOT received
+            ->whereNotNull('fund_request_id') // Exclude donations with no request ID
             ->pluck('fund_request_id')
             ->toArray();
 
