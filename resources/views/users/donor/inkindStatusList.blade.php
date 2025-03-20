@@ -180,38 +180,20 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{route ('donor.requestInKind') }}" class="nav-link">
+                                    <a href="{{route ('donor.request_map') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Donation Requests</p>
+                                        <p>In-Kind Request</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{route ('donor.reqCash_map') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Fund Request</p>
                                     </a>
                                 </li>
                             </ul>
                         </li>
 
-                        <!-- Geo Map -->
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-map-marked-alt"></i>
-                                <p>
-                                    Geo-mapping
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="{{route ('donor.request_map') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Donation Request Map</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{route('prc-chapters')}}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>PRC Chapters</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
                         <!-- Track Donations -->
                         <li class="nav-item">
                             <a href="#" class="nav-link active">
@@ -237,6 +219,14 @@
                             </ul>
                         </li>
 
+                        <!-- Chapters -->
+                        <li class="nav-item">
+                            <a href="{{route('prc-chapters')}}" class="nav-link">
+                                <i class="nav-icon fas fa-map-marked-alt"></i>
+                                <p>PRC Chapters</p>
+                            </a>
+                        </li>
+
                         <!-- Learn About Causes -->
                         <li class="nav-item">
                             <a href="{{route ('donor.causes') }}" class="nav-link">
@@ -255,13 +245,12 @@
 
                         <!-- Feedback / Support -->
                         <li class="nav-item">
-                            <a href="{{route ('donor.contact_form') }}" class="nav-link ">
+                            <a href="{{route ('donor.contact_form') }}" class="nav-link">
                                 <i class="nav-icon fas fa-comments"></i>
                                 <p>Contact / Support</p>
                             </a>
                         </li>
                     </ul>
-
                 </nav>
                 <!-- /.sidebar-menu -->
             </div>
@@ -370,7 +359,7 @@
                                                 @if($donation->donation_method === 'pickup')
                                                 {{ $donation->pickup_address }}
                                                 @else
-                                                N/A
+                                                Drop-off (N/A)
                                                 @endif
                                             </td>
                                             <td>{{ $donation->chapter->chapter_name }}</td>

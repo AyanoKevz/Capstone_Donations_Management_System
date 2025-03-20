@@ -171,8 +171,6 @@ Route::middleware(['auth', 'prevent-back-button'])->prefix('user')->group(functi
         Route::get('/testimonial', [DonorController::class, 'showTestimonialForm'])->name('donor.testi_form');
         Route::get('/learn-about-causes', [DonorController::class, 'causes'])->name('donor.causes');
 
-        Route::get('/request/in-kind', [DonorController::class, 'requestInKind'])->name('donor.requestInKind');
-
         Route::get('/request-map/items', [DonationController::class, 'RequestMapInKind'])->name('donor.request_map');
         Route::post('/request-map/donate', [DonationController::class, 'RequestMapInKindDonate'])->name('donation.store');
         Route::get('/request-map/cash', [DonationController::class, 'RequestMapCash'])->name('donor.reqCash_map');

@@ -184,67 +184,6 @@ class DonorController extends Controller
         return view('users.donor.quick_cash', compact('chapters'));
     }
 
-    public function requestInKind(Request $request)
-    {
-        // Fetch the list of regions from the PSGC API
-        $regions = Http::get('https://psgc.gitlab.io/api/regions')->json();
-        $regionNames = collect($regions)->pluck('name')->unique()->values()->toArray();
-
-        // Get authenticated donor
-        $user = Auth::user();
-        $donor = $user->donor;
-
-        if (!$donor) {
-            return redirect()->back()->with('error', 'Donor profile not found.');
-        }
-
-        // Get request IDs where the donor has donated but the donation is NOT received
-        $pendingDonations = Donation::where('donor_id', $donor->id)
-            ->where('status', '!=', 'Received') // Status is NOT received
-            ->pluck('donation_request_id')
-            ->toArray();
-
-        // Start with a base query for pending requests
-        $query = DonationRequest::with(['location', 'items', 'admin.chapter'])
-            ->where('status', 'Pending')
-            ->whereNotIn('id', $pendingDonations); // Hide requests where the donor has a pending donation
-
-        // Apply filters
-        if ($request->has('cause') && $request->cause !== 'General') {
-            $query->where('cause', $request->cause);
-        }
-        if ($request->has('urgency') && $request->urgency !== 'General') {
-            $query->where('urgency', $request->urgency);
-        }
-        if ($request->has('region') && $request->region !== 'General') {
-            $region = $request->region;
-            $query->whereHas('location', function ($q) use ($region) {
-                $q->where('region', $region);
-            });
-        }
-
-        $donationRequests = $query->get();
-        $chapters = Chapter::all();
-
-        // Calculate donated quantities
-        $donationRequests->each(function ($request) {
-            $request->items->each(function ($item) use ($request) {
-                $donatedQuantity = DonationItem::where('donation_request_id', $request->id)
-                    ->where('item', $item->item)
-                    ->whereHas('donation', function ($q) {
-                        $q->where('status', '!=', 'pending');
-                    })
-                    ->sum('quantity');
-                $item->donated_quantity = $donatedQuantity;
-            });
-        });
-
-        return view('users.donor.requestInkind', [
-            'donationRequests' => $donationRequests,
-            'regions' => $regionNames
-        ]);
-    }
-
     public function inkindStatusList()
     {
         $user = Auth::user(); // Get the authenticated user
