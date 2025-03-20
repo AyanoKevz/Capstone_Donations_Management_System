@@ -229,6 +229,13 @@
               </nav>
             </div>
 
+            <a class="nav-link" href="{{ route('admin.quickDonation') }}" title="Volunteer Appointments">
+              <div class="sb-nav-link-icon">
+                <i class="fa-solid fa-handshake-angle"></i>
+              </div>
+              <span>Quick Donations</span>
+            </a>
+
             <!-- Volunteer Appointments -->
             <a class="nav-link active" href="{{ route('admin.appointments') }}" title="Volunteer Appointments">
               <div class="sb-nav-link-icon">

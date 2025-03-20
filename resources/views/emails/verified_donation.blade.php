@@ -180,6 +180,9 @@
 
       <!-- Card Body -->
       <div class="card">
+        <div class="message">
+          <p>{{ $emailMessage }}</p> <!-- Updated variable name -->
+        </div>
         <div class="receipt text-center">
           <!-- Add the logo here -->
           <img src="{{ $message->embed($logoPath) }}" alt="UniAid Logo" class="receipt-logo">

@@ -129,6 +129,8 @@ Route::middleware(['admin', 'prevent-back-button'])->prefix('admin')->group(func
     Route::get('/Request-List', [AdminController::class, 'allRequest'])->name('admin.requestList');
     Route::get('/request-details/{id}/{type}', [AdminController::class, 'requestDetails'])->name('request_details');
 
+    Route::get('/quick-donation/list', [AdminController::class, 'allQuickDonations'])->name('admin.quickDonation');
+
 
     //Donation Details
     // Route for Cash Donation Details
@@ -138,6 +140,9 @@ Route::middleware(['admin', 'prevent-back-button'])->prefix('admin')->group(func
     // Route for In-Kind Donation Details
     Route::get('/inkind-donation/{id}', [AdminController::class, 'showInKindDonationDetails'])
         ->name('inkind.donation.details');
+
+    Route::post('/inkind-donation/verify/{id}', [AdminController::class, 'verifyInKindDonation'])
+        ->name('inkind.donation.verify');
 });
 
 

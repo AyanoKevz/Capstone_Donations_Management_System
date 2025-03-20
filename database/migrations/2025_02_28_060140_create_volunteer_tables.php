@@ -24,7 +24,7 @@ return new class extends Migration {
             $table->integer('hours_worked');
             $table->foreignId('event_id')->nullable()->constrained('event')->nullOnDelete();
             $table->foreignId('distribution_id')->nullable()->constrained('distribution')->nullOnDelete();
-            $table->enum('status', ['pending', 'accepted', 'declined', 'completed'])->default('pending');
+            $table->enum('status', ['pending', 'accepted', 'declined', 'completed', 'ongoing'])->default('pending');
             $table->timestamps();
         });;
 

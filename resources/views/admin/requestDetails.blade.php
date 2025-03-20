@@ -229,6 +229,13 @@
               </nav>
             </div>
 
+            <a class="nav-link" href="{{ route('admin.quickDonation') }}" title="Volunteer Appointments">
+              <div class="sb-nav-link-icon">
+                <i class="fa-solid fa-handshake-angle"></i>
+              </div>
+              <span>Quick Donations</span>
+            </a>
+
             <!-- Volunteer Appointments -->
             <a class="nav-link" href="{{ route('admin.appointments') }}" title="Volunteer Appointments">
               <div class="sb-nav-link-icon">
@@ -343,6 +350,11 @@
                         <td>₱{{ number_format( $request->casualty_cost, 2) }}</td>
                       </tr>
                       @endif
+                      <tr>
+                        <th width="30%">Valid Until</th>
+                        <td width="2%">:</td>
+                        <td>{{ \Carbon\Carbon::parse($request->valid_until)->format('F d, Y') }}</td>
+                      </tr>
                     </table>
 
                     @if ($isCashRequest)
@@ -350,7 +362,7 @@
                       <h3 class="mb-0"><i class="far fa-clone pr-1"></i> Cash Request</h3>
                     </div>
                     <table class="table table-bordered">
-                      <thead>
+                      <thead class="table-warning">
                         <tr>
                           <th width="50%">Total Donated</th>
                         </tr>
@@ -366,7 +378,7 @@
                       <h3 class="mb-0"><i class="far fa-clone pr-1"></i> Requested Items</h3>
                     </div>
                     <table class="table table-bordered">
-                      <thead class="table-primary">
+                      <thead class="table-warning">
                         <tr>
                           <th>Category</th>
                           <th>Item</th>
@@ -453,7 +465,10 @@
                         <th>Method</th>
                         @if($isCashRequest)
                         <th>Amount</th>
+                        {{-- Show "Payment Method" column only if any donation is online --}}
+                        @if($cashDonations->contains('donation_method', 'online'))
                         <th>Payment Method</th>
+                        @endif
                         @endif
                         <th>Date & Time</th>
                         <th>Status</th>
@@ -467,8 +482,17 @@
                       <tr>
                         <td>{{ $cashDonation->donor_name }}</td>
                         <td>{{ ucfirst($cashDonation->donation_method) }}</td>
-                        <td>{{ $cashDonation->amount }}</td>
-                        <td>{{ $cashDonation->payment_method }}</td>
+                        <td>₱{{ number_format($cashDonation->amount, 2) }}</td>
+                        {{-- Show payment method only if donation method is online --}}
+                        @if($cashDonations->contains('donation_method', 'online'))
+                        <td>
+                          @if($cashDonation->donation_method == 'online')
+                          {{ $cashDonation->payment_method }}
+                          @else
+                          N/A
+                          @endif
+                        </td>
+                        @endif
                         <td>{{ \Carbon\Carbon::parse($cashDonation->created_at)->format('M d, Y h:i A') }}</td>
                         <td>{{ ucfirst($cashDonation->status) }}</td>
                         <td>

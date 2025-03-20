@@ -814,4 +814,98 @@ class AdminController extends Controller
         $inKindDonation = Donation::with('donationItems')->findOrFail($id);
         return view('admin.inkind_details', compact('inKindDonation'));
     }
+
+
+    public function verifyInKindDonation($donationId)
+    {
+        // Find the donation
+        $donation = Donation::find($donationId);
+
+        if (!$donation) {
+            return redirect()->back()->with('error', 'Donation not found.');
+        }
+
+        // Update status from 'pending' to 'ongoing'
+        $donation->status = 'ongoing';
+        $donation->save();
+
+        // Check if the donation is based on a request
+        if ($donation->donation_request_id) {
+            $donationRequest = DonationRequest::find($donation->donation_request_id);
+            if ($donationRequest) {
+                $donationRequest->checkIfFulfilled(); // Only run for donations tied to a request
+            }
+        }
+
+        // Prepare email details
+        $logoPath = public_path('assets/img/systemLogo.png');
+        $chapter = $donation->chapter->chapter_name; // Assuming donation has a relationship with chapter
+        $donationItems = $donation->donationItems;
+
+        // Customize email message based on donation method
+        $emailMessage = ''; // Initialize the variable
+        if ($donation->donation_method === 'drop-off') {
+            $emailMessage = 'Thank you for your donation! Please wait until you bring your donation to the chapter.';
+        } elseif ($donation->donation_method === 'pickup') {
+            $emailMessage = 'Thank you for your donation! You will receive a text or email once a volunteer is available for the pick-up.';
+        }
+
+        $details = [
+            'logoPath' => $logoPath,
+            'chapter' => $chapter,
+            'donation' => $donation,
+            'donationItems' => $donationItems,
+            'type' => 'in-kind',
+            'emailMessage' => $emailMessage, // Pass the email message to the template
+        ];
+
+        // Send email
+        Mail::send('emails.verified_donation', $details, function ($message) use ($donation) {
+            $message->to($donation->donor->user->email) // Access email from UserAccount
+                ->subject('Your Donation Has Been Verified');
+        });
+
+        return redirect()->back()->with('success', 'Donation verified successfully.');
+    }
+
+
+    public function allQuickDonations(Request $request)
+    {
+        $admin = Auth::guard('admin')->user();
+        $chapterId = $admin->chapter_id;
+
+        $statusFilter = $request->query('status', '');
+        $typeFilter = $request->query('type', 'all');
+
+        // Get cash donations with no request_id and pending/ongoing status
+        $cashDonationsQuery = CashDonation::where('chapter_id', $chapterId)
+            ->whereNull('fund_request_id')
+            ->whereIn('status', ['Pending', 'Ongoing']);
+
+        // Get in-kind donations with no request_id and pending/ongoing status
+        $inKindDonationsQuery = Donation::where('chapter_id', $chapterId)
+            ->whereNull('donation_request_id')
+            ->whereIn('status', ['Pending', 'Ongoing']);
+
+        // Apply status filter
+        if ($statusFilter) {
+            $cashDonationsQuery->where('status', $statusFilter);
+            $inKindDonationsQuery->where('status', $statusFilter);
+        }
+
+        // Apply type filter
+        if ($typeFilter === 'cash') {
+            // Ensure no in-kind donations are returned
+            $inKindDonationsQuery->whereRaw('1 = 0'); // This will make the query return no results
+        } elseif ($typeFilter === 'in-kind') {
+            // Ensure no cash donations are returned
+            $cashDonationsQuery->whereRaw('1 = 0'); // This will make the query return no results
+        }
+
+        // Execute the queries
+        $cashDonations = $cashDonationsQuery->get();
+        $inKindDonations = $inKindDonationsQuery->get();
+
+        return view('admin.quickDonations', compact('cashDonations', 'inKindDonations', 'statusFilter', 'typeFilter'));
+    }
 }

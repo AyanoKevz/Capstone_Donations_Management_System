@@ -228,6 +228,13 @@
               </nav>
             </div>
 
+            <a class="nav-link" href="{{ route('admin.quickDonation') }}" title="Volunteer Appointments">
+              <div class="sb-nav-link-icon">
+                <i class="fa-solid fa-handshake-angle"></i>
+              </div>
+              <span>Quick Donations</span>
+            </a>
+
             <!-- Volunteer Appointments -->
             <a class="nav-link" href="{{ route('admin.appointments') }}" title="Volunteer Appointments">
               <div class="sb-nav-link-icon">
@@ -291,57 +298,68 @@
           <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item active"></li>
           </ol>
-          <h1 class="my-2">Our Donors</h1>
-          <div class="card shadow-sm">
-            <div class="card-header bg-transparent border-0">
-              <h3 class="mb-0"><i class="far fa-clone pr-1"></i> Cash Donation Details</h3>
+          <h1 class="my-2">Cash Donation Details</h1>
+          <div class="card shadow-lg rounded">
+            <div class="card-header bg-light border-0">
+              <h3 class="mb-0 text-dark"><i class="far fa-clone pr-1"></i> Cash Donation Details</h3>
             </div>
             <div class="card-body pt-0">
               <table class="table table-bordered">
                 <tr>
-                  <th width="30%">Donor Name</th>
+                  <th width="30%" class="bg-light">Donor Name</th>
                   <td width="2%">:</td>
                   <td>{{ $cashDonation->donor_name }}</td>
                 </tr>
                 <tr>
-                  <th width="30%">Amount</th>
-                  <td width="2%">:</td>
+                  <th class="bg-light">Amount</th>
+                  <td>:</td>
                   <td>₱{{ number_format($cashDonation->amount, 2) }}</td>
                 </tr>
                 <tr>
-                  <th width="30%">Donation Method</th>
-                  <td width="2%">:</td>
-                  <td>{{ $cashDonation->donation_method }}</td>
+                  <th class="bg-light">Donation Method</th>
+                  <td>:</td>
+                  <td>{{ ucfirst($cashDonation->donation_method) }}</td>
                 </tr>
                 @if($cashDonation->donation_method === 'online')
                 <tr>
-                  <th width="30%">Payment Method</th>
-                  <td width="2%">:</td>
-                  <td>{{ $cashDonation->payment_method }}</td>
+                  <th class="bg-light">Payment Method</th>
+                  <td>:</td>
+                  <td>{{ ucfirst($cashDonation->payment_method) }}</td>
                 </tr>
                 @endif
                 <tr>
-                  <th width="30%">Transaction ID</th>
-                  <td width="2%">:</td>
+                  <th class="bg-light">Transaction ID</th>
+                  <td>:</td>
                   <td>{{ $cashDonation->transaction_id }}</td>
                 </tr>
                 <tr>
-                  <th width="30%">Status</th>
-                  <td width="2%">:</td>
-                  <td>{{ $cashDonation->status }}</td>
+                  <th class="bg-light">Status</th>
+                  <td>:</td>
+                  <td>
+                    <span class="badge bg-{{ 
+                        $cashDonation->status == 'pending' ? 'secondary' : 
+                        ($cashDonation->status == 'received' ? 'success' : 
+                        ($cashDonation->status == 'ongoing' ? 'warning' : 'danger')) }}">
+                      {{ ucfirst($cashDonation->status) }}
+                    </span>
+                  </td>
                 </tr>
                 <tr>
-                  <th width="30%">Date & Time</th>
-                  <td width="2%">:</td>
-                  <td>{{ $cashDonation->created_at }}</td>
+                  <th class="bg-light">Date & Time</th>
+                  <td>:</td>
+                  <td>{{ \Carbon\Carbon::parse($cashDonation->created_at)->format('F d, Y') }}</td>
                 </tr>
               </table>
 
-              <!-- Add Verify/Decline Buttons if Status is Pending -->
+              <!-- Verify/Decline Buttons -->
               @if($cashDonation->status === 'pending')
-              <div class="mt-4">
-                <button class="btn btn-success">Verify</button>
-                <button class="btn btn-danger">Decline</button>
+              <div class="mt-4 d-flex justify-content-end">
+                <button type="button" class="btn text-white mx-2" style="background-color: #5cb85c;" data-bs-toggle="modal" data-bs-target="#verifyCashModal">
+                  <i class="fas fa-check-circle"></i> Verify
+                </button>
+                <button type="button" class="btn text-white mx-2" style="background-color: #d9534f;" data-bs-toggle="modal" data-bs-target="#declineCashModal">
+                  <i class="fas fa-times-circle"></i> Decline
+                </button>
               </div>
               @endif
             </div>
@@ -349,6 +367,51 @@
 
         </div>
       </main>
+
+
+      <!-- Verify Cash Donation Modal -->
+      <div class="modal fade" id="verifyCashModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-4">Verify Cash Donation</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <p>Are you sure you want to verify this cash donation?</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+              <form action="#" method="POST" class="d-inline">
+                @csrf
+                <button type="submit" class="btn btn-success">Verify</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Decline Cash Donation Modal -->
+      <div class="modal fade" id="declineCashModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-4">Decline Cash Donation</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <p>Are you sure you want to decline this cash donation?</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+              <form action="#" method="POST" class="d-inline">
+                @csrf
+                <button type="submit" class="btn btn-danger">Decline</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <footer class="py-3 bg-dark mt-3">
         <div class="container-fluid ps-4">

@@ -229,6 +229,13 @@
               </nav>
             </div>
 
+            <a class="nav-link" href="{{ route('admin.quickDonation') }}" title="Volunteer Appointments">
+              <div class="sb-nav-link-icon">
+                <i class="fa-solid fa-handshake-angle"></i>
+              </div>
+              <span>Quick Donations</span>
+            </a>
+
             <!-- Volunteer Appointments -->
             <a class="nav-link" href="{{ route('admin.appointments') }}" title="Volunteer Appointments">
               <div class="sb-nav-link-icon">
@@ -292,7 +299,7 @@
           <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item active"></li>
           </ol>
-          <h1 class="my-2">All Request Made</h1>
+          <h1 class="my-3">All Request Made at {{ $Admin->chapter->chapter_name }} Chapter</h1>
           <div class="d-flex justify-content-between">
             <div class="d-flex mb-1">
               <!-- Filter for Urgency -->
@@ -346,7 +353,7 @@
           </div>
           <div class="card card-primary card-outline">
             <div class="card-header">
-              <h3 class="card-title">Currently Active Donor</h3>
+              <h3 class="card-title">All Request Made</h3>
             </div>
             <div class="card-body">
               <table id="example1" class="table table-bordered table-hover table-striped">
