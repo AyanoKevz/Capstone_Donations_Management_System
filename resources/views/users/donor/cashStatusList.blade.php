@@ -180,38 +180,20 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{route ('donor.requestInKind') }}" class="nav-link">
+                                    <a href="{{route ('donor.request_map') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Donation Requests</p>
+                                        <p>In-Kind Request</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{route ('donor.reqCash_map') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Fund Request</p>
                                     </a>
                                 </li>
                             </ul>
                         </li>
 
-                        <!-- Geo Map -->
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-map-marked-alt"></i>
-                                <p>
-                                    Geo-mapping
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="{{route ('donor.request_map') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Donation Request Map</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{route('prc-chapters')}}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>PRC Chapters</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
                         <!-- Track Donations -->
                         <li class="nav-item">
                             <a href="#" class="nav-link active">
@@ -223,7 +205,7 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{route ('donor.donationStatus') }}" class="nav-link">
+                                    <a href="{{route ('donor.donationStatus') }}" class="nav-link active">
                                         <i class="fas fa-circle-arrow-right nav-icon"></i>
                                         <p>Donation Status</p>
                                     </a>
@@ -235,6 +217,14 @@
                                     </a>
                                 </li>
                             </ul>
+                        </li>
+
+                        <!-- Chapters -->
+                        <li class="nav-item">
+                            <a href="{{route('prc-chapters')}}" class="nav-link">
+                                <i class="nav-icon fas fa-map-marked-alt"></i>
+                                <p>PRC Chapters</p>
+                            </a>
                         </li>
 
                         <!-- Learn About Causes -->
@@ -255,13 +245,12 @@
 
                         <!-- Feedback / Support -->
                         <li class="nav-item">
-                            <a href="{{route ('donor.contact_form') }}" class="nav-link ">
+                            <a href="{{route ('donor.contact_form') }}" class="nav-link">
                                 <i class="nav-icon fas fa-comments"></i>
                                 <p>Contact / Support</p>
                             </a>
                         </li>
                     </ul>
-
                 </nav>
                 <!-- /.sidebar-menu -->
             </div>

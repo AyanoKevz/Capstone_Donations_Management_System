@@ -8,7 +8,7 @@ class SmsHelper
 {
   public static function sendSmsNotification($phoneNumber, $message)
   {
-    $url = 'http://192.168.1.2:8082/'; // Traccar SMS endpoint
+    $url = 'http://192.168.172.93:8082/'; // Traccar SMS endpoint
     $authToken = '35c17a36-ec23-47a4-b493-2cfa4e539e1a'; // Your API Token
 
     $postData = json_encode([
