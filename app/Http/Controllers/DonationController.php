@@ -358,10 +358,13 @@ class DonationController extends Controller
 
         // Calculate amount_raised for each fund request
         $fundRequests->each(function ($fundRequest) {
-            // Get total cash donations for this fund request
-            $totalDonated = $fundRequest->cashDonations()->sum('amount');
+            // Get total cash donations for this fund request (excluding pending)
+            $totalDonated = $fundRequest->cashDonations()
+                ->where('status', 'received') // Only count verified donations
+                ->sum('amount');
+
             // Attach calculated values
-            $fundRequest->amount_raised = $totalDonated; // Store the raised amount
+            $fundRequest->amount_raised = $totalDonated; // Store the verified amount raised
         });
 
         return view('users.donor.request_map_cash', [

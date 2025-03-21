@@ -69,32 +69,31 @@
     .card p {
       font-size: 16px;
       margin: 0 0 20px;
-      color: #555;
     }
 
     /* Receipt Styles */
     .receipt {
-      width: 100%;
-      max-width: 300px;
-      background: white;
+      max-width: 100%;
+      background: #b92f2f;
       border: 2px dashed #ccc;
       padding: 20px;
       border-radius: 8px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       margin: 0 auto;
+      color: white;
     }
 
     .shop-name {
       font-size: 1.5rem;
       font-weight: bold;
       margin-bottom: 15px;
-      color: #333;
+      color: white;
     }
 
     .info {
       font-size: 0.9rem;
       margin-bottom: 20px;
-      color: #555;
+      color: white;
       line-height: 1.4;
     }
 
@@ -103,6 +102,8 @@
       border-collapse: collapse;
       margin-bottom: 20px;
       font-size: 0.9rem;
+      background: white;
+      color: #333;
     }
 
     .receipt table th {
@@ -122,12 +123,12 @@
       font-size: 1.1rem;
       font-weight: bold;
       margin-bottom: 20px;
-      color: #333;
+      color: white;
     }
 
     .thanks {
       font-size: 0.9rem;
-      color: #777;
+      color: white !important;
       margin-top: 15px;
       font-style: italic;
     }
@@ -154,17 +155,72 @@
 
     .receipt-logo {
       width: 60px;
-      /* Adjust the size as needed */
       height: auto;
-      /* Maintain aspect ratio */
       margin-bottom: 10px;
-      /* Space between logo and shop name */
       display: block;
-      /* Ensure it's centered */
       margin-left: auto;
       margin-right: auto;
     }
+
+    .message {
+      color: #ffffff;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 600px) {
+      .navbar h1 {
+        font-size: 24px;
+      }
+
+      .card {
+        padding: 20px;
+      }
+
+      .receipt {
+        max-width: 100%;
+        padding: 15px;
+      }
+
+      .receipt table {
+        font-size: 0.8rem;
+      }
+
+      .receipt table th,
+      .receipt table td {
+        padding: 8px;
+      }
+
+      .shop-name {
+        font-size: 1.2rem;
+      }
+
+      .info {
+        font-size: 0.8rem;
+      }
+
+      .total {
+        font-size: 1rem;
+      }
+
+      .thanks {
+        font-size: 0.8rem;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .receipt table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+      }
+
+      .receipt table th,
+      .receipt table td {
+        white-space: nowrap;
+      }
+    }
   </style>
+
 </head>
 
 <body>
@@ -199,24 +255,26 @@
           <p><strong>Amount:</strong> ₱{{ number_format($donation->amount, 2) }}</p>
           @else
           <!-- In-Kind Donation Details -->
-          <table class="table table-borderless">
-            <thead>
-              <tr>
-                <th>Category</th>
-                <th>Item</th>
-                <th>Quantity</th>
-              </tr>
-            </thead>
-            <tbody>
-              @foreach($donationItems as $item)
-              <tr>
-                <td>{{ $item->category }}</td>
-                <td>{{ $item->item }}</td>
-                <td>{{ $item->quantity }}</td>
-              </tr>
-              @endforeach
-            </tbody>
-          </table>
+          <div class="table-responsive">
+            <table class="table table-borderless">
+              <thead>
+                <tr>
+                  <th>Category</th>
+                  <th>Item</th>
+                  <th>Quantity</th>
+                </tr>
+              </thead>
+              <tbody>
+                @foreach($donationItems as $item)
+                <tr>
+                  <td>{{ $item->category }}</td>
+                  <td>{{ $item->item }}</td>
+                  <td>{{ $item->quantity }}</td>
+                </tr>
+                @endforeach
+              </tbody>
+            </table>
+          </div>
           @endif
 
           <p class="thanks">Thank you for your donation!</p>

@@ -25,6 +25,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Cache\RateLimiter;
 use Illuminate\Support\Str;
+use App\Helpers\SmsHelper;
 
 class AdminController extends Controller
 {
@@ -781,6 +782,14 @@ class AdminController extends Controller
                 return $query->where('status', $status);
             })->get() : collect();
 
+
+        $donatedItems = DonationItem::whereHas('donation', function ($query) use ($id) {
+            $query->where('donation_request_id', $id)->where('status', '!=', 'pending'); // Exclude pending donations
+        })->get();
+
+        // Group by item name and sum quantities
+        $donatedQuantities = $donatedItems->groupBy('item')->map->sum('quantity');
+
         $isCashRequest = ($type === 'cash');
 
         // Get location details
@@ -799,9 +808,11 @@ class AdminController extends Controller
             'isCashRequest',
             'formattedLocation',
             'request',
-            'requestedItems'
+            'requestedItems',
+            'donatedQuantities'
         ));
     }
+
 
     public function showCashDonationDetails($id)
     {
@@ -833,7 +844,7 @@ class AdminController extends Controller
         if ($donation->donation_request_id) {
             $donationRequest = DonationRequest::find($donation->donation_request_id);
             if ($donationRequest) {
-                $donationRequest->checkIfFulfilled(); // Only run for donations tied to a request
+                $donationRequest->checkIfFulfilled();
             }
         }
 
@@ -864,6 +875,11 @@ class AdminController extends Controller
             $message->to($donation->donor->user->email) // Access email from UserAccount
                 ->subject('Your Donation Has Been Verified');
         });
+
+        $donor = $donation->donor;
+        $chapterName = $donation->chapter->chapter_name;
+        $message = "Hello {$donor->donor_name}, your in-kind donation has been verified at {$chapterName}. Please check your email for the receipt. Thank you!";
+        SmsHelper::sendSmsNotification($donor->contact, $message);
 
         return redirect()->back()->with('success', 'Donation verified successfully.');
     }

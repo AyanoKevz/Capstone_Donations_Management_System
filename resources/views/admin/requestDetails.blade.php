@@ -392,7 +392,7 @@
                           <td>{{ $item->category }}</td>
                           <td>{{ $item->item }}</td>
                           <td>{{ $item->quantity }}</td>
-                          <td>{{ $inKindDonations->where('item', $item->item)->sum('donated_quantity') }}</td>
+                          <td>{{ $donatedQuantities[$item->item] ?? 0 }}</td>
                         </tr>
                         @endforeach
                       </tbody>
