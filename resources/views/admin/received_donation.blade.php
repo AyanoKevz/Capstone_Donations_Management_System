@@ -174,7 +174,7 @@
             </div>
 
             <!-- Manage Resources -->
-            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#manage-resources"
+            <a class="nav-link collapsed active" href="#" data-bs-toggle="collapse" data-bs-target="#manage-resources"
               aria-expanded="false" aria-controls="manage-resources" title="Manage Resources">
               <div class="sb-nav-link-icon">
                 <i class="fas fa-box"></i>
@@ -186,9 +186,9 @@
             </a>
             <div class="collapse" id="manage-resources" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
               <nav class="sb-sidenav-menu-nested nav">
-                <a class="nav-link" href="{{ route('admin.received_donation') }}" title="Received Donations">
+                <a class="nav-link active" href="{{ route('admin.received_donation') }}" title="Received Donations">
                   <div class="sb-nav-link-icon">
-                    <i class="far fa-circle nav-icon"></i>
+                    <i class="fas fa-circle-arrow-right  nav-icon"></i>
                   </div>
                   <span>Received Donations</span>
                 </a>
@@ -202,7 +202,7 @@
             </div>
 
             <!-- Manage Donation Requests -->
-            <a class="nav-link collapsed active" href="#" data-bs-toggle="collapse" data-bs-target="#manage-requests"
+            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#manage-requests"
               aria-expanded="false" aria-controls="manage-requests" title="Manage Donation Requests">
               <div class="sb-nav-link-icon">
                 <i class="fas fa-clipboard-list"></i>
@@ -220,9 +220,9 @@
                   </div>
                   <span>Create Request</span>
                 </a>
-                <a class="nav-link active" href="{{ route('admin.requestList') }}" title="View All Requests">
+                <a class="nav-link" href="{{ route('admin.requestList') }}" title="View All Requests">
                   <div class="sb-nav-link-icon">
-                    <i class="fas fa-circle-arrow-right nav-icon"></i>
+                    <i class="far fa-circle nav-icon"></i>
                   </div>
                   <span>View All Requests</span>
                 </a>
@@ -299,225 +299,139 @@
           <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item active"></li>
           </ol>
-          <h1 class="my-2">Request Details</h1>
-          <div class="container mb-3">
-            <div class="row">
-              <!-- Request Information Card -->
-              <div class="col-md-6">
-                <div class="card shadow-sm">
-                  <div class="card-header bg-transparent border-0">
-                    <h3 class="mb-0"><i class="far fa-clone pr-1"></i> Request Information</h3>
-                  </div>
-                  <div class="card-body pt-0">
-                    <table class="table table-bordered">
-                      <tr>
-                        <th width="30%">Cause</th>
-                        <td width="2%">:</td>
-                        <td>{{ $request->cause }}</td>
-                      </tr>
-                      <tr>
-                        <th width="30%">Urgency</th>
-                        <td width="2%">:</td>
-                        <td>
-                          <span class="badge bg-{{ $request->urgency == 'Critical' ? 'danger' : 'warning' }}">
-                            {{ $request->urgency }}
-                          </span>
-                        </td>
-                      </tr>
-                      <tr>
-                        <th width="30%">Description</th>
-                        <td width="2%">:</td>
-                        <td>{{ $request->description }}</td>
-                      </tr>
-                      <tr>
-                        <th width="30%">Status</th>
-                        <td width="2%">:</td>
-                        <td>
-                          <span class="badge bg-{{ $request->status == 'Pending' ? 'success' : ($request->status == 'Unfulfilled' ? 'danger' : 'secondary') }}">
-                            {{ ucfirst($request->status) }}
-                          </span>
-                        </td>
-                      </tr>
-                      <tr>
-                        <th width="30%">Location</th>
-                        <td width="2%">:</td>
-                        <td>{{ $formattedLocation }}</td>
-                      </tr>
-                      @if($request->casualty_cost !== null)
-                      <tr>
-                        <th width="30%">Casualty Cost</th>
-                        <td width="2%">:</td>
-                        <td>₱{{ number_format( $request->casualty_cost, 2) }}</td>
-                      </tr>
-                      @endif
-                      <tr>
-                        <th width="30%">Valid Until</th>
-                        <td width="2%">:</td>
-                        <td>{{ \Carbon\Carbon::parse($request->valid_until)->format('F d, Y') }}</td>
-                      </tr>
-                    </table>
-
-                    @if ($isCashRequest)
-                    <div class="card-header bg-transparent border-0">
-                      <h3 class="mb-0"><i class="far fa-clone pr-1"></i> Cash Request</h3>
-                    </div>
-                    <table class="table table-bordered">
-                      <thead class="table-warning">
-                        <tr>
-                          <th width="50%">Total Donated</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td class="text-success">₱{{ number_format($totalCashDonated, 2) }}</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    @else
-                    <div class="card-header bg-transparent border-0">
-                      <h3 class="mb-0"><i class="far fa-clone pr-1"></i> Requested Items</h3>
-                    </div>
-                    <table class="table table-bordered">
-                      <thead class="table-warning">
-                        <tr>
-                          <th>Category</th>
-                          <th>Item</th>
-                          <th>Quantity</th>
-                          <th>Donated</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        @foreach($requestedItems as $item)
-                        <tr>
-                          <td>{{ $item->category }}</td>
-                          <td>{{ $item->item }}</td>
-                          <td>{{ $item->quantity }}</td>
-                          <td>{{ $donatedQuantities[$item->item] ?? 0 }}</td>
-                        </tr>
-                        @endforeach
-                      </tbody>
-                    </table>
-                    @endif
-                  </div>
-                </div>
-              </div>
-
-              <!-- Proof Media Card -->
-              <div class="col-md-6">
-                <div class="card shadow-sm">
-                  <div class="card-header bg-transparent border-0">
-                    <h3 class="mb-0"><i class="far fa-clone pr-1"></i> Proof Media</h3>
-                  </div>
-                  <div class="card-body pt-0">
-                    <div class="row mb-3">
-                      <div class="col-md-6 mb-2">
-                        <img src="{{ asset('storage/' . $request->proof_photo_1) }}" alt="Proof Photo 1" class="img-fluid rounded" style="width: 100%; height: 150px; object-fit: cover;">
-                      </div>
-                      <div class="col-md-6 mb-2">
-                        <img src="{{ asset('storage/' . $request->proof_photo_2) }}" alt="Proof Photo 2" class="img-fluid rounded" style="width: 100%; height: 150px; object-fit: cover;">
-                      </div>
-                      <div class="col-md-12">
-                        <video controls class="rounded" style="width: 100%; height: 200px; object-fit: cover;">
-                          <source src="{{ asset('storage/' . $request->proof_video) }}" type="video/mp4">
-                          Your browser does not support the video tag.
-                        </video>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+          <h1 class="my-3">All Quick Donation Made at {{ $Admin->chapter->chapter_name }} Chapter</h1>
+          <div class="d-flex justify-content-between">
+            <div class="d-flex mb-1">
+              <!-- Filter for Status -->
+              <a href="{{ route('admin.received_donation', ['statusFilter' => '', 'typeFilter' => $typeFilter]) }}"
+                class="btn table-btn btn-sm {{ $statusFilter === '' ? 'custom-active' : '' }}">
+                All
+              </a>
+              <a href="{{ route('admin.received_donation', ['statusFilter' => 'quick', 'typeFilter' => $typeFilter]) }}"
+                class="btn table-btn btn-sm {{ $statusFilter === 'quick' ? 'custom-active' : '' }}">
+                Quick
+              </a>
+              <a href="{{ route('admin.received_donation', ['statusFilter' => 'request', 'typeFilter' => $typeFilter]) }}"
+                class="btn table-btn btn-sm {{ $statusFilter === 'request' ? 'custom-active' : '' }}">
+                Request
+              </a>
+            </div>
+            <div class="d-flex mb-1">
+              <!-- Filter for Donation Type -->
+              <a href="{{ route('admin.received_donation', ['typeFilter' => 'all', 'statusFilter' => $statusFilter]) }}"
+                class="btn table-btn btn-sm {{ $typeFilter === 'all' ? 'custom-active' : '' }}">
+                All
+              </a>
+              <a href="{{ route('admin.received_donation', ['typeFilter' => 'cash', 'statusFilter' => $statusFilter]) }}"
+                class="btn table-btn btn-sm {{ $typeFilter === 'cash' ? 'custom-active' : '' }}">
+                Cash
+              </a>
+              <a href="{{ route('admin.received_donation', ['typeFilter' => 'in-kind', 'statusFilter' => $statusFilter]) }}"
+                class="btn table-btn btn-sm {{ $typeFilter === 'in-kind' ? 'custom-active' : '' }}">
+                In-Kind
+              </a>
             </div>
           </div>
-          <!-- Table who donated to the request -->
-          <div class="container ">
-            <div class="row">
-              <div class="d-flex justify-content-end mb-1">
-                <a href="{{ route('request_details', ['id' => $id, 'type' => $isCashRequest ? 'cash' : 'in-kind']) }}?status=all"
-                  class="btn table-btn btn-sm {{ $status === 'all' ? 'custom-active' : '' }}">
-                  All
-                </a>
-
-                <a href="{{ route('request_details', ['id' => $id, 'type' => $isCashRequest ? 'cash' : 'in-kind']) }}?status=pending"
-                  class="btn table-btn btn-sm {{ $status === 'pending' ? 'custom-active' : '' }}">
-                  Pending
-                </a>
-
-                <a href="{{ route('request_details', ['id' => $id, 'type' => $isCashRequest ? 'cash' : 'in-kind']) }}?status=received"
-                  class="btn table-btn btn-sm {{ $status === 'received' ? 'custom-active' : '' }}">
-                  Received
-                </a>
-
-                <a href="{{ route('request_details', ['id' => $id, 'type' => $isCashRequest ? 'cash' : 'in-kind']) }}?status=ongoing"
-                  class="btn table-btn btn-sm {{ $status === 'ongoing' ? 'custom-active' : '' }}">
-                  Ongoing
-                </a>
-              </div>
-
-              <div class="card card-primary card-outline">
-                <div class="card-header">
-                  <h3 class="card-title">Donors for This Request</h3>
-                </div>
-                <div class="card-body">
-                  <table id="example1" class="table table-bordered table-hover table-striped">
-                    <thead>
-                      <tr>
-                        <th>Name</th>
-                        <th>Method</th>
-                        @if($isCashRequest)
-                        <th>Amount</th>
-                        {{-- Show "Payment Method" column only if any donation is online --}}
-                        @if($cashDonations->contains('donation_method', 'online'))
-                        <th>Payment Method</th>
-                        @endif
-                        @endif
-                        <th>Date & Time</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {{-- Show cash donations if request type is cash --}}
-                      @if($isCashRequest)
-                      @foreach($cashDonations as $cashDonation)
-                      <tr>
-                        <td>{{ $cashDonation->donor_name }}</td>
-                        <td>{{ ucfirst($cashDonation->donation_method) }}</td>
-                        <td>₱{{ number_format($cashDonation->amount, 2) }}</td>
-                        {{-- Show payment method only if donation method is online --}}
-                        @if($cashDonations->contains('donation_method', 'online'))
-                        <td>
-                          @if($cashDonation->donation_method == 'online')
-                          {{ $cashDonation->payment_method }}
-                          @else
-                          N/A
-                          @endif
-                        </td>
-                        @endif
-                        <td>{{ \Carbon\Carbon::parse($cashDonation->created_at)->format('M d, Y h:i A') }}</td>
-                        <td>{{ ucfirst($cashDonation->status) }}</td>
-                        <td>
-                          <a href="{{ route('cash.donation.details', $cashDonation->id) }}" class="btn btn-sm btn-primary">View</a>
-                        </td>
-                      </tr>
-                      @endforeach
+          <div class="card card-primary card-outline">
+            <div class="card-header">
+              <h3 class="card-title">Received Donations</h3>
+            </div>
+            <div class="card-body">
+              <table id="example1" class="table table-bordered table-hover table-striped">
+                <thead>
+                  <tr>
+                    <th>Donor Name</th>
+                    <th>Cause</th>
+                    <th>Method</th>
+                    <th>Status</th>
+                    <th>Transaction No</th>
+                    <th>Type</th> <!-- Cash / In-Kind -->
+                    <th>Source</th> <!-- Quick / Request -->
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @if($cashDonations->isEmpty() && $inKindDonations->isEmpty())
+                  <tr>
+                    <td colspan="8" class="text-center">No Donations Available</td>
+                  </tr>
+                  @else
+                  <!-- Cash Donations -->
+                  @if($typeFilter === 'cash' || $typeFilter === 'all')
+                  @forelse($cashDonations as $cashDonation)
+                  <tr>
+                    <td>{{ $cashDonation->donor_name }}</td>
+                    <td>{{ $cashDonation->cause }}</td>
+                    <td>{{ $cashDonation->donation_method }}</td>
+                    <td>
+                      @php
+                      $statusClass = match($cashDonation->status) {
+                      'Pending' => 'bg-secondary text-white',
+                      'Ongoing' => 'bg-warning text-dark',
+                      default => 'bg-secondary text-white'
+                      };
+                      @endphp
+                      <span class="badge {{ $statusClass }}">{{ $cashDonation->status }}</span>
+                    </td>
+                    <td>{{ $cashDonation->transaction_id }}</td>
+                    <td><span class="badge bg-primary">Cash</span></td>
+                    <td>
+                      @if($cashDonation->fund_request_id)
+                      <span class="badge bg-success">Request</span>
                       @else
-                      {{-- Show in-kind donations if request type is in-kind --}}
-                      @foreach($inKindDonations as $inKindDonation)
-                      <tr>
-                        <td>{{ $inKindDonation->donor_name }}</td>
-                        <td>{{ ucfirst($inKindDonation->donation_method) }}</td>
-                        <td>{{ \Carbon\Carbon::parse($inKindDonation->donation_datetime)->format('M d, Y h:i A') }}</td>
-                        <td>{{ ucfirst($inKindDonation->status) }}</td>
-                        <td>
-                          <a href="{{ route('inkind.donation.details', $inKindDonation->id) }}" class="btn btn-sm btn-primary">View</a>
-                        </td>
-                      </tr>
-                      @endforeach
+                      <span class="badge bg-info">Quick</span>
                       @endif
-                    </tbody>
-                  </table>
-                </div>
-              </div>
+                    </td>
+                    <td>
+                      <a href="{{ route('cash.donation.details', $cashDonation->id) }}" class="btn btn-sm btn-primary">View</a>
+                    </td>
+                  </tr>
+                  @empty
+                  <tr>
+                    <td colspan="8" class="text-center">No Cash Donations Available</td>
+                  </tr>
+                  @endforelse
+                  @endif
+
+                  <!-- In-Kind Donations -->
+                  @if($typeFilter === 'in-kind' || $typeFilter === 'all')
+                  @forelse($inKindDonations as $inKindDonation)
+                  <tr>
+                    <td>{{ $inKindDonation->donor_name }}</td>
+                    <td>{{ $inKindDonation->cause }}</td>
+                    <td>{{ $inKindDonation->donation_method }}</td>
+                    <td>
+                      @php
+                      $statusClass = match($inKindDonation->status) {
+                      'Pending' => 'bg-secondary text-white',
+                      'Ongoing' => 'bg-warning text-dark',
+                      default => 'bg-secondary text-white'
+                      };
+                      @endphp
+                      <span class="badge {{ $statusClass }}">{{ $inKindDonation->status }}</span>
+                    </td>
+                    <td>{{ $inKindDonation->tracking_number }}</td>
+                    <td><span class="badge bg-warning">In-Kind</span></td>
+                    <td>
+                      @if($inKindDonation->donation_request_id)
+                      <span class="badge bg-success">Request</span>
+                      @else
+                      <span class="badge bg-info">Quick</span>
+                      @endif
+                    </td>
+                    <td>
+                      <a href="{{ route('inkind.donation.details', $inKindDonation->id) }}" class="btn btn-sm btn-primary">View</a>
+                    </td>
+                  </tr>
+                  @empty
+                  <tr>
+                    <td colspan="8" class="text-center">No In-Kind Donations Available</td>
+                  </tr>
+                  @endforelse
+                  @endif
+                  @endif
+                </tbody>
+              </table>
             </div>
           </div>
         </div>

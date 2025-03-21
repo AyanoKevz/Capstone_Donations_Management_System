@@ -924,4 +924,38 @@ class AdminController extends Controller
 
         return view('admin.quickDonations', compact('cashDonations', 'inKindDonations', 'statusFilter', 'typeFilter'));
     }
+
+
+    public function recieveDonations(Request $request)
+    {
+        // Get the authenticated admin
+        $admin = Auth::guard('admin')->user();
+        $chapterId = $admin->chapter_id;
+
+        // Fetch cash donations for the chapter (only if typeFilter is 'cash' or 'all')
+        $cashDonations = CashDonation::where('chapter_id', $chapterId)
+            ->when($request->typeFilter === 'cash' || $request->typeFilter === 'all', function ($query) use ($request) {
+                return $query
+                    ->when($request->statusFilter === 'quick', fn($query) => $query->whereNull('fund_request_id'))
+                    ->when($request->statusFilter === 'request', fn($query) => $query->whereNotNull('fund_request_id'));
+            })
+            ->get();
+
+        // Fetch in-kind donations for the chapter (only if typeFilter is 'in-kind' or 'all')
+        $inKindDonations = Donation::where('chapter_id', $chapterId)
+            ->when($request->typeFilter === 'in-kind' || $request->typeFilter === 'all', function ($query) use ($request) {
+                return $query
+                    ->when($request->statusFilter === 'quick', fn($query) => $query->whereNull('donation_request_id'))
+                    ->when($request->statusFilter === 'request', fn($query) => $query->whereNotNull('donation_request_id'));
+            })
+            ->get();
+
+        // Pass data to the view
+        return view('admin.received_donation', [
+            'cashDonations' => $cashDonations,
+            'inKindDonations' => $inKindDonations,
+            'typeFilter' => $request->typeFilter ?? 'all',
+            'statusFilter' => $request->statusFilter ?? '',
+        ]);
+    }
 }

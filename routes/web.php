@@ -130,6 +130,7 @@ Route::middleware(['admin', 'prevent-back-button'])->prefix('admin')->group(func
     Route::get('/request-details/{id}/{type}', [AdminController::class, 'requestDetails'])->name('request_details');
 
     Route::get('/quick-donation/list', [AdminController::class, 'allQuickDonations'])->name('admin.quickDonation');
+    Route::get('/received-donations/list', [AdminController::class, 'recieveDonations'])->name('admin.received_donation');
 
 
     //Donation Details

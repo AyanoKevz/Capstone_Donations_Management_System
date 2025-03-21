@@ -185,11 +185,11 @@
             </a>
             <div class="collapse" id="manage-resources" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
               <nav class="sb-sidenav-menu-nested nav">
-                <a class="nav-link" href="" title="Donated Resources">
+                <a class="nav-link" href="{{ route('admin.received_donation') }}" title="Received Donations">
                   <div class="sb-nav-link-icon">
                     <i class="far fa-circle nav-icon"></i>
                   </div>
-                  <span>Donated Resources</span>
+                  <span>Received Donations</span>
                 </a>
                 <a class="nav-link" href="" title="Distributed Resources">
                   <div class="sb-nav-link-icon">

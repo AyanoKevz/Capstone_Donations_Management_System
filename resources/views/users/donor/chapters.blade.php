@@ -181,13 +181,13 @@
                                 <li class="nav-item">
                                     <a href="{{route ('donor.donationStatus') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Donation Status</p>
+                                        <p>Active Donations</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="#" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Donation History</p>
+                                        <p>Completed Donations</p>
                                     </a>
                                 </li>
                             </ul>
