@@ -291,7 +291,65 @@
             <div class="content">
                 <div class="container-fluid py-3">
                     <div class="row">
+                        <div class="col-md-4 col-sm-6 col-12">
+                            <div class="info-box">
+                                <span class="info-box-icon bg-info"><i class="fa-solid fa-list-check" style="color: #ffffff;"></i></span>
+                                <div class="info-box-content">
+                                    <h5 class="info-box-text">Fund Request</h5>
+                                    <span class="info-box-number">10</span>
+                                </div>
+                                <!-- /.info-box-content -->
+                            </div>
+                            <!-- /.info-box -->
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-md-4 col-sm-6 col-12">
+                            <div class="info-box">
+                                <span class="info-box-icon bg-success"><i class="fa-solid fa-calendar" style="color: #ffffff;"></i></span>
+                                <div class="info-box-content">
+                                    <h5 class="info-box-text">In-Kind Request</h5>
+                                    <span class="info-box-number">15</span>
+                                </div>
+                                <!-- /.info-box-content -->
+                            </div>
+                            <!-- /.info-box -->
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-md-4 col-sm-6 col-12">
+                            <div class="info-box">
+                                <span class="info-box-icon bg-warning"><i class="fa-solid fa-clock" style="color: #ffffff;"></i></span>
+                                <div class="info-box-content">
+                                    <h5 class="info-box-text">Pending Donations</h5>
+                                    <span class="info-box-number">8</span>
+                                </div>
+                                <!-- /.info-box-content -->
+                            </div>
+                            <!-- /.info-box -->
+                        </div>
+                        <!-- /.col -->
+                    </div>
 
+                    <div class="row my-3">
+                        <h1 class="fw-bolder text-center donate-heading">Donate Now</h1>
+                        <div class="d-flex justify-content-evenly flex-wrap">
+                            <div class="my-2">
+                                <a href="{{route ('donor.quick_donation') }}" class="donatebtn">
+                                    <span class="icon">
+                                        <i class="fa-solid fa-handshake-angle fa-xl me-2"></i>
+                                    </span>
+                                    <span class="text">Quick Donation</span>
+                                </a>
+                            </div>
+
+                            <div class="my-2">
+                                <a href="#" data-bs-target="#register" data-bs-toggle="modal" class="donatebtn">
+                                    <span class="icon">
+                                        <i class="fa-solid fa-hand-holding-heart fa-xl me-2"></i>
+                                    </span>
+                                    <span class="text">Select Request</span>
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -307,6 +365,29 @@
         </footer>
     </div>
     <!-- ./wrapper -->
+
+
+    <div class="modal fade" id="register" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="radio-input">
+                    <div class="reg-info">
+                        <span class="question">Select Request</span>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <a href="{{route ('donor.request_map') }}" id=" value-1" class="reg-link" name="value-radio" value="value-1">
+                        <label for="value-1"> <i class="fa-solid fa-hand-holding-heart fa-lg me-2"></i> In-Kind</label>
+                        <a href="{{route ('donor.reqCash_map') }}" id="value-2" class="reg-link" name="value-radio" value="value-2">
+                            <label for="value-2"> <i class="fa-solid fa-hand-holding-dollar fa-lg me-2"></i></i> Funds</label>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
 
     <!-- jQuery -->
     <script src="{{ asset('lib/jquery/jquery.min.js') }}"></script>

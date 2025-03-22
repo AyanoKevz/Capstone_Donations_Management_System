@@ -299,7 +299,7 @@
           <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item active"></li>
           </ol>
-          <h1 class="my-3">All Quick Donation Made at {{ $Admin->chapter->chapter_name }} Chapter</h1>
+          <h1 class="my-3">Received Donations at {{ $Admin->chapter->chapter_name }} Chapter</h1>
           <div class="d-flex justify-content-between">
             <div class="d-flex mb-1">
               <!-- Filter for Status -->
@@ -352,6 +352,7 @@
                 </thead>
                 <tbody>
                   @if($cashDonations->isEmpty() && $inKindDonations->isEmpty())
+                  <!-- Show this only if both collections are empty -->
                   <tr>
                     <td colspan="8" class="text-center">No Donations Available</td>
                   </tr>
@@ -387,9 +388,12 @@
                     </td>
                   </tr>
                   @empty
+                  <!-- Show this only if typeFilter is 'cash' -->
+                  @if($typeFilter === 'cash')
                   <tr>
                     <td colspan="8" class="text-center">No Cash Donations Available</td>
                   </tr>
+                  @endif
                   @endforelse
                   @endif
 
@@ -424,9 +428,12 @@
                     </td>
                   </tr>
                   @empty
+                  <!-- Show this only if typeFilter is 'in-kind' -->
+                  @if($typeFilter === 'in-kind')
                   <tr>
                     <td colspan="8" class="text-center">No In-Kind Donations Available</td>
                   </tr>
+                  @endif
                   @endforelse
                   @endif
                   @endif

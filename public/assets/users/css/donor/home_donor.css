@@ -1270,3 +1270,188 @@ body:not(.layout-fixed) .main-sidebar .sidebar {
   font-weight: 700;
   font-size: 22px;
 }
+
+
+
+.info-box {
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.125), 0 1px 3px rgba(0, 0, 0, 0.2);
+  border-radius: 0.25rem;
+  background-color: #fff;
+  display: -ms-flexbox;
+  display: flex;
+  margin-bottom: 1rem;
+  min-height: 80px;
+  padding: .5rem;
+  position: relative;
+  width: 100%;
+}
+
+.info-box .info-box-icon {
+  border-radius: 0.25rem;
+  -ms-flex-align: center;
+  align-items: center;
+  display: -ms-flexbox;
+  display: flex;
+  font-size: 1.875rem;
+  -ms-flex-pack: center;
+  justify-content: center;
+  text-align: center;
+  width: 70px;
+}
+
+.info-box .info-box-content {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -ms-flex-pack: center;
+  justify-content: center;
+  line-height: 1.8;
+  -ms-flex: 1;
+  flex: 1;
+  padding: 0 10px;
+  overflow: hidden;
+}
+
+.info-box .info-box-number {
+  display: block;
+  margin-top: .25rem;
+  font-weight: 700;
+}
+
+.info-box .progress-description,
+.info-box .info-box-text {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: bold;
+}
+
+
+.donatebtn {
+  width: 250px;
+  height: 80px;
+  border-radius: 5px;
+  border: none;
+  transition: all 0.5s ease-in-out;
+  font-size: 20px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  background: #1b2a5f;
+  color: #f5f5f5;
+}
+
+.donatebtn:hover {
+  box-shadow: 0 0 20px 0px #2e2e2e3a;
+}
+
+.donatebtn .icon {
+  position: absolute;
+  height: 40px;
+  width: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.5s;
+}
+
+.donatebtn .text {
+  transform: translateX(55px);
+}
+
+.donatebtn:hover .icon {
+  width: 270px;
+}
+
+.donatebtn:hover .text {
+  transition: all 0.5s;
+  opacity: 0;
+}
+
+.donatebtn:focus {
+  outline: none;
+}
+
+.donatebtn:active .icon {
+  transform: scale(0.85);
+}
+
+.donate-heading {
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: #ffffff; 
+    background: linear-gradient(135deg, #1b2a5f, #5166ab);
+    padding: 15px 8px;
+    border-radius: 12px; 
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    text-transform: uppercase;
+    letter-spacing: 1.5px; 
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover Effect */
+.donate-heading:hover {
+    transform: translateY(-3px); /* Smaller hover movement */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4); /* Enhanced shadow on hover */
+}
+
+
+.modal-content {
+    background: transparent;
+    border: none;
+    align-items: center;
+}
+
+.radio-input {
+  display: flex;
+  flex-direction: column;
+  padding: 14px;
+  background: #fff;
+  color: #000;
+  border-radius: 10px;
+  box-shadow: 0px 87px 78px -39px rgba(0,0,0,0.4);
+  width: 450px;
+
+}
+
+.reg-info {
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.question {
+  color: rgb(49, 49, 49);
+  font-size: 1.3rem;
+  line-height: 1rem;
+  font-weight: 800;
+}
+
+.radio-input  label {
+  display: flex;
+  background-color: #fff;
+  padding: 14px;
+  margin: 8px 0 0 0;
+  font-size: 18px;
+  font-weight: 600;
+  border-radius: 10px;
+  cursor: pointer;
+  border: 1px solid rgba(37, 36, 36, 0.554);
+  color: #000;
+  transition: .3s ease;
+  text-decoration: none !important;
+}
+
+.reg-link {
+  text-decoration: none;
+}
+
+.radio-input  label:hover {
+  background-color: #8a1f1f;
+  border: 1px solid #bbb;
+  color: #fff;
+}
