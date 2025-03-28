@@ -700,3 +700,97 @@ body.sb-sidenav-toggled .sb-sidenav .nav-link span {
     background-color: #0056b3;
     color: white;
 }
+
+.custom-card {
+        border: none;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .custom-header {
+        background-color: #b92f2f;
+        padding: 15px;
+        color: white;
+        display: flex;
+        align-items: center;
+    }
+
+    .custom-subheader {
+        background-color: #b92f2f;
+        padding: 12px;
+    }
+
+    .custom-image-header {
+        background-color: #1b2a5f;
+        padding: 12px;
+    }
+
+    .custom-header h3,
+    .custom-subheader h3,
+    .custom-image-header h3 {
+        margin: 0;
+        font-weight: 600;
+    }
+
+    .bg-light-custom {
+        background-color: #f8f9fa;
+        font-weight: 600;
+        color: #343a40;
+    }
+
+    .custom-table {
+        margin-bottom: 0;
+    }
+
+    .custom-items-table thead {
+        background-color: #f8f9fa;
+    }
+
+    .donation-proof-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .donation-proof-image {
+        max-width: 80%;
+        height: auto;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        border: 3px solid #ddd;
+        transition: transform 0.3s ease;
+    }
+
+    .donation-proof-image:hover {
+        transform: scale(1.02);
+    }
+
+    .btn-verify,
+    .btn-decline {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 6px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .btn-verify {
+        background-color: #5cb85c;
+        color: white;
+    }
+
+    .btn-decline {
+        background-color: #d9534f;
+        color: white;
+    }
+
+    .btn-verify:hover,
+    .btn-decline:hover {
+        opacity: 0.9;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }

@@ -299,41 +299,46 @@
             <li class="breadcrumb-item active"></li>
           </ol>
           <h1 class="my-2">Cash Donation Details</h1>
-          <div class="card shadow-lg rounded">
-            <div class="card-header bg-light border-0">
-              <h3 class="mb-0 text-dark"><i class="far fa-clone pr-1"></i> Cash Donation Details</h3>
+          <div class="card custom-card shadow-lg rounded">
+            <div class="card-header custom-header text-white">
+              <h3 class="mb-0"><i class="far fa-clone pr-1"></i> Cash Donation Details</h3>
             </div>
-            <div class="card-body pt-0">
-              <table class="table table-bordered">
+            <div class="card-body pt-2">
+              <table class="table table-striped table-hover custom-table">
                 <tr>
-                  <th width="30%" class="bg-light">Donor Name</th>
+                  <th width="30%" class="bg-light-custom">Donor Name</th>
                   <td width="2%">:</td>
                   <td>{{ $cashDonation->donor_name }}</td>
                 </tr>
                 <tr>
-                  <th class="bg-light">Amount</th>
+                  <th class="bg-light-custom">Contact Number</th>
                   <td>:</td>
-                  <td>₱{{ number_format($cashDonation->amount, 2) }}</td>
+                  <td>{{ $cashDonation->donor->contact}}</td>
                 </tr>
                 <tr>
-                  <th class="bg-light">Donation Method</th>
+                  <th class="bg-light-custom">Amount</th>
+                  <td>:</td>
+                  <td class="text-primary fw-bold">₱{{ number_format($cashDonation->amount, 2) }}</td>
+                </tr>
+                <tr>
+                  <th class="bg-light-custom">Donation Method</th>
                   <td>:</td>
                   <td>{{ ucfirst($cashDonation->donation_method) }}</td>
                 </tr>
                 @if($cashDonation->donation_method === 'online')
                 <tr>
-                  <th class="bg-light">Payment Method</th>
+                  <th class="bg-light-custom">Payment Method</th>
                   <td>:</td>
                   <td>{{ ucfirst($cashDonation->payment_method) }}</td>
                 </tr>
                 @endif
                 <tr>
-                  <th class="bg-light">Transaction ID</th>
+                  <th class="bg-light-custom">Transaction ID</th>
                   <td>:</td>
                   <td>{{ $cashDonation->transaction_id }}</td>
                 </tr>
                 <tr>
-                  <th class="bg-light">Status</th>
+                  <th class="bg-light-custom">Status</th>
                   <td>:</td>
                   <td>
                     <span class="badge bg-{{ 
@@ -345,26 +350,34 @@
                   </td>
                 </tr>
                 <tr>
-                  <th class="bg-light">Date & Time</th>
+                  <th class="bg-light-custom">Date & Time</th>
                   <td>:</td>
                   <td>{{ \Carbon\Carbon::parse($cashDonation->created_at)->format('F d, Y') }}</td>
                 </tr>
               </table>
 
+              @if($cashDonation->donation_method === 'drop-off' && !empty($cashDonation->proof_image))
+              <div class="mt-3 text-center">
+                <h6 class="fw-bold">Proof of Donation</h6>
+                <a href="{{ asset('storage/proof_images/' . $cashDonation->proof_image) }}" target="_blank">
+                  <img src="{{ asset('storage/' . $cashDonation->proof_image) }}" alt="Proof Image" class="img-fluid donation-proof-image">
+                </a>
+              </div>
+              @endif
+
               <!-- Verify/Decline Buttons -->
               @if($cashDonation->status === 'pending')
-              <div class="mt-4 d-flex justify-content-end">
-                <button type="button" class="btn text-white mx-2" style="background-color: #5cb85c;" data-bs-toggle="modal" data-bs-target="#verifyCashModal">
+              <div class=" mt-4 d-flex justify-content-end">
+                <button type="button" class="btn btn-verify mx-2" data-bs-toggle="modal" data-bs-target="#verifyCashModal">
                   <i class="fas fa-check-circle"></i> Verify
                 </button>
-                <button type="button" class="btn text-white mx-2" style="background-color: #d9534f;" data-bs-toggle="modal" data-bs-target="#declineCashModal">
+                <button type="button" class="btn btn-decline mx-2" data-bs-toggle="modal" data-bs-target="#declineCashModal">
                   <i class="fas fa-times-circle"></i> Decline
                 </button>
               </div>
               @endif
             </div>
           </div>
-
         </div>
       </main>
 

@@ -211,7 +211,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="{{route ('donor.completeDonations') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Completed Donations</p>
                                     </a>
@@ -303,151 +303,161 @@
             <div class="content">
                 <div class="container-fluid py-3">
                     <div class="container mb-3">
-                        <div class="title">Quick In-Kind Form</div>
-                        <form method="POST" action="{{ route('quickInKindDonate') }}" enctype="multipart/form-data" id="quickInKindForm">
-                            @csrf
-                            <div class="user-details">
-                                <!-- Donor Name -->
-                                <div class="input-box">
-                                    <span class="details">Donor Name</span>
-                                    <input type="text" class="form-control donor-name" id="donor_name" name="donor_name"
-                                        value="{{ $User->donor->first_name }} {{ $User->donor->last_name }}"
-                                        data-original-name="{{ $User->donor->first_name }} {{ $User->donor->last_name }}" required>
-                                    <div class="form-check mt-2">
-                                        <input class="form-check-input anonymous-checkbox" type="checkbox" id="anonymous_checkbox" name="anonymous_checkbox" value="1">
-                                        <label class="form-check-label text-muted" for="anonymous_checkbox">
-                                            Anonymous
-                                        </label>
-                                    </div>
-                                </div>
-
-                                <!-- Cause and Donation Date & Time -->
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="input-box">
-                                            <span class="details">Cause</span>
-                                            <select class="form-select" id="cause" name="cause">
-                                                <option value="General">General</option>
-                                                <option value="Fire">Fire</option>
-                                                <option value="Flood">Flood</option>
-                                                <option value="Typhoon">Typhoon</option>
-                                                <option value="Earthquake">Earthquake</option>
-                                                <option value="Volcanic Eruption">Volcanic Eruption</option>
-                                                <option value="Feeding Program">Feeding Program</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="input-box">
-                                            <span class="details">Donation Date & Time</span>
-                                            <input type="datetime-local" class="form-control" id="donation_datetime" name="donation_datetime" required>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Donation Method and Chapter -->
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="input-box">
-                                            <span class="details">Donation Method</span>
-                                            <select class="form-select donation-method" id="donation_method" name="donation_method" required>
-                                                <option selected disabled>Select an option</option>
-                                                <option value="pickup">Pickup</option>
-                                                <option value="drop-off">Drop-off</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="input-box">
-                                            <span class="details">Select Chapter</span>
-                                            <select class="form-select" id="chapter" name="chapter_id" required>
-                                                <option selected disabled>Select Chapter</option>
-                                                @foreach($chapters as $chapter)
-                                                <option value="{{ $chapter->id }}">{{ $chapter->chapter_name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Pickup Address (Hidden by Default) -->
-                                @php
-                                $pickupAddress = $User->location->region === "NCR"
-                                ? "{$User->location->full_address}, {$User->location->barangay}, {$User->location->city_municipality}, Metro Manila, Philippines"
-                                : "{$User->location->full_address}, {$User->location->barangay}, {$User->location->city_municipality}, {$User->location->province}, {$User->location->region}, Philippines";
-                                @endphp
-                                <div class="input-box pickup-address-div d-none" id="pickup_address_div">
-                                    <span class="details">Pickup Address</span>
-                                    <input type="text" class="form-control pickup-address" id="pickup_address" name="pickup_address" value="{{ $pickupAddress }}">
-                                </div>
-
-                                <div class="col-12 col-md-12">
-                                    <p class="text-center"><strong>Requested Items</strong></p>
-                                    <div class="row g-2 gy-2" id="requested-items">
-                                        <!-- First item will be inserted here -->
-                                    </div>
-                                </div>
-
-                                <div id="photoCapture" class="row g-3 photo-capture">
-                                    <h5><strong>Proof of Donation</strong> </h5>
-                                    <p class="my-0">Take a photo with your donation for verification. The system will snap a picture once it detects your face.</p>
-                                    <!-- Camera Column -->
-                                    <div class="col-md-6 d-flex flex-column align-items-center">
-                                        <div class="video-container">
-                                            <video id="video" class="video-stream" autoplay muted></video>
-                                            <canvas id="overlay" class="overlay"></canvas>
-                                            <div id="timer" class="timer"></div>
-                                        </div>
-                                        <button class="btn btn-secondary btn-sm my-3 toggle-camera-btn" type="button" id="toggleCameraBtn">Turn On Camera</button>
-                                    </div>
-
-                                    <!-- Preview Column -->
-                                    <div class="col-md-6 d-flex flex-column align-items-center">
-                                        <div id="preview" class="preview-container">
-                                            <img src="{{ asset('assets/img/donating.jpg') }}" class="preview-image" alt="Captured Photo">
-                                        </div>
-                                        <p class="my-3"><strong>Example</strong></p>
-                                        <!-- File Input Section -->
-                                        <div id="fileInputSection" style="display: none;">
-                                            <input type="file" id="imageFile" name="proof_image" class="preview-file">
-                                        </div>
-                                    </div>
-                                </div>
+                        <div class="text-end mb-2">
+                            <a href="{{ route('quick.cashForm') }}" class="btn btn-sm btn-secondary">
+                                Cash Form <i class="fa-solid fa-hand-holding-dollar ms-1"></i></a>
+                        </div>
+                        <div class="form-container">
+                            <div class="text-end mb-2">
+                                <button href="{{ route('quick.cashForm') }}" class="btn btn-sm recent">
+                                    <i class="fa-solid fa-rotate-right"></i> Use My Last Details
+                                </button>
                             </div>
-                            <!-- Submit Button -->
-                            <div class="button">
-                                <input type="submit" value="Donate Now" id="submitButton" style="display: none;">
-                            </div>
-                        </form>
+                            <div class="title">Quick In-Kind Form</div>
+                            <form method="POST" action="{{ route('quickInKindDonate') }}" enctype="multipart/form-data" id="quickInKindForm">
+                                @csrf
+                                <div class="user-details">
+                                    <!-- Donor Name -->
+                                    <div class="input-box">
+                                        <span class="details">Donor Name</span>
+                                        <input type="text" class="form-control donor-name" id="donor_name" name="donor_name"
+                                            value="{{ $User->donor->first_name }} {{ $User->donor->last_name }}"
+                                            data-original-name="{{ $User->donor->first_name }} {{ $User->donor->last_name }}" required>
+                                        <div class="form-check mt-2">
+                                            <input class="form-check-input anonymous-checkbox" type="checkbox" id="anonymous_checkbox" name="anonymous_checkbox" value="1">
+                                            <label class="form-check-label text-muted" for="anonymous_checkbox">
+                                                Anonymous
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <!-- Cause and Donation Date & Time -->
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="input-box">
+                                                <span class="details">Cause</span>
+                                                <select class="form-select" id="cause" name="cause">
+                                                    <option value="General">General</option>
+                                                    <option value="Fire">Fire</option>
+                                                    <option value="Flood">Flood</option>
+                                                    <option value="Typhoon">Typhoon</option>
+                                                    <option value="Earthquake">Earthquake</option>
+                                                    <option value="Volcanic Eruption">Volcanic Eruption</option>
+                                                    <option value="Feeding Program">Feeding Program</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="input-box">
+                                                <span class="details">Donation Date & Time</span>
+                                                <input type="datetime-local" class="form-control" id="donation_datetime" name="donation_datetime" required>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Donation Method and Chapter -->
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="input-box">
+                                                <span class="details">Donation Method</span>
+                                                <select class="form-select donation-method" id="donation_method" name="donation_method" required>
+                                                    <option selected disabled>Select an option</option>
+                                                    <option value="pickup">Pickup</option>
+                                                    <option value="drop-off">Drop-off</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="input-box">
+                                                <span class="details">Select Chapter</span>
+                                                <select class="form-select" id="chapter" name="chapter_id" required>
+                                                    <option selected disabled>Select Chapter</option>
+                                                    @foreach($chapters as $chapter)
+                                                    <option value="{{ $chapter->id }}">{{ $chapter->chapter_name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Pickup Address (Hidden by Default) -->
+                                    @php
+                                    $pickupAddress = $User->location->region === "NCR"
+                                    ? "{$User->location->full_address}, {$User->location->barangay}, {$User->location->city_municipality}, Metro Manila, Philippines"
+                                    : "{$User->location->full_address}, {$User->location->barangay}, {$User->location->city_municipality}, {$User->location->province}, {$User->location->region}, Philippines";
+                                    @endphp
+                                    <div class="input-box pickup-address-div d-none" id="pickup_address_div">
+                                        <span class="details">Pickup Address</span>
+                                        <input type="text" class="form-control pickup-address" id="pickup_address" name="pickup_address" value="{{ $pickupAddress }}">
+                                    </div>
+
+                                    <div class="col-12 col-md-12">
+                                        <p class="text-center"><strong>Requested Items</strong></p>
+                                        <div class="row g-2 gy-2" id="requested-items">
+                                            <!-- First item will be inserted here -->
+                                        </div>
+                                    </div>
+
+                                    <div id="photoCapture" class="row g-3 photo-capture">
+                                        <h5><strong>Proof of Donation</strong> </h5>
+                                        <p class="my-0">Take a photo with your donation for verification. The system will snap a picture once it detects your face.</p>
+                                        <!-- Camera Column -->
+                                        <div class="col-md-6 d-flex flex-column align-items-center">
+                                            <div class="video-container">
+                                                <video id="video" class="video-stream" autoplay muted></video>
+                                                <canvas id="overlay" class="overlay"></canvas>
+                                                <div id="timer" class="timer"></div>
+                                            </div>
+                                            <button class="btn btn-secondary btn-sm my-3 toggle-camera-btn" type="button" id="toggleCameraBtn">Turn On Camera</button>
+                                        </div>
+
+                                        <!-- Preview Column -->
+                                        <div class="col-md-6 d-flex flex-column align-items-center">
+                                            <div id="preview" class="preview-container">
+                                                <img src="{{ asset('assets/img/donating.jpg') }}" class="preview-image" alt="Captured Photo">
+                                            </div>
+                                            <p class="my-3"><strong>Example</strong></p>
+                                            <!-- File Input Section -->
+                                            <div id="fileInputSection" style="display: none;">
+                                                <input type="file" id="imageFile" name="proof_image" class="preview-file">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Submit Button -->
+                                <div class="button" id="submitButton" style="display: none;">
+                                    <input type="submit" value="Donate Now">
+                                </div>
+                            </form>
+                        </div>
                     </div>
+
                 </div>
 
             </div>
+            <!-- /.content wrapper -->
 
+            <!-- Main Footer -->
+            <footer class="main-footer">
+                <strong>Copyright &copy; 2024 UniAid - Community Donations and Resource Distribution.</strong>
+                All rights reserved.
+            </footer>
         </div>
-        <!-- /.content wrapper -->
+        <!-- ./wrapper -->
 
-        <!-- Main Footer -->
-        <footer class="main-footer">
-            <strong>Copyright &copy; 2024 UniAid - Community Donations and Resource Distribution.</strong>
-            All rights reserved.
-        </footer>
-    </div>
-    <!-- ./wrapper -->
+        <!-- jQuery -->
+        <script src="{{ asset('lib/jquery/jquery.min.js') }}"></script>
+        <script src="{{ asset('lib/jquery/jquery.validate.min.js') }}"></script>
+        <!-- Bootstrap 5 -->
+        <script src="{{ asset('lib/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+        <!-- Fontawesome 6 -->
+        <script src="{{ asset('lib/fontawesome/all.js') }}"></script>
+        <!-- User JS -->
+        <script src="{{ asset('assets/users/js/user.js') }}"></script>
+        <script src="{{ asset('assets/users/js/faceapi.js') }}"></script>
 
-    <!-- jQuery -->
-    <script src="{{ asset('lib/jquery/jquery.min.js') }}"></script>
-    <script src="{{ asset('lib/jquery/jquery.validate.min.js') }}"></script>
-    <!-- Bootstrap 5 -->
-    <script src="{{ asset('lib/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-    <!-- Fontawesome 6 -->
-    <script src="{{ asset('lib/fontawesome/all.js') }}"></script>
-    <!-- User JS -->
-    <script src="{{ asset('assets/users/js/user.js') }}"></script>
-    <script src="{{ asset('assets/users/js/faceapi.js') }}"></script>
+        <script>
 
-    <script>
-
-    </script>
+        </script>
 </body>
 
 </html>

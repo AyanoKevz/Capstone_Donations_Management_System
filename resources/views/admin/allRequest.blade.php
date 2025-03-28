@@ -301,7 +301,8 @@
           </ol>
           <h1 class="my-3">All Request Made at {{ $Admin->chapter->chapter_name }} Chapter</h1>
           <div class="d-flex justify-content-between">
-            <div class="d-flex mb-1">
+            <div class="d-flex mb-1 align-items-center">
+              <strong class="me-2">Urgency:</strong>
               <!-- Filter for Urgency -->
               <a href="{{ route('admin.requestList', ['type' => $filter, 'urgency' => 'all', 'status' => $statusFilter]) }}"
                 class="btn table-btn btn-sm {{ $urgencyFilter === 'all' ? 'custom-active' : '' }}">
@@ -320,7 +321,8 @@
                 Critical
               </a>
             </div>
-            <div class="d-flex mb-1">
+            <div class="d-flex mb-1 align-items-center">
+              <strong class="me-2">Status:</strong>
               <!-- Filter for Status -->
               <a href="{{ route('admin.requestList', ['type' => $filter, 'urgency' => $urgencyFilter, 'status' => 'Pending']) }}"
                 class="btn table-btn btn-sm {{ $statusFilter === 'Pending' ? 'custom-active' : '' }}">
@@ -335,7 +337,8 @@
                 Unfulfilled
               </a>
             </div>
-            <div class="d-flex mb-1">
+            <div class="d-flex mb-1 align-items-center">
+              <strong class="me-2">Type:</strong>
               <!-- Filter for Donation Request Type -->
               <a href="{{ route('admin.requestList', ['type' => 'all', 'urgency' => $urgencyFilter, 'status' => $statusFilter]) }}"
                 class="btn table-btn btn-sm {{ $filter === 'all' ? 'custom-active' : '' }}">
@@ -405,7 +408,8 @@
                       <span class="badge {{ $statusClass }}">{{ $fundRequest->status }}</span>
                     </td>
                     <td>
-                      <a href="{{ route('request_details', ['id' => $fundRequest->id, 'type' => 'cash']) }}" class="btn btn-success btn-sm">View</a>
+                      <a href="{{ route('request_details', ['id' => $fundRequest->id, 'type' => 'cash']) }}" class="btn btn-sm btn-success">
+                        <i class="fa-solid fa-eye"></i> View
                     </td>
                   </tr>
                   @empty
@@ -440,7 +444,7 @@
                       @endphp
                       <span class="badge {{ $urgencyClass }}">{{ ucfirst($donationRequest->urgency) }}</span>
                     </td>
-                    <td><span class="badge bg-warning">In-Kind</span></td>
+                    <td><span class="badge bg-warning text-dark">In-Kind</span></td>
                     <td>
                       @php
                       $statusClass = match($donationRequest->status) {
@@ -453,7 +457,8 @@
                       <span class="badge {{ $statusClass }}">{{ $donationRequest->status }}</span>
                     </td>
                     <td>
-                      <a href="{{ route('request_details', ['id' => $donationRequest->id, 'type' => 'in-kind']) }}" class="btn btn-success btn-sm">View</a>
+                      <a href="{{ route('request_details', ['id' => $donationRequest->id, 'type' => 'in-kind']) }}" class="btn btn-sm btn-success">
+                        <i class="fa-solid fa-eye"></i> View
                     </td>
                   </tr>
                   @empty

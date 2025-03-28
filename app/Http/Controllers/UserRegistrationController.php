@@ -13,6 +13,7 @@ use App\Models\Location;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
+use App\Helpers\SmsHelper;
 
 class UserRegistrationController extends Controller
 {
@@ -48,13 +49,21 @@ class UserRegistrationController extends Controller
 
         Location::create(array_merge($this->mapLocationData($request), ['user_id' => $userAccount->id]));
 
-        Donor::create(array_merge($this->mapPersonalData($request), [
+        $donor = Donor::create(array_merge($this->mapPersonalData($request), [
             'user_id' => $userAccount->id,
         ]));
 
+        // Send registration email
         Mail::to($userAccount->email)->send(new RegistrationEmail($userAccount->username, 'Donor'));
 
-        return redirect()->route('register')->with('success', 'Donor registration successful.');
+        // Send verification SMS
+        $message = "Hello {$donor->donor_name}, your donor account registration is under verification. Please monitor your Email/SMS for updates on your verification status. Thank you!";
+        SmsHelper::sendSmsNotification($donor->contact, $message);
+
+        return redirect()->route('register')->with(
+            'success',
+            'Donor registration submitted successfully! Unable to login yet. Please check your email and SMS messages for your account status and updates. '
+        );
     }
 
     public function registerVolunteer(Request $request)
@@ -68,23 +77,32 @@ class UserRegistrationController extends Controller
             'account_type' => 'Individual',
         ]);
 
-        $role = Role::where('role_name', 'Volunteer')->first();
+        $role = Role::where('role_name', 'Volunteer')->first(); // Fixed typo in 'Volunteer'
         $userAccount->roles()->attach($role);
 
         Location::create(array_merge($this->mapLocationData($request), ['user_id' => $userAccount->id]));
 
-        Volunteer::create(array_merge($this->mapPersonalData($request), [
+        $volunteer = Volunteer::create(array_merge($this->mapPersonalData($request), [
             'user_id' => $userAccount->id,
             'pref_services' => $validated['pref_services'],
             'availability' => $validated['availability'],
             'availability_time' => $validated['availability_time'],
-            'chapter_id' => $validated['chapter'], // Save the chapter ID
+            'chapter_id' => $validated['chapter'],
         ]));
 
-
+        // Send registration email
         Mail::to($userAccount->email)->send(new RegistrationEmail($userAccount->username, 'Volunteer'));
 
-        return redirect()->route('register')->with('success', 'Volunteer registration successful.');
+        // Send orientation SMS
+        $message = "Hello {$volunteer->volunteer_name}, thank you for volunteering!
+          Attend orientation to activate your account. We'll email and SMS your schedule shortly.";
+
+        SmsHelper::sendSmsNotification($volunteer->contact, $message);
+
+        return redirect()->route('register')->with(
+            'success',
+            'Volunteer registration submitted successfully! Unable to login yet. Please check your email and SMS messages for your account status and updates.'
+        );
     }
 
     private function validateRegistration(Request $request, string $role)

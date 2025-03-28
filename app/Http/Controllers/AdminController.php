@@ -853,8 +853,7 @@ class AdminController extends Controller
         $chapter = $donation->chapter->chapter_name; // Assuming donation has a relationship with chapter
         $donationItems = $donation->donationItems;
 
-        // Customize email message based on donation method
-        $emailMessage = ''; // Initialize the variable
+        $emailMessage = '';
         if ($donation->donation_method === 'drop-off') {
             $emailMessage = 'Thank you for your donation! Please wait until you bring your donation to the chapter.';
         } elseif ($donation->donation_method === 'pickup') {
@@ -870,7 +869,6 @@ class AdminController extends Controller
             'emailMessage' => $emailMessage, // Pass the email message to the template
         ];
 
-        // Send email
         Mail::send('emails.verified_donation', $details, function ($message) use ($donation) {
             $message->to($donation->donor->user->email) // Access email from UserAccount
                 ->subject('Your Donation Has Been Verified');
@@ -932,8 +930,9 @@ class AdminController extends Controller
         $admin = Auth::guard('admin')->user();
         $chapterId = $admin->chapter_id;
 
-        // Fetch cash donations for the chapter (only if typeFilter is 'cash' or 'all')
+        // Fetch only received cash donations for the chapter
         $cashDonations = CashDonation::where('chapter_id', $chapterId)
+            ->where('status', 'Received') // Only include received donations
             ->when($request->typeFilter === 'cash' || $request->typeFilter === 'all', function ($query) use ($request) {
                 return $query
                     ->when($request->statusFilter === 'quick', fn($query) => $query->whereNull('fund_request_id'))
@@ -941,8 +940,9 @@ class AdminController extends Controller
             })
             ->get();
 
-        // Fetch in-kind donations for the chapter (only if typeFilter is 'in-kind' or 'all')
+        // Fetch only received in-kind donations for the chapter
         $inKindDonations = Donation::where('chapter_id', $chapterId)
+            ->where('status', 'Received') // Only include received donations
             ->when($request->typeFilter === 'in-kind' || $request->typeFilter === 'all', function ($query) use ($request) {
                 return $query
                     ->when($request->statusFilter === 'quick', fn($query) => $query->whereNull('donation_request_id'))

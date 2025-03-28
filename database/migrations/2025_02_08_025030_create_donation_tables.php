@@ -58,7 +58,7 @@ return new class extends Migration {
             $table->enum('donation_method', ['pickup', 'drop-off']);
             $table->string('pickup_address')->nullable();
             $table->dateTime('donation_datetime');
-            $table->enum('status', ['pending', 'received', 'ongoing', 'distributed'])->default('pending');
+            $table->enum('status', ['pending', 'received', 'ongoing', 'distributed', 'unverified'])->default('pending');
             $table->string('proof_image')->nullable();
             $table->string('tracking_number', 50)->nullable();
             $table->timestamps();
@@ -132,7 +132,6 @@ return new class extends Migration {
             $table->enum('status', ['Pending', 'Fulfilled', 'Canceled', 'Unfulfilled'])->default('Pending');
             $table->date('valid_until')->nullable();
             $table->timestamps();
-            // Add composite unique index
             $table->unique(['location_id', 'cause', 'status']);
         });
 
@@ -153,10 +152,11 @@ return new class extends Migration {
             ]);
             $table->decimal('amount', 10, 2);
             $table->enum('donation_method', ['online', 'drop-off']);
-            $table->enum('payment_method', ['credit_card', 'gcash', 'paymaya'])->nullable();
+            $table->enum('payment_method', ['credit card', 'gcash', 'paymaya'])->nullable();
             $table->string('transaction_id')->nullable(); // PayMongo transaction ID
             $table->enum('payment_status', ['pending', 'completed', 'failed'])->nullable()->default('pending');
-            $table->enum('status', ['pending', 'received', 'ongoing', 'distributed'])->default('pending');
+            $table->enum('status', ['pending', 'received', 'ongoing', 'distributed', 'unverified'])->default('pending');
+            $table->string('proof_image')->nullable();
             $table->timestamps();
         });
 

@@ -428,24 +428,24 @@ $(".cash-donation-form").each(function () {
     });
 
     // Function to show/hide submit button when file is selected
-    function updateSubmitButtonVisibility(modalId) {
-        const fileInput = $(`#imageFile-${modalId}`);
-        const submitButton = $(`#donateNowButton-${modalId}`);
+   function updateSubmitButtonVisibility(modalId) {
+    const fileInput = $(`#imageFile-${modalId}`);
+    const submitButton = $(`#donateNowButton-${modalId}`);
 
-        if (fileInput[0].files && fileInput[0].files.length > 0) {
-            submitButton.css('display', 'inline-block');
-        } else {
-            submitButton.css('display', 'none');
-        }
+    if (fileInput[0].files && fileInput[0].files.length > 0) {
+        submitButton.css("display", "inline-block");
+    } else {
+        submitButton.css("display", "none");
     }
+}
 
-    // Monitor file input changes dynamically
-    $(document).on('change', '[id^="imageFile-"]', function () {
-        const modalId = this.id.split('-')[1]; // Extract modal ID
-        updateSubmitButtonVisibility(modalId);
-    });
+// Monitor file input changes dynamically (for drop-off proof)
+$(document).on("change", '[id^="imageFile-"]', function () {
+    const modalId = this.id.split("-")[1]; // Extract modal ID
+    updateSubmitButtonVisibility(modalId);
+});
 
-    window.updateSubmitButtonVisibility = updateSubmitButtonVisibility;
+window.updateSubmitButtonVisibility = updateSubmitButtonVisibility;
 
     
 
@@ -663,8 +663,7 @@ function initializePhotoCapture(requestId) {
 
     loadModels();
 }
+fundRequests.forEach(request => initializePhotoCapture(request.id));  
+donationRequests.forEach(request => initializePhotoCapture(request.id));
 
-donationRequests.forEach(request => {
-    initializePhotoCapture(request.id);
-});
 

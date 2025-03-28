@@ -15,7 +15,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="{{ asset('lib/bootstrap/css/bootstrap.min.css') }}">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{ asset('assets/users/css/donor/home_donor.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/users/css/donor/donation_details.css') }}">
 </head>
 
 <!-- Spinner Start -->
@@ -64,7 +64,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active rounded-pill" aria-current="page" href="{{route('donor.home')}}">Home</a>
+                            <a class="nav-link rounded-pill" aria-current="page" href="{{route('donor.home')}}">Home</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link " aria-current="page" href="{{route('prc-chapters')}}">Chapters</a>
@@ -148,7 +148,7 @@
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <!-- Home -->
                         <li class="nav-item">
-                            <a href="{{route ('donor.home') }}" class="nav-link active">
+                            <a href="{{route ('donor.home') }}" class="nav-link">
                                 <i class="nav-icon fas fa-house"></i>
                                 <p>Home</p>
                             </a>
@@ -196,7 +196,7 @@
 
                         <!-- Track Donations -->
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="#" class="nav-link active">
                                 <i class="nav-icon fas fa-chart-line"></i>
                                 <p>
                                     Track Donations
@@ -290,71 +290,76 @@
             <!-- Main content -->
             <div class="content">
                 <div class="container-fluid py-3">
-                    <div class="row">
-                        <div class="col-md-4 col-sm-6 col-12">
-                            <div class="info-box">
-                                <span class="info-box-icon bg-info"><i class="fa-solid fa-list-check" style="color: #ffffff;"></i></span>
-                                <div class="info-box-content">
-                                    <h5 class="info-box-text">Fund Request</h5>
-                                    <span class="info-box-number">10</span>
-                                </div>
-                                <!-- /.info-box-content -->
-                            </div>
-                            <!-- /.info-box -->
-                        </div>
-                        <!-- /.col -->
-                        <div class="col-md-4 col-sm-6 col-12">
-                            <div class="info-box">
-                                <span class="info-box-icon bg-success"><i class="fa-solid fa-calendar" style="color: #ffffff;"></i></span>
-                                <div class="info-box-content">
-                                    <h5 class="info-box-text">In-Kind Request</h5>
-                                    <span class="info-box-number">15</span>
-                                </div>
-                                <!-- /.info-box-content -->
-                            </div>
-                            <!-- /.info-box -->
-                        </div>
-                        <!-- /.col -->
-                        <div class="col-md-4 col-sm-6 col-12">
-                            <div class="info-box">
-                                <span class="info-box-icon bg-warning"><i class="fa-solid fa-clock" style="color: #ffffff;"></i></span>
-                                <div class="info-box-content">
-                                    <h5 class="info-box-text">Pending Donations</h5>
-                                    <span class="info-box-number">8</span>
-                                </div>
-                                <!-- /.info-box-content -->
-                            </div>
-                            <!-- /.info-box -->
-                        </div>
-                        <!-- /.col -->
-                    </div>
 
-                    <div class="row my-3">
-                        <h1 class="fw-bolder text-center donate-heading">Donate Now</h1>
-                        <div class="d-flex justify-content-evenly flex-wrap">
-                            <div class="my-2">
-                                <a href="{{route ('donor.quick_donation') }}" class="donatebtn">
-                                    <span class="icon">
-                                        <i class="fa-solid fa-handshake-angle fa-xl me-2"></i>
-                                    </span>
-                                    <span class="text">Quick Donation</span>
+                    <div class="card custom-card shadow-lg rounded">
+                        <div class="card-header custom-header text-white">
+                            <h3 class="mb-0"><i class="far fa-clone pr-1"></i> Cash Donation Details</h3>
+                        </div>
+                        <div class="card-body pt-2">
+                            <table class="table table-striped table-hover custom-table">
+                                <tr>
+                                    <th width="30%" class="bg-light-custom">Donor Name</th>
+                                    <td width="2%">:</td>
+                                    <td>{{ $cashDonation->donor_name }}</td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-light-custom">Contact Number</th>
+                                    <td>:</td>
+                                    <td>{{ $cashDonation->donor->contact}}</td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-light-custom">Amount</th>
+                                    <td>:</td>
+                                    <td class="text-primary fw-bold">₱{{ number_format($cashDonation->amount, 2) }}</td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-light-custom">Donation Method</th>
+                                    <td>:</td>
+                                    <td>{{ ucfirst($cashDonation->donation_method) }}</td>
+                                </tr>
+                                @if($cashDonation->donation_method === 'online')
+                                <tr>
+                                    <th class="bg-light-custom">Payment Method</th>
+                                    <td>:</td>
+                                    <td>{{ ucfirst($cashDonation->payment_method) }}</td>
+                                </tr>
+                                @endif
+                                <tr>
+                                    <th class="bg-light-custom">Transaction ID</th>
+                                    <td>:</td>
+                                    <td>{{ $cashDonation->transaction_id }}</td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-light-custom">Status</th>
+                                    <td>:</td>
+                                    <td>
+                                        <span class="badge bg-{{ 
+                        $cashDonation->status == 'pending' ? 'secondary' : 
+                        ($cashDonation->status == 'received' ? 'success' : 
+                        ($cashDonation->status == 'ongoing' ? 'warning' : 'danger')) }}">
+                                            {{ ucfirst($cashDonation->status) }}
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-light-custom">Date & Time</th>
+                                    <td>:</td>
+                                    <td>{{ \Carbon\Carbon::parse($cashDonation->created_at)->format('F d, Y') }}</td>
+                                </tr>
+                            </table>
+
+                            @if($cashDonation->donation_method === 'drop-off' && !empty($cashDonation->proof_image))
+                            <div class="mt-3 text-center">
+                                <h6 class="fw-bold">Proof of Donation</h6>
+                                <a href="{{ asset('storage/proof_images/' . $cashDonation->proof_image) }}" target="_blank">
+                                    <img src="{{ asset('storage/' . $cashDonation->proof_image) }}" alt="Proof Image" class="img-fluid donation-proof-image">
                                 </a>
                             </div>
-
-                            <div class="my-2">
-                                <a href="#" data-bs-target="#register" data-bs-toggle="modal" class="donatebtn">
-                                    <span class="icon">
-                                        <i class="fa-solid fa-hand-holding-heart fa-xl me-2"></i>
-                                    </span>
-                                    <span class="text">Select Request</span>
-                                </a>
-                            </div>
+                            @endif
                         </div>
                     </div>
                 </div>
-
             </div>
-
         </div>
         <!-- /.content wrapper -->
 
@@ -365,28 +370,6 @@
         </footer>
     </div>
     <!-- ./wrapper -->
-
-
-    <div class="modal fade" id="register" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="radio-input">
-                    <div class="reg-info">
-                        <span class="question">Select Request</span>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <a href="{{route ('donor.request_map') }}" id=" value-1" class="reg-link" name="value-radio" value="value-1">
-                        <label for="value-1"> <i class="fa-solid fa-hand-holding-heart fa-lg me-2"></i> In-Kind</label>
-                        <a href="{{route ('donor.reqCash_map') }}" id="value-2" class="reg-link" name="value-radio" value="value-2">
-                            <label for="value-2"> <i class="fa-solid fa-hand-holding-dollar fa-lg me-2"></i></i> Funds</label>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-
 
 
     <!-- jQuery -->

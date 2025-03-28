@@ -14,8 +14,9 @@
         rel="stylesheet">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="{{ asset('lib/bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('lib/datatables/datatables.min.css') }}">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{ asset('assets/users/css/donor/home_donor.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/users/css/donor/donation_status.css') }}">
 </head>
 
 <!-- Spinner Start -->
@@ -64,7 +65,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active rounded-pill" aria-current="page" href="{{route('donor.home')}}">Home</a>
+                            <a class="nav-link rounded-pill" aria-current="page" href="{{route('donor.home')}}">Home</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link " aria-current="page" href="{{route('prc-chapters')}}">Chapters</a>
@@ -148,7 +149,7 @@
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <!-- Home -->
                         <li class="nav-item">
-                            <a href="{{route ('donor.home') }}" class="nav-link active">
+                            <a href="{{route ('donor.home') }}" class="nav-link">
                                 <i class="nav-icon fas fa-house"></i>
                                 <p>Home</p>
                             </a>
@@ -184,7 +185,6 @@
                                         <p>In-Kind Request</p>
                                     </a>
                                 </li>
-
                                 <li class="nav-item">
                                     <a href="{{route ('donor.reqCash_map') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
@@ -196,7 +196,7 @@
 
                         <!-- Track Donations -->
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="#" class="nav-link active">
                                 <i class="nav-icon fas fa-chart-line"></i>
                                 <p>
                                     Track Donations
@@ -205,8 +205,8 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{route ('donor.donationStatus') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
+                                    <a href="{{route ('donor.donationStatus') }}" class="nav-link active">
+                                        <i class="fas fa-circle-arrow-right nav-icon"></i>
                                         <p>Active Donations</p>
                                     </a>
                                 </li>
@@ -245,13 +245,12 @@
 
                         <!-- Feedback / Support -->
                         <li class="nav-item">
-                            <a href="{{route ('donor.contact_form') }}" class="nav-link ">
+                            <a href="{{route ('donor.contact_form') }}" class="nav-link">
                                 <i class="nav-icon fas fa-comments"></i>
                                 <p>Contact / Support</p>
                             </a>
                         </li>
                     </ul>
-
                 </nav>
                 <!-- /.sidebar-menu -->
             </div>
@@ -291,68 +290,120 @@
             <div class="content">
                 <div class="container-fluid py-3">
                     <div class="row">
-                        <div class="col-md-4 col-sm-6 col-12">
-                            <div class="info-box">
-                                <span class="info-box-icon bg-info"><i class="fa-solid fa-list-check" style="color: #ffffff;"></i></span>
-                                <div class="info-box-content">
-                                    <h5 class="info-box-text">Fund Request</h5>
-                                    <span class="info-box-number">10</span>
-                                </div>
-                                <!-- /.info-box-content -->
-                            </div>
-                            <!-- /.info-box -->
-                        </div>
-                        <!-- /.col -->
-                        <div class="col-md-4 col-sm-6 col-12">
-                            <div class="info-box">
-                                <span class="info-box-icon bg-success"><i class="fa-solid fa-calendar" style="color: #ffffff;"></i></span>
-                                <div class="info-box-content">
-                                    <h5 class="info-box-text">In-Kind Request</h5>
-                                    <span class="info-box-number">15</span>
-                                </div>
-                                <!-- /.info-box-content -->
-                            </div>
-                            <!-- /.info-box -->
-                        </div>
-                        <!-- /.col -->
-                        <div class="col-md-4 col-sm-6 col-12">
-                            <div class="info-box">
-                                <span class="info-box-icon bg-warning"><i class="fa-solid fa-clock" style="color: #ffffff;"></i></span>
-                                <div class="info-box-content">
-                                    <h5 class="info-box-text">Pending Donations</h5>
-                                    <span class="info-box-number">8</span>
-                                </div>
-                                <!-- /.info-box-content -->
-                            </div>
-                            <!-- /.info-box -->
-                        </div>
-                        <!-- /.col -->
-                    </div>
-
-                    <div class="row my-3">
-                        <h1 class="fw-bolder text-center donate-heading">Donate Now</h1>
-                        <div class="d-flex justify-content-evenly flex-wrap">
-                            <div class="my-2">
-                                <a href="{{route ('donor.quick_donation') }}" class="donatebtn">
-                                    <span class="icon">
-                                        <i class="fa-solid fa-handshake-angle fa-xl me-2"></i>
-                                    </span>
-                                    <span class="text">Quick Donation</span>
+                        <div class="d-flex justify-content-between">
+                            <!-- Donation Type Filter (In-Kind / Cash) -->
+                            <div class="d-flex mb-1 align-items-center">
+                                <strong class="me-2">Type:</strong>
+                                <a href="{{ route('donor.donationStatus', ['donation_type' => 'all'] + request()->except('donation_type')) }}"
+                                    class="btn table-btn btn-sm {{ request('donation_type', 'all') === 'all' ? 'custom-active' : '' }}">
+                                    All
+                                </a>
+                                <a href="{{ route('donor.donationStatus', ['donation_type' => 'in-kind'] + request()->except('donation_type')) }}"
+                                    class="btn table-btn btn-sm {{ request('donation_type') === 'in-kind' ? 'custom-active' : '' }}">
+                                    In-Kind
+                                </a>
+                                <a href="{{ route('donor.donationStatus', ['donation_type' => 'cash'] + request()->except('donation_type')) }}"
+                                    class="btn table-btn btn-sm {{ request('donation_type') === 'cash' ? 'custom-active' : '' }}">
+                                    Cash
                                 </a>
                             </div>
 
-                            <div class="my-2">
-                                <a href="#" data-bs-target="#register" data-bs-toggle="modal" class="donatebtn">
-                                    <span class="icon">
-                                        <i class="fa-solid fa-hand-holding-heart fa-xl me-2"></i>
-                                    </span>
-                                    <span class="text">Select Request</span>
+                            <!-- Donation Source Filter (Quick / Request) -->
+                            <div class="d-flex align-items-center mb-1">
+                                <strong class="me-2">Source:</strong>
+                                <a href="{{ route('donor.donationStatus', ['type' => 'all'] + request()->except('type')) }}"
+                                    class="btn table-btn btn-sm {{ request('type', 'all') === 'all' ? 'custom-active' : '' }}">
+                                    All
                                 </a>
+                                <a href="{{ route('donor.donationStatus', ['type' => 'request'] + request()->except('type')) }}"
+                                    class="btn table-btn btn-sm {{ request('type') === 'request' ? 'custom-active' : '' }}">
+                                    From Request
+                                </a>
+                                <a href="{{ route('donor.donationStatus', ['type' => 'quick'] + request()->except('type')) }}"
+                                    class="btn table-btn btn-sm {{ request('type') === 'quick' ? 'custom-active' : '' }}">
+                                    From Quick
+                                </a>
+                            </div>
+
+                            <!-- Status Filter (Pending / Ongoing) -->
+                            <div class="d-flex align-items-center mb-1">
+                                <strong class="me-2">Status:</strong>
+                                <a href="{{ route('donor.donationStatus', ['status' => 'all'] + request()->except('status')) }}"
+                                    class="btn table-btn btn-sm {{ request('status', 'all') === 'all' ? 'custom-active' : '' }}">
+                                    All
+                                </a>
+                                <a href="{{ route('donor.donationStatus', ['status' => 'pending'] + request()->except('status')) }}"
+                                    class="btn table-btn btn-sm {{ request('status') === 'pending' ? 'custom-active' : '' }}">
+                                    Pending
+                                </a>
+                                <a href="{{ route('donor.donationStatus', ['status' => 'ongoing'] + request()->except('status')) }}"
+                                    class="btn table-btn btn-sm {{ request('status') === 'ongoing' ? 'custom-active' : '' }}">
+                                    Ongoing
+                                </a>
+                            </div>
+                        </div>
+                        <div class="card card-primary card-outline">
+                            <div class="card-header">
+                                <h3 class="card-title">Active Donations</h3>
+                            </div>
+                            <div class="card-body">
+                                <table id="example1" class="table table-bordered table-hover table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Cause</th>
+                                            <th>Method</th>
+                                            <th>Chapter</th>
+                                            <th>Type</th><!-- Cash / In-Kind -->
+                                            <th>Status</th>
+                                            <th>Source</th> <!-- Quick / Request -->
+                                            <th>Transaction No.</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($donations as $donation)
+                                        <tr>
+                                            <td>{{ $donation->cause }}</td>
+                                            <td>
+                                                <span class="badge bg-{{ $donation->donation_method === 'pickup' ? 'primary' : 'success' }}">
+                                                    {{ ucfirst($donation->donation_method) }}
+                                                </span>
+                                            </td>
+                                            <td>{{ $donation->chapter->chapter_name ?? 'N/A' }}</td>
+                                            <td>
+                                                <span class="badge bg-{{ isset($donation->transaction_id) ? 'success' : 'warning text-dark' }}">
+                                                    {{ isset($donation->transaction_id) ? 'Cash' : 'In-Kind' }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-{{
+                                                                $donation->status === 'pending' ? 'secondary' :
+                                                                ($donation->status === 'received' ? 'success' :
+                                                                ($donation->status === 'ongoing' ? 'warning' : 'danger'))
+                                                            }}">
+                                                    {{ ucfirst($donation->status) }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-{{ $donation->donation_request_id ? 'warning text-dark' : 'info text-dark' }}">
+                                                    {{ $donation->donation_request_id ? 'From Request' : 'Quick Donation' }}
+                                                </span>
+                                            </td>
+                                            <td>{{ $donation->transaction_id ?? $donation->tracking_number ?? 'N/A' }}</td>
+                                            <td>
+                                                <a href="{{ isset($donation->transaction_id) ? route('donor.cash.donation.details', $donation->id) : route('donor.inkind.donation.details', $donation->id) }}"
+                                                    class="btn btn-sm btn-success">
+                                                    <i class="fa-solid fa-eye"></i> View
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
                 </div>
-
             </div>
 
         </div>
@@ -366,37 +417,16 @@
     </div>
     <!-- ./wrapper -->
 
-
-    <div class="modal fade" id="register" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="radio-input">
-                    <div class="reg-info">
-                        <span class="question">Select Request</span>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <a href="{{route ('donor.request_map') }}" id=" value-1" class="reg-link" name="value-radio" value="value-1">
-                        <label for="value-1"> <i class="fa-solid fa-hand-holding-heart fa-lg me-2"></i> In-Kind</label>
-                        <a href="{{route ('donor.reqCash_map') }}" id="value-2" class="reg-link" name="value-radio" value="value-2">
-                            <label for="value-2"> <i class="fa-solid fa-hand-holding-dollar fa-lg me-2"></i></i> Funds</label>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-
-
-
     <!-- jQuery -->
     <script src="{{ asset('lib/jquery/jquery.min.js') }}"></script>
     <!-- Bootstrap 5 -->
     <script src="{{ asset('lib/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <!-- Fontawesome 6 -->
     <script src="{{ asset('lib/fontawesome/all.js') }}"></script>
+    <script src="{{ asset('lib/datatables/datatables.min.js') }}"></script>
     <!-- User JS -->
     <script src="{{ asset('assets/users/js/user.js') }}"></script>
+
 </body>
 
 </html>

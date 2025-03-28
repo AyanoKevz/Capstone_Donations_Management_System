@@ -211,7 +211,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="{{route ('donor.completeDonations') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Completed Donations</p>
                                     </a>
@@ -303,96 +303,134 @@
             <div class="content">
                 <div class="container-fluid py-3">
                     <div class="container mb-3">
-                        <div class="title">Quick Cash Form</div>
-                        <form id="quickCashForm"
-                            method="POST"
-                            action="{{ route('quickCash.paymongo') }}"
-                            class="cash-donation-form"
-                            data-online="{{ route('quickCash.paymongo') }}"
-                            data-dropoff="{{ route('quickCash.dropoff') }}">
-                            @csrf
-                            <div class="user-details">
-                                <!-- Donor Name -->
-                                <div class="input-box">
-                                    <span class="details">Donor Name</span>
-                                    <input type="text" class="form-control donor-name" id="donor_name" name="donor_name"
-                                        value="{{ $User->donor->first_name }} {{ $User->donor->last_name }}"
-                                        data-original-name="{{ $User->donor->first_name }} {{ $User->donor->last_name }}" required>
-                                    <div class="form-check mt-2">
-                                        <input class="form-check-input anonymous-checkbox" type="checkbox" id="anonymous_checkbox" name="anonymous_checkbox" value="1">
-                                        <label class="form-check-label text-muted" for="anonymous_checkbox">
-                                            Anonymous
-                                        </label>
-                                    </div>
-                                </div>
-
-                                <!-- Cause and Chapter -->
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="input-box">
-                                            <span class="details">Cause</span>
-                                            <select class="form-select" id="cause" name="cause">
-                                                <option value="General">General</option>
-                                                <option value="Fire">Fire</option>
-                                                <option value="Flood">Flood</option>
-                                                <option value="Typhoon">Typhoon</option>
-                                                <option value="Earthquake">Earthquake</option>
-                                                <option value="Volcanic Eruption">Volcanic Eruption</option>
-                                                <option value="Feeding Program">Feeding Program</option>
-                                            </select>
+                        <div class="text-end mb-2">
+                            <a href="{{ route('quick.inKindForm') }}" class="btn btn-sm btn-secondary">
+                                Inkind Form <i class="fa-solid fa-hand-holding-heart ms-1"></i></a>
+                        </div>
+                        <div class="form-container">
+                            <div class="text-end mb-2">
+                                <button href="{{ route('quick.inKindForm') }}" class="btn btn-sm recent">
+                                    <i class="fa-solid fa-rotate-right"></i> Use My Last Details
+                                </button>
+                            </div>
+                            <div class="title">Quick Cash Form</div>
+                            <form id="quickCashForm"
+                                method="POST"
+                                action="{{ route('quickCash.paymongo') }}"
+                                class="cash-donation-form"
+                                data-online="{{ route('quickCash.paymongo') }}"
+                                data-dropoff="{{ route('quickCash.dropoff') }}"
+                                enctype="multipart/form-data">
+                                @csrf
+                                <div class="user-details">
+                                    <!-- Donor Name -->
+                                    <div class="input-box">
+                                        <span class="details">Donor Name</span>
+                                        <input type="text" class="form-control donor-name" id="donor_name" name="donor_name"
+                                            value="{{ $User->donor->first_name }} {{ $User->donor->last_name }}"
+                                            data-original-name="{{ $User->donor->first_name }} {{ $User->donor->last_name }}" required>
+                                        <div class="form-check mt-2">
+                                            <input class="form-check-input anonymous-checkbox" type="checkbox" id="anonymous_checkbox" name="anonymous_checkbox" value="1">
+                                            <label class="form-check-label text-muted" for="anonymous_checkbox">
+                                                Anonymous
+                                            </label>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="input-box">
-                                            <span class="details">Chapter</span>
-                                            <select class="form-select" id="chapter" name="chapter_id" required>
-                                                <option selected disabled>Select Chapter</option>
-                                                @foreach($chapters as $chapter)
-                                                <option value="{{ $chapter->id }}">{{ $chapter->chapter_name }}</option>
-                                                @endforeach
-                                            </select>
+
+                                    <!-- Cause and Chapter -->
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="input-box">
+                                                <span class="details">Cause</span>
+                                                <select class="form-select" id="cause" name="cause">
+                                                    <option value="General">General</option>
+                                                    <option value="Fire">Fire</option>
+                                                    <option value="Flood">Flood</option>
+                                                    <option value="Typhoon">Typhoon</option>
+                                                    <option value="Earthquake">Earthquake</option>
+                                                    <option value="Volcanic Eruption">Volcanic Eruption</option>
+                                                    <option value="Feeding Program">Feeding Program</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="input-box">
+                                                <span class="details">Chapter</span>
+                                                <select class="form-select" id="chapter" name="chapter_id" required>
+                                                    <option selected disabled>Select Chapter</option>
+                                                    @foreach($chapters as $chapter)
+                                                    <option value="{{ $chapter->id }}">{{ $chapter->chapter_name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Donation Amount -->
+                                    <div class="input-box">
+                                        <span class="details">Donation Amount</span>
+                                        <input type="number" class="form-control" id="amount" name="amount" min="1" required>
+                                    </div>
+
+                                    <!-- Donation Method -->
+                                    <div class="input-box">
+                                        <span class="details">Donation Method</span>
+                                        <select class="form-select  donation-method_cash" id="donation_method" name="donation_method" required>
+                                            <option selected disabled>Select an option</option>
+                                            <option value="online">Online</option>
+                                            <option value="drop-off">Drop-off</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Payment Method (Only for Online Donations) -->
+                                    <div class="input-box payment-method-row d-none" id="payment_method_row">
+                                        <span class="details">Payment Method</span>
+                                        <div class="d-flex justify-content-center gap-3 mb-3">
+                                            <img src="{{ asset('assets/img/credit-card.jpg') }}" alt="Credit Card" class="payment-logo">
+                                            <img src="{{ asset('assets/img/gcashLogo.jpg') }}" alt="GCash" class="payment-logo">
+                                            <img src="{{ asset('assets/img/paymayaLogo.png') }}" alt="PayMaya" class="payment-logo">
+                                        </div>
+                                        <select class="form-select" id="payment_method" name="payment_method">
+                                            <option selected disabled>Select an option</option>
+                                            <option value="credit card">Credit/Debit Card</option>
+                                            <option value="gcash">GCash</option>
+                                            <option value="paymaya">PayMaya</option>
+                                        </select>
+                                    </div>
+
+                                    <div id="photoCapture" class="row g-3 photo-capture d-none">
+                                        <h5><strong>Proof of Identity</strong> </h5>
+                                        <p class="my-0">Live Photo Taking. The system will snap a picture once it detects your face.</p>
+                                        <!-- Camera Column -->
+                                        <div class="col-md-6 d-flex flex-column align-items-center">
+                                            <div class="video-container">
+                                                <video id="video" class="video-stream" autoplay muted></video>
+                                                <canvas id="overlay" class="overlay"></canvas>
+                                                <div id="timer" class="timer"></div>
+                                            </div>
+                                            <button class="btn btn-secondary btn-sm my-3 toggle-camera-btn" type="button" id="toggleCameraBtn">Turn On Camera</button>
+                                        </div>
+
+                                        <!-- Preview Column -->
+                                        <div class="col-md-6 d-flex flex-column align-items-center">
+                                            <div id="preview" class="preview-container">
+                                                <img src="{{ asset('assets/img/livePhoto.jpg') }}" class="preview-image" alt="Captured Photo">
+                                            </div>
+                                            <p class="my-3"><strong>Example</strong></p>
+                                            <!-- File Input Section -->
+                                            <div id="fileInputSection" style="display: none;">
+                                                <input type="file" id="imageFile" name="proof_image" class="preview-file">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
 
-                                <!-- Donation Amount -->
-                                <div class="input-box">
-                                    <span class="details">Donation Amount</span>
-                                    <input type="number" class="form-control" id="amount" name="amount" min="1" required>
+                                <!-- Submit Button -->
+                                <div class="button" id="submitButton" style="display: none;">
+                                    <input type="submit" value="Donate Now">
                                 </div>
-
-                                <!-- Donation Method -->
-                                <div class="input-box">
-                                    <span class="details">Donation Method</span>
-                                    <select class="form-select  donation-method_cash" id="donation_method" name="donation_method" required>
-                                        <option selected disabled>Select an option</option>
-                                        <option value="online">Online</option>
-                                        <option value="drop-off">Drop-off</option>
-                                    </select>
-                                </div>
-
-                                <!-- Payment Method (Only for Online Donations) -->
-                                <div class="input-box payment-method-row d-none" id="payment_method_row">
-                                    <span class="details">Payment Method</span>
-                                    <div class="d-flex justify-content-center gap-3 mb-3">
-                                        <img src="{{ asset('assets/img/credit-card.jpg') }}" alt="Credit Card" class="payment-logo">
-                                        <img src="{{ asset('assets/img/gcashLogo.jpg') }}" alt="GCash" class="payment-logo">
-                                        <img src="{{ asset('assets/img/paymayaLogo.png') }}" alt="PayMaya" class="payment-logo">
-                                    </div>
-                                    <select class="form-select" id="payment_method" name="payment_method">
-                                        <option selected disabled>Select an option</option>
-                                        <option value="credit_card">Credit/Debit Card</option>
-                                        <option value="gcash">GCash</option>
-                                        <option value="paymaya">PayMaya</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <!-- Submit Button -->
-                            <div class="button">
-                                <input type="submit" value="Donate Now" id="submitButton">
-                            </div>
-                        </form>
+                            </form>
+                        </div>
                     </div>
                 </div>
 
@@ -418,6 +456,7 @@
     <script src="{{ asset('lib/fontawesome/all.js') }}"></script>
     <!-- User JS -->
     <script src="{{ asset('assets/users/js/user.js') }}"></script>
+    <script src="{{ asset('assets/users/js/faceapi.js') }}"></script>
 </body>
 
 </html>

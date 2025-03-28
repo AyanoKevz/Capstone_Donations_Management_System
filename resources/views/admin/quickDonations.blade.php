@@ -301,7 +301,8 @@
           </ol>
           <h1 class="my-3">All Quick Donation Made at {{ $Admin->chapter->chapter_name }} Chapter</h1>
           <div class="d-flex justify-content-between">
-            <div class="d-flex mb-1">
+            <div class="d-flex mb-1 align-items-center">
+              <strong class="me-2">Status:</strong>
               <!-- Filter for Status -->
               <a href="{{ route('admin.quickDonation', ['type' => $typeFilter, 'status' => '']) }}"
                 class="btn table-btn btn-sm {{ $statusFilter === '' ? 'custom-active' : '' }}">
@@ -316,7 +317,8 @@
                 Ongoing
               </a>
             </div>
-            <div class="d-flex mb-1">
+            <div class="d-flex mb-1 align-items-center">
+              <strong class="me-2">Type:</strong>
               <!-- Filter for Donation Request Type -->
               <a href="{{ route('admin.quickDonation', ['type' => 'all', 'status' => $statusFilter]) }}"
                 class="btn table-btn btn-sm {{ $typeFilter === 'all' ? 'custom-active' : '' }}">
@@ -355,7 +357,7 @@
                     <td colspan="7" class="text-center">No Donations Available</td>
                   </tr>
                   @else
-                  @forelse($cashDonations as $cashDonation)
+                  @foreach($cashDonations as $cashDonation)
                   <tr>
                     <td>{{ $cashDonation->donor_name }}</td>
                     <td>{{ $cashDonation->cause }}</td>
@@ -368,23 +370,19 @@
                       default => 'bg-secondary text-white'
                       };
                       @endphp
-                      <span class="badge {{ $statusClass }}">{{ $cashDonation->status }}</span>
+                      <span class="badge {{ $statusClass }}">{{ ucfirst($cashDonation->status) }}</span>
                     </td>
                     <td>{{ $cashDonation->transaction_id }}</td>
                     <td><span class="badge bg-primary">Cash</span></td>
                     <td>
-                      <a href="{{ route('cash.donation.details', $cashDonation->id) }}" class="btn btn-sm btn-primary">View</a>
+                      <a href="{{ route('cash.donation.details', $cashDonation->id) }}" class="btn btn-sm btn-success">
+                        <i class="fa-solid fa-eye"></i> View
+                      </a>
                     </td>
                   </tr>
-                  @empty
-                  @if ($typeFilter === 'cash' || $typeFilter === 'all')
-                  <tr>
-                    <td colspan="7" class="text-center">No Cash Donations Available</td>
-                  </tr>
-                  @endif
-                  @endforelse
+                  @endforeach
 
-                  @forelse($inKindDonations as $inKindDonation)
+                  @foreach($inKindDonations as $inKindDonation)
                   <tr>
                     <td>{{ $inKindDonation->donor_name }}</td>
                     <td>{{ $inKindDonation->cause }}</td>
@@ -397,21 +395,17 @@
                       default => 'bg-secondary text-white'
                       };
                       @endphp
-                      <span class="badge {{ $statusClass }}">{{ $inKindDonation->status }}</span>
+                      <span class="badge {{ $statusClass }}">{{ ucfirst($inKindDonation->status) }}</span>
                     </td>
                     <td>{{ $inKindDonation->tracking_number }}</td>
                     <td><span class="badge bg-warning">In-Kind</span></td>
                     <td>
-                      <a href="{{ route('inkind.donation.details', $inKindDonation->id) }}" class="btn btn-sm btn-primary">View</a>
+                      <a href="{{ route('inkind.donation.details', $inKindDonation->id) }}" class="btn btn-sm btn-success">
+                        <i class="fa-solid fa-eye"></i> View
+                      </a>
                     </td>
                   </tr>
-                  @empty
-                  @if ($typeFilter === 'in-kind' || $typeFilter === 'all')
-                  <tr>
-                    <td colspan="7" class="text-center">No In-Kind Donations Available</td>
-                  </tr>
-                  @endif
-                  @endforelse
+                  @endforeach
                   @endif
                 </tbody>
               </table>

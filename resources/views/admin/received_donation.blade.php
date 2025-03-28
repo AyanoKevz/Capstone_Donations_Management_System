@@ -301,37 +301,28 @@
           </ol>
           <h1 class="my-3">Received Donations at {{ $Admin->chapter->chapter_name }} Chapter</h1>
           <div class="d-flex justify-content-between">
-            <div class="d-flex mb-1">
-              <!-- Filter for Status -->
+            <div class="d-flex mb-1 align-items-center">
+              <strong class="me-2">Source:</strong>
+              <!-- Filter for Source -->
               <a href="{{ route('admin.received_donation', ['statusFilter' => '', 'typeFilter' => $typeFilter]) }}"
-                class="btn table-btn btn-sm {{ $statusFilter === '' ? 'custom-active' : '' }}">
-                All
-              </a>
+                class="btn table-btn btn-sm {{ $statusFilter === '' ? 'custom-active' : '' }}">All</a>
               <a href="{{ route('admin.received_donation', ['statusFilter' => 'quick', 'typeFilter' => $typeFilter]) }}"
-                class="btn table-btn btn-sm {{ $statusFilter === 'quick' ? 'custom-active' : '' }}">
-                Quick
-              </a>
+                class="btn table-btn btn-sm {{ $statusFilter === 'quick' ? 'custom-active' : '' }}">Quick</a>
               <a href="{{ route('admin.received_donation', ['statusFilter' => 'request', 'typeFilter' => $typeFilter]) }}"
-                class="btn table-btn btn-sm {{ $statusFilter === 'request' ? 'custom-active' : '' }}">
-                Request
-              </a>
+                class="btn table-btn btn-sm {{ $statusFilter === 'request' ? 'custom-active' : '' }}">Request</a>
             </div>
-            <div class="d-flex mb-1">
+            <div class="d-flex mb-1 align-items-center">
+              <strong class="me-2">Type:</strong>
               <!-- Filter for Donation Type -->
               <a href="{{ route('admin.received_donation', ['typeFilter' => 'all', 'statusFilter' => $statusFilter]) }}"
-                class="btn table-btn btn-sm {{ $typeFilter === 'all' ? 'custom-active' : '' }}">
-                All
-              </a>
+                class="btn table-btn btn-sm {{ $typeFilter === 'all' ? 'custom-active' : '' }}">All</a>
               <a href="{{ route('admin.received_donation', ['typeFilter' => 'cash', 'statusFilter' => $statusFilter]) }}"
-                class="btn table-btn btn-sm {{ $typeFilter === 'cash' ? 'custom-active' : '' }}">
-                Cash
-              </a>
+                class="btn table-btn btn-sm {{ $typeFilter === 'cash' ? 'custom-active' : '' }}">Cash</a>
               <a href="{{ route('admin.received_donation', ['typeFilter' => 'in-kind', 'statusFilter' => $statusFilter]) }}"
-                class="btn table-btn btn-sm {{ $typeFilter === 'in-kind' ? 'custom-active' : '' }}">
-                In-Kind
-              </a>
+                class="btn table-btn btn-sm {{ $typeFilter === 'in-kind' ? 'custom-active' : '' }}">In-Kind</a>
             </div>
           </div>
+
           <div class="card card-primary card-outline">
             <div class="card-header">
               <h3 class="card-title">Received Donations</h3>
@@ -343,99 +334,54 @@
                     <th>Donor Name</th>
                     <th>Cause</th>
                     <th>Method</th>
-                    <th>Status</th>
+                    <!--         <th>Status</th> -->
                     <th>Transaction No</th>
-                    <th>Type</th> <!-- Cash / In-Kind -->
-                    <th>Source</th> <!-- Quick / Request -->
+                    <th>Type</th>
+                    <th>Source</th>
                     <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  @if($cashDonations->isEmpty() && $inKindDonations->isEmpty())
-                  <!-- Show this only if both collections are empty -->
+                  @php
+                  $donations = collect();
+                  if ($typeFilter === 'cash' || $typeFilter === 'all') {
+                  $donations = $donations->merge($cashDonations->map(fn($d) => ['type' => 'cash', 'data' => $d]));
+                  }
+                  if ($typeFilter === 'in-kind' || $typeFilter === 'all') {
+                  $donations = $donations->merge($inKindDonations->map(fn($d) => ['type' => 'in-kind', 'data' => $d]));
+                  }
+                  @endphp
+
+                  @if($donations->isEmpty())
                   <tr>
                     <td colspan="8" class="text-center">No Donations Available</td>
                   </tr>
                   @else
-                  <!-- Cash Donations -->
-                  @if($typeFilter === 'cash' || $typeFilter === 'all')
-                  @forelse($cashDonations as $cashDonation)
+                  @foreach($donations as $donation)
+                  @php
+                  $data = $donation['data'];
+                  $isCash = $donation['type'] === 'cash';
+                  $statusClass = match($data->status) {
+                  'Pending' => 'bg-secondary text-white',
+                  'Ongoing' => 'bg-warning text-dark',
+                  default => 'bg-secondary text-white'
+                  };
+                  $source = $isCash ? ($data->fund_request_id ? 'Request' : 'Quick') : ($data->donation_request_id ? 'From Request' : 'Quick Donation');
+                  @endphp
                   <tr>
-                    <td>{{ $cashDonation->donor_name }}</td>
-                    <td>{{ $cashDonation->cause }}</td>
-                    <td>{{ $cashDonation->donation_method }}</td>
+                    <td>{{ $data->donor_name }}</td>
+                    <td>{{ $data->cause }}</td>
+                    <td>{{ $data->donation_method }}</td>
+                    <!--  <td><span class="badge {{ $statusClass }}">{{ $data->status }}</span></td> -->
+                    <td>{{ $isCash ? $data->transaction_id : $data->tracking_number }}</td>
+                    <td><span class="badge {{ $isCash ? 'bg-primary' : 'bg-warning' }}">{{ $isCash ? 'Cash' : 'In-Kind' }}</span></td>
+                    <td><span class="badge {{ $source === 'From Request' ? 'bg-warning' : 'bg-info text-dark' }}">{{ $source }}</span></td>
                     <td>
-                      @php
-                      $statusClass = match($cashDonation->status) {
-                      'Pending' => 'bg-secondary text-white',
-                      'Ongoing' => 'bg-warning text-dark',
-                      default => 'bg-secondary text-white'
-                      };
-                      @endphp
-                      <span class="badge {{ $statusClass }}">{{ $cashDonation->status }}</span>
-                    </td>
-                    <td>{{ $cashDonation->transaction_id }}</td>
-                    <td><span class="badge bg-primary">Cash</span></td>
-                    <td>
-                      @if($cashDonation->fund_request_id)
-                      <span class="badge bg-success">Request</span>
-                      @else
-                      <span class="badge bg-info">Quick</span>
-                      @endif
-                    </td>
-                    <td>
-                      <a href="{{ route('cash.donation.details', $cashDonation->id) }}" class="btn btn-sm btn-primary">View</a>
+                      <a href="{{ route($isCash ? 'cash.donation.details' : 'inkind.donation.details', $data->id) }}" class="btn btn-sm btn-success">
+                        <i class="fa-solid fa-eye"></i> View
                     </td>
                   </tr>
-                  @empty
-                  <!-- Show this only if typeFilter is 'cash' -->
-                  @if($typeFilter === 'cash')
-                  <tr>
-                    <td colspan="8" class="text-center">No Cash Donations Available</td>
-                  </tr>
-                  @endif
-                  @endforelse
-                  @endif
-
-                  <!-- In-Kind Donations -->
-                  @if($typeFilter === 'in-kind' || $typeFilter === 'all')
-                  @forelse($inKindDonations as $inKindDonation)
-                  <tr>
-                    <td>{{ $inKindDonation->donor_name }}</td>
-                    <td>{{ $inKindDonation->cause }}</td>
-                    <td>{{ $inKindDonation->donation_method }}</td>
-                    <td>
-                      @php
-                      $statusClass = match($inKindDonation->status) {
-                      'Pending' => 'bg-secondary text-white',
-                      'Ongoing' => 'bg-warning text-dark',
-                      default => 'bg-secondary text-white'
-                      };
-                      @endphp
-                      <span class="badge {{ $statusClass }}">{{ $inKindDonation->status }}</span>
-                    </td>
-                    <td>{{ $inKindDonation->tracking_number }}</td>
-                    <td><span class="badge bg-warning">In-Kind</span></td>
-                    <td>
-                      @if($inKindDonation->donation_request_id)
-                      <span class="badge bg-success">Request</span>
-                      @else
-                      <span class="badge bg-info">Quick</span>
-                      @endif
-                    </td>
-                    <td>
-                      <a href="{{ route('inkind.donation.details', $inKindDonation->id) }}" class="btn btn-sm btn-primary">View</a>
-                    </td>
-                  </tr>
-                  @empty
-                  <!-- Show this only if typeFilter is 'in-kind' -->
-                  @if($typeFilter === 'in-kind')
-                  <tr>
-                    <td colspan="8" class="text-center">No In-Kind Donations Available</td>
-                  </tr>
-                  @endif
-                  @endforelse
-                  @endif
+                  @endforeach
                   @endif
                 </tbody>
               </table>

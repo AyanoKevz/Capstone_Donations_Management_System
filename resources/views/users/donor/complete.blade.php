@@ -205,14 +205,14 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{route ('donor.donationStatus') }}" class="nav-link active">
-                                        <i class="fas fa-circle-arrow-right nav-icon"></i>
+                                    <a href="{{route ('donor.donationStatus') }}" class="nav-link ">
+                                        <i class="far fa-circle nav-icon"></i>
                                         <p>Active Donations</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
+                                    <a href="{{route ('donor.completeDonations') }}" class="nav-link active">
+                                        <i class="fas fa-circle-arrow-right nav-icon"></i>
                                         <p>Completed Donations</p>
                                     </a>
                                 </li>
@@ -290,84 +290,115 @@
             <div class="content">
                 <div class="container-fluid py-3">
                     <div class="row">
-                        <div class="d-flex justify-content-between">
-                            <div class="d-flex mb-1">
-                                <!-- Filter for Donation Request Type -->
-                                <a href="{{ route('donor.donationStatus') }}" class="btn table-btn btn-sm">
+                        <div class="d-flex justify-content-between flex-wrap">
+                            <div class="d-flex mb-1 align-items-center">
+                                <strong class="me-2">Type:</strong>
+                                <!-- Filter for Donation Type -->
+                                <a href="{{ route('donor.completeDonations', ['donation_type' => 'all'] + request()->query()) }}"
+                                    class="btn table-btn btn-sm {{ !request()->has('donation_type') || request('donation_type') === 'all' ? 'custom-active' : '' }}">
+                                    All
+                                </a>
+                                <a href="{{ route('donor.completeDonations', ['donation_type' => 'in-kind'] + request()->query()) }}"
+                                    class="btn table-btn btn-sm {{ request('donation_type') === 'in-kind' ? 'custom-active' : '' }}">
                                     In-Kind
                                 </a>
-                                <a href="{{ route('donor.cashStatus') }}" class="btn table-btn btn-sm custom-active">
+                                <a href="{{ route('donor.completeDonations', ['donation_type' => 'cash'] + request()->query()) }}"
+                                    class="btn table-btn btn-sm {{ request('donation_type') === 'cash' ? 'custom-active' : '' }}">
                                     Cash
                                 </a>
                             </div>
-                            <div class="d-flex mb-1">
+
+                            <div class="d-flex align-items-center mb-1">
+                                <strong class="me-2">Source:</strong>
                                 <!-- Filter if they donate to request or quick -->
-                                <a href="{{ route('donor.cashStatus') }}" class="btn table-btn btn-sm {{ request('type') === null ? 'custom-active' : '' }}">
+                                <a href="{{ route('donor.completeDonations', ['type' => 'all'] + request()->query()) }}"
+                                    class="btn table-btn btn-sm {{ !request()->has('type') || request('type') === 'all' ? 'custom-active' : '' }}">
                                     All
                                 </a>
-                                <a href="{{ route('donor.cashStatus', ['type' => 'request']) }}" class="btn table-btn btn-sm {{ request('type') === 'request' ? 'custom-active' : '' }}">
+                                <a href="{{ route('donor.completeDonations', ['type' => 'request'] + request()->query()) }}"
+                                    class="btn table-btn btn-sm {{ request('type') === 'request' ? 'custom-active' : '' }}">
                                     From Request
                                 </a>
-                                <a href="{{ route('donor.cashStatus', ['type' => 'quick']) }}" class="btn table-btn btn-sm {{ request('type') === 'quick' ? 'custom-active' : '' }}">
+                                <a href="{{ route('donor.completeDonations', ['type' => 'quick'] + request()->query()) }}"
+                                    class="btn table-btn btn-sm {{ request('type') === 'quick' ? 'custom-active' : '' }}">
                                     From Quick
                                 </a>
                             </div>
-                            <div class="d-flex mb-1">
+
+                            <div class="d-flex align-items-center mb-1">
+                                <strong class="me-2">Status:</strong>
                                 <!-- Filter for Status -->
-                                <a href="{{ route('donor.cashStatus') }}" class="btn table-btn btn-sm {{ request('status') === null ? 'custom-active' : '' }}">
+                                <a href="{{ route('donor.completeDonations', ['status' => 'all'] + request()->query()) }}"
+                                    class="btn table-btn btn-sm {{ !request()->has('status') || request('status') === 'all' ? 'custom-active' : '' }}">
                                     All
                                 </a>
-                                <a href="{{ route('donor.cashStatus', ['status' => 'pending']) }}" class="btn table-btn btn-sm {{ request('status') === 'pending' ? 'custom-active' : '' }}">
-                                    Pending
+                                <a href="{{ route('donor.completeDonations', ['status' => 'received'] + request()->query()) }}"
+                                    class="btn table-btn btn-sm {{ request('status') === 'received' ? 'custom-active' : '' }}">
+                                    Received
                                 </a>
-                                <a href="{{ route('donor.cashStatus', ['status' => 'ongoing']) }}" class="btn table-btn btn-sm {{ request('status') === 'ongoing' ? 'custom-active' : '' }}">
-                                    Ongoing
+                                <a href="{{ route('donor.completeDonations', ['status' => 'distributed'] + request()->query()) }}"
+                                    class="btn table-btn btn-sm {{ request('status') === 'distributed' ? 'custom-active' : '' }}">
+                                    Distributed
+                                </a>
+                                <a href="{{ route('donor.completeDonations', ['status' => 'unverified'] + request()->query()) }}"
+                                    class="btn table-btn btn-sm {{ request('status') === 'unverified' ? 'custom-active' : '' }}">
+                                    Unverified
                                 </a>
                             </div>
                         </div>
 
                         <div class="card card-primary card-outline">
                             <div class="card-header">
-                                <h3 class="card-title">Your Cash Donations</h3>
+                                <h3 class="card-title">Donation History</h3>
+                                <div class="card-tools">
+                                    <span class="text-sm text-muted">Showing all completed/inactive donations</span>
+                                </div>
                             </div>
                             <div class="card-body">
                                 <table id="example1" class="table table-bordered table-hover table-striped">
                                     <thead>
                                         <tr>
-                                            <th>Name</th>
                                             <th>Cause</th>
                                             <th>Method</th>
-                                            <th>Amount</th>
                                             <th>Chapter</th>
                                             <th>Type</th>
                                             <th>Status</th>
+                                            <th>Source</th>
                                             <th>Transaction No.</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($cashDonations as $donation)
+                                        @foreach($donations as $donation)
                                         <tr>
-                                            <td>{{ $donation->donor_name }}</td>
                                             <td>{{ $donation->cause }}</td>
                                             <td>
-                                                <span class="badge bg-primary">Drop-off</span>
+                                                <span class="badge bg-{{ isset($donation->transaction_id) ? 'success' : 'warning text-dark' }}">
+                                                    {{ isset($donation->transaction_id) ? ($donation->payment_method ?? 'Cash') : ($donation->donation_method ?? 'In-Kind') }}
+                                                </span>
                                             </td>
-                                            <td>{{ number_format($donation->amount, 2) }}</td>
-                                            <td>{{ $donation->chapter->chapter_name }}</td>
+                                            <td>{{ $donation->chapter->chapter_name ?? 'N/A' }}</td>
                                             <td>
-                                                <span class="badge bg-{{ $donation->fund_request_id ? 'info' : 'warning' }}">
-                                                    {{ $donation->fund_request_id ? 'Request' : 'Quick' }}
+                                                <span class="badge bg-{{ isset($donation->transaction_id) ? 'success' : 'warning text-dark' }}">
+                                                    {{ isset($donation->transaction_id) ? 'Cash' : 'In-Kind' }}
                                                 </span>
                                             </td>
                                             <td>
-                                                <span class="badge bg-{{ $donation->status === 'pending' ? 'warning' : ($donation->status === 'ongoing' ? 'primary' : 'success') }}">
+                                                <span class="badge bg-{{ $donation->status === 'received' ? 'primary' : ($donation->status === 'distributed' ? 'success' : 'warning text-dark') }}">
                                                     {{ ucfirst($donation->status) }}
                                                 </span>
                                             </td>
-                                            <td>{{ $donation->transaction_id }}</td>
                                             <td>
-                                                <a href="#" class="btn btn-sm btn-primary">View</a>
+                                                <span class="badge bg-{{ $donation->donation_request_id ? 'info text-dark' : 'warning text-dark' }}">
+                                                    {{ $donation->donation_request_id ? 'From Request' : 'Quick Donation' }}
+                                                </span>
+                                            </td>
+                                            <td>{{ $donation->transaction_id ?? $donation->tracking_number ?? 'N/A' }}</td>
+                                            <td>
+                                                <a href="{{ isset($donation->transaction_id) ? route('donor.cash.donation.details', $donation->id) : route('donor.inkind.donation.details', $donation->id) }}"
+                                                    class="btn btn-sm btn-success">
+                                                    <i class="fa-solid fa-eye"></i> View
+                                                </a>
                                             </td>
                                         </tr>
                                         @endforeach
@@ -377,7 +408,6 @@
                         </div>
                     </div>
                 </div>
-
             </div>
 
         </div>

@@ -15,7 +15,7 @@
     href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <link rel="icon" href="{{ asset ('assets/img/systemLogo.png') }}" type="image/png">
   <link rel="stylesheet" href="{{ asset('lib/bootstrap/css/bootstrap.min.css') }}">
-  <link rel="stylesheet" href="{{ asset ('assets/admin/css/list.css') }}">
+  <link rel="stylesheet" href="{{ asset ('assets/admin/css/inkind_details.css') }}">
 
 </head>
 
@@ -299,31 +299,36 @@
             <li class="breadcrumb-item active"></li>
           </ol>
           <h1 class="my-2">In-Kind Donations Details</h1>
-          <div class="card shadow-lg rounded">
-            <div class="card-header text-white" style="background: #1b2a5f;">
+          <div class="card custom-card shadow-lg rounded">
+            <div class="card-header custom-header text-white">
               <h3 class="mb-0"><i class="far fa-clone pr-1"></i> In-Kind Donation Details</h3>
             </div>
             <div class="card-body">
               <!-- Donation Details Table -->
-              <table class="table table-bordered table-hover">
+              <table class="table custom-table table-hover">
                 <tr>
-                  <th width="30%">Donor Name</th>
+                  <th width="30%" class="bg-light-custom">Donor Name</th>
                   <td width="2%">:</td>
                   <td>{{ $inKindDonation->donor_name }}</td>
                 </tr>
                 <tr>
-                  <th width="30%">Donation Method</th>
+                  <th width="30%" class="bg-light-custom">Contact Number</th>
                   <td width="2%">:</td>
+                  <td>{{ $inKindDonation->donor->contact}}</td>
+                </tr>
+                <tr>
+                  <th class="bg-light-custom">Donation Method</th>
+                  <td>:</td>
                   <td>{{ ucfirst($inKindDonation->donation_method) }}</td>
                 </tr>
                 <tr>
-                  <th width="30%">Donation Date & Time</th>
-                  <td width="2%">:</td>
+                  <th class="bg-light-custom">Donation Date & Time</th>
+                  <td>:</td>
                   <td>{{ \Carbon\Carbon::parse($inKindDonation->donation_datetime)->format('F d, Y') }}</td>
                 </tr>
                 <tr>
-                  <th width="30%">Status</th>
-                  <td width="2%">:</td>
+                  <th class="bg-light-custom">Status</th>
+                  <td>:</td>
                   <td>
                     <span class="badge bg-{{ 
                         strtolower($inKindDonation->status) == 'pending' ? 'secondary' :
@@ -334,19 +339,19 @@
                   </td>
                 </tr>
                 <tr>
-                  <th width="30%">Tracking Number</th>
-                  <td width="2%">:</td>
+                  <th class="bg-light-custom">Tracking Number</th>
+                  <td>:</td>
                   <td>{{ $inKindDonation->tracking_number }}</td>
                 </tr>
               </table>
 
               <!-- Donated Items Table -->
               <div class="mt-4">
-                <div class="card-header text-white" style="background: #1b2a5f;">
+                <div class="card-header custom-subheader text-white">
                   <h3 class="mb-0"><i class="fa-solid fa-boxes-stacked"></i> Donated Items</h3>
                 </div>
-                <table class="table table-striped table-bordered text-center">
-                  <thead class="table-warning">
+                <table class="table table-striped table-bordered text-center custom-items-table">
+                  <thead>
                     <tr>
                       <th>Category</th>
                       <th>Item</th>
@@ -367,28 +372,30 @@
 
               <!-- Proof Image Section -->
               <div class="mt-4 text-center">
-                <div class="card-header bg-success text-white">
+                <div class="card-header custom-image-header text-white">
                   <h3 class="mb-0"><i class="fa-solid fa-images"></i> Proof of Donation</h3>
                 </div>
-                <div class="p-3">
-                  <img src="{{ asset('storage/' . $inKindDonation->proof_image) }}" alt="Proof Image"
-                    class="img-fluid rounded shadow" style="max-width: 80%; height: auto; border: 3px solid #ddd;">
+                <div class="p-3 donation-proof-container">
+                  <img src="{{ asset('storage/' . $inKindDonation->proof_image) }}"
+                    alt="Proof Image"
+                    class="img-fluid donation-proof-image">
                 </div>
               </div>
 
               <!-- Verify/Decline Buttons -->
               @if(strtolower($inKindDonation->status) === 'pending')
               <div class="mt-4 d-flex justify-content-end">
-                <button type="button" class="btn text-white mx-2 px-4 py-2" style="background-color: #5cb85c;" data-bs-toggle="modal" data-bs-target="#verifyModal">
+                <button type="button" class="btn btn-verify mx-2" data-bs-toggle="modal" data-bs-target="#verifyModal">
                   <i class="fas fa-check-circle"></i> Verify
                 </button>
-                <button type="button" class="btn text-white mx-2 px-4 py-2" style="background-color: #d9534f;" data-bs-toggle="modal" data-bs-target="#declineModal">
+                <button type="button" class="btn btn-decline mx-2" data-bs-toggle="modal" data-bs-target="#declineModal">
                   <i class="fas fa-times-circle"></i> Decline
                 </button>
               </div>
               @endif
             </div>
           </div>
+
         </div>
       </main>
 

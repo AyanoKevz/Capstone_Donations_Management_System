@@ -13,6 +13,7 @@ return new class extends Migration {
             $table->string('event_name', 100);
             $table->text('event_description')->nullable();
             $table->dateTime('event_date');
+            $table->string('proof_image')->nullable();
             $table->timestamps();
         });
 
@@ -25,6 +26,7 @@ return new class extends Migration {
             $table->foreignId('event_id')->nullable()->constrained('event')->nullOnDelete();
             $table->foreignId('distribution_id')->nullable()->constrained('distribution')->nullOnDelete();
             $table->enum('status', ['pending', 'accepted', 'declined', 'completed', 'ongoing'])->default('pending');
+            $table->string('proof_image')->nullable();
             $table->timestamps();
         });;
 

@@ -189,7 +189,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="{{route ('donor.completeDonations') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Completed Donations</p>
                                     </a>

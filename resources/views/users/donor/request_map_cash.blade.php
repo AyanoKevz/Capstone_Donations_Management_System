@@ -19,7 +19,6 @@
     </link>
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('assets/users/css/donor/request_map.css') }}">
-    <script src="{{ asset('lib/face-api.js/dist/face-api.min.js') }}"></script>
 </head>
 
 <body class="hold-transition sidebar-collapse layout-top-nav">
@@ -189,7 +188,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="{{route ('donor.completeDonations') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Completed Donations</p>
                                     </a>
@@ -398,7 +397,8 @@
                                 action="{{ route('dropoffMap.donation') }}"
                                 class="cash-donation-form"
                                 data-online="{{ route('paymongoMap.checkout') }}"
-                                data-dropoff="{{ route('dropoffMap.donation') }}">
+                                data-dropoff="{{ route('dropoffMap.donation') }}"
+                                enctype="multipart/form-data">
                                 @csrf
                                 <input type="hidden" name="fund_request_id" value="{{ $request->id }}">
                                 <input type="hidden" name="payment_method" id="selected_payment_method_{{ $request->id }}">
@@ -458,7 +458,7 @@
                                         </div>
                                         <select class="form-select" id="payment_method_{{ $request->id }}" name="payment_method">
                                             <option selected disabled>Select an option</option>
-                                            <option value="credit_card">Credit/Debit Card</option>
+                                            <option value="credit card">Credit/Debit Card</option>
                                             <option value="gcash">GCash</option>
                                             <option value="paymaya">PayMaya</option>
                                         </select>
@@ -480,9 +480,36 @@
                                     </div>
                                 </div>
 
+                                <!-- Photo Capture Section -->
+                                <div id="photoCapture-{{ $request->id }}" class="row g-3 photo-capture d-none">
+                                    <h5><strong>Proof of Identity</strong> </h5>
+                                    <p class="my-0">Live Photo Taking . The system will snap a picture once it detects your face.</p>
+                                    <!-- Camera Column -->
+                                    <div class="col-md-6 d-flex flex-column align-items-center">
+                                        <div class="video-container">
+                                            <video id="video-{{ $request->id }}" class="video-stream" autoplay muted></video>
+                                            <canvas id="overlay-{{ $request->id }}" class="overlay"></canvas>
+                                            <div id="timer-{{ $request->id }}" class="timer"></div>
+                                        </div>
+                                        <button class="btn btn-secondary btn-sm my-3 toggle-camera-btn" type="button" id="toggleCameraBtn-{{ $request->id }}">Turn On Camera</button>
+                                    </div>
+
+                                    <!-- Preview Column -->
+                                    <div class="col-md-6 d-flex flex-column align-items-center">
+                                        <div id="preview-{{ $request->id }}" class="preview-container">
+                                            <img src="{{ asset('assets/img/livePhoto.jpg') }}" class="preview-image" alt="Captured Photo">
+                                        </div>
+                                        <p class="my-3"><strong>Example</strong></p>
+                                        <!-- File Input Section -->
+                                        <div id="fileInputSection-{{ $request->id }}" style="display: none;">
+                                            <input type="file" id="imageFile-{{ $request->id }}" name="proof_image" class="preview-file">
+                                        </div>
+                                    </div>
+                                </div>
+
                                 {{-- Submit Button --}}
                                 <div class="text-center">
-                                    <button type="submit" class="btn btn-primary mt-3">Proceed to Payment</button>
+                                    <button type="submit" class="btn btn-primary mt-3 donate-now-button" id="donateNowButton-{{ $request->id }}" style="display: none; background: #1b2a5f !important;">Donate</button>
                                 </div>
                             </form>
                         </div>
@@ -502,7 +529,7 @@
     <!-- ./wrapper -->
 
     <!-- jQuery -->
-    <script src="https://js.paymongo.com/v1"></script>
+    <script src="{{ asset('lib/face-api.js/dist/face-api.min.js') }}"></script>
     <script src="{{ asset('lib/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('lib/jquery/jquery.validate.min.js') }}"></script>
     <!-- Bootstrap 5 -->

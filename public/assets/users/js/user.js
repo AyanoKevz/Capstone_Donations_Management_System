@@ -770,52 +770,9 @@ if ($("#quickInKindForm").length > 0) {
             }
         });
 
-          const fileInput = $('#imageFile');
-    const submitButton = $('#submitButton');
-
-    // Function to update the button's visibility
-    function updateSubmitButtonVisibility() {
-        if (fileInput[0].files && fileInput[0].files.length > 0) {
-            // If a file is selected, show the button
-            submitButton.css('display', 'inline-block');
-        } else {
-            // If no file is selected, hide the button
-            submitButton.css('display', 'none');
-        }
     }
 
-    fileInput.on('change', updateSubmitButtonVisibility);
-    window.updateSubmitButton = updateSubmitButtonVisibility;
-    updateSubmitButtonVisibility();
-    }
 
-$(".donation-method_cash").on("change", function () {
-    const modalMatch = this.id.match(/_(\d+)$/);
-    let form, paymentMethodRow;
-
-    if (modalMatch) {
-        // Handling Modal Form
-        const modalId = modalMatch[1];
-        form = $(`#donationForm-${modalId}`);
-        paymentMethodRow = $(`#payment_method_row_${modalId}`);
-    } else {
-        // Handling Single Form
-        form = $("#singleDonationForm");
-        paymentMethodRow = $("#payment_method_row");
-    }
-
-    // Get the correct routes from data attributes
-    const onlineRoute = form.attr("data-online");
-    const dropoffRoute = form.attr("data-dropoff");
-
-    if (this.value === "online") {
-        form.attr("action", onlineRoute);
-        paymentMethodRow.removeClass("d-none");
-    } else {
-        form.attr("action", dropoffRoute);
-        paymentMethodRow.addClass("d-none");
-    }
-});
 
 
  var calendarEl = document.getElementById('calendar');
@@ -892,24 +849,63 @@ $(".donation-method_cash").on("change", function () {
 
 $(".donation-method_cash").on("change", function () {
     const modalMatch = this.id.match(/_(\d+)$/);
-    let form, paymentMethodRow;
+    let form, paymentMethodRow, photoCaptureSection, submitButton, fileInput;
 
     if (modalMatch) {
-        // Handling Modal Form
         const modalId = modalMatch[1];
         form = $(`#donationForm-${modalId}`);
         paymentMethodRow = $(`#payment_method_row_${modalId}`);
+        photoCaptureSection = $(`#photoCapture-${modalId}`);
+        submitButton = $(`#donateNowButton-${modalId}`);
+        fileInput = $(`#imageFile-${modalId}`);
     } else {
-        // Handling Single Form
         form = $("#quickCashForm");
         paymentMethodRow = $("#payment_method_row");
+        photoCaptureSection = $("#photoCapture");
+        submitButton = $("#submitButton");
+        fileInput = $("#imageFile");
     }
 
-    // Get the correct routes from data attributes
     const isOnline = this.value === "online";
+
+    // Update form action dynamically
     form.attr("action", isOnline ? form.attr("data-online") : form.attr("data-dropoff"));
+
+    // Toggle payment method visibility for online donations
     paymentMethodRow.toggleClass("d-none", !isOnline);
+
+    // Toggle photo capture visibility for drop-off donations
+    photoCaptureSection.toggleClass("d-none", isOnline);
+
+    if (isOnline) {
+        // Online donation: Show the button immediately
+        submitButton.css("display", "block");
+    } else {
+        // Drop-off: Hide the button until an image is uploaded
+        submitButton.css("display", "none");
+        
+        // Check if a file is already selected, then show button if applicable
+        if (fileInput[0].files && fileInput[0].files.length > 0) {
+            submitButton.css("display", "block");
+        }
+    }
 });
+
+    const fileInput = $('#imageFile');
+    const submitButton = $('#submitButton');
+
+    if (fileInput.length) {
+        function updateSubmitButtonVisibility() {
+            if (fileInput[0].files && fileInput[0].files.length > 0) {
+                submitButton.css('display', 'block');
+            } else {
+                submitButton.css('display', 'none');
+            }
+        }
+        fileInput.on('change', updateSubmitButtonVisibility);
+        window.updateSubmitButton = updateSubmitButtonVisibility;
+        updateSubmitButtonVisibility();
+    }
 
   
 /*  END WAG NA MAG DECLARE SA BABA NG JAVASCRIPT FILE */

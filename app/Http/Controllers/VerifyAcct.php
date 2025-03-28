@@ -74,20 +74,34 @@ class VerifyAcct extends Controller
     public function processVerification(Request $request, $id)
     {
         $user = UserAccount::findOrFail($id);
+        $roleName = $user->roles->first()->role_name;
+        $contact = $user->donor ? $user->donor->contact : $user->volunteer->contact;
+        $name = $user->donor ? $user->donor->donor_name : $user->volunteer->volunteer_name;
 
         if ($request->action === 'verify') {
             $user->is_verified = true;
             $user->save();
 
-            Mail::to($user->email)->send(new AccountVerifiedMail($user->username, $user->roles->first()->role_name));
+            // Send verification email
+            Mail::to($user->email)->send(new AccountVerifiedMail($user->username, $roleName));
+
+            // Send verification SMS
+            $message = "Hello {$name}, your {$roleName} account has been activated! "
+                . "You can now login using your credentials. Thank you!";
+            SmsHelper::sendSmsNotification($contact, $message);
 
             return redirect()->route('verify_account')->with('success', 'Account Activated Successfully.');
         } elseif ($request->action === 'not_verify') {
-
+            // Send rejection email
             Mail::to($user->email)->send(new AccountRejectedMail());
-            $user->delete();
 
-            return redirect()->route('verify_account')->with('error', 'Account Inactive and deleted.');
+            // Send rejection SMS
+            $message = "Hello {$name}, we regret to inform you that your {$roleName} "
+                . "account application was not approved. Thank you for your interest.";
+            SmsHelper::sendSmsNotification($contact, $message);
+
+            $user->delete();
+            return redirect()->route('verify_account')->with('error', 'Account rejected and deleted.');
         }
     }
 

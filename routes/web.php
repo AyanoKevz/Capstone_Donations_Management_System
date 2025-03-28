@@ -134,6 +134,7 @@ Route::middleware(['admin', 'prevent-back-button'])->prefix('admin')->group(func
 
 
     //Donation Details
+
     // Route for Cash Donation Details
     Route::get('/cash-donation/{id}', [AdminController::class, 'showCashDonationDetails'])
         ->name('cash.donation.details');
@@ -185,9 +186,16 @@ Route::middleware(['auth', 'prevent-back-button'])->prefix('user')->group(functi
         Route::get('/quick-donation/cash/success', [PayMongoController::class, 'quickPayMongoSuccess'])->name('quickCash.success');
         Route::get('/quick-donation/cash/cancel', [PayMongoController::class, 'quickPayMongoCancel'])->name('quickCash.cancel');
 
-
-        Route::get('/donation/status/inkind', [DonorController::class, 'inkindStatusList'])->name('donor.donationStatus');
+        Route::get('/donation/status/inkind', [DonorController::class, 'donationStatusList'])->name('donor.donationStatus');
         Route::get('/donation/status/cash', [DonorController::class, 'cashStatusList'])->name('donor.cashStatus');
+        Route::get('/donation/complete', [DonorController::class, 'completeDonations'])->name('donor.completeDonations');
+
+        Route::get('/cash-donation/{id}', [DonorController::class, 'showCashDonationDetails'])
+            ->name('donor.cash.donation.details');
+
+        // Route for In-Kind Donation Details
+        Route::get('/inkind-donation/{id}', [DonorController::class, 'showInKindDonationDetails'])
+            ->name('donor.inkind.donation.details');
     });
 
 

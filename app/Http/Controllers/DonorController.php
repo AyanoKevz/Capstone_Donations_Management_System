@@ -184,47 +184,96 @@ class DonorController extends Controller
         return view('users.donor.quick_cash', compact('chapters'));
     }
 
-    public function inkindStatusList()
+    public function donationStatusList(Request $request)
     {
-        $user = Auth::user(); // Get the authenticated user
-        $donorId = $user->id; // Assuming the user is a donor and their ID is stored in the `id` field
+        $user = Auth::user();
 
-        $donations = Donation::where('donor_id', $donorId)
-            ->whereIn('status', ['pending', 'ongoing']) // Only include pending and ongoing donations
-            ->when(request('status'), function ($query, $status) {
-                return $query->where('status', $status); // Apply status filter if provided
-            })
-            ->when(request('type'), function ($query, $type) {
-                if ($type === 'request') {
-                    return $query->whereNotNull('donation_request_id'); // Filter by request type
-                } elseif ($type === 'quick') {
-                    return $query->whereNull('donation_request_id'); // Filter by quick type
-                }
-            })
-            ->get();
+        // Base queries
+        $queryInKind = Donation::where('donor_id', $user->id)
+            ->whereIn('status', ['pending', 'ongoing']); // Only pending & ongoing
 
-        return view('users.donor.inkindStatusList', compact('donations'));
+        $queryCash = CashDonation::where('donor_id', $user->id)
+            ->whereIn('status', ['pending', 'ongoing']); // Only pending & ongoing
+
+        // Filtering by Type (Request / Quick)
+        $type = $request->query('type', 'all');
+        if ($type === 'request') {
+            $queryInKind->whereNotNull('donation_request_id');
+            $queryCash->whereNotNull('fund_request_id');
+        } elseif ($type === 'quick') {
+            $queryInKind->whereNull('donation_request_id');
+            $queryCash->whereNull('fund_request_id');
+        }
+
+        // Filtering by Donation Type (In-Kind / Cash)
+        $donationType = $request->query('donation_type', 'all');
+        if ($donationType === 'in-kind') {
+            $donations = $queryInKind->get();
+        } elseif ($donationType === 'cash') {
+            $donations = $queryCash->get();
+        } else {
+            $donations = $queryInKind->get()->merge($queryCash->get());
+        }
+
+        // Filtering by Status (Pending / Ongoing / All)
+        $status = $request->query('status', 'all');
+        if ($status !== 'all') {
+            $donations = $donations->where('status', $status);
+        }
+
+        return view('users.donor.donationStatusList', compact('donations'));
     }
 
-    public function cashStatusList()
+
+    public function completeDonations(Request $request)
     {
-        $user = Auth::user(); // Get the authenticated user
-        $donorId = $user->id; // Assuming the user is a donor and their ID is stored in the `id` field
+        $user = Auth::user();
 
-        $cashDonations = CashDonation::where('donor_id', $donorId)
-            ->whereIn('status', ['pending', 'ongoing']) // Only include pending and ongoing donations
-            ->when(request('status'), function ($query, $status) {
-                return $query->where('status', $status); // Apply status filter if provided
-            })
-            ->when(request('type'), function ($query, $type) {
-                if ($type === 'request') {
-                    return $query->whereNotNull('fund_request_id'); // Filter by request type
-                } elseif ($type === 'quick') {
-                    return $query->whereNull('fund_request_id'); // Filter by quick type
-                }
-            })
-            ->get();
+        // Base queries
+        $queryInKind = Donation::where('donor_id', $user->id)
+            ->whereIn('status', ['received', 'distributed', 'unverified']);
 
-        return view('users.donor.cashStatusList', compact('cashDonations'));
+        $queryCash = CashDonation::where('donor_id', $user->id)
+            ->whereIn('status', ['received', 'distributed', 'unverified']);
+
+        // Filtering by Type (Request / Quick)
+        $type = $request->query('type', 'all');
+        if ($type === 'request') {
+            $queryInKind->whereNotNull('donation_request_id');
+            $queryCash->whereNotNull('fund_request_id');
+        } elseif ($type === 'quick') {
+            $queryInKind->whereNull('donation_request_id');
+            $queryCash->whereNull('fund_request_id');
+        }
+
+        // Filtering by Donation Type (In-Kind / Cash)
+        $donationType = $request->query('donation_type', 'all');
+        if ($donationType === 'in-kind') {
+            $donations = $queryInKind->get();
+        } elseif ($donationType === 'cash') {
+            $donations = $queryCash->get();
+        } else {
+            $donations = $queryInKind->get()->merge($queryCash->get());
+        }
+
+        // Filtering by Status (Received / Distributed / Unverified)
+        $status = $request->query('status', 'all');
+        if ($status !== 'all') {
+            $donations = $donations->where('status', $status);
+        }
+
+        return view('users.donor.complete', compact('donations'));
+    }
+
+    public function showCashDonationDetails($id)
+    {
+        $cashDonation = CashDonation::findOrFail($id);
+        return view('users.donor.cash_details', compact('cashDonation'));
+    }
+
+    public function showInKindDonationDetails($id)
+    {
+        $inKindDonation = Donation::with('donationItems')->findOrFail($id);
+        return view('users.donor.inkind_details', compact('inKindDonation'));
     }
 }

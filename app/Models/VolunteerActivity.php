@@ -19,6 +19,7 @@ class VolunteerActivity extends Model
         'event_id',
         'distribution_id',
         'status',
+        'proof_image',
     ];
 
     public function volunteer()

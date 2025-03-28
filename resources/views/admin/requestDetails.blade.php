@@ -428,10 +428,13 @@
               </div>
             </div>
           </div>
+
+
           <!-- Table who donated to the request -->
           <div class="container ">
             <div class="row">
-              <div class="d-flex justify-content-end mb-1">
+              <div class="d-flex justify-content-end align-items-center mb-1">
+                <strong class="me-2">Status:</strong>
                 <a href="{{ route('request_details', ['id' => $id, 'type' => $isCashRequest ? 'cash' : 'in-kind']) }}?status=all"
                   class="btn table-btn btn-sm {{ $status === 'all' ? 'custom-active' : '' }}">
                   All
@@ -494,7 +497,15 @@
                         </td>
                         @endif
                         <td>{{ \Carbon\Carbon::parse($cashDonation->created_at)->format('M d, Y h:i A') }}</td>
-                        <td>{{ ucfirst($cashDonation->status) }}</td>
+                        <td>
+                          <span class="badge bg-{{
+        $cashDonation->status === 'received' ? 'success' :
+        ($cashDonation->status === 'pending' ? 'secondary' :
+        ($cashDonation->status === 'ongoing' ? 'warning text-dark' : 'danger'))
+    }}">
+                            {{ ucfirst($cashDonation->status) }}
+                          </span>
+                        </td>
                         <td>
                           <a href="{{ route('cash.donation.details', $cashDonation->id) }}" class="btn btn-sm btn-primary">View</a>
                         </td>
@@ -507,9 +518,18 @@
                         <td>{{ $inKindDonation->donor_name }}</td>
                         <td>{{ ucfirst($inKindDonation->donation_method) }}</td>
                         <td>{{ \Carbon\Carbon::parse($inKindDonation->donation_datetime)->format('M d, Y h:i A') }}</td>
-                        <td>{{ ucfirst($inKindDonation->status) }}</td>
                         <td>
-                          <a href="{{ route('inkind.donation.details', $inKindDonation->id) }}" class="btn btn-sm btn-primary">View</a>
+                          <span class="badge bg-{{
+        $inKindDonation->status === 'received' ? 'success' :
+        ($inKindDonation->status === 'pending' ? 'secondary' :
+        ($inKindDonation->status === 'ongoing' ? 'warning text-dark' : 'danger'))
+    }}">
+                            {{ ucfirst($inKindDonation->status) }}
+                          </span>
+                        </td>
+                        <td>
+                          <a href="{{ route('inkind.donation.details', $inKindDonation->id) }}" class="btn btn-sm btn-success">
+                            <i class="fa-solid fa-eye"></i> View
                         </td>
                       </tr>
                       @endforeach

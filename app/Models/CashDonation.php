@@ -23,6 +23,7 @@ class CashDonation extends Model
         'payment_status',
         'status',
         'cause',
+        'proof_image',
     ];
 
     // Relationship with Donor

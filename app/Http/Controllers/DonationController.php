@@ -291,12 +291,11 @@ class DonationController extends Controller
             // Send SMS
             SmsHelper::sendSmsNotification($donor->contact, $message);
 
-            return redirect()->back()->with('success', 'Donation submitted successfully.');
+            return redirect()->back()->with('success', 'Thank your for your donation. Please check your sms and email for updates once verification is completed.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Something went wrong. Please try again.');
         }
     }
-
 
     public function RequestMapCash(Request $request)
     {
@@ -314,57 +313,47 @@ class DonationController extends Controller
 
         // Get fund request IDs where the donor has already donated cash
         $pendingCashDonations = CashDonation::where('donor_id', $donor->id)
-            ->where('status', '!=', 'Received') // Status is NOT received
-            ->whereNotNull('fund_request_id') // Exclude donations with no request ID
+            ->where('status', '!=', 'Received')
+            ->whereNotNull('fund_request_id')
             ->pluck('fund_request_id')
             ->toArray();
 
-        // Update expired requests based on donations
-        $expiredRequests = FundRequest::where('status', 'Pending') // Only Pending requests
+        FundRequest::where('status', 'Pending') // Only Pending requests
             ->where('valid_until', '<', now()->toDateString()) // Expired requests
-            ->get();
+            ->each(function ($request) {
+                // Check if the request has any donations
+                $hasDonations = $request->cashDonations()->exists();
+                $request->status = $hasDonations ? 'Fulfilled' : 'Unfulfilled';
+                $request->save();
+            });
 
-        foreach ($expiredRequests as $request) {
-            // Check if the request has any donations
-            $hasDonations = $request->cashDonations()->exists();
-
-            // Update status based on donations
-            $request->status = $hasDonations ? 'Fulfilled' : 'Unfulfilled';
-            $request->save();
-        }
-
-        // Start with a base query for pending requests with valid dates
         $query = FundRequest::with(['location', 'cashDonations', 'admin.chapter'])
             ->where('status', 'Pending')
-            ->where('valid_until', '>=', now()->toDateString())
-            ->whereNotIn('id', $pendingCashDonations); // Hide requests where the donor has a pending donation
+            ->where('valid_until', '>=', now()->toDateString()) // Ensure active requests
+            ->whereNotIn('id', $pendingCashDonations);
 
         // Apply filters
         if ($request->has('cause') && $request->cause !== 'General') {
-            $query->where('cause', $request->cause); // Use the 'cause' column directly
+            $query->whereNotNull('cause')->where('cause', $request->cause);
         }
         if ($request->has('urgency') && $request->urgency !== 'General') {
-            $query->where('urgency', $request->urgency); // Use the 'urgency' column directly
+            $query->where('urgency', $request->urgency);
         }
         if ($request->has('region') && $request->region !== 'General') {
             $region = $request->region;
             $query->whereHas('location', function ($q) use ($region) {
-                $q->where('region', $region); // Use the 'region' column directly
+                $q->where('region', $region);
             });
         }
 
         // Get the fund requests
         $fundRequests = $query->get();
 
-        // Calculate amount_raised for each fund request
         $fundRequests->each(function ($fundRequest) {
-            // Get total cash donations for this fund request (excluding pending)
             $totalDonated = $fundRequest->cashDonations()
-                ->where('status', 'received') // Only count verified donations
+                ->where('status', 'received')
                 ->sum('amount');
-
-            // Attach calculated values
-            $fundRequest->amount_raised = $totalDonated; // Store the verified amount raised
+            $fundRequest->amount_raised = $totalDonated;
         });
 
         return view('users.donor.request_map_cash', [
@@ -386,6 +375,10 @@ class DonationController extends Controller
 
             $transactionId = 'DropOff-' . now()->format('Ymd-His') . '-' . strtoupper(Str::random(6));
 
+            if ($request->hasFile('proof_image')) {
+                $proofImagePath = $request->file('proof_image')->store('proof_donation', 'public');
+            }
+
             $donation = CashDonation::create([
                 'donor_id' => $donor->id,
                 'donor_name' => $request->has('anonymous_checkbox') && $request->anonymous_checkbox == 1
@@ -400,6 +393,7 @@ class DonationController extends Controller
                 'payment_status' => null,
                 'status' => 'pending',
                 'transaction_id' => $transactionId,
+                'proof_image' => $proofImagePath, // Save the proof image path
             ]);
 
             // Use donor name from donation record
@@ -407,7 +401,7 @@ class DonationController extends Controller
 
             SmsHelper::sendSmsNotification($donor->contact, $message);
 
-            return redirect()->route('donor.reqCash_map')->with('success', 'Donation successful! Thank you.');
+            return redirect()->route('donor.reqCash_map')->with('success', 'Donation successful! Thank you. Please check your sms and email for updates once verification is completed.');
         } catch (\Exception $e) {
             return back()->with('error', 'Something went wrong. Please try again.');
         }
@@ -466,7 +460,7 @@ class DonationController extends Controller
             $message = "Hello {$donation->donor_name}, your in-kind donation via {$donation->donation_method} is under verification by {$chapterName}. Please check your email for updates. Thank you!";
             SmsHelper::sendSmsNotification($donor->contact, $message);
 
-            return redirect()->back()->with('success', 'Quick donation submitted successfully. Please check your email for updates once verification is completed.');
+            return redirect()->back()->with('success', 'Thank your for your donation. Please check your email for updates once verification is completed.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Something went wrong. Please try again.');
         }
@@ -485,6 +479,10 @@ class DonationController extends Controller
             // Generate a transaction ID for tracking
             $transactionId = 'DropOff-' . now()->format('Ymd-His') . '-' . strtoupper(Str::random(6));
 
+            if ($request->hasFile('proof_image')) {
+                $proofImagePath = $request->file('proof_image')->store('proof_donation', 'public');
+            }
+
             // Insert Quick Drop-off Donation into the Database
             $donation = CashDonation::create([
                 'donor_id' => $donor->id,
@@ -499,6 +497,7 @@ class DonationController extends Controller
                 'payment_status' => null,
                 'status' => 'pending',
                 'transaction_id' => $transactionId,
+                'proof_image' => $proofImagePath, // Store image path in DB
             ]);
 
             // Fetch chapter name

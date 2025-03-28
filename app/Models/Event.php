@@ -15,7 +15,8 @@ class Event extends Model
         'event_name',
         'event_description',
         'event_date',
-        'task_reference'
+        'task_reference',
+        'proof_image'
     ];
 
     public function declinedTask()
