@@ -286,12 +286,14 @@ class DonationController extends Controller
                     $donationRequest->checkIfFulfilled();
                 }
             }
-            // Use donor name from donation record
-            $message = "Hello {$donation->donor_name}, your donation for In-Kind is under verification, please wait for an email. Thank you!";
-            // Send SMS
+
+            $chapter = Chapter::find($request->chapter_id);
+            $chapterName = $chapter->chapter_name;
+
+            $message = "Hello {$donation->donor_name}, your in-Kind donation in a request at {$chapterName} is under verification. Please check your Email/SMS for updates. Thank you!";
             SmsHelper::sendSmsNotification($donor->contact, $message);
 
-            return redirect()->back()->with('success', 'Thank your for your donation. Please check your sms and email for updates once verification is completed.');
+            return redirect()->back()->with('success', 'Thank your for your donation. Please check your SMS/Email for updates once verification is completed.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Something went wrong. Please try again.');
         }
@@ -362,7 +364,6 @@ class DonationController extends Controller
         ]);
     }
 
-
     public function MapDropOffDonateCash(Request $request)
     {
         try {
@@ -396,12 +397,14 @@ class DonationController extends Controller
                 'proof_image' => $proofImagePath, // Save the proof image path
             ]);
 
-            // Use donor name from donation record
-            $message = "Hello {$donation->donor_name}, your drop-off cash donation is under verification, wait for an email. Thank you!";
+            // Fetch chapter name
+            $chapter = Chapter::find($request->chapter_id);
+            $chapterName = $chapter->chapter_name;
 
+            $message = "Hello {$donation->donor_name}, your cash drop-off donation of PHP {$donation->amount} for {$donation->cause} is under verification at {$chapterName}. Please check your Email/SMS for updates. Thank you!";
             SmsHelper::sendSmsNotification($donor->contact, $message);
 
-            return redirect()->route('donor.reqCash_map')->with('success', 'Donation successful! Thank you. Please check your sms and email for updates once verification is completed.');
+            return redirect()->route('donor.reqCash_map')->with('success', 'Donation successful! Thank you. Please check your Email/SMS for updates once verification is completed.');
         } catch (\Exception $e) {
             return back()->with('error', 'Something went wrong. Please try again.');
         }
@@ -454,10 +457,10 @@ class DonationController extends Controller
 
             // Fetch chapter name
             $chapter = Chapter::find($request->chapter_id);
-            $chapterName = $chapter ? $chapter->chapter_name : 'Unknown Chapter';
+            $chapterName = $chapter->chapter_name;
 
             // Send SMS notification
-            $message = "Hello {$donation->donor_name}, your in-kind donation via {$donation->donation_method} is under verification by {$chapterName}. Please check your email for updates. Thank you!";
+            $message = "Hello {$donation->donor_name}, your quick in-kind donation via {$donation->donation_method} is under verification by {$chapterName}. Please check your email for updates. Thank you!";
             SmsHelper::sendSmsNotification($donor->contact, $message);
 
             return redirect()->back()->with('success', 'Thank your for your donation. Please check your email for updates once verification is completed.');
@@ -502,15 +505,85 @@ class DonationController extends Controller
 
             // Fetch chapter name
             $chapter = Chapter::find($request->chapter_id);
-            $chapterName = $chapter ? $chapter->chapter_name : 'Unknown Chapter';
+            $chapterName = $chapter->chapter_name;
 
             // Send SMS notification
-            $message = "Hello {$donation->donor_name}, your cash drop-off donation of PHP {$donation->amount} for {$donation->cause} is under verification at {$chapterName}. Please check your email for updates. Thank you!";
+            $message = "Hello {$donation->donor_name}, your quick cash drop-off donation of PHP {$donation->amount} for {$donation->cause} is under verification at {$chapterName}. Please check your Email/SMS for updates. Thank you!";
             SmsHelper::sendSmsNotification($donor->contact, $message);
 
             return redirect()->route('quick.cashForm')->with('success', 'Quick donation submitted successfully. Please check your email for updates once verification is completed.');
         } catch (\Exception $e) {
             return redirect()->route('quick.cashForm')->with('error', 'Something went wrong. Please try again.');
         }
+    }
+
+
+    public function fetchLastCashDonation()
+    {
+        $user = Auth::user();
+
+        // Get the latest quick cash donation (without a fund_request_id)
+        $lastDonation = CashDonation::where('donor_id', $user->donor->id)
+            ->whereNull('fund_request_id') // Ensure it is a quick cash donation
+            ->latest()
+            ->first();
+
+        if (!$lastDonation) {
+            return response()->json(['error' => 'No previous quick cash donation found.'], 404);
+        }
+
+        return response()->json([
+            'cause' => $lastDonation->cause,
+            'chapter_id' => $lastDonation->chapter_id,
+            'amount' => $lastDonation->amount,
+            'donation_method' => $lastDonation->donation_method,
+            'payment_method' => $lastDonation->payment_method,
+        ]);
+    }
+
+
+    public function fetchLastInKindDonation()
+    {
+        $user = Auth::user();
+
+        if (!$user || !$user->donor) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User not found or not a donor'
+            ]);
+        }
+
+        $lastDonation = Donation::where('donor_id', $user->donor->id)
+            ->whereNull('donation_request_id')
+            ->orderBy('created_at', 'desc')
+            ->first();
+
+        if (!$lastDonation) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No previous quick donations found'
+            ]);
+        }
+
+        $donationItems = DonationItem::where('donation_id', $lastDonation->id)->get();
+
+        $lastDetails = [
+            'cause' => $lastDonation->cause,
+            'donation_method' => $lastDonation->donation_method,
+            'chapter_id' => $lastDonation->chapter_id,
+            'pickup_address' => $lastDonation->pickup_address,
+            'items' => $donationItems->map(function ($item) {
+                return [
+                    'category' => $item->category,
+                    'item' => $item->item,
+                    'quantity' => $item->quantity
+                ];
+            })
+        ];
+
+        return response()->json([
+            'success' => true,
+            'data' => $lastDetails
+        ]);
     }
 }

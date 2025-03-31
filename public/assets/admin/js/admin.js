@@ -1019,7 +1019,60 @@ const itemsByCategory = {
   "Medical Supplies": ["Adhesive Tape", "Bandages and Gauze", "Alcohol/Disinfectants", "Masks (N95 or surgical)"]
 };
 
-// Function to create a new item entry
+
+ const assetBaseUrl = "/assets/img/"
+ const itemImages = {
+        "Bottled Water": assetBaseUrl + "/r4.png",
+        "Canned Goods": assetBaseUrl + "/r1.jpg",
+        "5kg Packaged Rice": assetBaseUrl + "/r5.png",
+        "Packed Biscuits": assetBaseUrl + "/r6.png",
+        "Instant Noodles": assetBaseUrl + "/r3.png",
+        "Blankets": assetBaseUrl + "/b1.png",
+        "Towels": assetBaseUrl + "/t1.png",
+        "Jackets/Sweaters": assetBaseUrl + "/c1.png",
+        "New Clothes": assetBaseUrl + "/r8.png",
+        "Slippers": assetBaseUrl + "/s1.png",
+        "Soap": assetBaseUrl + "/q2.png",
+        "Sachet Shampoo": assetBaseUrl + "/q3.png",
+        "Toothpaste": assetBaseUrl + "/q4.png",
+        "Toothbrushes": assetBaseUrl + "/q1.jpg",
+        "Baby Diapers": assetBaseUrl + "/q5.png",
+        "Hand Sanitizers": assetBaseUrl + "/q6.png",
+        "Adhesive Tape": assetBaseUrl + "/w1.jpg",
+        "Bandages and Gauze": assetBaseUrl + "/w2.png",
+        "Alcohol/Disinfectants": assetBaseUrl + "/w3.png",
+        "Masks (N95 or surgical)": assetBaseUrl + "/w4.png"
+    };
+
+
+// Function to update the displayed item image
+function updateItemImage() {
+  const itemImageContainer = $("#item-image-container");
+  itemImageContainer.empty();
+  
+  // Get all selected items (not disabled)
+  const selectedItems = $(".item-select option:selected").not(":disabled");
+  
+  if (selectedItems.length > 0) {
+    // Display all selected items with their images
+    selectedItems.each(function() {
+      const itemName = $(this).val();
+      const imagePath = itemImages[itemName];
+      const quantity = $(this).closest(".item-entry").find(".quantity-input").val();
+      
+      if (imagePath) {
+        itemImageContainer.append(`
+          <div class="d-inline-block mx-2 text-center">
+            <img src="${imagePath}" alt="${itemName}" class="img-fluid" style="max-height: 100px;">
+            <p class="mt-1 small">${itemName} (Qty: ${quantity})</p>
+          </div>
+        `);
+      }
+    });
+  }
+}
+
+// Function to create a new item entry (with image update on change)
 function createItemEntry(isRemovable = true) {
   const itemDiv = $("<div>").addClass("row g-2 gy-2 item-entry align-items-center");
 
@@ -1044,8 +1097,8 @@ function createItemEntry(isRemovable = true) {
     </div>` : ""}
   `);
 
-  // Enable item selection based on category
-  itemDiv.find(".category-select").on("change", function () {
+  // Category change handler
+  itemDiv.find(".category-select").on("change", function() {
     const category = $(this).val();
     const itemSelect = itemDiv.find(".item-select");
     itemSelect.html(`<option selected disabled>Select Item</option>`);
@@ -1059,16 +1112,20 @@ function createItemEntry(isRemovable = true) {
     itemSelect.prop("disabled", false);
   });
 
-  // Enable quantity input when an item is selected
-  itemDiv.find(".item-select").on("change", function () {
+  // Item and quantity change handlers
+  itemDiv.find(".item-select").on("change", function() {
     const quantityInput = itemDiv.find(".quantity-input");
     quantityInput.prop("disabled", false);
     quantityInput.val(1);
     updateAvailableItems();
+    updateItemImage(); // Update image when item changes
   });
+
+  itemDiv.find(".quantity-input").on("change", updateItemImage); // Update image when quantity changes
 
   return itemDiv;
 }
+
 
 // Function to update item availability in all dropdowns
 function updateAvailableItems() {
@@ -1108,6 +1165,7 @@ $("#add-item").on("click", function () {
 $("#requested-items").on("click", ".remove-item", function () {
   $(this).closest(".item-entry").remove();
   updateAvailableItems();
+  updateItemImage();
 });
 
         

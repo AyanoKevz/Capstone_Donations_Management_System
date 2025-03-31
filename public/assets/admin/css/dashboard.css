@@ -664,6 +664,7 @@ body.sb-sidenav-toggled .sb-sidenav .nav-link span {
   display: block;
   margin-bottom: 20px;
   position: relative;
+   background: linear-gradient(135deg, #b92f2f, #d46666);
 }
 
 .small-box > .inner {
@@ -712,7 +713,7 @@ body.sb-sidenav-toggled .sb-sidenav .nav-link span {
 }
 
 .small-box .icon {
-  color: rgba(0, 0, 0, 0.15);
+  color: rgba(255, 255, 255, 0.935);
   z-index: 0;
 }
 
@@ -791,7 +792,7 @@ body.sb-sidenav-toggled .sb-sidenav .nav-link span {
   content: "View Availability";
  padding: 8px;
   position: absolute;
-  left: 3px;
+  left: 9px;
   bottom: 10px !important;
   background: #00AC7C;
   color: #fff;

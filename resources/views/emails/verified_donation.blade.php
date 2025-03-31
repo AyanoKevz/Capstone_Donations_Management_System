@@ -163,7 +163,7 @@
     }
 
     .message {
-      color: #ffffff;
+      color: black;
     }
 
     /* Responsive Styles */
@@ -252,7 +252,9 @@
           <h4 class="my-3">Donation Details:</h4>
           @if($type === 'cash')
           <!-- Cash Donation Details -->
-          <p><strong>Amount:</strong> ₱{{ number_format($donation->amount, 2) }}</p>
+          <div style="background-color: #ffffff; padding: 4px;">
+            <p style="margin: 0; color: black;"><strong>Amount:</strong> ₱{{ number_format($donation->amount, 2) }}</p>
+          </div>
           @else
           <!-- In-Kind Donation Details -->
           <div class="table-responsive">

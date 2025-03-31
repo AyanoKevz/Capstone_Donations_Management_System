@@ -67,9 +67,7 @@ small,
   font-size: 0.875em;
 }
 .small:hover {
-  color: #fcfc28 !important;
-  text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black,
-    1px 1px 0 black;
+  color: #b92f2f !important;
 }
 
 a {

@@ -395,7 +395,7 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-              <form action="#" method="POST" class="d-inline">
+              <form action="{{ route('cash.donation.verify', $cashDonation->id) }}" method="POST" class="d-inline">
                 @csrf
                 <button type="submit" class="btn btn-success">Verify</button>
               </form>

@@ -6,11 +6,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use App\Models\CashDonation;
 use App\Services\PayMongoService;
 use Illuminate\Support\Str;
 use App\Helpers\SmsHelper;
 use App\Models\Chapter;
+use App\Models\UserAccount;
+use Exception;
 
 class PayMongoController extends Controller
 {
@@ -76,44 +79,64 @@ class PayMongoController extends Controller
 
     public function handleSuccess(Request $request)
     {
-        try {
-            $donationData = session('donation_data');
-
-            if (!$donationData) {
-                return redirect()->route('donor.reqCash_map')->with('error', 'No pending donation found.');
-            }
-
-            $transactionId = 'Pay-' . now()->format('Ymd-His') . '-' . strtoupper(Str::random(6));
-
-            $donation = CashDonation::create([
-                'donor_id' => $donationData['donor_id'],
-                'donor_name' => $donationData['donor_name'],
-                'chapter_id' => $donationData['chapter_id'],
-                'fund_request_id' => $donationData['fund_request_id'],
-                'cause' => $donationData['cause'],
-                'amount' => $donationData['amount'],
-                'donation_method' => 'online',
-                'payment_method' => $donationData['payment_method'],
-                'payment_status' => 'completed',
-                'status' => 'received',
-                'transaction_id' => $transactionId,
-            ]);
-
-            session()->forget('donation_data');
-
-            // Fetch donor contact number
-            $donorContact = $donationData['contact'] ?? null;
-
-            if ($donorContact) {
-                $message = "Hello {$donation->donor_name}, your cash donation of ₱ " . number_format($donation->amount, 2) .
-                    " via {$donation->payment_method} was received. Check your email for the receipt. Thank you!";
-                SmsHelper::sendSmsNotification($donorContact, $message);
-            }
-
-            return redirect()->route('donor.reqCash_map')->with('success', 'Donation successful! Thank you.');
-        } catch (\Exception $e) {
-            return redirect()->route('donor.reqCash_map')->with('error', 'Something went wrong. Please try again.');
+        // Validate session data
+        $donationData = session('donation_data');
+        if (!$donationData) {
+            return redirect()->route('donor.reqCash_map')->with('error', 'No pending donation found.');
         }
+
+        // Create donation record
+        $donation = CashDonation::create([
+            'donor_id' => $donationData['donor_id'],
+            'donor_name' => $donationData['donor_name'],
+            'chapter_id' => $donationData['chapter_id'],
+            'fund_request_id' => $donationData['fund_request_id'] ?? null,
+            'cause' => $donationData['cause'],
+            'amount' => $donationData['amount'],
+            'donation_method' => 'online',
+            'payment_method' => $donationData['payment_method'],
+            'payment_status' => 'completed',
+            'status' => 'received',
+            'transaction_id' => 'Pay-' . now()->format('Ymd-His') . '-' . strtoupper(Str::random(6)),
+        ]);
+
+        // Load chapter relationship
+        $donation->load('chapter');
+        $chapterName = $donation->chapter->chapter_name;
+
+        // Get donor info
+        $userAccount = UserAccount::find($donationData['donor_id']);
+        $donorEmail = $userAccount->email;
+        $donorContact = $donationData['contact'];
+
+        // Prepare email content
+        $emailData = [
+            'logoPath' => public_path('assets/img/systemLogo.png'),
+            'chapter' => $chapterName,
+            'donation' => $donation,
+            'type' => 'cash',
+            'emailMessage' => "Thank you for your donation of ₱" . number_format($donation->amount, 2) .
+                " to support {$donation->cause} at {$chapterName}. " .
+                "Your donation via {$donation->payment_method} has been successfully received.",
+        ];
+
+        // Send email
+        Mail::send('emails.verified_donation', $emailData, function ($message) use ($donorEmail, $chapterName) {
+            $message->to($donorEmail)
+                ->subject("Donation Receipt - {$chapterName}");
+        });
+
+        // Prepare and send SMS
+        $smsMessage = "Hi {$donation->donor_name}, your PHP " . number_format($donation->amount, 2) .
+            " donation for {$donation->cause} at {$chapterName} was received. " .
+            "An email receipt has been sent. Thank you!";
+        SmsHelper::sendSmsNotification($donorContact, $smsMessage);
+
+        session()->forget('donation_data');
+        return redirect()->route('donor.reqCash_map')->with(
+            'success',
+            'Donation successful! Please check your SMS/Email for the status and receipt.'
+        );
     }
 
 
@@ -193,51 +216,59 @@ class PayMongoController extends Controller
 
     public function quickPayMongoSuccess(Request $request)
     {
-        try {
-            $donationData = session('quick_donation_data');
-
-            if (!$donationData) {
-                return redirect()->route('quick.cashForm')->with('error', 'No pending donation found.');
-            }
-
-            $transactionId = 'Pay-' . now()->format('Ymd-His') . '-' . strtoupper(Str::random(6));
-
-            // Insert data into the database after successful payment
-            $donation = CashDonation::create([
-                'donor_id' => $donationData['donor_id'],
-                'donor_name' => $donationData['donor_name'],
-                'chapter_id' => $donationData['chapter_id'],
-                'cause' => $donationData['cause'],
-                'amount' => $donationData['amount'],
-                'donation_method' => 'online',
-                'payment_method' => $donationData['payment_method'],
-                'payment_status' => 'completed',
-                'status' => 'received',
-                'transaction_id' => $transactionId,
-            ]);
-
-            // Fetch chapter name
-            $chapter = Chapter::find($donationData['chapter_id']);
-            $chapterName = $chapter ? $chapter->chapter_name : 'Unknown Chapter';
-
-            // Fetch donor contact number
-            $donorContact = $donationData['contact'] ?? null;
-
-            // Send SMS notification
-            if ($donorContact) {
-                $message = "Hello {$donation->donor_name}, your online donation of PHP {$donation->amount} for {$donation->cause} at {$chapterName} was successful. Thank you for your generosity!";
-                SmsHelper::sendSmsNotification($donorContact, $message);
-            }
-
-            // Clear session
-            session()->forget('quick_donation_data');
-
-            return redirect()->route('quick.cashForm')->with('success', 'Quick donation successful! Thank you for your support.');
-        } catch (\Exception $e) {
-            return redirect()->route('quick.cashForm')->with('error', 'Something went wrong. Please try again.');
+        $donationData = session('quick_donation_data');
+        if (!$donationData) {
+            return redirect()->route('quick.cashForm')->with('error', 'No pending donation found.');
         }
-    }
 
+        // Create donation record
+        $donation = CashDonation::create([
+            'donor_id' => $donationData['donor_id'],
+            'donor_name' => $donationData['donor_name'],
+            'chapter_id' => $donationData['chapter_id'],
+            'cause' => $donationData['cause'],
+            'amount' => $donationData['amount'],
+            'donation_method' => 'online',
+            'payment_method' => $donationData['payment_method'],
+            'payment_status' => 'completed',
+            'status' => 'received',
+            'transaction_id' => 'Pay-' . now()->format('Ymd-His') . '-' . strtoupper(Str::random(6)),
+        ]);
+
+        // Load chapter relationship
+        $donation->load('chapter');
+        $chapterName = $donation->chapter->chapter_name;
+
+        // Get donor info
+        $userAccount = UserAccount::find($donationData['donor_id']);
+        $donorEmail = $userAccount->email;
+        $donorContact = $donationData['contact'];
+
+        // Prepare and send email
+        Mail::send('emails.verified_donation', [
+            'logoPath' => public_path('assets/img/systemLogo.png'),
+            'chapter' => $chapterName,
+            'donation' => $donation,
+            'type' => 'cash',
+            'emailMessage' => "Thank you for your donation of ₱" . number_format($donation->amount, 2) .
+                " to support {$donation->cause} at {$chapterName}. " .
+                "Your donation via {$donation->payment_method} has been successfully received."
+        ], function ($message) use ($donorEmail, $chapterName) {
+            $message->to($donorEmail)
+                ->subject("Donation Receipt - {$chapterName}");
+        });
+
+        // Send SMS
+        SmsHelper::sendSmsNotification(
+            $donorContact,
+            "Hi {$donation->donor_name}, your PHP " . number_format($donation->amount, 2) .
+                " donation for {$donation->cause} at {$chapterName} was received. " .
+                "An email receipt has been sent. Thank you!"
+        );
+
+        session()->forget('quick_donation_data');
+        return redirect()->route('quick.cashForm')->with('success', 'Donation successful! Please check your SMS/Email for the status and receipt.');
+    }
 
     public function quickPayMongoCancel(Request $request)
     {

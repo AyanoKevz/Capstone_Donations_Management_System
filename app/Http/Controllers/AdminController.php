@@ -15,7 +15,7 @@ use App\Models\Appointment;
 use App\Models\Admin;
 use App\Models\Volunteer;
 use App\Models\News;
-use App\Models\FundRequest;
+use App\Models\Inquiry;
 use App\Models\DonationRequest;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\AccountUpdated;
@@ -186,7 +186,42 @@ class AdminController extends Controller
     // ADMIN DASHBOARD
     public function dashboard()
     {
-        return view('admin.dashboard');
+        $admin = Auth::guard('admin')->user();
+        $chapterId = $admin->chapter_id;
+
+        // User statistics
+        $inactiveAccounts = UserAccount::where('is_verified', false)->count();
+        $activeDonors = UserAccount::where('is_verified', true)
+            ->whereHas('donor')
+            ->count();
+
+        $chapterVolunteers = UserAccount::where('is_verified', true)
+            ->whereHas('volunteer', function ($query) use ($chapterId) {
+                $query->where('chapter_id', $chapterId);
+            })
+            ->count();
+
+        $totalUsers = $activeDonors + $chapterVolunteers;
+
+        // Inquiry statistics
+        $unreadInquiries = Inquiry::where('status', 'unread')->count();
+
+        // Combined received donations count
+        $receivedDonations = CashDonation::where('status', 'received')
+            ->where('chapter_id', $chapterId)
+            ->count() +
+            Donation::where('status', 'received')
+            ->where('chapter_id', $chapterId)
+            ->count();
+
+        return view('admin.dashboard', compact(
+            'inactiveAccounts',
+            'activeDonors',
+            'chapterVolunteers',
+            'totalUsers',
+            'unreadInquiries',
+            'receivedDonations'
+        ));
     }
 
     // ADMIN CHAPTERS
@@ -848,38 +883,56 @@ class AdminController extends Controller
             }
         }
 
+        // Load relationships
+        $donation->load(['chapter', 'donor.user', 'donationItems']);
+        $chapterName = $donation->chapter->chapter_name;
+
+        // Prepare email message based on donation method
+        $emailMessage = match ($donation->donation_method) {
+            'drop-off' => "Thank you for your in-kind donation to {$chapterName}! Please proceed with drop-off at your earliest convenience.",
+            'pickup' => "Thank you for your in-kind donation to {$chapterName}! You will receive a SMS/email once a volunteer is available for pick-up.",
+        };
+
         // Prepare email details
-        $logoPath = public_path('assets/img/systemLogo.png');
-        $chapter = $donation->chapter->chapter_name; // Assuming donation has a relationship with chapter
-        $donationItems = $donation->donationItems;
-
-        $emailMessage = '';
-        if ($donation->donation_method === 'drop-off') {
-            $emailMessage = 'Thank you for your donation! Please wait until you bring your donation to the chapter.';
-        } elseif ($donation->donation_method === 'pickup') {
-            $emailMessage = 'Thank you for your donation! You will receive a text or email once a volunteer is available for the pick-up.';
-        }
-
         $details = [
-            'logoPath' => $logoPath,
-            'chapter' => $chapter,
+            'logoPath' => public_path('assets/img/systemLogo.png'),
+            'chapter' => $chapterName,
             'donation' => $donation,
-            'donationItems' => $donationItems,
+            'donationItems' => $donation->donationItems,
             'type' => 'in-kind',
-            'emailMessage' => $emailMessage, // Pass the email message to the template
+            'emailMessage' => $emailMessage,
         ];
 
-        Mail::send('emails.verified_donation', $details, function ($message) use ($donation) {
-            $message->to($donation->donor->user->email) // Access email from UserAccount
-                ->subject('Your Donation Has Been Verified');
+        // Send email
+        Mail::send('emails.verified_donation', $details, function ($message) use ($donation, $chapterName) {
+            $message->to($donation->donor->user->email)
+                ->subject("Your Donation to {$chapterName} Has Been Verified");
         });
 
-        $donor = $donation->donor;
-        $chapterName = $donation->chapter->chapter_name;
-        $message = "Hello {$donor->donor_name}, your in-kind donation has been verified at {$chapterName}. Please check your email for the receipt. Thank you!";
-        SmsHelper::sendSmsNotification($donor->contact, $message);
+        // Send SMS
+        $smsMessage = "Hello {$donation->donor_name}, your in-kind donation has been verified at {$chapterName}. " .
+            "Please check your email for the receipt. Thank you!";
+        SmsHelper::sendSmsNotification($donation->donor->contact, $smsMessage);
 
         return redirect()->back()->with('success', 'Donation verified successfully.');
+    }
+
+    public function verifyCashDonation($cashDonationId)
+    {
+        $cashDonation = CashDonation::find($cashDonationId);
+        if (!$cashDonation) {
+            return redirect()->back()->with('error', 'Cash donation not found.');
+        }
+
+        $cashDonation->status = 'ongoing';
+        $cashDonation->save();
+
+        $donor = $cashDonation->donor;
+        $message = "Hi {$cashDonation->donor_name}, your PHP {$cashDonation->amount} donation is verified. Please proceed with drop-off at {$cashDonation->chapter->chapter_name}. Thank you!";
+
+        SmsHelper::sendSmsNotification($donor->contact, $message);
+
+        return redirect()->back()->with('success', 'Cash Donation verified.');
     }
 
 

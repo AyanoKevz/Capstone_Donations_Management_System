@@ -145,7 +145,39 @@ class DonorController extends Controller
 
     public function index()
     {
-        return view('users.donor.home');
+        $user = Auth::user();
+        $donor = $user->donor; // Assuming the user has a donor relationship
+
+        // Pending fund requests not yet donated by this donor
+        $pendingFundRequests = FundRequest::where('status', 'pending')
+            ->whereDoesntHave('cashDonations', function ($query) use ($donor) {
+                $query->where('donor_id', $donor->id);
+            })
+            ->count();
+
+        // Pending in-kind requests not yet donated by this donor
+        $pendingInKindRequests = DonationRequest::where('status', 'pending')
+            ->whereDoesntHave('donations', function ($query) use ($donor) {
+                $query->where('donor_id', $donor->id);
+            })
+            ->count();
+
+        // Completed donations (both cash and in-kind) with status 'received'
+        $completedCashDonations = CashDonation::where('donor_id', $donor->id)
+            ->where('status', 'received')
+            ->count();
+
+        $completedInKindDonations = Donation::where('donor_id', $donor->id)
+            ->where('status', 'received')
+            ->count();
+
+        $totalCompletedDonations = $completedCashDonations + $completedInKindDonations;
+
+        return view('users.donor.home', compact(
+            'pendingFundRequests',
+            'pendingInKindRequests',
+            'totalCompletedDonations'
+        ));
     }
 
     public function showChapters()

@@ -131,8 +131,6 @@ Route::middleware(['admin', 'prevent-back-button'])->prefix('admin')->group(func
 
     Route::get('/quick-donation/list', [AdminController::class, 'allQuickDonations'])->name('admin.quickDonation');
     Route::get('/received-donations/list', [AdminController::class, 'recieveDonations'])->name('admin.received_donation');
-
-
     //Donation Details
 
     // Route for Cash Donation Details
@@ -145,6 +143,9 @@ Route::middleware(['admin', 'prevent-back-button'])->prefix('admin')->group(func
 
     Route::post('/inkind-donation/verify/{id}', [AdminController::class, 'verifyInKindDonation'])
         ->name('inkind.donation.verify');
+
+    Route::post('/cash-donation/verify/{id}', [AdminController::class, 'verifyCashDonation'])
+        ->name('cash.donation.verify');
 });
 
 
@@ -196,6 +197,9 @@ Route::middleware(['auth', 'prevent-back-button'])->prefix('user')->group(functi
         // Route for In-Kind Donation Details
         Route::get('/inkind-donation/{id}', [DonorController::class, 'showInKindDonationDetails'])
             ->name('donor.inkind.donation.details');
+
+        Route::get('/get-last-cash-donation-details', [DonationController::class, 'fetchLastCashDonation'])->name('fetch.last.Cashdonation');
+        Route::get('/get-last-inkind-donation-details', [DonationController::class, 'fetchLastInKindDonation'])->name('fetch.last.InKinddonation');
     });
 
 

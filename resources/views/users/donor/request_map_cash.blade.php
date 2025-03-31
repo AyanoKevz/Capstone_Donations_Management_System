@@ -508,7 +508,7 @@
                                 </div>
 
                                 {{-- Submit Button --}}
-                                <div class="text-center">
+                                <div class="d-flex justify-content-center">
                                     <button type="submit" class="btn btn-primary mt-3 donate-now-button" id="donateNowButton-{{ $request->id }}" style="display: none; background: #1b2a5f !important;">Donate</button>
                                 </div>
                             </form>

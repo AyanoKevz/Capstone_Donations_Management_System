@@ -447,6 +447,8 @@
                               <div class="row g-2 gy-2" id="requested-items">
                                 <!-- Default item (first item) -->
                               </div>
+                              <!-- Image Here -->
+                              <div id="item-image-container" class="text-center mt-3"></div>
                               <div class="d-flex justify-content-center">
                                 <button type="button" class="btn btn-success mt-2" id="add-item">Add Item</button>
                               </div>

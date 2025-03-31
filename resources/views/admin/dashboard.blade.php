@@ -291,101 +291,107 @@
           <h1 class="my-2">Dashboard</h1>
           <!-- /.DITO IINSERT CONTENT -->
           <div class="row">
-            <!-- Inquiries -->
+            <!-- Unread Inquiries -->
             <div class="col-lg-4 col-md-6 col-12">
-              <div class="small-box bg-info" style="background-color: #17a2b8!important;">
+              <div class="small-box bg-warning">
                 <div class="inner">
-                  <h3>150</h3>
-                  <p>Inquiries</p>
+                  <h3>{{ $unreadInquiries }}</h3>
+                  <p>Unread Inquiries</p>
                 </div>
                 <div class="icon">
-                  <i class="ion ion-bag"></i>
+                  <i class="fas fa-question-circle"></i>
                 </div>
-                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                <a href="#" class="small-box-footer">
+                  More info <i class="fas fa-arrow-circle-right"></i>
+                </a>
               </div>
             </div>
-            <!-- ./col -->
 
             <!-- Inactive Accounts -->
             <div class="col-lg-4 col-md-6 col-12">
-              <div class="small-box bg-success">
+              <div class="small-box bg-danger">
                 <div class="inner">
-                  <h3>53</h3>
+                  <h3>{{ $inactiveAccounts }}</h3>
                   <p>Inactive Accounts</p>
                 </div>
                 <div class="icon">
-                  <i class="ion ion-stats-bars"></i>
+                  <i class="fas fa-user-slash"></i>
                 </div>
-                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                <a href="#" class="small-box-footer">
+                  More info <i class="fas fa-arrow-circle-right"></i>
+                </a>
               </div>
             </div>
-            <!-- ./col -->
 
-            <!-- Registered Donor -->
+            <!-- Active Donors -->
             <div class="col-lg-4 col-md-6 col-12">
-              <div class="small-box bg-warning">
+              <div class="small-box bg-success">
                 <div class="inner">
-                  <h3>5</h3>
-                  <p>Registered Donor</p>
+                  <h3>{{ $activeDonors }}</h3>
+                  <p>Active Donors</p>
                 </div>
                 <div class="icon">
-                  <i class="ion ion-person-add"></i>
+                  <i class="fas fa-hand-holding-heart"></i>
                 </div>
-                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                <a href="#" class="small-box-footer">
+                  More info <i class="fas fa-arrow-circle-right"></i>
+                </a>
               </div>
             </div>
-            <!-- ./col -->
 
-            <!-- Registered Volunteer -->
+            <!-- Chapter Volunteers -->
             <div class="col-lg-4 col-md-6 col-12">
-              <div class="small-box bg-warning">
+              <div class="small-box bg-info">
                 <div class="inner">
-                  <h3>5</h3>
-                  <p>Registered Volunteer</p>
+                  <h3>{{ $chapterVolunteers }}</h3>
+                  <p>Chapter Volunteers</p>
                 </div>
                 <div class="icon">
-                  <i class="ion ion-person-add"></i>
+                  <i class="fas fa-hands-helping"></i>
                 </div>
-                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                <a href="#" class="small-box-footer">
+                  More info <i class="fas fa-arrow-circle-right"></i>
+                </a>
               </div>
             </div>
-            <!-- ./col -->
 
-            <!-- Total Users -->
+            <!-- Total Active Users -->
             <div class="col-lg-4 col-md-6 col-12">
-              <div class="small-box bg-danger">
+              <div class="small-box">
                 <div class="inner">
-                  <h3>5</h3>
-                  <p>Total Users</p>
+                  <h3>{{ $totalUsers }}</h3>
+                  <p>Total Active Users</p>
                 </div>
                 <div class="icon">
-                  <i class="ion ion-pie-graph"></i>
+                  <i class="fas fa-users"></i>
                 </div>
-                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                <a href="#" class="small-box-footer">
+                  More info <i class="fas fa-arrow-circle-right"></i>
+                </a>
               </div>
             </div>
-            <!-- ./col -->
 
-            <!-- Pending Donations -->
+            <!-- Received Donations -->
             <div class="col-lg-4 col-md-6 col-12">
-              <div class="small-box bg-danger">
+              <div class="small-box bg-success">
                 <div class="inner">
-                  <h3>5</h3>
-                  <p>Pending Donations</p>
+                  <h3>{{ $receivedDonations }}</h3>
+                  <p>Received Donations</p>
                 </div>
                 <div class="icon">
-                  <i class="ion ion-pie-graph"></i>
+                  <i class="fas fa-check-circle"></i>
                 </div>
-                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                <a href="#" class="small-box-footer">
+                  More info <i class="fas fa-arrow-circle-right"></i>
+                </a>
               </div>
             </div>
-            <!-- ./col -->
           </div>
 
           <div class="row my-3">
             <div class="row">
               <div class="col-12 text-center">
-                <h2>Chapter Available Resources</h2>
+                <h2>Chapter's Available Resources</h2>
               </div>
             </div>
 

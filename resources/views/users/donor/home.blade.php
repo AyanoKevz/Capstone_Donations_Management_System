@@ -293,10 +293,10 @@
                     <div class="row">
                         <div class="col-md-4 col-sm-6 col-12">
                             <div class="info-box">
-                                <span class="info-box-icon bg-info"><i class="fa-solid fa-list-check" style="color: #ffffff;"></i></span>
+                                <span class="info-box-icon"><i class="fa-solid fa-hand-holding-dollar " style="color: #ffffff;"></i></span>
                                 <div class="info-box-content">
-                                    <h5 class="info-box-text">Fund Request</h5>
-                                    <span class="info-box-number">10</span>
+                                    <h5 class="info-box-text">Pending Fund Requests</h5>
+                                    <span class="info-box-number">{{ $pendingFundRequests }}</span>
                                 </div>
                                 <!-- /.info-box-content -->
                             </div>
@@ -305,10 +305,10 @@
                         <!-- /.col -->
                         <div class="col-md-4 col-sm-6 col-12">
                             <div class="info-box">
-                                <span class="info-box-icon bg-success"><i class="fa-solid fa-calendar" style="color: #ffffff;"></i></span>
+                                <span class="info-box-icon"><i class="fa-solid fa-hand-holding-heart" style="color: #ffffff;"></i></span>
                                 <div class="info-box-content">
-                                    <h5 class="info-box-text">In-Kind Request</h5>
-                                    <span class="info-box-number">15</span>
+                                    <h5 class="info-box-text">Pending In-Kind Requests</h5>
+                                    <span class="info-box-number">{{ $pendingInKindRequests }}</span>
                                 </div>
                                 <!-- /.info-box-content -->
                             </div>
@@ -317,10 +317,10 @@
                         <!-- /.col -->
                         <div class="col-md-4 col-sm-6 col-12">
                             <div class="info-box">
-                                <span class="info-box-icon bg-warning"><i class="fa-solid fa-clock" style="color: #ffffff;"></i></span>
+                                <span class="info-box-icon"><i class="fa-solid fa-circle-check" style="color: #ffffff;"></i></span>
                                 <div class="info-box-content">
-                                    <h5 class="info-box-text">Pending Donations</h5>
-                                    <span class="info-box-number">8</span>
+                                    <h5 class="info-box-text">Completed Donations</h5>
+                                    <span class="info-box-number">{{ $totalCompletedDonations }}</span>
                                 </div>
                                 <!-- /.info-box-content -->
                             </div>

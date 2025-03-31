@@ -309,7 +309,11 @@
                         </div>
                         <div class="form-container">
                             <div class="text-end mb-2">
-                                <button href="{{ route('quick.cashForm') }}" class="btn btn-sm recent">
+                                <button
+                                    type="button"
+                                    id="fetchLastInKindDonation"
+                                    class="btn btn-sm recent"
+                                    data-url="{{ route('fetch.last.InKinddonation') }}">
                                     <i class="fa-solid fa-rotate-right"></i> Use My Last Details
                                 </button>
                             </div>
@@ -454,10 +458,6 @@
         <!-- User JS -->
         <script src="{{ asset('assets/users/js/user.js') }}"></script>
         <script src="{{ asset('assets/users/js/faceapi.js') }}"></script>
-
-        <script>
-
-        </script>
 </body>
 
 </html>

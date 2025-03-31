@@ -1297,6 +1297,7 @@ body:not(.layout-fixed) .main-sidebar .sidebar {
   justify-content: center;
   text-align: center;
   width: 70px;
+  background: linear-gradient(135deg, #1b2a5f, #5166ab);
 }
 
 .info-box .info-box-content {

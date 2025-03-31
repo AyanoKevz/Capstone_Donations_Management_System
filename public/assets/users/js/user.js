@@ -620,6 +620,85 @@ $("#requested-items").on("click", ".remove-item", function () {
 });
 
 
+$('#fetchLastInKindDonation').on('click', function(e) {
+    e.preventDefault();
+    
+    var url = $(this).data('url');
+    
+    $.ajax({
+        url: url,
+        type: 'GET',
+        dataType: 'json',
+        success: function(response) {
+            if (response && response.success) {
+                var data = response.data;
+                
+                $('#cause').val(data.cause);
+                $('#donation_method').val(data.donation_method).trigger('change');
+                $('#chapter').val(data.chapter_id);
+                
+                if (data.donation_method === 'pickup') {
+                    $('#pickup_address_div').removeClass('d-none');
+                    $('#pickup_address').val(data.pickup_address);
+                }
+                
+                $('#requested-items').empty();
+                
+                if (data.items && data.items.length > 0) {
+                    addFirstDonationItem(data.items[0]);
+                    
+                    for (let i = 1; i < data.items.length; i++) {
+                        addAdditionalDonationItem(data.items[i]);
+                    }
+                    
+                    updateAvailableItems();
+                } else {
+                    $("#requested-items").append(createItemEntry(false));
+                }
+            } else {
+                alert('No previous In-kind donation details found.', 'warning');
+            }
+        },
+        error: function() {
+            alert('Failed to retrieve your previous donation details.', 'error');
+        }
+    });
+});
+
+function addFirstDonationItem(itemData) {
+    const itemDiv = createItemEntry(false);
+    populateItemEntry(itemDiv, itemData);
+    $("#requested-items").append(itemDiv);
+}
+
+function addAdditionalDonationItem(itemData) {
+    const itemDiv = createItemEntry(true);
+    populateItemEntry(itemDiv, itemData);
+    $("#requested-items").append(itemDiv);
+}
+
+function populateItemEntry(itemDiv, itemData) {
+    let itemCategory = null;
+    
+    for (const category in itemsByCategory) {
+        if (itemsByCategory[category].includes(itemData.item)) {
+            itemCategory = category;
+            break;
+        }
+    }
+    
+    if (itemCategory) {
+        itemDiv.find('.category-select').val(itemCategory).trigger('change');
+        
+        setTimeout(() => {
+            itemDiv.find('.item-select').val(itemData.item).trigger('change');
+            itemDiv.find('.quantity-input').val(itemData.quantity);
+        }, 100);
+    }
+}
+
+
+
   if($("#quickCashForm").length > 0) {
    $("#quickCashForm").each(function() {
         $(this).validate({
@@ -766,13 +845,10 @@ if ($("#quickInKindForm").length > 0) {
                 $("#pickup_address_div").removeClass("d-none");
             } else {
                 $("#pickup_address_div").addClass("d-none");
-                $("#pickup_address").val("");
             }
         });
 
     }
-
-
 
 
  var calendarEl = document.getElementById('calendar');
@@ -890,6 +966,42 @@ $(".donation-method_cash").on("change", function () {
         }
     }
 });
+
+    $("#fetchLastCashDonation").on("click", function () {
+        let url = $(this).data("url"); 
+
+        $.getJSON(url, function (data) {
+            if (data.error) {
+                alert(data.error); 
+                return;
+            }
+
+            $("#cause").val(data.cause);
+            $("#chapter").val(data.chapter_id);
+            $("#amount").val(data.amount);
+
+            // Set the donation method
+            let donationMethodField = $("#donation_method");
+            donationMethodField.val(data.donation_method).trigger("change");
+
+            // Show payment method only if donation method is online
+            let paymentMethodRow = $("#payment_method_row");
+            if (data.donation_method === "online") {
+                paymentMethodRow.removeClass("d-none");
+                $("#payment_method").val(data.payment_method);
+            } else {
+                paymentMethodRow.addClass("d-none");
+                $("#payment_method").val("");
+            }
+        }).fail(function (jqXHR) {
+            if (jqXHR.responseJSON && jqXHR.responseJSON.error) {
+                alert(jqXHR.responseJSON.error); // Show only the error message
+            } else {
+                alert("An error occurred. Please try again.");
+            }
+        });
+    });
+
 
     const fileInput = $('#imageFile');
     const submitButton = $('#submitButton');

@@ -309,7 +309,7 @@
                         </div>
                         <div class="form-container">
                             <div class="text-end mb-2">
-                                <button href="{{ route('quick.inKindForm') }}" class="btn btn-sm recent">
+                                <button id="fetchLastCashDonation" data-url="{{ route('fetch.last.Cashdonation') }}" class="btn btn-sm recent">
                                     <i class="fa-solid fa-rotate-right"></i> Use My Last Details
                                 </button>
                             </div>
