@@ -11,6 +11,7 @@ var spinnerElement = document.getElementById("spinner");
             spinnerElement.classList.remove("show");
         });
     }
+    
 
   // Initialize tooltips for nav links with a title attribute
   var tooltipTriggerList = [].slice.call(
@@ -407,6 +408,12 @@ if ($("#news_form_update").length > 0) {
             });
         }
 
+  document.getElementById('itemFilter').addEventListener('change', function() {
+        const selectedItem = this.value;
+        const urlParams = new URLSearchParams(window.location.search);
+        urlParams.set('item', selectedItem);
+        window.location.search = urlParams.toString();
+    });
 
 
 $('#file-input').change(function (event) {
@@ -648,6 +655,10 @@ $(".file-input").on("change", function () {
             $("#preview-video").attr("src", URL.createObjectURL(file)).show();
         }
     }
+
+    
+
+
 });
 
 const API_BASE_URL = "https://psgc.gitlab.io/api";
@@ -1167,6 +1178,7 @@ $("#requested-items").on("click", ".remove-item", function () {
   updateAvailableItems();
   updateItemImage();
 });
+
 
         
 });

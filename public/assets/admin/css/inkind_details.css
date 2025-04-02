@@ -720,11 +720,6 @@ body.sb-sidenav-toggled .sb-sidenav .nav-link span {
         padding: 12px;
     }
 
-    .custom-image-header {
-        background-color: #1b2a5f;
-        padding: 12px;
-    }
-
     .custom-header h3,
     .custom-subheader h3,
     .custom-image-header h3 {

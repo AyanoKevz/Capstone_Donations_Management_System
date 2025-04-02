@@ -175,42 +175,25 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="{{ route('volunteer.available_task') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Available Tasks</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="{{ route('volunteer.assigned_task') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Assigned Task</p>
                                     </a>
                                 </li>
                             </ul>
                         </li>
-
+                        <!-- Volunteer History -->
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{ route('volunteer.completed_tasks') }}" class="nav-link">
                                 <i class="nav-icon fas fa-pen-to-square"></i>
-                                <p>
-                                    Track Activities
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
+                                <p>Volunteer History</p>
                             </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>My Task</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Volunteer History</p>
-                                    </a>
-                                </li>
-                            </ul>
                         </li>
 
                         <!-- Testimonials -->

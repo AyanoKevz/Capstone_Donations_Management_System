@@ -312,6 +312,13 @@
                                     <td>:</td>
                                     <td>{{ ucfirst($inKindDonation->donation_method) }}</td>
                                 </tr>
+                                @if(strtolower($inKindDonation->donation_method) === 'pickup')
+                                <tr>
+                                    <th class="bg-light-custom">Pickup Address</th>
+                                    <td>:</td>
+                                    <td>{{ $inKindDonation->pickup_address }}</td>
+                                </tr>
+                                @endif
                                 <tr>
                                     <th class="bg-light-custom">Donation Date & Time</th>
                                     <td>:</td>

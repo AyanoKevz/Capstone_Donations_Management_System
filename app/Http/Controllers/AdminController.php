@@ -8,12 +8,16 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\Chapter;
 use App\Models\UserAccount;
 use App\Models\Donor;
+use App\Models\VolunteerActivity;
 use App\Models\CashDonation;
+use App\Models\FundRequest;
 use App\Models\Donation;
 use App\Models\DonationItem;
 use App\Models\Appointment;
 use App\Models\Admin;
 use App\Models\Volunteer;
+use App\Models\PooledResource;
+use App\Models\PooledFund;
 use App\Models\News;
 use App\Models\Inquiry;
 use App\Models\DonationRequest;
@@ -857,8 +861,74 @@ class AdminController extends Controller
 
     public function showInKindDonationDetails($id)
     {
-        $inKindDonation = Donation::with('donationItems')->findOrFail($id);
-        return view('admin.inkind_details', compact('inKindDonation'));
+        $admin = Auth::guard('admin')->user();
+        $inKindDonation = Donation::with(['donationItems', 'volunteerActivities.volunteer'])->findOrFail($id);
+
+        // Get volunteers who have no active status in volunteer_activity and belong to the same chapter as the admin
+        $availableVolunteers = Volunteer::where('chapter_id', $admin->chapter_id)
+            ->whereDoesntHave('volunteerActivities', function ($query) use ($inKindDonation) {
+                $query->where('donation_id', $inKindDonation->id)
+                    ->whereIn('status', ['pending', 'accepted', 'active']);
+            })
+            ->get();
+
+        return view('admin.inkind_details', compact('inKindDonation', 'availableVolunteers'));
+    }
+
+    public function assignVolunteer(Request $request)
+    {
+        $validated = $request->validate([
+            'donation_id' => 'required|exists:donation,id',
+            'volunteer_id' => 'required|exists:volunteer,id',
+            'task_description' => 'required|string',
+            'activity_date' => 'required|date',
+        ]);
+
+        // Get the donation record
+        $donation = Donation::findOrFail($validated['donation_id']);
+
+        $activity = VolunteerActivity::create([
+            'volunteer_id' => $validated['volunteer_id'],
+            'donation_id' => $validated['donation_id'],
+            'task_description' => $validated['task_description'],
+            'activity_date' => $validated['activity_date'],
+            'status' => 'pending',
+            'proof_image' => $donation->proof_image,
+        ]);
+
+        return redirect()->back()->with('success', 'Volunteer assigned successfully!');
+    }
+
+
+    public function assignVolunteers(Request $request, $id)
+    {
+        $request->validate([
+            'volunteers' => 'required|array|min:2',
+            'volunteers.*' => 'exists:volunteer,id',
+        ]);
+
+        foreach ($request->volunteers as $volunteerId) {
+            VolunteerActivity::create([
+                'volunteer_id' => $volunteerId,
+                'task_description' => 'Pickup Donation',
+                'status' => 'pending',
+            ]);
+        }
+
+        // Update donation status to pending
+        $donation = Donation::findOrFail($id);
+        $donation->update(['status' => 'pending']);
+
+        return back()->with('success', 'Volunteers assigned successfully!');
+    }
+
+
+    public function confirmDropOff($id)
+    {
+        $donation = Donation::findOrFail($id);
+        $donation->update(['status' => 'received']);
+
+        return back()->with('success', 'Donation marked as received.');
     }
 
 
@@ -1009,6 +1079,76 @@ class AdminController extends Controller
             'inKindDonations' => $inKindDonations,
             'typeFilter' => $request->typeFilter ?? 'all',
             'statusFilter' => $request->statusFilter ?? '',
+        ]);
+    }
+
+
+    public function declineCashDonation($cashDonationId)
+    {
+        $cashDonation = CashDonation::find($cashDonationId);
+
+        if (!$cashDonation) {
+            return redirect()->back()->with('error', 'Cash donation not found.');
+        }
+
+        // Update status to 'unverified'
+        $cashDonation->status = 'unverified';
+        $cashDonation->save();
+
+        // Send SMS notification
+        $smsMessage = "Hello {$cashDonation->donor_name}, your cash donation has been declined by {$cashDonation->chapter->chapter_name}. " .
+            "Please contact us for more information.";
+        SmsHelper::sendSmsNotification($cashDonation->donor->contact, $smsMessage);
+
+        return redirect()->back()->with('success', 'Cash donation declined successfully.');
+    }
+
+    public function declineInKindDonation($donationId)
+    {
+        $donation = Donation::find($donationId);
+
+        if (!$donation) {
+            return redirect()->back()->with('error', 'Donation not found.');
+        }
+
+        // Update status to 'unverified'
+        $donation->status = 'unverified';
+        $donation->save();
+
+        // Send SMS notification
+        $smsMessage = "Hello {$donation->donor_name}, your in-kind donation has been declined by {$donation->chapter->chapter_name}. " .
+            "Please contact us for more information.";
+        SmsHelper::sendSmsNotification($donation->donor->contact, $smsMessage);
+
+        return redirect()->back()->with('success', 'In-kind donation declined successfully.');
+    }
+
+
+
+    public function PooledResources(Request $request)
+    {
+        $admin = Auth::guard('admin')->user();
+        $chapterId = $admin->chapter_id; // Get admin's chapter ID
+        $cause = $request->query('cause', 'General'); // Default to 'General' if not set
+        $itemFilter = $request->query('item', null); // Get item filter from request
+
+        // Fetch pooled resources based on the chapter and selected cause
+        $query = PooledResource::where('chapter_id', $chapterId)->where('cause', $cause);
+
+        // Apply item filter if selected
+        if ($itemFilter && $itemFilter !== 'all') {
+            $query->where('item', $itemFilter);
+        }
+
+        $pooledResources = $query->get();
+
+        // Fetch total pooled cash for this cause and chapter
+        $pooledFund = PooledFund::where('chapter_id', $chapterId)->where('cause', $cause)->first();
+
+        return view('admin.pooled', [
+            'pooledResources' => $pooledResources,
+            'pooledFund' => $pooledFund ? $pooledFund->total_cash : 0,
+            'selectedCause' => $cause,
         ]);
     }
 }

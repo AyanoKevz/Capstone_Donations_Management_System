@@ -72,6 +72,8 @@ Route::post('/admin/logout', [AdminController::class, 'logout'])->name('admin.lo
 Route::middleware(['admin', 'prevent-back-button'])->prefix('admin')->group(function () {
     // Admin Dashboard
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+    Route::get('/pooled', [AdminController::class, 'PooledResources'])->name('admin.pooled');
+
 
     // Admin Profile
     Route::get('/profile', [AdminController::class, 'admin_profile'])->name('admin.profile');
@@ -141,11 +143,24 @@ Route::middleware(['admin', 'prevent-back-button'])->prefix('admin')->group(func
     Route::get('/inkind-donation/{id}', [AdminController::class, 'showInKindDonationDetails'])
         ->name('inkind.donation.details');
 
+    Route::post('/admin/assign-volunteer', [AdminController::class, 'assignVolunteer'])->name('admin.assign.volunteer');
+    Route::get('/inkind/donation/{id}/confirm-dropoff', [AdminController::class, 'confirmDropOff'])->name('admin.confirm-dropoff');
+
+
+
+
     Route::post('/inkind-donation/verify/{id}', [AdminController::class, 'verifyInKindDonation'])
         ->name('inkind.donation.verify');
 
     Route::post('/cash-donation/verify/{id}', [AdminController::class, 'verifyCashDonation'])
         ->name('cash.donation.verify');
+
+
+    Route::post('/cash-donation/decline/{id}', [AdminController::class, 'declineCashDonation'])
+        ->name('cash.donation.decline');
+
+    Route::post('/inkind-donation/decline/{id}', [AdminController::class, 'declineInKindDonation'])
+        ->name('inkind.donation.decline');
 });
 
 
@@ -210,5 +225,13 @@ Route::middleware(['auth', 'prevent-back-button'])->prefix('user')->group(functi
         Route::post('/volunteer/update/{id}', [user_profileController::class, 'updateVolunteerProfile'])->name('volunteer.updateProfile');
         Route::get('/contact', [VolunteerController::class, 'showContactForm'])->name('volunteer.contact_form');
         Route::get('/testimonial', [VolunteerController::class, 'showTestimonialForm'])->name('volunteer.testi_form');
+        Route::get('/available-task', [VolunteerController::class, 'showAvailableTask'])->name('volunteer.available_task');
+        Route::get('/assigned-task', [VolunteerController::class, 'showAssTask'])->name('volunteer.assigned_task');
+        Route::post('/accept-task/{id}', [VolunteerController::class, 'acceptTask'])->name('volunteer.accept_task');
+        Route::post('/decline-task/{id}', [VolunteerController::class, 'declineTask'])->name('volunteer.decline_task');
+        Route::post('/activate-task/{id}', [VolunteerController::class, 'activateTask'])
+            ->name('volunteer.activate_task');
+        Route::get('/completed-tasks', [VolunteerController::class, 'showCompletedTasks'])
+            ->name('volunteer.completed_tasks');
     });
 });

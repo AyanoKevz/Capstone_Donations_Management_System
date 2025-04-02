@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Admin | Dashboard</title>
+  <title>Admin | All Request</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -15,7 +15,8 @@
     href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <link rel="icon" href="{{ asset ('assets/img/systemLogo.png') }}" type="image/png">
   <link rel="stylesheet" href="{{ asset('lib/bootstrap/css/bootstrap.min.css') }}">
-  <link rel="stylesheet" href="{{ asset ('assets/admin/css/dashboard.css') }}">
+  <link rel="stylesheet" href="{{ asset('lib/datatables/datatables.min.css') }}">
+  <link rel="stylesheet" href="{{ asset ('assets/admin/css/list.css') }}">
 
 </head>
 
@@ -58,7 +59,7 @@
                 <span class="availability-status online"></span>
               </div>
               <div class="nav-profile-text ms-2">
-                {{ $Admin->name }}
+                {{$Admin->name}}
               </div>
             </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
@@ -103,7 +104,7 @@
             </div>
 
             <!-- Dashboard -->
-            <a class="nav-link active" href="{{ route('admin.dashboard') }}" title="Dashboard">
+            <a class="nav-link" href="{{ route('admin.dashboard') }}" title="Dashboard">
               <div class="sb-nav-link-icon">
                 <i class="fas fa-tachometer-alt"></i>
               </div>
@@ -173,7 +174,7 @@
             </div>
 
             <!-- Manage Resources -->
-            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#manage-resources"
+            <a class="nav-link collapsed active" href="#" data-bs-toggle="collapse" data-bs-target="#manage-resources"
               aria-expanded="false" aria-controls="manage-resources" title="Manage Resources">
               <div class="sb-nav-link-icon">
                 <i class="fas fa-box"></i>
@@ -185,9 +186,9 @@
             </a>
             <div class="collapse" id="manage-resources" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
               <nav class="sb-sidenav-menu-nested nav">
-                <a class="nav-link" href="{{ route('admin.received_donation') }}" title="Received Donations">
+                <a class="nav-link active" href="{{ route('admin.received_donation') }}" title="Received Donations">
                   <div class="sb-nav-link-icon">
-                    <i class="far fa-circle nav-icon"></i>
+                    <i class="fas fa-circle-arrow-right  nav-icon"></i>
                   </div>
                   <span>Received Donations</span>
                 </a>
@@ -284,164 +285,89 @@
     <!-- Content -->
     <div id="layoutSidenav_content">
       <main>
+        @if(session('success'))
+        <div id="alert-success" class="alert alert-success" style="position: absolute; right: 10px; top: 40px;">
+          <i class="fa-solid fa-circle-check fa-xl me-3"></i>{{ session('success') }}
+        </div>
+        @endif
+        @if(session('error'))
+        <div id="alert-error" class="alert alert-danger" style=" position: absolute; right: 10px; top: 40px;">
+          <i class=" fa-solid fa-circle-xmark fa-xl me-3"></i>{{ session('error') }}
+        </div>
+        @endif
         <div class="container-fluid px-3 py-2">
           <ol class="breadcrumb mb-4">
-            <li class="breadcrumb-item active">Dashboard</li>
+            <li class="breadcrumb-item active"></li>
           </ol>
-          <h1 class="my-2">Dashboard</h1>
-          <!-- /.DITO IINSERT CONTENT -->
-          <div class="row">
-            <!-- Unread Inquiries -->
-            <div class="col-lg-4 col-md-6 col-12">
-              <div class="small-box bg-warning">
-                <div class="inner">
-                  <h3>{{ $unreadInquiries }}</h3>
-                  <p>Unread Inquiries</p>
-                </div>
-                <div class="icon">
-                  <i class="fas fa-question-circle"></i>
-                </div>
-                <a href="{{ route('admin.inquiries', ['status' => 'unread']) }}" class="small-box-footer">
-                  More info <i class="fas fa-arrow-circle-right"></i>
-                </a>
-              </div>
+          <h1 class="my-3">Received Donations at {{ $Admin->chapter->chapter_name }} Chapter</h1>
+          <div class="d-flex justify-content-between">
+            <div class="d-flex mb-1 align-items-center">
+              <strong class="me-2">Item:</strong>
+              <form method="GET" action="{{ url()->current() }}">
+                <select class="form-select" id="itemFilter" name="item" onchange="this.form.submit()">
+                  <option value="all" {{ request('item') == 'all' ? 'selected' : '' }}>All</option>
+                  <option value="Bottled Water" {{ request('item') == 'Bottled Water' ? 'selected' : '' }}>Bottled Water</option>
+                  <option value="Canned Goods" {{ request('item') == 'Canned Goods' ? 'selected' : '' }}>Canned Goods</option>
+                  <option value="5kg Packaged Rice" {{ request('item') == '5kg Packaged Rice' ? 'selected' : '' }}>5kg Packaged Rice</option>
+                  <option value="Packed Biscuits" {{ request('item') == 'Packed Biscuits' ? 'selected' : '' }}>Packed Biscuits</option>
+                  <option value="Instant Noodles" {{ request('item') == 'Instant Noodles' ? 'selected' : '' }}>Instant Noodles</option>
+                  <option value="Blankets" {{ request('item') == 'Blankets' ? 'selected' : '' }}>Blankets</option>
+                  <option value="Towels" {{ request('item') == 'Towels' ? 'selected' : '' }}>Towels</option>
+                  <option value="Jackets/Sweaters" {{ request('item') == 'Jackets/Sweaters' ? 'selected' : '' }}>Jackets/Sweaters</option>
+                  <option value="New Clothes" {{ request('item') == 'New Clothes' ? 'selected' : '' }}>New Clothes</option>
+                  <option value="Slippers" {{ request('item') == 'Slippers' ? 'selected' : '' }}>Slippers</option>
+                  <option value="Soap" {{ request('item') == 'Soap' ? 'selected' : '' }}>Soap</option>
+                  <option value="Sachet Shampoo" {{ request('item') == 'Sachet Shampoo' ? 'selected' : '' }}>Sachet Shampoo</option>
+                  <option value="Toothpaste" {{ request('item') == 'Toothpaste' ? 'selected' : '' }}>Toothpaste</option>
+                  <option value="Toothbrushes" {{ request('item') == 'Toothbrushes' ? 'selected' : '' }}>Toothbrushes</option>
+                  <option value="Baby Diapers" {{ request('item') == 'Baby Diapers' ? 'selected' : '' }}>Baby Diapers</option>
+                  <option value="Hand Sanitizers" {{ request('item') == 'Hand Sanitizers' ? 'selected' : '' }}>Hand Sanitizers</option>
+                  <option value="Adhesive Tape" {{ request('item') == 'Adhesive Tape' ? 'selected' : '' }}>Adhesive Tape</option>
+                  <option value="Bandages and Gauze" {{ request('item') == 'Bandages and Gauze' ? 'selected' : '' }}>Bandages and Gauze</option>
+                  <option value="Alcohol/Disinfectants" {{ request('item') == 'Alcohol/Disinfectants' ? 'selected' : '' }}>Alcohol/Disinfectants</option>
+                  <option value="Masks (N95 or surgical)" {{ request('item') == 'Masks (N95 or surgical)' ? 'selected' : '' }}>Masks (N95 or surgical)</option>
+                </select>
+              </form>
             </div>
 
-            <!-- Inactive Accounts -->
-            <div class="col-lg-4 col-md-6 col-12">
-              <div class="small-box bg-danger">
-                <div class="inner">
-                  <h3>{{ $inactiveAccounts }}</h3>
-                  <p>Inactive Accounts</p>
-                </div>
-                <div class="icon">
-                  <i class="fas fa-user-slash"></i>
-                </div>
-                <a href="{{ route('verify_account') }}" class="small-box-footer">
-                  More info <i class="fas fa-arrow-circle-right"></i>
-                </a>
-              </div>
-            </div>
-
-            <!-- Active Donors -->
-            <div class="col-lg-4 col-md-6 col-12">
-              <div class="small-box bg-success">
-                <div class="inner">
-                  <h3>{{ $activeDonors }}</h3>
-                  <p>Active Donors</p>
-                </div>
-                <div class="icon">
-                  <i class="fas fa-hand-holding-heart"></i>
-                </div>
-                <a href="{{ route('admin.donorList', ['status' => 'active']) }}" class="small-box-footer">
-                  More info <i class="fas fa-arrow-circle-right"></i>
-                </a>
-              </div>
-            </div>
-
-            <!-- Chapter Volunteers -->
-            <div class="col-lg-4 col-md-6 col-12">
-              <div class="small-box bg-info">
-                <div class="inner">
-                  <h3>{{ $chapterVolunteers }}</h3>
-                  <p>Chapter Volunteers</p>
-                </div>
-                <div class="icon">
-                  <i class="fas fa-hands-helping"></i>
-                </div>
-                <a href="{{ route('admin.volunteerList', ['status' => 'active']) }}" class="small-box-footer">
-                  More info <i class="fas fa-arrow-circle-right"></i>
-                </a>
-              </div>
-            </div>
-
-            <!-- Total Active Users -->
-            <div class="col-lg-4 col-md-6 col-12">
-              <div class="small-box">
-                <div class="inner">
-                  <h3>{{ $totalUsers }}</h3>
-                  <p>Total Active Users</p>
-                </div>
-                <div class="icon">
-                  <i class="fas fa-users"></i>
-                </div>
-                <a href="" class="small-box-footer">
-                  More info <i class="fas fa-arrow-circle-right"></i>
-                </a>
-              </div>
-            </div>
-
-            <!-- Received Donations -->
-            <div class="col-lg-4 col-md-6 col-12">
-              <div class="small-box bg-success">
-                <div class="inner">
-                  <h3>{{ $receivedDonations }}</h3>
-                  <p>Received Donations</p>
-                </div>
-                <div class="icon">
-                  <i class="fas fa-check-circle"></i>
-                </div>
-                <a href="{{ route('admin.received_donation') }}" class="small-box-footer">
-                  More info <i class="fas fa-arrow-circle-right"></i>
-                </a>
-              </div>
+            <div class="d-flex mb-1 align-items-center">
+              <strong class="me-2">Cash Fund:</strong>
+              <span class="fw-bold text-success">
+                {{ number_format($pooledFund, 2) }} PHP
+              </span>
             </div>
           </div>
 
-          <div class="row my-3">
-            <div class="row">
-              <div class="col-12 text-center">
-                <h2>Chapter's Available Resources</h2>
-              </div>
+          <div class="card card-primary card-outline">
+            <div class="card-header">
+              <h3 class="card-title">Pooled Resources</h3>
             </div>
-
-            <div class="card-container">
-              <a href="{{ route('admin.pooled', ['cause' => 'Fire']) }}" class="card-pool">
-                <div class="image" style="background-image: url('{{ asset('assets/img/f2.jpg') }}');"></div>
-                <span class="resource-name">Available Resource</span>
-                <span class="left">Fire</span>
-              </a>
-
-              <a href="{{ route('admin.pooled', ['cause' => 'Flood']) }}" class="card-pool">
-                <div class="image" style="background-image: url('{{ asset('assets/img/ff2.jpeg') }}');"></div>
-                <span class="resource-name">Available Resource</span>
-                <span class="left">Flood</span>
-              </a>
-
-              <a href="{{ route('admin.pooled', ['cause' => 'Typhoon']) }}" class="card-pool">
-                <div class="image" style="background-image: url('{{ asset('assets/img/t3.jpeg') }}');"></div>
-                <span class="resource-name">Available Resource</span>
-                <span class="left">Typhoon</span>
-              </a>
-
-              <a href="{{ route('admin.pooled', ['cause' => 'Earthquake']) }}" class="card-pool">
-                <div class="image" style="background-image: url('{{ asset('assets/img/e3.jpg') }}');"></div>
-                <span class="resource-name">Available Resource</span>
-                <span class="left">Earthquake</span>
-              </a>
-
-              <a href="{{ route('admin.pooled', ['cause' => 'Volcanic Eruption']) }}" class="card-pool">
-                <div class="image" style="background-image: url('{{ asset('assets/img/v4.jpg') }}');"></div>
-                <span class="resource-name">Available Resource</span>
-                <span class="left">Volcanic Eruption</span>
-              </a>
-
-              <a href="{{ route('admin.pooled', ['cause' => 'Feeding Program']) }}" class="card-pool">
-                <div class="image" style="background-image: url('{{ asset('assets/img/q6.jpg') }}');"></div>
-                <span class="resource-name">Available Resource</span>
-                <span class="left">Feeding Program</span>
-              </a>
-
-              <a href="{{ route('admin.pooled', ['cause' => 'General']) }}" class="card-pool">
-                <div class="image" style="background-image: url('{{ asset('assets/img/hero-2.jfif') }}');"></div>
-                <span class="resource-name">Available Resource</span>
-                <span class="left">General</span>
-              </a>
+            <div class="card-body">
+              <table id="example1" class="table table-bordered table-hover table-striped pooledTable ">
+                <thead>
+                  <tr>
+                    <th>Item</th>
+                    <th>Quantity</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @foreach($pooledResources as $resource)
+                  <tr>
+                    <td>{{ $resource->item }}</td>
+                    <td>{{ $resource->quantity }}</td>
+                    <td class="{{ $resource->status === 'near_expired' ? 'text-danger fw-bold' : 'text-success fw-bold' }}">
+                      {{ $resource->status ?? 'Good' }}
+                    </td>
+                  </tr>
+                  @endforeach
+                </tbody>
+              </table>
             </div>
-
           </div>
         </div>
       </main>
+
       <footer class="py-3 bg-dark mt-3">
         <div class="container-fluid ps-4">
           <div class="d-flex align-items-center justify-content-between">
@@ -456,6 +382,7 @@
   <script src="{{ asset('lib/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
   <script src="{{ asset('lib/fontawesome/all.js') }}"></script>
   <script src="{{ asset('lib/jquery/jquery.min.js') }}"></script>
+  <script src="{{ asset('lib/datatables/datatables.min.js') }}"></script>
   <script src="{{ asset('assets/admin/js/admin.js') }}"></script>
 
   <script>

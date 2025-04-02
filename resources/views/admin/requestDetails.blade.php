@@ -419,16 +419,45 @@
                       <div class="col-md-12">
                         <video controls class="rounded" style="width: 100%; height: 200px; object-fit: cover;">
                           <source src="{{ asset('storage/' . $request->proof_video) }}" type="video/mp4">
-                          Your browser does not support the video tag.
                         </video>
                       </div>
                     </div>
                   </div>
+                  @if($request->status === 'Fulfilled' &&
+                  ($isCashRequest ? $cashDonations->every->status === 'received' : $inKindDonations->every->status === 'received'))
+                  <div class="text-center mt-3">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#distributionModal">
+                      <i class="fa-solid fa-truck"></i> Distribute Donations
+                    </button>
+                  </div>
+
+                  <!-- Distribution Modal -->
+                  <div class="modal fade" id="distributionModal" tabindex="-1" aria-labelledby="distributionModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="distributionModalLabel">Confirm Distribution</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          Are you sure you want to mark this request as **distributed**?
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                          <form action="{{ route('mark_as_distributed', $request->id) }}" method="POST">
+                            @csrf
+                            @method('PUT')
+                            <button type="submit" class="btn btn-success">Distribute</button>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  @endif
                 </div>
               </div>
             </div>
           </div>
-
 
           <!-- Table who donated to the request -->
           <div class="container ">
@@ -499,10 +528,10 @@
                         <td>{{ \Carbon\Carbon::parse($cashDonation->created_at)->format('M d, Y h:i A') }}</td>
                         <td>
                           <span class="badge bg-{{
-        $cashDonation->status === 'received' ? 'success' :
-        ($cashDonation->status === 'pending' ? 'secondary' :
-        ($cashDonation->status === 'ongoing' ? 'warning text-dark' : 'danger'))
-    }}">
+                                            $cashDonation->status === 'received' ? 'success' :
+                                            ($cashDonation->status === 'pending' ? 'secondary' :
+                                            ($cashDonation->status === 'ongoing' ? 'warning text-dark' : 'danger'))
+                                        }}">
                             {{ ucfirst($cashDonation->status) }}
                           </span>
                         </td>
@@ -520,10 +549,10 @@
                         <td>{{ \Carbon\Carbon::parse($inKindDonation->donation_datetime)->format('M d, Y h:i A') }}</td>
                         <td>
                           <span class="badge bg-{{
-        $inKindDonation->status === 'received' ? 'success' :
-        ($inKindDonation->status === 'pending' ? 'secondary' :
-        ($inKindDonation->status === 'ongoing' ? 'warning text-dark' : 'danger'))
-    }}">
+                                $inKindDonation->status === 'received' ? 'success' :
+                                ($inKindDonation->status === 'pending' ? 'secondary' :
+                                ($inKindDonation->status === 'ongoing' ? 'warning text-dark' : 'danger'))
+                            }}">
                             {{ ucfirst($inKindDonation->status) }}
                           </span>
                         </td>

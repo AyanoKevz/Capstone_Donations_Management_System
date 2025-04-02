@@ -14,8 +14,9 @@
         rel="stylesheet">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="{{ asset('lib/bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('lib/datatables/datatables.min.css') }}">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{ asset('assets/users/css/donor/contact_form.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/users/css/volunteer/vol_table.css') }}">
 </head>
 
 <!-- Spinner Start -->
@@ -164,7 +165,7 @@
 
                         <!-- Volunteer Activities -->
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="#" class="nav-link active">
                                 <i class="nav-icon fas fa-hand-holding-heart"></i>
                                 <p>
                                     Volunteer Tasks
@@ -173,7 +174,7 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{ route('volunteer.available_task') }}" class="nav-link">
+                                    <a href="{{ route('volunteer.available_task') }}" class="nav-link ">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Available Tasks</p>
                                     </a>
@@ -188,7 +189,7 @@
                         </li>
                         <!-- Volunteer History -->
                         <li class="nav-item">
-                            <a href="{{ route('volunteer.completed_tasks') }}" class="nav-link">
+                            <a href="{{ route('volunteer.completed_tasks') }}" class="nav-link active">
                                 <i class="nav-icon fas fa-pen-to-square"></i>
                                 <p>Volunteer History</p>
                             </a>
@@ -203,7 +204,7 @@
 
                         <!-- Contact / Support -->
                         <li class="nav-item">
-                            <a href="{{ route('volunteer.contact_form') }}" class="nav-link active">
+                            <a href="{{ route('volunteer.contact_form') }}" class="nav-link">
                                 <i class="nav-icon fas fa-comments"></i>
                                 <p>Contact / Support</p>
                             </a>
@@ -233,7 +234,8 @@
                                 <li class="breadcrumb-item">
                                     <a href="{{ route('volunteer.home') }}">Home</a>
                                 </li>
-                                <li class="breadcrumb-item active">Contact - Support</li>
+                                <li class="breadcrumb-item">Volunteer Task</li>
+                                <li class="breadcrumb-item active">Assigned Tasks</li>
                             </ol>
                         </div>
                     </div>
@@ -254,99 +256,121 @@
 
             <!-- Main content -->
             <div class="content">
-                <div class="container py-3">
-                    <div class="row mb-3">
-                        <div class="col-md-3">
-                            <div class="dbox w-100 text-center">
-                                <div class="icon d-flex align-items-center justify-content-center">
-                                    <span class="fas fa-location-dot"></span>
-                                </div>
-                                <div class="text">
-                                    <p><span>Address: </span>37 EDSA corner Boni Avenue, Barangka-Ilaya, Mandaluyong City 1550</p>
-                                </div>
+                <div class="container-fluid py-3">
+                    <div class="row">
+                        <div class="card card-primary card-outline">
+                            <div class="card-header">
+                                <h3 class="card-title">Completed Tasks</h3>
                             </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="dbox w-100 text-center">
-                                <div class="icon d-flex align-items-center justify-content-center">
-                                    <span class="fas fa-phone"></span>
-                                </div>
-                                <div class="text">
-                                    <p><span>Phone: </span> (+632) 8790-2300</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="dbox w-100 text-center">
-                                <div class="icon d-flex align-items-center justify-content-center">
-                                    <span class="fas fa-hands-holding-child"></span>
-                                </div>
-                                <div class="text">
-                                    <p><span>Donation: </span>(+632) 8790-2410 / (+632) 8790-2413</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="dbox w-100 text-center">
-                                <div class="icon d-flex align-items-center justify-content-center">
-                                    <span class="fas fa-people-group"></span>
-                                </div>
-                                <div class="text">
-                                    <p><span>Volunteer: </span>(+632) 8790-2373</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                            <div class="card-body">
+                                <table id="example1" class="table table-bordered table-hover table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Type</th>
+                                            <th>Completed Date</th>
+                                            <th>Description</th>
+                                            <th>Hours Worked</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($completedTasks as $task)
+                                        <tr>
+                                            <td>
+                                                @if($task->donation_id)
+                                                Pickup
+                                                @elseif($task->distribution_id)
+                                                Distribution
+                                                @else
+                                                Other
+                                                @endif
+                                            </td>
+                                            <td>{{ $task->completed_at->format('M j, Y') }}</td>
+                                            <td>{{ $task->task_description }}</td>
+                                            <td>{{ $task->hours_worked }} hours</td>
+                                            <td>
+                                                <span class="badge bg-success">Completed</span>
+                                            </td>
+                                            <td>
+                                                <!-- View Button -->
+                                                <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#viewTaskModal{{ $task->id }}">
+                                                    <i class="fas fa-eye"></i> Details
+                                                </button>
+                                            </td>
+                                        </tr>
 
-                    <div class="row no-gutters flex-wrap-reverse shadow-sm">
-                        <div class="col-md-7">
-                            <div class="contact-wrap w-100 p-md-5 p-4">
-                                <h3 class="mb-4">Contact Us</h3>
-                                <form method="POST" id="contactForm" name="contactForm" class="contactForm" action="{{ route('user.submit_contact') }}">
-                                    @csrf
-                                    <div class="row ">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="label" for="name">Full Name</label>
-                                                <input type="text" class="form-control" name="name" id="name" placeholder="Name" required value="{{ $User->volunteer->first_name . ' ' . $User->volunteer->last_name }}">
+                                        <!-- View Task Modal -->
+                                        <div class="modal fade" id="viewTaskModal{{ $task->id }}" tabindex="-1" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">Completed Task Details</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <!-- Proof Image -->
+                                                        @if($task->proof_image)
+                                                        <div class="text-center mb-4">
+                                                            <img src="{{ asset('storage/' . $task->proof_image) }}"
+                                                                alt="Completion Proof"
+                                                                class="img-fluid rounded shadow"
+                                                                style="max-height: 250px;">
+                                                            <p class="text-muted mt-2">Completion Proof</p>
+                                                        </div>
+                                                        @endif
+
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <h5 class="mb-3 border-bottom pb-2">Task Details</h5>
+                                                                <p><strong>Type:</strong>
+                                                                    {{ $task->donation_id ? 'Pickup' : ($task->distribution_id ? 'Distribution' : 'Other') }}
+                                                                </p>
+                                                                <p><strong>Original Date:</strong> {{ $task->activity_date->format('M j, Y') }}</p>
+                                                                <p><strong>Completed On:</strong> {{ $task->completed_at->format('M j, Y h:i A') }}</p>
+                                                                <p><strong>Hours Worked:</strong> {{ $task->hours_worked }}</p>
+                                                                <p><strong>Description:</strong> {{ $task->task_description }}</p>
+                                                            </div>
+
+                                                            <div class="col-md-6">
+                                                                <h5 class="mb-3 border-bottom pb-2">Location Details</h5>
+                                                                @if($task->donation_id && $task->donation)
+                                                                <p><strong>Pickup Address:</strong><br>{{ $task->donation->pickup_address }}</p>
+                                                                <p><strong>Donor Contact:</strong><br>{{ $task->donation->donor->contact ?? 'N/A' }}</p>
+                                                                @elseif($task->distribution_id && $task->distribution && $task->distribution->location)
+                                                                @php
+                                                                $location = $task->distribution->location;
+                                                                $formattedLocation = $location->region === "NCR"
+                                                                ? "{$location->barangay}, {$location->city_municipality}, Metro Manila, Philippines"
+                                                                : "{$location->barangay}, {$location->city_municipality}, {$location->province}, {$location->region}, Philippines";
+                                                                @endphp
+                                                                <p><strong>Distribution Location:</strong><br>{{ $formattedLocation }}</p>
+                                                                @endif
+                                                            </div>
+                                                        </div>
+
+                                                        @if($task->donation_id && $task->donation)
+                                                        <div class="mt-4">
+                                                            <h5 class="border-bottom pb-2">Donation Items</h5>
+                                                            <div class="d-flex flex-wrap gap-2">
+                                                                @foreach($task->donation->donationItems as $item)
+                                                                <span class="badge bg-light text-dark border p-2">
+                                                                    {{ $item->item }} <span class="badge bg-primary ms-1">{{ $item->quantity }}</span>
+                                                                </span>
+                                                                @endforeach
+                                                            </div>
+                                                        </div>
+                                                        @endif
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="label" for="email">Contact </label>
-                                                <input type="text" class="form-control" name="contact" id="contact" placeholder="contact" required value="{{ $User->volunteer->contact}}">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label class="label" for="subject">Email Address</label>
-                                                <input type="email" class="form-control" name="email" id="email" placeholder="Email Address" value="{{ $User->email}}">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label class="label" for="subject">Subject</label>
-                                                <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label class="label" for="#">Message</label>
-                                                <textarea name="message" class="form-control" id="message" cols="30" rows="4" placeholder="Message" required></textarea>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <input type="submit" value="Send Message" class="btn primary_btn">
-                                                <div class="submitting"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                        <div class="col-md-5 d-flex align-items-stretch">
-                            <div class="info-wrap w-100 p-5 contact-banner" style="background-image: url('{{ asset('assets/img/user-contact.jpg') }}');">
+                                        @endforeach
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -370,6 +394,7 @@
     <script src="{{ asset('lib/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <!-- Fontawesome 6 -->
     <script src="{{ asset('lib/fontawesome/all.js') }}"></script>
+    <script src="{{ asset('lib/datatables/datatables.min.js') }}"></script>
     <!-- User JS -->
     <script src="{{ asset('assets/users/js/user.js') }}"></script>
 </body>

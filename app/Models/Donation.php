@@ -44,4 +44,9 @@ class Donation extends Model
     {
         return $this->hasMany(DonationItem::class);
     }
+
+    public function volunteerActivities()
+    {
+        return $this->hasMany(VolunteerActivity::class, 'donation_id');
+    }
 }

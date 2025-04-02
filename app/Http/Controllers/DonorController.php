@@ -220,12 +220,16 @@ class DonorController extends Controller
     {
         $user = Auth::user();
 
-        // Base queries
-        $queryInKind = Donation::where('donor_id', $user->id)
-            ->whereIn('status', ['pending', 'ongoing']); // Only pending & ongoing
+        // Get the donor associated with this user
+        $donor = $user->donor;
+        // Base queries with eager loading and using donor->id
+        $queryInKind = Donation::with(['chapter', 'donationRequest'])
+            ->where('donor_id', $donor->id)
+            ->whereIn('status', ['pending', 'ongoing']);
 
-        $queryCash = CashDonation::where('donor_id', $user->id)
-            ->whereIn('status', ['pending', 'ongoing']); // Only pending & ongoing
+        $queryCash = CashDonation::with(['chapter', 'fundRequest'])
+            ->where('donor_id', $donor->id)
+            ->whereIn('status', ['pending', 'ongoing']);
 
         // Filtering by Type (Request / Quick)
         $type = $request->query('type', 'all');
@@ -244,6 +248,7 @@ class DonorController extends Controller
         } elseif ($donationType === 'cash') {
             $donations = $queryCash->get();
         } else {
+            // Merge both collections
             $donations = $queryInKind->get()->merge($queryCash->get());
         }
 
@@ -261,11 +266,15 @@ class DonorController extends Controller
     {
         $user = Auth::user();
 
-        // Base queries
-        $queryInKind = Donation::where('donor_id', $user->id)
+        // Get the donor associated with this user
+        $donor = $user->donor;
+        // Base queries with eager loading and using donor->id
+        $queryInKind = Donation::with(['chapter', 'donationRequest'])
+            ->where('donor_id', $donor->id)
             ->whereIn('status', ['received', 'distributed', 'unverified']);
 
-        $queryCash = CashDonation::where('donor_id', $user->id)
+        $queryCash = CashDonation::with(['chapter', 'fundRequest'])
+            ->where('donor_id', $donor->id)
             ->whereIn('status', ['received', 'distributed', 'unverified']);
 
         // Filtering by Type (Request / Quick)
@@ -285,10 +294,11 @@ class DonorController extends Controller
         } elseif ($donationType === 'cash') {
             $donations = $queryCash->get();
         } else {
+            // Merge both collections
             $donations = $queryInKind->get()->merge($queryCash->get());
         }
 
-        // Filtering by Status (Received / Distributed / Unverified)
+        // Filtering by Status (Received / Distributed / Unverified / All)
         $status = $request->query('status', 'all');
         if ($status !== 'all') {
             $donations = $donations->where('status', $status);

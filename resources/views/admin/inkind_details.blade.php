@@ -321,6 +321,13 @@
                   <td>:</td>
                   <td>{{ ucfirst($inKindDonation->donation_method) }}</td>
                 </tr>
+                @if(strtolower($inKindDonation->donation_method) === 'pickup')
+                <tr>
+                  <th class="bg-light-custom">Pickup Address</th>
+                  <td>:</td>
+                  <td>{{ $inKindDonation->pickup_address }}</td>
+                </tr>
+                @endif
                 <tr>
                   <th class="bg-light-custom">Donation Date & Time</th>
                   <td>:</td>
@@ -372,7 +379,7 @@
 
               <!-- Proof Image Section -->
               <div class="mt-4 text-center">
-                <div class="card-header custom-image-header text-white">
+                <div class="card-header custom-subheader text-white">
                   <h3 class="mb-0"><i class="fa-solid fa-images"></i> Proof of Donation</h3>
                 </div>
                 <div class="p-3 donation-proof-container">
@@ -381,6 +388,46 @@
                     class="img-fluid donation-proof-image">
                 </div>
               </div>
+
+              <!-- Volunteer Section -->
+              @if($inKindDonation->volunteerActivities()->exists())
+              <div class="mt-4">
+                <div class="card-header custom-subheader text-white">
+                  <h3 class="mb-0"><i class="fa-solid fa-boxes-stacked"></i> Volunteers</h3>
+                </div>
+                <table class="table table-striped table-bordered text-center custom-items-table">
+                  <thead>
+                    <tr>
+                      <th>Image</th>
+                      <th>Full Name</th>
+                      <th>Contact No.</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @foreach($inKindDonation->volunteerActivities as $activity)
+                    <tr>
+                      <td>
+                        <img src="{{ asset('storage/' . $activity->volunteer->user_photo) }}"
+                          alt="Volunteer Photo" class="img-fluid" width="80" height="80">
+                      </td>
+                      <td class="align-middle">{{ $activity->volunteer->first_name }} {{ $activity->volunteer->last_name }}</td>
+                      <td class="align-middle">{{ $activity->volunteer->contact }}</td>
+                      <td class="align-middle">
+                        @if($activity->status === 'accepted')
+                        <span class=" badge bg-success">Accepted</span>
+                        @elseif($activity->status === 'declined')
+                        <span class="badge bg-danger">Declined</span>
+                        @else
+                        <span class="badge bg-warning text-dark">Pending</span>
+                        @endif
+                      </td>
+                    </tr>
+                    @endforeach
+                  </tbody>
+                </table>
+              </div>
+              @endif
 
               <!-- Verify/Decline Buttons -->
               @if(strtolower($inKindDonation->status) === 'pending')
@@ -393,6 +440,23 @@
                 </button>
               </div>
               @endif
+
+              @if($inKindDonation->donation_method === 'pickup' && strtolower($inKindDonation->status) === 'ongoing')
+              @if(!$inKindDonation->volunteerActivities()->whereIn('status', ['pending', 'accepted', 'active'])->exists())
+              <div class="mt-4 d-flex justify-content-end">
+                <button class="btn btn-verify" data-bs-toggle="modal" data-bs-target="#assignVolunteersModal">
+                  Assign Volunteers
+                </button>
+              </div>
+              @endif
+              @elseif($inKindDonation->donation_method === 'drop-off' && strtolower($inKindDonation->status) === 'ongoing')
+              <div class="mt-4 d-flex justify-content-end">
+                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#confirmDropOffModal">
+                  Mark as Received
+                </button>
+              </div>
+              @endif
+
             </div>
           </div>
 
@@ -434,10 +498,72 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-              <form action="#" method="POST" class="d-inline">
+              <form action="{{ route('inkind.donation.decline', $inKindDonation->id) }}" method="POST" class="d-inline">
                 @csrf
                 <button type="submit" class="btn btn-danger">Decline</button>
               </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Assign Volunteer Modal -->
+      <div class="modal fade" id="assignVolunteersModal" tabindex="-1" aria-labelledby="assignVolunteersModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="assignVolunteersModalLabel">Assign Volunteer</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="assignVolunteerForm" action="{{ route('admin.assign.volunteer') }}" method="POST">
+              @csrf
+              <input type="hidden" name="donation_id" value="{{ $inKindDonation->id }}">
+              <div class="modal-body">
+                <div class="mb-3">
+                  <label for="volunteer_id" class="form-label">Select Volunteer</label>
+                  <select class="form-select" id="volunteer_id" name="volunteer_id" required>
+                    <option value="" selected disabled>Choose volunteer</option>
+                    @foreach($availableVolunteers as $volunteer)
+                    <option value="{{ $volunteer->id }}">
+                      {{ $volunteer->first_name }} {{ $volunteer->last_name }}
+                    </option>
+                    @endforeach
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label for="task_description" class="form-label">Task Description</label>
+                  <textarea class="form-control" id="task_description" name="task_description" rows="3" required></textarea>
+                </div>
+                <div class="mb-3">
+                  <label for="activity_date" class="form-label">Activity Date</label>
+                  <input type="date" class="form-control" id="activity_date" name="activity_date" required>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Assign Volunteer</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+
+
+      <!-- Recieve Modal -->
+      <div class="modal fade" id="confirmDropOffModal" tabindex="-1" aria-labelledby="confirmDropOffModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Confirm Drop-off</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              Are you sure you want to mark this donation as received?
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+              <a href="{{ route('admin.confirm-dropoff', $inKindDonation->id) }}" class="btn btn-success">Confirm</a>
             </div>
           </div>
         </div>

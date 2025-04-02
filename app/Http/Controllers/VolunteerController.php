@@ -9,6 +9,7 @@ use App\Models\Event;
 use App\Models\VolunteerActivity;
 use App\Models\Inquiry;
 use Exception;
+use App\Helpers\SmsHelper;
 
 class VolunteerController extends Controller
 {
@@ -16,8 +17,6 @@ class VolunteerController extends Controller
     {
         // Get the authenticated user
         $user = Auth::user();
-
-        // Get the volunteer associated with the authenticated user
         $volunteer = $user->volunteer;
 
         // Check if the volunteer exists
@@ -46,17 +45,117 @@ class VolunteerController extends Controller
         // Pass the data to the view
         return view('users.volunteer.home_volunteer', [
             'assignedTasks' => $assignedTasks->count(),
-            'availableEvents' => Event::count(),
             'totalHoursWorked' => VolunteerActivity::where('volunteer_id', $volunteer->id)
                 ->where('status', 'completed')
                 ->sum('hours_worked'),
-            'calendarEvents' => json_encode($calendarEvents), // Pass calendar events as JSON
+            'PendingTask' => VolunteerActivity::where('volunteer_id', $volunteer->id)
+                ->where('status', 'pending')
+                ->count(), // Add this line for pending tasks count
+            'calendarEvents' => json_encode($calendarEvents),
         ]);
     }
 
     public function showContactForm()
     {
         return view('users.volunteer.contact');
+    }
+
+    public function showAvailableTask()
+    {
+        $user = Auth::user();
+        $volunteer = $user->volunteer;
+
+        // Fetch all pending tasks for the volunteer
+        $pendingTasks = VolunteerActivity::with(['donation', 'distribution'])
+            ->where('volunteer_id', $volunteer->id)
+            ->where('status', 'pending')
+            ->get();
+
+        return view('users.volunteer.available_task', [
+            'pendingTasks' => $pendingTasks
+        ]);
+    }
+
+
+    public function showAssTask()
+    {
+        $user = Auth::user();
+        $volunteer = $user->volunteer;
+
+        $assignedTasks = VolunteerActivity::with(['donation', 'distribution', 'donation.donor', 'donation.donationItems'])
+            ->where('volunteer_id', $volunteer->id)
+            ->where('status', 'accepted')
+            ->orderBy('activity_date', 'asc')
+            ->get();
+
+        return view('users.volunteer.assigned_task', [
+            'assignedTasks' => $assignedTasks
+        ]);
+    }
+
+    public function acceptTask($id)
+    {
+        $task = VolunteerActivity::findOrFail($id);
+        $task->status = 'accepted';
+        $task->save();
+
+        // Send SMS to donor if this is a pickup task
+        if ($task->donation_id) {
+            $donation = $task->donation;
+            $volunteer = $task->volunteer;
+            $chapterName = $donation->chapter->name ?? 'our organization';
+
+            $smsMessage = "Hello {$donation->donor_name}, a volunteer {$volunteer->user->name} " .
+                "has been assigned to pick up your donation on " .
+                ($task->activity_date)->format('M j, Y') . ". " .
+                "Please prepare your items at {$donation->pickup_address}. Thank you!";
+
+            SmsHelper::sendSmsNotification($donation->donor->contact, $smsMessage);
+        }
+
+        return redirect()->back()->with('success', 'Task accepted successfully!');
+    }
+
+    public function declineTask($id)
+    {
+        $task = VolunteerActivity::findOrFail($id);
+        $task->status = 'declined';
+        $task->save();
+
+        return redirect()->back()->with('success', 'Task declined successfully!');
+    }
+
+
+    public function activateTask(Request $request, $id)
+    {
+        $request->validate([
+            // Add any validation rules you need
+        ]);
+
+        $task = VolunteerActivity::findOrFail($id);
+        $task->update([
+            'status' => 'active',
+            'activated_at' => now()
+        ]);
+
+        return redirect()->back()->with('success', 'Task activated successfully!');
+    }
+
+
+    public function showCompletedTasks()
+    {
+        $user = Auth::user();
+        $volunteer = $user->volunteer;
+
+        $completedTasks = VolunteerActivity::with(['donation', 'distribution', 'donation.donor', 'donation.donationItems'])
+            ->where('volunteer_id', $volunteer->id)
+            ->where('status', 'completed')
+            ->orderBy('completed_at', 'desc')
+            ->get();
+
+        return view('users.volunteer.completed_task', [
+            'completedTasks' => $completedTasks
+        ]);
     }
 
     public function showTestimonialForm()

@@ -14,8 +14,9 @@
         rel="stylesheet">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="{{ asset('lib/bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('lib/datatables/datatables.min.css') }}">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{ asset('assets/users/css/donor/contact_form.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/users/css/volunteer/vol_table.css') }}">
 </head>
 
 <!-- Spinner Start -->
@@ -164,7 +165,7 @@
 
                         <!-- Volunteer Activities -->
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="#" class="nav-link active">
                                 <i class="nav-icon fas fa-hand-holding-heart"></i>
                                 <p>
                                     Volunteer Tasks
@@ -173,7 +174,7 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{ route('volunteer.available_task') }}" class="nav-link">
+                                    <a href="{{ route('volunteer.available_task') }}" class="nav-link active">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Available Tasks</p>
                                     </a>
@@ -203,7 +204,7 @@
 
                         <!-- Contact / Support -->
                         <li class="nav-item">
-                            <a href="{{ route('volunteer.contact_form') }}" class="nav-link active">
+                            <a href="{{ route('volunteer.contact_form') }}" class="nav-link">
                                 <i class="nav-icon fas fa-comments"></i>
                                 <p>Contact / Support</p>
                             </a>
@@ -233,7 +234,8 @@
                                 <li class="breadcrumb-item">
                                     <a href="{{ route('volunteer.home') }}">Home</a>
                                 </li>
-                                <li class="breadcrumb-item active">Contact - Support</li>
+                                <li class="breadcrumb-item">Volunteer Task</li>
+                                <li class="breadcrumb-item active">Available Tasks</li>
                             </ol>
                         </div>
                     </div>
@@ -254,99 +256,163 @@
 
             <!-- Main content -->
             <div class="content">
-                <div class="container py-3">
-                    <div class="row mb-3">
-                        <div class="col-md-3">
-                            <div class="dbox w-100 text-center">
-                                <div class="icon d-flex align-items-center justify-content-center">
-                                    <span class="fas fa-location-dot"></span>
-                                </div>
-                                <div class="text">
-                                    <p><span>Address: </span>37 EDSA corner Boni Avenue, Barangka-Ilaya, Mandaluyong City 1550</p>
-                                </div>
+                <div class="container-fluid py-3">
+                    <div class="row">
+                        <div class="card card-primary card-outline">
+                            <div class="card-header">
+                                <h3 class="card-title">Available Task</h3>
                             </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="dbox w-100 text-center">
-                                <div class="icon d-flex align-items-center justify-content-center">
-                                    <span class="fas fa-phone"></span>
-                                </div>
-                                <div class="text">
-                                    <p><span>Phone: </span> (+632) 8790-2300</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="dbox w-100 text-center">
-                                <div class="icon d-flex align-items-center justify-content-center">
-                                    <span class="fas fa-hands-holding-child"></span>
-                                </div>
-                                <div class="text">
-                                    <p><span>Donation: </span>(+632) 8790-2410 / (+632) 8790-2413</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="dbox w-100 text-center">
-                                <div class="icon d-flex align-items-center justify-content-center">
-                                    <span class="fas fa-people-group"></span>
-                                </div>
-                                <div class="text">
-                                    <p><span>Volunteer: </span>(+632) 8790-2373</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                            <div class="card-body">
+                                <table id="example1" class="table table-bordered table-hover table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Type</th>
+                                            <th>Date</th>
+                                            <th>Description</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($pendingTasks as $task)
+                                        <tr>
+                                            <td>
+                                                @if($task->donation_id)
+                                                Pickup
+                                                @elseif($task->distribution_id)
+                                                Distribution
+                                                @else
+                                                Other
+                                                @endif
+                                            </td>
+                                            <td>{{ \Carbon\Carbon::parse($task->activity_date)->format('Y-m-d') }}</td>
+                                            <td>{{ $task->task_description }}</td>
+                                            <td>
+                                                <!-- View Button -->
+                                                <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#viewTaskModal{{ $task->id }}">
+                                                    <i class="fas fa-eye"></i> View
+                                                </button>
 
-                    <div class="row no-gutters flex-wrap-reverse shadow-sm">
-                        <div class="col-md-7">
-                            <div class="contact-wrap w-100 p-md-5 p-4">
-                                <h3 class="mb-4">Contact Us</h3>
-                                <form method="POST" id="contactForm" name="contactForm" class="contactForm" action="{{ route('user.submit_contact') }}">
-                                    @csrf
-                                    <div class="row ">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="label" for="name">Full Name</label>
-                                                <input type="text" class="form-control" name="name" id="name" placeholder="Name" required value="{{ $User->volunteer->first_name . ' ' . $User->volunteer->last_name }}">
+                                                <!-- Decline Button -->
+                                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#declineTaskModal{{ $task->id }}">
+                                                    <i class="fas fa-times"></i> Decline
+                                                </button>
+                                            </td>
+                                        </tr>
+
+                                        <!-- View Task Modal -->
+                                        <div class="modal fade" id="viewTaskModal{{ $task->id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="viewTaskModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="viewTaskModalLabel">Task Details</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <!-- Proof Image (Top Center) -->
+                                                        @if($task->proof_image)
+                                                        <div class="text-center mb-4">
+                                                            <img src="{{ asset('storage/' . $task->proof_image) }}" alt="Task Proof" class="img-fluid rounded" style="max-height: 150px;">
+                                                        </div>
+                                                        @endif
+
+                                                        <!-- Activity Details -->
+                                                        <h5 class="mb-3 border-bottom pb-2">Activity Details</h5>
+                                                        <div class="mb-3">
+                                                            <strong>Type:</strong>
+                                                            @if($task->donation_id)
+                                                            Pickup
+                                                            @elseif($task->distribution_id)
+                                                            Distribution
+                                                            @else
+                                                            Other
+                                                            @endif
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <strong>Date:</strong> {{ $task->activity_date ? \Carbon\Carbon::parse($task->activity_date)->format('M j, Y') : 'N/A' }}
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <strong>Description:</strong> {{ $task->task_description }}
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <strong>Location:</strong>
+                                                            @if($task->donation_id && $task->donation)
+                                                            {{ $task->donation->pickup_address }}
+                                                            @elseif($task->distribution_id && $task->distribution && $task->distribution->location)
+                                                            @php
+                                                            $location = $task->distribution->location;
+                                                            $formattedLocation = $location->region === "NCR"
+                                                            ? "{$location->barangay}, {$location->city_municipality}, Metro Manila, Philippines"
+                                                            : "{$location->barangay}, {$location->city_municipality}, {$location->province}, {$location->region}, Philippines";
+                                                            @endphp
+                                                            {{ $formattedLocation }}
+                                                            @else
+                                                            N/A
+                                                            @endif
+                                                        </div>
+
+                                                        <!-- Donation Details -->
+                                                        @if($task->donation_id && $task->donation)
+                                                        <h5 class="mb-3 border-bottom pb-2">Donation Details</h5>
+                                                        <div class="mb-3">
+                                                            <strong>Donor Name:</strong> {{ $task->donation->donor_name}}
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <strong>Contact:</strong> {{ $task->donation->donor->contact}}
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <strong>Pickup Date & Time:</strong>
+                                                            @if($task->donation->donation_datetime)
+                                                            {{ \Carbon\Carbon::parse($task->donation->donation_datetime)->format('M j, Y h:i A') }}
+                                                            @else
+                                                            N/A
+                                                            @endif
+                                                        </div>
+                                                        @endif
+                                                        <!-- Donation Items -->
+                                                        @if($task->donation_id && $task->donation && $task->donation->donationItems->isNotEmpty())
+                                                        <h5 class="mb-2">Item</h5>
+                                                        <ul class="list-unstyled">
+                                                            @foreach($task->donation->donationItems as $item)
+                                                            <li><strong>{{ $item->item }}</strong> - {{ $item->quantity }}</li>
+                                                            @endforeach
+                                                        </ul>
+                                                        @endif
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                        <form action="{{ route('volunteer.accept_task', $task->id) }}" method="POST">
+                                                            @csrf
+                                                            <button type="submit" class="btn btn-success">Accept Task</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="label" for="email">Contact </label>
-                                                <input type="text" class="form-control" name="contact" id="contact" placeholder="contact" required value="{{ $User->volunteer->contact}}">
+
+                                        <!-- Decline Task Modal -->
+                                        <div class="modal fade" id="declineTaskModal{{ $task->id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="declineTaskModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="declineTaskModalLabel">Decline Task</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body text-center">
+                                                        <p class="mb-1"><strong> Are you sure you want to decline this task</strong>?</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                        <form action="{{ route('volunteer.decline_task', $task->id) }}" method="POST">
+                                                            @csrf
+                                                            <button type="submit" class="btn btn-danger">Confirm Decline</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label class="label" for="subject">Email Address</label>
-                                                <input type="email" class="form-control" name="email" id="email" placeholder="Email Address" value="{{ $User->email}}">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label class="label" for="subject">Subject</label>
-                                                <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label class="label" for="#">Message</label>
-                                                <textarea name="message" class="form-control" id="message" cols="30" rows="4" placeholder="Message" required></textarea>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <input type="submit" value="Send Message" class="btn primary_btn">
-                                                <div class="submitting"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                        <div class="col-md-5 d-flex align-items-stretch">
-                            <div class="info-wrap w-100 p-5 contact-banner" style="background-image: url('{{ asset('assets/img/user-contact.jpg') }}');">
+                                        @endforeach
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -370,6 +436,7 @@
     <script src="{{ asset('lib/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <!-- Fontawesome 6 -->
     <script src="{{ asset('lib/fontawesome/all.js') }}"></script>
+    <script src="{{ asset('lib/datatables/datatables.min.js') }}"></script>
     <!-- User JS -->
     <script src="{{ asset('assets/users/js/user.js') }}"></script>
 </body>

@@ -13,11 +13,11 @@ class VolunteerActivity extends Model
 
     protected $fillable = [
         'volunteer_id',
-        'activity_date', // Added this
+        'donation_id',
+        'distribution_id', // only for distribution activity
+        'activity_date',
         'task_description',
-        'hours_worked',
-        'event_id',
-        'distribution_id',
+        'hours_worked', // total hours worked by the volunteer for that activity
         'status',
         'proof_image',
     ];
@@ -27,10 +27,10 @@ class VolunteerActivity extends Model
         return $this->belongsTo(Volunteer::class, 'volunteer_id');
     }
 
-    // Relationship with Event
-    public function event()
+    // Relationship with Donation
+    public function donation()
     {
-        return $this->belongsTo(Event::class, 'event_id');
+        return $this->belongsTo(Donation::class, 'donation_id');
     }
 
     // Relationship with Distribution
