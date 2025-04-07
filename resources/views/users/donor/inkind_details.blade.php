@@ -322,7 +322,7 @@
                                 <tr>
                                     <th class="bg-light-custom">Donation Date & Time</th>
                                     <td>:</td>
-                                    <td>{{ \Carbon\Carbon::parse($inKindDonation->donation_datetime)->format('F d, Y') }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($inKindDonation->donation_datetime)->format('F d, Y \a\t g:i A') }}</td>
                                 </tr>
                                 <tr>
                                     <th class="bg-light-custom">Status</th>
@@ -331,7 +331,7 @@
                                         <span class="badge bg-{{ 
                         strtolower($inKindDonation->status) == 'pending' ? 'secondary' :
                         (strtolower($inKindDonation->status) == 'received' ? 'success' :
-                        (strtolower($inKindDonation->status) == 'ongoing' ? 'warning' : 'danger')) }}">
+                        (strtolower($inKindDonation->status) == 'ongoing' ? 'warning text-dark' : 'danger')) }}">
                                             {{ ucfirst($inKindDonation->status) }}
                                         </span>
                                     </td>
@@ -379,6 +379,82 @@
                                         class="img-fluid donation-proof-image">
                                 </div>
                             </div>
+                            @if($inKindDonation->donation_method === 'pickup' && $inKindDonation->status === 'ongoing' || $inKindDonation->status === 'received')
+                            <div class="mt-4">
+                                <div class="card-header custom-subheader text-white">
+                                    <h3 class="mb-0"><i class="fa-solid fa-boxes-stacked"></i> Pickup Status</h3>
+                                </div>
+
+                                @if($inKindDonation->status === 'received')
+                                <!-- Received status + Volunteer Info -->
+                                <div class="p-3 text-center bg-success bg-opacity-10 mb-3">
+                                    <i class="fas fa-check-circle text-success me-2"></i>
+                                    <span class="text-dark">
+                                        Your donation has been successfully delivered and received by the chapter. Thank you!
+                                    </span>
+                                </div>
+
+                                @if($volunteerStatus['accepted'])
+                                <!-- Show volunteer who completed the pickup -->
+                                <table class="table table-striped table-bordered text-center custom-items-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Image</th>
+                                            <th>Full Name</th>
+                                            <th>Contact No.</th>
+                                            <th>Pickup Schedule</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <img src="{{ $volunteerStatus['accepted']->volunteer->user_photo ? asset('storage/'.$volunteerStatus['accepted']->volunteer->user_photo) : asset('images/default-avatar.jpg') }}"
+                                                    alt="Volunteer Photo"
+                                                    class="rounded-circle"
+                                                    width="80"
+                                                    height="80">
+                                            </td>
+                                            <td class="align-middle">
+                                                {{ $volunteerStatus['accepted']->volunteer->first_name }}
+                                                {{ $volunteerStatus['accepted']->volunteer->last_name }}
+                                            </td>
+                                            <td class="align-middle">
+                                                {{ $volunteerStatus['accepted']->volunteer->contact }}
+                                            </td>
+                                            <td class="align-middle">
+                                                {{ \Carbon\Carbon::parse($volunteerStatus['accepted']->activity_date)->format('M d, Y h:i A') }}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                @endif
+
+                                @elseif($volunteerStatus['accepted'])
+                                <!-- Ongoing + Accepted Volunteer -->
+                                <table class="table table-striped table-bordered text-center custom-items-table">
+                                    <!-- Same table as above -->
+                                </table>
+
+                                @elseif($volunteerStatus['pending'])
+                                <!-- Pending volunteer content -->
+                                <div class="p-3 text-center bg-warning bg-opacity-10">
+                                    <i class="fas fa-user-clock text-warning me-2"></i>
+                                    <span class="text-dark">
+                                        <strong> Assigned Volunteer:</strong> {{ $volunteerStatus['pending']->volunteer->first_name }} {{ $volunteerStatus['pending']->volunteer->last_name }}
+                                        <strong class="text-danger">(Waiting for confirmation)</strong>
+                                    </span>
+                                </div>
+                                @else
+                                <!-- No volunteer assigned yet -->
+                                <div class="p-3 text-center bg-info bg-opacity-10">
+                                    <i class="fas fa-info-circle text-info me-2"></i>
+                                    <span class="text-dark">
+                                        Your donation is verified. We're in the process of assigning a volunteer.
+                                    </span>
+                                </div>
+                                @endif
+                            </div>
+                            @endif
                         </div>
                     </div>
                 </div>

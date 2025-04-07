@@ -53,7 +53,7 @@ class PooledResourceSeeder extends Seeder
                             'item' => $item,
                             'quantity' => rand(10, 500), // Random quantity
                             'cause' => $cause, // Assign the cause
-                            'status' => 'no_expiration', // Assign status
+                            'status' => 'No Expiration', // Assign status
                         ]);
                     }
                 }
@@ -98,7 +98,7 @@ class PooledResourceSeeder extends Seeder
             'item' => $item,
             'quantity' => rand(10, 500), // Random quantity
             'cause' => $cause, // Assign the cause
-            'status' => 'near_expired', // Assign status
+            'status' => 'Near Expired', // Assign status
         ]);
     }
 }

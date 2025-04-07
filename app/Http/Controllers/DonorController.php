@@ -315,7 +315,19 @@ class DonorController extends Controller
 
     public function showInKindDonationDetails($id)
     {
-        $inKindDonation = Donation::with('donationItems')->findOrFail($id);
-        return view('users.donor.inkind_details', compact('inKindDonation'));
+        $inKindDonation = Donation::with(['donationItems', 'volunteerActivities.volunteer'])
+            ->findOrFail($id);
+
+        // ALWAYS initialize volunteer status (even for received/completed donations)
+        $volunteerStatus = [
+            'accepted' => $inKindDonation->volunteerActivities
+                ->where('status', 'accepted')
+                ->first(),
+            'pending' => $inKindDonation->volunteerActivities
+                ->where('status', 'pending')
+                ->first()
+        ];
+
+        return view('users.donor.inkind_details', compact('inKindDonation', 'volunteerStatus'));
     }
 }

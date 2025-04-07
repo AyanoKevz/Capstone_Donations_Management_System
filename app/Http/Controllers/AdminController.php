@@ -923,14 +923,84 @@ class AdminController extends Controller
     }
 
 
-    public function confirmDropOff($id)
+    public function receivedInKindDonation(Request $request, $id)
     {
-        $donation = Donation::findOrFail($id);
-        $donation->update(['status' => 'received']);
+        $donation = Donation::with(['donationItems', 'chapter'])->findOrFail($id);
 
-        return back()->with('success', 'Donation marked as received.');
+        DB::transaction(function () use ($donation) {
+            // Update donation status
+            $donation->update([
+                'status' => 'received',
+                'received_at' => now()
+            ]);
+
+            // Handle volunteer activity for pickup donations
+            if ($donation->donation_method === 'pickup') {
+                $activity = $donation->volunteerActivities()
+                    ->where('status', 'ongoing')
+                    ->first();
+
+                if ($activity) {
+                    $activityDate = \Carbon\Carbon::parse($activity->activity_date);
+                    $hoursWorked = $activityDate->diffInHours(now());
+
+                    $activity->update([
+                        'status' => 'completed',
+                        'hours_worked' => $hoursWorked,
+                        'completed_at' => now()
+                    ]);
+                }
+            }
+
+            // Handle quick donations (add to pooled resources)
+            if ($donation->donation_request_id === null) {
+                foreach ($donation->donationItems as $item) {
+                    PooledResource::updateOrCreate(
+                        [
+                            'chapter_id' => $donation->chapter_id,
+                            'item' => $item->item,
+                            'cause' => $donation->cause
+                        ],
+                        [
+                            'quantity' => DB::raw("quantity + {$item->quantity}"),
+                            'status' => 'Good',
+                            'updated_at' => now()
+                        ]
+                    );
+                }
+            }
+        });
+
+        return redirect()->back()->with('success', 'Donation successfully marked as received!');
     }
 
+    public function markCashReceived(Request $request, $id)
+    {
+        $cashDonation = CashDonation::with('chapter')->findOrFail($id);
+
+        DB::transaction(function () use ($cashDonation) {
+            // Update donation status
+            $cashDonation->update([
+                'status' => 'received',
+                'payment_status' => 'completed'
+            ]);
+
+            // Add to pooled funds if not from a request
+            if ($cashDonation->fund_request_id === null) {
+                PooledFund::updateOrCreate(
+                    [
+                        'chapter_id' => $cashDonation->chapter_id,
+                        'cause' => $cashDonation->cause
+                    ],
+                    [
+                        'total_cash' => DB::raw("total_cash + {$cashDonation->amount}")
+                    ]
+                );
+            }
+        });
+
+        return redirect()->back()->with('success', 'Cash donation marked as received!');
+    }
 
     public function verifyInKindDonation($donationId)
     {
@@ -1046,43 +1116,6 @@ class AdminController extends Controller
         return view('admin.quickDonations', compact('cashDonations', 'inKindDonations', 'statusFilter', 'typeFilter'));
     }
 
-
-    public function recieveDonations(Request $request)
-    {
-        // Get the authenticated admin
-        $admin = Auth::guard('admin')->user();
-        $chapterId = $admin->chapter_id;
-
-        // Fetch only received cash donations for the chapter
-        $cashDonations = CashDonation::where('chapter_id', $chapterId)
-            ->where('status', 'Received') // Only include received donations
-            ->when($request->typeFilter === 'cash' || $request->typeFilter === 'all', function ($query) use ($request) {
-                return $query
-                    ->when($request->statusFilter === 'quick', fn($query) => $query->whereNull('fund_request_id'))
-                    ->when($request->statusFilter === 'request', fn($query) => $query->whereNotNull('fund_request_id'));
-            })
-            ->get();
-
-        // Fetch only received in-kind donations for the chapter
-        $inKindDonations = Donation::where('chapter_id', $chapterId)
-            ->where('status', 'Received') // Only include received donations
-            ->when($request->typeFilter === 'in-kind' || $request->typeFilter === 'all', function ($query) use ($request) {
-                return $query
-                    ->when($request->statusFilter === 'quick', fn($query) => $query->whereNull('donation_request_id'))
-                    ->when($request->statusFilter === 'request', fn($query) => $query->whereNotNull('donation_request_id'));
-            })
-            ->get();
-
-        // Pass data to the view
-        return view('admin.received_donation', [
-            'cashDonations' => $cashDonations,
-            'inKindDonations' => $inKindDonations,
-            'typeFilter' => $request->typeFilter ?? 'all',
-            'statusFilter' => $request->statusFilter ?? '',
-        ]);
-    }
-
-
     public function declineCashDonation($cashDonationId)
     {
         $cashDonation = CashDonation::find($cashDonationId);
@@ -1149,6 +1182,42 @@ class AdminController extends Controller
             'pooledResources' => $pooledResources,
             'pooledFund' => $pooledFund ? $pooledFund->total_cash : 0,
             'selectedCause' => $cause,
+        ]);
+    }
+
+
+    public function recievedDonations(Request $request)
+    {
+        // Get the authenticated admin
+        $admin = Auth::guard('admin')->user();
+        $chapterId = $admin->chapter_id;
+
+        // Fetch only received cash donations for the chapter
+        $cashDonations = CashDonation::where('chapter_id', $chapterId)
+            ->where('status', 'Received') // Only include received donations
+            ->when($request->typeFilter === 'cash' || $request->typeFilter === 'all', function ($query) use ($request) {
+                return $query
+                    ->when($request->statusFilter === 'quick', fn($query) => $query->whereNull('fund_request_id'))
+                    ->when($request->statusFilter === 'request', fn($query) => $query->whereNotNull('fund_request_id'));
+            })
+            ->get();
+
+        // Fetch only received in-kind donations for the chapter
+        $inKindDonations = Donation::where('chapter_id', $chapterId)
+            ->where('status', 'Received') // Only include received donations
+            ->when($request->typeFilter === 'in-kind' || $request->typeFilter === 'all', function ($query) use ($request) {
+                return $query
+                    ->when($request->statusFilter === 'quick', fn($query) => $query->whereNull('donation_request_id'))
+                    ->when($request->statusFilter === 'request', fn($query) => $query->whereNotNull('donation_request_id'));
+            })
+            ->get();
+
+        // Pass data to the view
+        return view('admin.received_donation', [
+            'cashDonations' => $cashDonations,
+            'inKindDonations' => $inKindDonations,
+            'typeFilter' => $request->typeFilter ?? 'all',
+            'statusFilter' => $request->statusFilter ?? '',
         ]);
     }
 }

@@ -90,7 +90,7 @@ return new class extends Migration {
                 'Feeding Program',
                 'General'
             ]);
-            $table->enum('status', ['good', 'near_expired', 'expired', 'no_expiration'])->default('good');
+            $table->enum('status', ['Good', 'Near Expired', 'Expired', 'No Expiration'])->default('good');
             $table->timestamps();
         });
 

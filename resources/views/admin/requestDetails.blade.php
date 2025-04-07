@@ -319,7 +319,7 @@
                         <th width="30%">Urgency</th>
                         <td width="2%">:</td>
                         <td>
-                          <span class="badge bg-{{ $request->urgency == 'Critical' ? 'danger' : 'warning' }}">
+                          <span class="badge bg-{{ $request->urgency == 'Critical' ? 'danger' : 'warning text-dark' }}">
                             {{ $request->urgency }}
                           </span>
                         </td>
@@ -494,7 +494,7 @@
                     <thead>
                       <tr>
                         <th>Name</th>
-                        <th>Method</th>
+                        <th>Donation Method</th>
                         @if($isCashRequest)
                         <th>Amount</th>
                         {{-- Show "Payment Method" column only if any donation is online --}}
@@ -514,14 +514,14 @@
                       <tr>
                         <td>{{ $cashDonation->donor_name }}</td>
                         <td>{{ ucfirst($cashDonation->donation_method) }}</td>
-                        <td>₱{{ number_format($cashDonation->amount, 2) }}</td>
+                        <td class="text-success">₱{{ number_format($cashDonation->amount, 2) }}</td>
                         {{-- Show payment method only if donation method is online --}}
                         @if($cashDonations->contains('donation_method', 'online'))
                         <td>
                           @if($cashDonation->donation_method == 'online')
-                          {{ $cashDonation->payment_method }}
+                          {{ ucfirst($cashDonation->payment_method) }}
                           @else
-                          N/A
+                          Not Online
                           @endif
                         </td>
                         @endif

@@ -44,7 +44,7 @@ class PooledResourceFactory extends Factory
         $hasExpiration = in_array($item, $items['Basic Needs']) || in_array($item, $items['Medical Supplies']);
 
         // Assign status based on whether the item has an expiration date
-        $status = $hasExpiration ? $this->faker->randomElement(['good', 'near_expired']) : 'no_expiration';
+        $status = $hasExpiration ? $this->faker->randomElement(['good', 'Near Expired']) : 'No Expiration';
 
         return [
             'item' => $item,

@@ -267,7 +267,7 @@
                                     <thead>
                                         <tr>
                                             <th>Type</th>
-                                            <th>Date</th>
+                                            <th>Actvity Date</th>
                                             <th>Description</th>
                                             <th>Action</th>
                                         </tr>
@@ -284,7 +284,7 @@
                                                 Other
                                                 @endif
                                             </td>
-                                            <td>{{ \Carbon\Carbon::parse($task->activity_date)->format('Y-m-d') }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($task->activity_date)->format('F j, Y') }}</td>
                                             <td>{{ $task->task_description }}</td>
                                             <td>
                                                 <!-- View Button -->
@@ -301,88 +301,148 @@
 
                                         <!-- View Task Modal -->
                                         <div class="modal fade" id="viewTaskModal{{ $task->id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="viewTaskModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog">
+                                            <div class="modal-dialog modal-lg">
                                                 <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="viewTaskModalLabel">Task Details</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    <div class="modal-header bg-primary text-white">
+                                                        <h5 class="modal-title" id="viewTaskModalLabel">
+                                                            <i class="fas fa-tasks me-2"></i>Task Details
+                                                        </h5>
+                                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
+
                                                     <div class="modal-body">
-                                                        <!-- Proof Image (Top Center) -->
+                                                        <!-- Proof Image Section -->
                                                         @if($task->proof_image)
                                                         <div class="text-center mb-4">
-                                                            <img src="{{ asset('storage/' . $task->proof_image) }}" alt="Task Proof" class="img-fluid rounded" style="max-height: 150px;">
+                                                            <img src="{{ asset('storage/' . $task->proof_image) }}" alt="Task Proof" class="img-thumbnail" style="max-height: 200px; object-fit: cover;">
+                                                            <p class="text-muted mt-2 small">Task Image</p>
                                                         </div>
                                                         @endif
 
-                                                        <!-- Activity Details -->
-                                                        <h5 class="mb-3 border-bottom pb-2">Activity Details</h5>
-                                                        <div class="mb-3">
-                                                            <strong>Type:</strong>
-                                                            @if($task->donation_id)
-                                                            Pickup
-                                                            @elseif($task->distribution_id)
-                                                            Distribution
-                                                            @else
-                                                            Other
-                                                            @endif
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <strong>Date:</strong> {{ $task->activity_date ? \Carbon\Carbon::parse($task->activity_date)->format('M j, Y') : 'N/A' }}
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <strong>Description:</strong> {{ $task->task_description }}
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <strong>Location:</strong>
+                                                        <div class="row g-3">
+                                                            <!-- Activity Details Column -->
+                                                            <div class="col-md-6">
+                                                                <div class="card h-100">
+                                                                    <div class="card-header bg-light">
+                                                                        <h6 class="mb-0">
+                                                                            <i class="fas fa-info-circle me-2"></i>Activity Details
+                                                                        </h6>
+                                                                    </div>
+                                                                    <div class="card-body">
+                                                                        <ul class="list-group list-group-flush">
+                                                                            <li class="list-group-item d-flex justify-content-between align-items-start">
+                                                                                <div class="ms-2 me-auto">
+                                                                                    <div class="fw-bold">Type</div>
+                                                                                    @if($task->donation_id)
+                                                                                    <span class="badge bg-info text-dark">Pickup</span>
+                                                                                    @elseif($task->distribution_id)
+                                                                                    <span class="badge bg-success">Distribution</span>
+                                                                                    @else
+                                                                                    <span class="badge bg-secondary">Other</span>
+                                                                                    @endif
+                                                                                </div>
+                                                                            </li>
+                                                                            <li class="list-group-item">
+                                                                                <div class="fw-bold">Date</div>
+                                                                                <div>{{ $task->activity_date ? \Carbon\Carbon::parse($task->activity_date)->format('M j, Y') : 'N/A' }}</div>
+                                                                            </li>
+                                                                            <li class="list-group-item">
+                                                                                <div class="fw-bold">Description</div>
+                                                                                <div>{{ $task->task_description }}</div>
+                                                                            </li>
+                                                                            <li class="list-group-item">
+                                                                                <div class="fw-bold">Location</div>
+                                                                                <div>
+                                                                                    @if($task->donation_id && $task->donation)
+                                                                                    {{ $task->donation->pickup_address }}
+                                                                                    @elseif($task->distribution_id && $task->distribution && $task->distribution->location)
+                                                                                    @php
+                                                                                    $location = $task->distribution->location;
+                                                                                    $formattedLocation = $location->region === "NCR"
+                                                                                    ? "{$location->barangay}, {$location->city_municipality}, Metro Manila, Philippines"
+                                                                                    : "{$location->barangay}, {$location->city_municipality}, {$location->province}, {$location->region}, Philippines";
+                                                                                    @endphp
+                                                                                    {{ $formattedLocation }}
+                                                                                    @else
+                                                                                    N/A
+                                                                                    @endif
+                                                                                </div>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <!-- Donation Details Column -->
                                                             @if($task->donation_id && $task->donation)
-                                                            {{ $task->donation->pickup_address }}
-                                                            @elseif($task->distribution_id && $task->distribution && $task->distribution->location)
-                                                            @php
-                                                            $location = $task->distribution->location;
-                                                            $formattedLocation = $location->region === "NCR"
-                                                            ? "{$location->barangay}, {$location->city_municipality}, Metro Manila, Philippines"
-                                                            : "{$location->barangay}, {$location->city_municipality}, {$location->province}, {$location->region}, Philippines";
-                                                            @endphp
-                                                            {{ $formattedLocation }}
-                                                            @else
-                                                            N/A
+                                                            <div class="col-md-6">
+                                                                <div class="card h-100">
+                                                                    <div class="card-header bg-light">
+                                                                        <h6 class="mb-0">
+                                                                            <i class="fas fa-hand-holding-heart me-2"></i>Donation Details
+                                                                        </h6>
+                                                                    </div>
+                                                                    <div class="card-body">
+                                                                        <ul class="list-group list-group-flush">
+                                                                            <li class="list-group-item">
+                                                                                <div class="fw-bold">Donor Name</div>
+                                                                                <div>{{ $task->donation->donor_name }}</div>
+                                                                            </li>
+                                                                            <li class="list-group-item">
+                                                                                <div class="fw-bold">Contact</div>
+                                                                                <div>{{ $task->donation->donor->contact }}</div>
+                                                                            </li>
+                                                                            <li class="list-group-item">
+                                                                                <div class="fw-bold">Pickup Date & Time</div>
+                                                                                <div>
+                                                                                    @if($task->donation->donation_datetime)
+                                                                                    {{ \Carbon\Carbon::parse($task->donation->donation_datetime)->format('M j, Y h:i A') }}
+                                                                                    @else
+                                                                                    N/A
+                                                                                    @endif
+                                                                                </div>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                             @endif
                                                         </div>
 
-                                                        <!-- Donation Details -->
-                                                        @if($task->donation_id && $task->donation)
-                                                        <h5 class="mb-3 border-bottom pb-2">Donation Details</h5>
-                                                        <div class="mb-3">
-                                                            <strong>Donor Name:</strong> {{ $task->donation->donor_name}}
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <strong>Contact:</strong> {{ $task->donation->donor->contact}}
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <strong>Pickup Date & Time:</strong>
-                                                            @if($task->donation->donation_datetime)
-                                                            {{ \Carbon\Carbon::parse($task->donation->donation_datetime)->format('M j, Y h:i A') }}
-                                                            @else
-                                                            N/A
-                                                            @endif
-                                                        </div>
-                                                        @endif
-                                                        <!-- Donation Items -->
+                                                        <!-- Donation Items Section - Compact Layout -->
                                                         @if($task->donation_id && $task->donation && $task->donation->donationItems->isNotEmpty())
-                                                        <h5 class="mb-2">Item</h5>
-                                                        <ul class="list-unstyled">
-                                                            @foreach($task->donation->donationItems as $item)
-                                                            <li><strong>{{ $item->item }}</strong> - {{ $item->quantity }}</li>
-                                                            @endforeach
-                                                        </ul>
+                                                        <div class="card mt-3 border-0 shadow-sm">
+                                                            <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                                                                <h6 class="mb-0">
+                                                                    <i class="fas fa-boxes me-2"></i>Donation Items
+                                                                </h6>
+                                                                <span class="text-muted small">(Item • Quantity)</span>
+                                                            </div>
+                                                            <div class="card-body p-3">
+                                                                <div class="row row-cols-1 row-cols-md-2 g-2" style="max-height: 200px; overflow-y: auto;">
+                                                                    @foreach($task->donation->donationItems as $item)
+                                                                    <div class="col">
+                                                                        <div class="border rounded p-2 h-100 d-flex justify-content-between align-items-center">
+                                                                            <span class="text-truncate">{{ $item->item }}</span>
+                                                                            <span class="badge bg-primary rounded-pill ms-2">{{ $item->quantity }}</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    @endforeach
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                         @endif
                                                     </div>
+
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                                            <i class="fas fa-times me-1"></i> Close
+                                                        </button>
                                                         <form action="{{ route('volunteer.accept_task', $task->id) }}" method="POST">
                                                             @csrf
-                                                            <button type="submit" class="btn btn-success">Accept Task</button>
+                                                            <button type="submit" class="btn btn-success">
+                                                                <i class="fas fa-check-circle me-1"></i> Accept Task
+                                                            </button>
                                                         </form>
                                                     </div>
                                                 </div>

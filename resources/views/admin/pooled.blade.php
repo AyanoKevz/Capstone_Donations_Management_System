@@ -340,7 +340,7 @@
 
           <div class="card card-primary card-outline">
             <div class="card-header">
-              <h3 class="card-title">Pooled Resources</h3>
+              <h3 class="card-title">Pooled Resources for {{ $selectedCause }}</h3>
             </div>
             <div class="card-body">
               <table id="example1" class="table table-bordered table-hover table-striped pooledTable ">
@@ -356,7 +356,7 @@
                   <tr>
                     <td>{{ $resource->item }}</td>
                     <td>{{ $resource->quantity }}</td>
-                    <td class="{{ $resource->status === 'near_expired' ? 'text-danger fw-bold' : 'text-success fw-bold' }}">
+                    <td class="{{ $resource->status === 'Near Expired' ? 'text-danger fw-bold' : 'text-success fw-bold' }}">
                       {{ $resource->status ?? 'Good' }}
                     </td>
                   </tr>

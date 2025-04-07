@@ -366,8 +366,15 @@
               @endif
 
               <!-- Verify/Decline Buttons -->
-              @if($cashDonation->status === 'pending')
-              <div class=" mt-4 d-flex justify-content-end">
+              @if($cashDonation->status === 'ongoing')
+              <div class="mt-4 d-flex justify-content-end">
+                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#confirmCashReceivedModal">
+                  <i class="fas fa-check-circle me-2"></i> Mark as Received
+                </button>
+              </div>
+              @elseif($cashDonation->status === 'pending')
+              <!-- Existing verify/decline buttons -->
+              <div class="mt-4 d-flex justify-content-end">
                 <button type="button" class="btn btn-verify mx-2" data-bs-toggle="modal" data-bs-target="#verifyCashModal">
                   <i class="fas fa-check-circle"></i> Verify
                 </button>
@@ -376,6 +383,7 @@
                 </button>
               </div>
               @endif
+
             </div>
           </div>
         </div>
@@ -423,6 +431,29 @@
                 <button type="submit" class="btn btn-danger">Decline</button>
               </form>
             </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cash Received Confirmation Modal -->
+      <div class="modal fade" id="confirmCashReceivedModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <form action="{{ route('admin.cash.mark-received', $cashDonation->id) }}" method="POST">
+              @csrf
+              <div class="modal-header">
+                <h5 class="modal-title">Confirm Cash Received</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <p>Confirm this cash donation has been successfully received?</p>
+                <p class="fw-bold">Amount: {{ number_format($cashDonation->amount, 2) }}</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-success">Confirm Received</button>
+              </div>
+            </form>
           </div>
         </div>
       </div>

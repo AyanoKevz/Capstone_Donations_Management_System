@@ -379,7 +379,7 @@
                                                 <span class="badge bg-{{
                                                                 $donation->status === 'pending' ? 'secondary' :
                                                                 ($donation->status === 'received' ? 'success' :
-                                                                ($donation->status === 'ongoing' ? 'warning' : 'danger'))
+                                                                ($donation->status === 'ongoing' ? 'warning text-dark' : 'danger'))
                                                             }}">
                                                     {{ ucfirst($donation->status) }}
                                                 </span>

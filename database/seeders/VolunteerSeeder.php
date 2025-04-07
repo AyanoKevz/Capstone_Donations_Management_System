@@ -47,7 +47,7 @@ class VolunteerSeeder extends Seeder
         foreach ($chapters as $chapter) {
             foreach ($prefServices as $service) {
                 for ($i = 1; $i <= 2; $i++) { // Create 2 accounts per service per chapter
-                    $username = 'volunteer_' . Str::lower($chapter->chapter_name) . '_' . Str::slug($service, '_') . '_' . $i;
+                    $username = 'volunteer_' . Str::lower($chapter->chapter_name) . '_' . $i;
 
                     // Insert user account
                     $userId = DB::table('user_account')->insertGetId([

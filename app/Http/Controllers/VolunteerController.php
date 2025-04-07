@@ -82,9 +82,15 @@ class VolunteerController extends Controller
         $user = Auth::user();
         $volunteer = $user->volunteer;
 
-        $assignedTasks = VolunteerActivity::with(['donation', 'distribution', 'donation.donor', 'donation.donationItems'])
-            ->where('volunteer_id', $volunteer->id)
+        // Auto-activate (set to ongoing) tasks where date = today
+        VolunteerActivity::where('volunteer_id', $volunteer->id)
             ->where('status', 'accepted')
+            ->whereDate('activity_date', now()->toDateString())
+            ->update(['status' => 'ongoing']); // Changed to 'ongoing'
+
+        $assignedTasks = VolunteerActivity::with(['donation', 'distribution'])
+            ->where('volunteer_id', $volunteer->id)
+            ->whereIn('status', ['accepted', 'ongoing']) // Updated here too
             ->orderBy('activity_date', 'asc')
             ->get();
 
@@ -105,12 +111,18 @@ class VolunteerController extends Controller
             $volunteer = $task->volunteer;
             $chapterName = $donation->chapter->name ?? 'our organization';
 
+            // Parse the activity_date as Carbon before formatting
+            $pickupDate = \Carbon\Carbon::parse($task->activity_date)->format('M j, Y');
+
             $smsMessage = "Hello {$donation->donor_name}, a volunteer {$volunteer->user->name} " .
                 "has been assigned to pick up your donation on " .
-                ($task->activity_date)->format('M j, Y') . ". " .
+                $pickupDate . ". " .
                 "Please prepare your items at {$donation->pickup_address}. Thank you!";
 
-            SmsHelper::sendSmsNotification($donation->donor->contact, $smsMessage);
+            // Only send SMS if donor contact exists
+            if ($donation->donor && $donation->donor->contact) {
+                SmsHelper::sendSmsNotification($donation->donor->contact, $smsMessage);
+            }
         }
 
         return redirect()->back()->with('success', 'Task accepted successfully!');
@@ -125,23 +137,6 @@ class VolunteerController extends Controller
         return redirect()->back()->with('success', 'Task declined successfully!');
     }
 
-
-    public function activateTask(Request $request, $id)
-    {
-        $request->validate([
-            // Add any validation rules you need
-        ]);
-
-        $task = VolunteerActivity::findOrFail($id);
-        $task->update([
-            'status' => 'active',
-            'activated_at' => now()
-        ]);
-
-        return redirect()->back()->with('success', 'Task activated successfully!');
-    }
-
-
     public function showCompletedTasks()
     {
         $user = Auth::user();
@@ -150,7 +145,7 @@ class VolunteerController extends Controller
         $completedTasks = VolunteerActivity::with(['donation', 'distribution', 'donation.donor', 'donation.donationItems'])
             ->where('volunteer_id', $volunteer->id)
             ->where('status', 'completed')
-            ->orderBy('completed_at', 'desc')
+            ->orderBy('updated_at', 'desc')
             ->get();
 
         return view('users.volunteer.completed_task', [

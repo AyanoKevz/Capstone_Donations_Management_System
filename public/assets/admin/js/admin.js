@@ -408,14 +408,6 @@ if ($("#news_form_update").length > 0) {
             });
         }
 
-  document.getElementById('itemFilter').addEventListener('change', function() {
-        const selectedItem = this.value;
-        const urlParams = new URLSearchParams(window.location.search);
-        urlParams.set('item', selectedItem);
-        window.location.search = urlParams.toString();
-    });
-
-
 $('#file-input').change(function (event) {
         const file = event.target.files[0];
         if (file) {

@@ -165,7 +165,7 @@
 
                         <!-- Volunteer Activities -->
                         <li class="nav-item">
-                            <a href="#" class="nav-link active">
+                            <a href="#" class="nav-link ">
                                 <i class="nav-icon fas fa-hand-holding-heart"></i>
                                 <p>
                                     Volunteer Tasks
@@ -234,8 +234,7 @@
                                 <li class="breadcrumb-item">
                                     <a href="{{ route('volunteer.home') }}">Home</a>
                                 </li>
-                                <li class="breadcrumb-item">Volunteer Task</li>
-                                <li class="breadcrumb-item active">Assigned Tasks</li>
+                                <li class="breadcrumb-item active">Volunteer History</li>
                             </ol>
                         </div>
                     </div>
@@ -286,7 +285,7 @@
                                                 Other
                                                 @endif
                                             </td>
-                                            <td>{{ $task->completed_at->format('M j, Y') }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($task->updated_at)->format('F j, Y') }}</td>
                                             <td>{{ $task->task_description }}</td>
                                             <td>{{ $task->hours_worked }} hours</td>
                                             <td>
@@ -304,9 +303,11 @@
                                         <div class="modal fade" id="viewTaskModal{{ $task->id }}" tabindex="-1" aria-hidden="true">
                                             <div class="modal-dialog modal-lg">
                                                 <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title">Completed Task Details</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    <div class="modal-header bg-primary text-white">
+                                                        <h5 class="modal-title">
+                                                            <i class="fas fa-check-circle me-2"></i>Completed Task Details
+                                                        </h5>
+                                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
                                                         <!-- Proof Image -->
@@ -314,60 +315,124 @@
                                                         <div class="text-center mb-4">
                                                             <img src="{{ asset('storage/' . $task->proof_image) }}"
                                                                 alt="Completion Proof"
-                                                                class="img-fluid rounded shadow"
-                                                                style="max-height: 250px;">
-                                                            <p class="text-muted mt-2">Completion Proof</p>
+                                                                class="img-fluid rounded-3 shadow-sm"
+                                                                style="max-height: 250px; object-fit: cover;">
+                                                            <p class="text-muted mt-2 small"><i class="fas fa-camera me-1"></i>Completion Proof</p>
                                                         </div>
                                                         @endif
 
-                                                        <div class="row">
+                                                        <div class="row g-3">
+                                                            <!-- Task Details Column -->
                                                             <div class="col-md-6">
-                                                                <h5 class="mb-3 border-bottom pb-2">Task Details</h5>
-                                                                <p><strong>Type:</strong>
-                                                                    {{ $task->donation_id ? 'Pickup' : ($task->distribution_id ? 'Distribution' : 'Other') }}
-                                                                </p>
-                                                                <p><strong>Original Date:</strong> {{ $task->activity_date->format('M j, Y') }}</p>
-                                                                <p><strong>Completed On:</strong> {{ $task->completed_at->format('M j, Y h:i A') }}</p>
-                                                                <p><strong>Hours Worked:</strong> {{ $task->hours_worked }}</p>
-                                                                <p><strong>Description:</strong> {{ $task->task_description }}</p>
+                                                                <div class="card h-100 border-0 shadow-sm">
+                                                                    <div class="card-header bg-light">
+                                                                        <h6 class="mb-0">
+                                                                            <i class="fas fa-clipboard-list me-2"></i>Task Details
+                                                                        </h6>
+                                                                    </div>
+                                                                    <div class="card-body">
+                                                                        <ul class="list-group list-group-flush">
+                                                                            <li class="list-group-item d-flex justify-content-between">
+                                                                                <span class="fw-bold">Type:</span>
+                                                                                <span class="badge {{ $task->donation_id ? 'bg-info' : ($task->distribution_id ? 'bg-success' : 'bg-secondary') }}">
+                                                                                    {{ $task->donation_id ? 'Pickup' : ($task->distribution_id ? 'Distribution' : 'Other') }}
+                                                                                </span>
+                                                                            </li>
+                                                                            <li class="list-group-item d-flex justify-content-between">
+                                                                                <span class="fw-bold">Original Date:</span>
+                                                                                <span>{{ \Carbon\Carbon::parse($task->activity_date)->format('F j, Y') }}</span>
+                                                                            </li>
+                                                                            <li class="list-group-item d-flex justify-content-between">
+                                                                                <span class="fw-bold">Completed On:</span>
+                                                                                <span>{{ \Carbon\Carbon::parse($task->updated_at)->format('F j, Y') }}</span>
+                                                                            </li>
+                                                                            <li class="list-group-item d-flex justify-content-between">
+                                                                                <span class="fw-bold">Hours Worked:</span>
+                                                                                <span class="badge bg-warning text-dark">{{ $task->hours_worked }}</span>
+                                                                            </li>
+                                                                            <li class="list-group-item">
+                                                                                <div class="fw-bold">Description:</div>
+                                                                                <div class="mt-1">{{ $task->task_description }}</div>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
                                                             </div>
 
+                                                            <!-- Location Details Column -->
                                                             <div class="col-md-6">
-                                                                <h5 class="mb-3 border-bottom pb-2">Location Details</h5>
-                                                                @if($task->donation_id && $task->donation)
-                                                                <p><strong>Pickup Address:</strong><br>{{ $task->donation->pickup_address }}</p>
-                                                                <p><strong>Donor Contact:</strong><br>{{ $task->donation->donor->contact ?? 'N/A' }}</p>
-                                                                @elseif($task->distribution_id && $task->distribution && $task->distribution->location)
-                                                                @php
-                                                                $location = $task->distribution->location;
-                                                                $formattedLocation = $location->region === "NCR"
-                                                                ? "{$location->barangay}, {$location->city_municipality}, Metro Manila, Philippines"
-                                                                : "{$location->barangay}, {$location->city_municipality}, {$location->province}, {$location->region}, Philippines";
-                                                                @endphp
-                                                                <p><strong>Distribution Location:</strong><br>{{ $formattedLocation }}</p>
-                                                                @endif
+                                                                <div class="card h-100 border-0 shadow-sm">
+                                                                    <div class="card-header bg-light">
+                                                                        <h6 class="mb-0">
+                                                                            <i class="fas fa-map-marker-alt me-2"></i>Location Details
+                                                                        </h6>
+                                                                    </div>
+                                                                    <div class="card-body">
+                                                                        @if($task->donation_id && $task->donation)
+                                                                        <ul class="list-group list-group-flush">
+                                                                            <li class="list-group-item">
+                                                                                <div class="fw-bold">Pickup Address:</div>
+                                                                                <div class="mt-1">{{ $task->donation->pickup_address }}</div>
+                                                                            </li>
+                                                                            <li class="list-group-item">
+                                                                                <div class="fw-bold">Donor Contact:</div>
+                                                                                <div class="mt-1">{{ $task->donation->donor->contact ?? 'N/A' }}</div>
+                                                                            </li>
+                                                                        </ul>
+                                                                        @elseif($task->distribution_id && $task->distribution && $task->distribution->location)
+                                                                        <ul class="list-group list-group-flush">
+                                                                            <li class="list-group-item">
+                                                                                <div class="fw-bold">Distribution Location:</div>
+                                                                                <div class="mt-1">
+                                                                                    @php
+                                                                                    $location = $task->distribution->location;
+                                                                                    $formattedLocation = $location->region === "NCR"
+                                                                                    ? "{$location->barangay}, {$location->city_municipality}, Metro Manila, Philippines"
+                                                                                    : "{$location->barangay}, {$location->city_municipality}, {$location->province}, {$location->region}, Philippines";
+                                                                                    @endphp
+                                                                                    {{ $formattedLocation }}
+                                                                                </div>
+                                                                            </li>
+                                                                        </ul>
+                                                                        @endif
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </div>
 
+                                                        <!-- Donation Items Section -->
                                                         @if($task->donation_id && $task->donation)
-                                                        <div class="mt-4">
-                                                            <h5 class="border-bottom pb-2">Donation Items</h5>
-                                                            <div class="d-flex flex-wrap gap-2">
-                                                                @foreach($task->donation->donationItems as $item)
-                                                                <span class="badge bg-light text-dark border p-2">
-                                                                    {{ $item->item }} <span class="badge bg-primary ms-1">{{ $item->quantity }}</span>
-                                                                </span>
-                                                                @endforeach
+                                                        <div class="card mt-3 border-0 shadow-sm">
+                                                            <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                                                                <h6 class="mb-0">
+                                                                    <i class="fas fa-boxes me-2"></i>Donation Items
+                                                                </h6>
+                                                                <span class="text-muted small">(Item • Quantity)</span>
+                                                            </div>
+                                                            <div class="card-body p-3">
+                                                                <div class="row row-cols-1 row-cols-md-2 g-2" style="max-height: 200px; overflow-y: auto;">
+                                                                    @foreach($task->donation->donationItems as $item)
+                                                                    <div class="col">
+                                                                        <div class="border rounded p-2 h-100 d-flex justify-content-between align-items-center">
+                                                                            <span class="text-truncate">{{ $item->item }}</span>
+                                                                            <span class="badge bg-primary rounded-pill ms-2">{{ $item->quantity }}</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    @endforeach
+                                                                </div>
                                                             </div>
                                                         </div>
                                                         @endif
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                                            <i class="fas fa-times me-1"></i> Close
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+
                                         @endforeach
                                     </tbody>
                                 </table>

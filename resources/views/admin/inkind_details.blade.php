@@ -331,7 +331,8 @@
                 <tr>
                   <th class="bg-light-custom">Donation Date & Time</th>
                   <td>:</td>
-                  <td>{{ \Carbon\Carbon::parse($inKindDonation->donation_datetime)->format('F d, Y') }}</td>
+                  <td>{{ \Carbon\Carbon::parse($inKindDonation->donation_datetime)->format('F d, Y \a\t g:i A') }}</td>
+
                 </tr>
                 <tr>
                   <th class="bg-light-custom">Status</th>
@@ -340,7 +341,7 @@
                     <span class="badge bg-{{ 
                         strtolower($inKindDonation->status) == 'pending' ? 'secondary' :
                         (strtolower($inKindDonation->status) == 'received' ? 'success' :
-                        (strtolower($inKindDonation->status) == 'ongoing' ? 'warning' : 'danger')) }}">
+                        (strtolower($inKindDonation->status) == 'ongoing' ? 'warning text-dark' : 'danger')) }}">
                       {{ ucfirst($inKindDonation->status) }}
                     </span>
                   </td>
@@ -393,7 +394,7 @@
               @if($inKindDonation->volunteerActivities()->exists())
               <div class="mt-4">
                 <div class="card-header custom-subheader text-white">
-                  <h3 class="mb-0"><i class="fa-solid fa-boxes-stacked"></i> Volunteers</h3>
+                  <h3 class="mb-0"><i class="fa-solid fa-boxes-stacked"></i> Volunteers to Pickup</h3>
                 </div>
                 <table class="table table-striped table-bordered text-center custom-items-table">
                   <thead>
@@ -418,8 +419,12 @@
                         <span class=" badge bg-success">Accepted</span>
                         @elseif($activity->status === 'declined')
                         <span class="badge bg-danger">Declined</span>
-                        @else
+                        @elseif($activity->status === 'ongoing')
+                        <span class="badge bg-info text-dark">Ongoing (Active)</span>
+                        @elseif($activity->status === 'pending')
                         <span class="badge bg-warning text-dark">Pending</span>
+                        @else
+                        <span class=" badge bg-success">Completed</span>
                         @endif
                       </td>
                     </tr>
@@ -441,26 +446,33 @@
               </div>
               @endif
 
-              @if($inKindDonation->donation_method === 'pickup' && strtolower($inKindDonation->status) === 'ongoing')
-              @if(!$inKindDonation->volunteerActivities()->whereIn('status', ['pending', 'accepted', 'active'])->exists())
+              <!-- Recieved  // ASSIGN -->
+              @if(strtolower($inKindDonation->status) === 'ongoing')
+              @if($inKindDonation->donation_method === 'drop-off')
+              <!-- Drop-off donations -->
+              <div class="mt-4 d-flex justify-content-end">
+                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#confirmCompletionModal">
+                  <i class="fas fa-check-circle me-2"></i> Mark as Received
+                </button>
+              </div>
+              @elseif($inKindDonation->volunteerActivities->where('status', 'ongoing')->isNotEmpty())
+              <!-- Active pickup donations -->
+              <div class="mt-4 d-flex justify-content-end">
+                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#confirmCompletionModal">
+                  <i class="fas fa-check-circle me-2"></i> Mark as Received
+                </button>
+              </div>
+              @elseif(!$inKindDonation->volunteerActivities()->whereIn('status', ['pending', 'accepted', 'ongoing'])->exists())
+              <!-- No volunteer assigned -->
               <div class="mt-4 d-flex justify-content-end">
                 <button class="btn btn-verify" data-bs-toggle="modal" data-bs-target="#assignVolunteersModal">
-                  Assign Volunteers
+                  <i class="fas fa-user-plus me-2"></i> Assign Volunteers
                 </button>
               </div>
               @endif
-              @elseif($inKindDonation->donation_method === 'drop-off' && strtolower($inKindDonation->status) === 'ongoing')
-              <div class="mt-4 d-flex justify-content-end">
-                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#confirmDropOffModal">
-                  Mark as Received
-                </button>
-              </div>
               @endif
-
             </div>
           </div>
-
-        </div>
       </main>
 
       <!-- Verify Modal -->
@@ -551,23 +563,27 @@
 
 
       <!-- Recieve Modal -->
-      <div class="modal fade" id="confirmDropOffModal" tabindex="-1" aria-labelledby="confirmDropOffModalLabel" aria-hidden="true">
+      <div class="modal fade" id="confirmCompletionModal" tabindex="-1" aria-labelledby="confirmCompletionModalLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Confirm Drop-off</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              Are you sure you want to mark this donation as received?
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-              <a href="{{ route('admin.confirm-dropoff', $inKindDonation->id) }}" class="btn btn-success">Confirm</a>
-            </div>
+            <form action="{{ route('admin.donations.mark-received', $inKindDonation->id) }}" method="POST">
+              @csrf
+              <div class="modal-header">
+                <h5 class="modal-title">Confirm Donation Receive</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body text-center">
+                <p class="fw-bold text-success">Are you sure you want to mark this donation as received?</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-success">Confirm</button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
+
 
       <footer class="py-3 bg-dark mt-3">
         <div class="container-fluid ps-4">
