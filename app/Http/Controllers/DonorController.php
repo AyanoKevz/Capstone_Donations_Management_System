@@ -318,14 +318,17 @@ class DonorController extends Controller
         $inKindDonation = Donation::with(['donationItems', 'volunteerActivities.volunteer'])
             ->findOrFail($id);
 
-        // ALWAYS initialize volunteer status (even for received/completed donations)
+        // Initialize all relevant statuses
         $volunteerStatus = [
             'accepted' => $inKindDonation->volunteerActivities
                 ->where('status', 'accepted')
                 ->first(),
             'pending' => $inKindDonation->volunteerActivities
                 ->where('status', 'pending')
-                ->first()
+                ->first(),
+            'completed' => $inKindDonation->volunteerActivities
+                ->where('status', 'completed')
+                ->first(),
         ];
 
         return view('users.donor.inkind_details', compact('inKindDonation', 'volunteerStatus'));

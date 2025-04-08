@@ -384,7 +384,7 @@
                                                 </span>
                                             </td>
                                             <td>
-                                                <span class="badge bg-{{ $donation->status === 'received' ? 'primary' : ($donation->status === 'distributed' ? 'success' : 'warning text-dark') }}">
+                                                <span class="badge bg-{{ $donation->status === 'received' ? 'success' : ($donation->status === 'distributed' ? 'info text-dark' : 'warning text-dark') }}">
                                                     {{ ucfirst($donation->status) }}
                                                 </span>
                                             </td>

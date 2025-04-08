@@ -868,7 +868,7 @@ class AdminController extends Controller
         $availableVolunteers = Volunteer::where('chapter_id', $admin->chapter_id)
             ->whereDoesntHave('volunteerActivities', function ($query) use ($inKindDonation) {
                 $query->where('donation_id', $inKindDonation->id)
-                    ->whereIn('status', ['pending', 'accepted', 'active']);
+                    ->whereIn('status', ['pending', 'accepted', 'ongoing']);
             })
             ->get();
 

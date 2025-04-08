@@ -385,17 +385,11 @@
                                     <h3 class="mb-0"><i class="fa-solid fa-boxes-stacked"></i> Pickup Status</h3>
                                 </div>
 
-                                @if($inKindDonation->status === 'received')
-                                <!-- Received status + Volunteer Info -->
-                                <div class="p-3 text-center bg-success bg-opacity-10 mb-3">
-                                    <i class="fas fa-check-circle text-success me-2"></i>
-                                    <span class="text-dark">
-                                        Your donation has been successfully delivered and received by the chapter. Thank you!
-                                    </span>
-                                </div>
+                                @php
+                                $volunteer = $volunteerStatus['accepted'] ?? $volunteerStatus['completed'];
+                                @endphp
 
-                                @if($volunteerStatus['accepted'])
-                                <!-- Show volunteer who completed the pickup -->
+                                @if($volunteer)
                                 <table class="table table-striped table-bordered text-center custom-items-table">
                                     <thead>
                                         <tr>
@@ -408,33 +402,25 @@
                                     <tbody>
                                         <tr>
                                             <td>
-                                                <img src="{{ $volunteerStatus['accepted']->volunteer->user_photo ? asset('storage/'.$volunteerStatus['accepted']->volunteer->user_photo) : asset('images/default-avatar.jpg') }}"
+                                                <img src="{{ $volunteer->volunteer->user_photo ? asset('storage/'.$volunteer->volunteer->user_photo) : asset('images/default-avatar.jpg') }}"
                                                     alt="Volunteer Photo"
                                                     class="rounded-circle"
                                                     width="80"
                                                     height="80">
                                             </td>
                                             <td class="align-middle">
-                                                {{ $volunteerStatus['accepted']->volunteer->first_name }}
-                                                {{ $volunteerStatus['accepted']->volunteer->last_name }}
+                                                {{ $volunteer->volunteer->first_name }}
+                                                {{ $volunteer->volunteer->last_name }}
                                             </td>
                                             <td class="align-middle">
-                                                {{ $volunteerStatus['accepted']->volunteer->contact }}
+                                                {{ $volunteer->volunteer->contact }}
                                             </td>
                                             <td class="align-middle">
-                                                {{ \Carbon\Carbon::parse($volunteerStatus['accepted']->activity_date)->format('M d, Y h:i A') }}
+                                                {{ \Carbon\Carbon::parse($volunteer->activity_date)->format('M d, Y h:i A') }}
                                             </td>
                                         </tr>
                                     </tbody>
                                 </table>
-                                @endif
-
-                                @elseif($volunteerStatus['accepted'])
-                                <!-- Ongoing + Accepted Volunteer -->
-                                <table class="table table-striped table-bordered text-center custom-items-table">
-                                    <!-- Same table as above -->
-                                </table>
-
                                 @elseif($volunteerStatus['pending'])
                                 <!-- Pending volunteer content -->
                                 <div class="p-3 text-center bg-warning bg-opacity-10">
