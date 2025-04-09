@@ -14,6 +14,8 @@ use App\Helpers\SmsHelper;
 use App\Models\Chapter;
 use App\Models\UserAccount;
 use Exception;
+use App\Models\PooledFund;
+use Illuminate\Support\Facades\DB;
 
 class PayMongoController extends Controller
 {
@@ -221,50 +223,63 @@ class PayMongoController extends Controller
             return redirect()->route('quick.cashForm')->with('error', 'No pending donation found.');
         }
 
-        // Create donation record
-        $donation = CashDonation::create([
-            'donor_id' => $donationData['donor_id'],
-            'donor_name' => $donationData['donor_name'],
-            'chapter_id' => $donationData['chapter_id'],
-            'cause' => $donationData['cause'],
-            'amount' => $donationData['amount'],
-            'donation_method' => 'online',
-            'payment_method' => $donationData['payment_method'],
-            'payment_status' => 'completed',
-            'status' => 'received',
-            'transaction_id' => 'Pay-' . now()->format('Ymd-His') . '-' . strtoupper(Str::random(6)),
-        ]);
+        DB::transaction(function () use ($donationData) {
+            // Create donation record
+            $donation = CashDonation::create([
+                'donor_id' => $donationData['donor_id'],
+                'donor_name' => $donationData['donor_name'],
+                'chapter_id' => $donationData['chapter_id'],
+                'cause' => $donationData['cause'],
+                'amount' => $donationData['amount'],
+                'donation_method' => 'online',
+                'payment_method' => $donationData['payment_method'],
+                'payment_status' => 'completed',
+                'status' => 'received',
+                'transaction_id' => 'Pay-' . now()->format('Ymd-His') . '-' . strtoupper(Str::random(6)),
+            ]);
 
-        // Load chapter relationship
-        $donation->load('chapter');
-        $chapterName = $donation->chapter->chapter_name;
+            // Add to pooled funds (quick donations always go to pooled funds)
+            PooledFund::updateOrCreate(
+                [
+                    'chapter_id' => $donation->chapter_id,
+                    'cause' => $donation->cause
+                ],
+                [
+                    'total_cash' => DB::raw("total_cash + {$donation->amount}")
+                ]
+            );
 
-        // Get donor info
-        $userAccount = UserAccount::find($donationData['donor_id']);
-        $donorEmail = $userAccount->email;
-        $donorContact = $donationData['contact'];
+            // Load chapter relationship
+            $donation->load('chapter');
+            $chapterName = $donation->chapter->chapter_name;
 
-        // Prepare and send email
-        Mail::send('emails.verified_donation', [
-            'logoPath' => public_path('assets/img/systemLogo.png'),
-            'chapter' => $chapterName,
-            'donation' => $donation,
-            'type' => 'cash',
-            'emailMessage' => "Thank you for your donation of ₱" . number_format($donation->amount, 2) .
-                " to support {$donation->cause} at {$chapterName}. " .
-                "Your donation via {$donation->payment_method} has been successfully received."
-        ], function ($message) use ($donorEmail, $chapterName) {
-            $message->to($donorEmail)
-                ->subject("Donation Receipt - {$chapterName}");
+            // Get donor info
+            $userAccount = UserAccount::find($donationData['donor_id']);
+            $donorEmail = $userAccount->email;
+            $donorContact = $donationData['contact'];
+
+            // Prepare and send email
+            Mail::send('emails.verified_donation', [
+                'logoPath' => public_path('assets/img/systemLogo.png'),
+                'chapter' => $chapterName,
+                'donation' => $donation,
+                'type' => 'cash',
+                'emailMessage' => "Thank you for your donation of ₱" . number_format($donation->amount, 2) .
+                    " to support {$donation->cause} at {$chapterName}. " .
+                    "Your donation via {$donation->payment_method} has been successfully received."
+            ], function ($message) use ($donorEmail, $chapterName) {
+                $message->to($donorEmail)
+                    ->subject("Donation Receipt - {$chapterName}");
+            });
+
+            // Send SMS
+            SmsHelper::sendSmsNotification(
+                $donorContact,
+                "Hi {$donation->donor_name}, your PHP " . number_format($donation->amount, 2) .
+                    " donation for {$donation->cause} at {$chapterName} was received. " .
+                    "An email receipt has been sent. Thank you!"
+            );
         });
-
-        // Send SMS
-        SmsHelper::sendSmsNotification(
-            $donorContact,
-            "Hi {$donation->donor_name}, your PHP " . number_format($donation->amount, 2) .
-                " donation for {$donation->cause} at {$chapterName} was received. " .
-                "An email receipt has been sent. Thank you!"
-        );
 
         session()->forget('quick_donation_data');
         return redirect()->route('quick.cashForm')->with('success', 'Donation successful! Please check your SMS/Email for the status and receipt.');

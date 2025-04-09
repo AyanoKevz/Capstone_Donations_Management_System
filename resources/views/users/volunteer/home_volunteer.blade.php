@@ -314,7 +314,12 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.15/index.global.js"></script>
         <script>
             window.calendarEvents = @json($calendarEvents ?? []);
+            // Convert the JSON string back to an object if it's already encoded
+            if (typeof window.calendarEvents === 'string') {
+                window.calendarEvents = JSON.parse(window.calendarEvents);
+            }
         </script>
+
         <!-- User JS -->
         <script src=" {{ asset('assets/users/js/user.js') }}"></script>
 </body>

@@ -386,7 +386,7 @@
                                 </div>
 
                                 @php
-                                $volunteer = $volunteerStatus['accepted'] ?? $volunteerStatus['completed'];
+                                $volunteer = $volunteerStatus['accepted'] ?? $volunteerStatus['completed'] ?? $volunteerStatus['ongoing'];
                                 @endphp
 
                                 @if($volunteer)

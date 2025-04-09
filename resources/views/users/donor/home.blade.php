@@ -332,7 +332,11 @@
                     <div class="row my-3">
                         <h1 class="fw-bolder text-center donate-heading">Donate Now</h1>
                         <div class="d-flex justify-content-evenly flex-wrap">
-                            <div class="my-2">
+
+                            <div class="my-2 d-flex flex-column align-items-center">
+                                <div class="card-pool my-2">
+                                    <div class="image" style="background-image: url('{{ asset('assets/img/hero-2.jfif') }}');"></div>
+                                </div>
                                 <a href="{{route ('donor.quick_donation') }}" class="donatebtn">
                                     <span class="icon">
                                         <i class="fa-solid fa-handshake-angle fa-xl me-2"></i>
@@ -341,7 +345,10 @@
                                 </a>
                             </div>
 
-                            <div class="my-2">
+                            <div class="my-2 flex-column align-items-center">
+                                <div class="card-pool my-2 ">
+                                    <div class="image" style="background-image: url('{{ asset('assets/img/ab4.jpg') }}');"></div>
+                                </div>
                                 <a href="#" data-bs-target="#register" data-bs-toggle="modal" class="donatebtn">
                                     <span class="icon">
                                         <i class="fa-solid fa-hand-holding-heart fa-xl me-2"></i>

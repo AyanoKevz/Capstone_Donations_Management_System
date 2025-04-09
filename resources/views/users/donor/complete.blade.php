@@ -368,19 +368,18 @@
                                             <th>Action</th>
                                         </tr>
                                     </thead>
+
                                     <tbody>
                                         @foreach($donations as $donation)
                                         <tr>
                                             <td>{{ $donation->cause }}</td>
                                             <td>
-                                                <span class="badge bg-{{ isset($donation->transaction_id) ? 'success' : 'warning text-dark' }}">
-                                                    {{ isset($donation->transaction_id) ? ($donation->payment_method ?? 'Cash') : ($donation->donation_method ?? 'In-Kind') }}
-                                                </span>
+                                                {{ ucfirst($donation->donation_method) }}
                                             </td>
                                             <td>{{ $donation->chapter->chapter_name ?? 'N/A' }}</td>
                                             <td>
-                                                <span class="badge bg-{{ isset($donation->transaction_id) ? 'success' : 'warning text-dark' }}">
-                                                    {{ isset($donation->transaction_id) ? 'Cash' : 'In-Kind' }}
+                                                <span class="badge bg-{{ isset($donation->transaction_id) || ($donation->donation_type ?? '') === 'cash' ? 'success' : 'warning text-dark' }}">
+                                                    {{ isset($donation->transaction_id) || ($donation->donation_type ?? '') === 'cash' ? 'Cash' : 'In-Kind' }}
                                                 </span>
                                             </td>
                                             <td>
@@ -389,13 +388,21 @@
                                                 </span>
                                             </td>
                                             <td>
-                                                <span class="badge bg-{{ $donation->donation_request_id ? 'info text-dark' : 'warning text-dark' }}">
-                                                    {{ $donation->donation_request_id ? 'From Request' : 'Quick Donation' }}
+                                                @php
+                                                $isFromRequest = false;
+                                                if (($donation->donation_type ?? '') === 'cash' && isset($donation->fund_request_id)) {
+                                                $isFromRequest = true;
+                                                } elseif (isset($donation->donation_request_id)) {
+                                                $isFromRequest = true;
+                                                }
+                                                @endphp
+                                                <span class="badge bg-{{ $isFromRequest ? 'info text-dark' : 'warning text-dark' }}">
+                                                    {{ $isFromRequest ? 'From Request' : 'Quick Donation' }}
                                                 </span>
                                             </td>
                                             <td>{{ $donation->transaction_id ?? $donation->tracking_number ?? 'N/A' }}</td>
                                             <td>
-                                                <a href="{{ isset($donation->transaction_id) ? route('donor.cash.donation.details', $donation->id) : route('donor.inkind.donation.details', $donation->id) }}"
+                                                <a href="{{ isset($donation->transaction_id) || ($donation->donation_type ?? '') === 'cash' ? route('donor.cash.donation.details', $donation->id) : route('donor.inkind.donation.details', $donation->id) }}"
                                                     class="btn btn-sm btn-success">
                                                     <i class="fa-solid fa-eye"></i> View
                                                 </a>

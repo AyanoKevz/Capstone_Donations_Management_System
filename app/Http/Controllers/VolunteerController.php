@@ -15,34 +15,41 @@ class VolunteerController extends Controller
 {
     public function index()
     {
-        // Get the authenticated user
         $user = Auth::user();
         $volunteer = $user->volunteer;
 
-        // Check if the volunteer exists
         if (!$volunteer) {
             return redirect()->back()->with('error', 'Volunteer record not found.');
         }
 
-        // Fetch assigned tasks for the volunteer
-        $assignedTasks = VolunteerActivity::where('volunteer_id', $volunteer->id)
-            ->where('status', 'accepted')
-            ->get(['id', 'task_description', 'activity_date', 'hours_worked']);
+        // Fetch assigned tasks with relationships (both accepted and ongoing)
+        $assignedTasks = VolunteerActivity::with(['donation', 'distribution'])
+            ->where('volunteer_id', $volunteer->id)
+            ->whereIn('status', ['accepted', 'ongoing'])
+            ->get(['id', 'task_description', 'activity_date', 'hours_worked', 'donation_id', 'distribution_id', 'status']); // Include status
 
         // Format tasks for FullCalendar
         $calendarEvents = [];
         foreach ($assignedTasks as $task) {
+            $title = $task->donation_id ? 'Donation Pickup' : 'Donation Distribution';
+
+            // Add status to the title or styling if you want
+            $displayTitle = $title . ($task->status === 'ongoing' ? ' (In Progress)' : '');
+
             $calendarEvents[] = [
                 'id' => $task->id,
-                'title' => $task->task_description,
+                'title' => $displayTitle,
                 'start' => $task->activity_date,
                 'extendedProps' => [
-                    'hours_worked' => $task->hours_worked,
+                    'type' => $title,
+                    'description' => $task->task_description,
+                    'status' => $task->status, // Include status in extendedProps
                 ],
+                // Optional: color code based on status
+                'color' => $task->status === 'ongoing' ? '#FFA500' : '#3788d8', // Orange for ongoing, blue for accepted
             ];
         }
 
-        // Pass the data to the view
         return view('users.volunteer.home_volunteer', [
             'assignedTasks' => $assignedTasks->count(),
             'totalHoursWorked' => VolunteerActivity::where('volunteer_id', $volunteer->id)
@@ -50,8 +57,8 @@ class VolunteerController extends Controller
                 ->sum('hours_worked'),
             'PendingTask' => VolunteerActivity::where('volunteer_id', $volunteer->id)
                 ->where('status', 'pending')
-                ->count(), // Add this line for pending tasks count
-            'calendarEvents' => json_encode($calendarEvents),
+                ->count(),
+            'calendarEvents' => $calendarEvents,
         ]);
     }
 

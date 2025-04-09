@@ -445,7 +445,7 @@
                 <h5 class="modal-title">Confirm Cash Received</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
-              <div class="modal-body">
+              <div class="modal-body text-center text-success">
                 <p>Confirm this cash donation has been successfully received?</p>
                 <p class="fw-bold">Amount: {{ number_format($cashDonation->amount, 2) }}</p>
               </div>

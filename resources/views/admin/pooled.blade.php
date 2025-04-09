@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Admin | All Request</title>
+  <title>Admin | Pooled Resources</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -186,7 +186,7 @@
             </a>
             <div class="collapse" id="manage-resources" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
               <nav class="sb-sidenav-menu-nested nav">
-                <a class="nav-link active" href="{{ route('admin.received_donation') }}" title="Received Donations">
+                <a class="nav-link" href="{{ route('admin.received_donation') }}" title="Received Donations">
                   <div class="sb-nav-link-icon">
                     <i class="fas fa-circle-arrow-right  nav-icon"></i>
                   </div>
@@ -299,11 +299,14 @@
           <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item active"></li>
           </ol>
-          <h1 class="my-3">Received Donations at {{ $Admin->chapter->chapter_name }} Chapter</h1>
+          <h1 class="my-3">Resources for {{ $selectedCause }} at {{ $Admin->chapter->chapter_name }} Chapter</h1>
           <div class="d-flex justify-content-between">
             <div class="d-flex mb-1 align-items-center">
               <strong class="me-2">Item:</strong>
               <form method="GET" action="{{ url()->current() }}">
+                {{-- Keep the selected cause in the URL --}}
+                <input type="hidden" name="cause" value="{{ request('cause', $selectedCause) }}">
+
                 <select class="form-select" id="itemFilter" name="item" onchange="this.form.submit()">
                   <option value="all" {{ request('item') == 'all' ? 'selected' : '' }}>All</option>
                   <option value="Bottled Water" {{ request('item') == 'Bottled Water' ? 'selected' : '' }}>Bottled Water</option>
@@ -328,6 +331,7 @@
                   <option value="Masks (N95 or surgical)" {{ request('item') == 'Masks (N95 or surgical)' ? 'selected' : '' }}>Masks (N95 or surgical)</option>
                 </select>
               </form>
+
             </div>
 
             <div class="d-flex mb-1 align-items-center">

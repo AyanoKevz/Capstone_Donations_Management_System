@@ -828,10 +828,10 @@ body.sb-sidenav-toggled .sb-sidenav .nav-link span {
   opacity: 1;
 }
 
-  .image {
-        width: 100%;
-        height: 12em;
-        background-size: cover;
-        background-position: center;
-        border-radius: 8px;
-    }
+.image {
+  width: 100%;
+  height: 12em;
+  background-size: cover;
+  background-position: center;
+  border-radius: 8px;
+}

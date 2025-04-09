@@ -853,63 +853,60 @@ if ($("#quickInKindForm").length > 0) {
 
  var calendarEl = document.getElementById('calendar');
 
-    if (calendarEl) {
-        // Debugging: Log window.calendarEvents to verify its value
-        console.log('window.calendarEvents:', window.calendarEvents);
+if (calendarEl) {
+    console.log('window.calendarEvents:', window.calendarEvents);
 
-        // Ensure window.calendarEvents is an array
-        if (!Array.isArray(window.calendarEvents)) {
-            console.error('window.calendarEvents is not an array:', window.calendarEvents);
-            window.calendarEvents = []; // Default to an empty array
-        }
-
-        var calendar = new FullCalendar.Calendar(calendarEl, {
-            initialView: 'dayGridMonth',
-            headerToolbar: {
-                left: 'prev,next today',
-                center: 'title',
-                right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
-            },
-            events: window.calendarEvents, // Use the global variable
-            eventClick: function (info) {
-                // Display task details when an event is clicked
-                alert(
-                    'Task: ' + info.event.title + '\n' +
-                    'Date: ' + info.event.start.toLocaleDateString() + '\n' +
-                    'Hours Worked: ' + info.event.extendedProps.hours_worked
-                );
-            },
-            dayCellContent: function (info) {
-                // Preserve the default date number
-                var dateNumber = document.createElement('div');
-                dateNumber.innerText = info.dayNumberText;
-
-                // Check if there are any events for this day
-                var hasEvent = window.calendarEvents.some(function (event) {
-                    return event.start === info.date.toISOString().split('T')[0];
-                });
-
-                // If no events, append "No Task" below the date number
-                if (!hasEvent) {
-                    var noTaskMessage = document.createElement('div');
-                    noTaskMessage.style.color = '#999';
-                    noTaskMessage.style.fontSize = '0.9em';
-                    noTaskMessage.innerText = 'No Task';
-
-                    var container = document.createElement('div');
-                    container.appendChild(dateNumber);
-                    container.appendChild(noTaskMessage);
-
-                    return { domNodes: [container] };
-                }
-
-                // If there are events, return only the date number
-                return { domNodes: [dateNumber] };
-            },
-        });
-
-        calendar.render();
+    if (!Array.isArray(window.calendarEvents)) {
+        console.error('window.calendarEvents is not an array:', window.calendarEvents);
+        window.calendarEvents = [];
     }
+
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+        },
+        events: window.calendarEvents,
+        eventClick: function (info) {
+            alert(
+                'Activity Type: ' + info.event.extendedProps.type + '\n' +
+                'Date: ' + info.event.start.toLocaleDateString() + '\n' +
+                'Description: ' + info.event.extendedProps.description
+            );
+        },
+        dayCellContent: function (info) {
+            var dateNumber = document.createElement('div');
+            dateNumber.innerText = info.dayNumberText;
+
+            // Get all rendered events for this day
+            var eventsOnThisDay = calendar.getEvents().filter(function(event) {
+                return event.start && 
+                       event.start.getFullYear() === info.date.getFullYear() &&
+                       event.start.getMonth() === info.date.getMonth() &&
+                       event.start.getDate() === info.date.getDate();
+            });
+
+            if (eventsOnThisDay.length === 0) {
+                var noTaskMessage = document.createElement('div');
+                noTaskMessage.style.color = '#999';
+                noTaskMessage.style.fontSize = '0.9em';
+                noTaskMessage.innerText = 'No Task';
+
+                var container = document.createElement('div');
+                container.appendChild(dateNumber);
+                container.appendChild(noTaskMessage);
+
+                return { domNodes: [container] };
+            }
+
+            return { domNodes: [dateNumber] };
+        },
+    });
+
+    calendar.render();
+}
 
      $(function () {
     if ($("#example1").length) {

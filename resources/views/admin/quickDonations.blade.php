@@ -386,7 +386,7 @@
                   <tr>
                     <td>{{ $inKindDonation->donor_name }}</td>
                     <td>{{ $inKindDonation->cause }}</td>
-                    <td>{{ $inKindDonation->donation_method }}</td>
+                    <td>{{ucfirst ($inKindDonation->donation_method) }}</td>
                     <td>
                       @php
                       $statusClass = match($inKindDonation->status) {

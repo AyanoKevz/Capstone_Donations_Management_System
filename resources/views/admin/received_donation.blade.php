@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Admin | All Request</title>
+  <title>Admin | Received Donations</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -374,8 +374,8 @@
                     <td>{{ $data->donation_method }}</td>
                     <!--  <td><span class="badge {{ $statusClass }}">{{ $data->status }}</span></td> -->
                     <td>{{ $isCash ? $data->transaction_id : $data->tracking_number }}</td>
-                    <td><span class="badge {{ $isCash ? 'bg-primary' : 'bg-warning' }}">{{ $isCash ? 'Cash' : 'In-Kind' }}</span></td>
-                    <td><span class="badge {{ $source === 'From Request' ? 'bg-warning' : 'bg-info text-dark' }}">{{ $source }}</span></td>
+                    <td><span class="badge {{ $isCash ? 'bg-primary' : 'bg-warning text-dark' }}">{{ $isCash ? 'Cash' : 'In-Kind' }}</span></td>
+                    <td><span class="badge {{ $source === 'From Request' ? 'bg-warning text-dark' : 'bg-info text-dark' }}">{{ $source }}</span></td>
                     <td>
                       <a href="{{ route($isCash ? 'cash.donation.details' : 'inkind.donation.details', $data->id) }}" class="btn btn-sm btn-success">
                         <i class="fa-solid fa-eye"></i> View
