@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Admin | All Request</title>
+  <title>Admin | Cash Donation Details</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -191,7 +191,7 @@
                   </div>
                   <span>Received Donations</span>
                 </a>
-                <a class="nav-link" href="" title="Distributed Resources">
+                <a class="nav-link " href="{{ route('admin.distributed_donation') }}" title="Distributed Resources">
                   <div class="sb-nav-link-icon">
                     <i class="far fa-circle nav-icon"></i>
                   </div>
@@ -333,11 +333,6 @@
                 </tr>
                 @endif
                 <tr>
-                  <th class="bg-light-custom">Transaction ID</th>
-                  <td>:</td>
-                  <td>{{ $cashDonation->transaction_id }}</td>
-                </tr>
-                <tr>
                   <th class="bg-light-custom">Status</th>
                   <td>:</td>
                   <td>
@@ -350,10 +345,29 @@
                   </td>
                 </tr>
                 <tr>
-                  <th class="bg-light-custom">Date & Time</th>
+                  <th class="bg-light-custom">Donation Date & Time</th>
                   <td>:</td>
-                  <td>{{ \Carbon\Carbon::parse($cashDonation->created_at)->format('F d, Y') }}</td>
+                  <td>{{ \Carbon\Carbon::parse($cashDonation->created_at)->format('F d, Y \a\t g:i A') }}</td>
                 </tr>
+                <tr>
+                  <th class="bg-light-custom">Donated At</th>
+                  <td>:</td>
+                  <td>
+                    @if($cashDonation->fundRequest)
+                    <a href="{{ route('request_details', ['id' => $cashDonation->fundRequest->id, 'type' => 'cash']) }}">
+                      Request
+                    </a>
+                    @else
+                    Quick
+                    @endif
+                  </td>
+                </tr>
+                <tr>
+                  <th class="bg-light-custom">Transaction ID</th>
+                  <td>:</td>
+                  <td>{{ $cashDonation->transaction_id }}</td>
+                </tr>
+
               </table>
 
               @if($cashDonation->donation_method === 'drop-off' && !empty($cashDonation->proof_image))

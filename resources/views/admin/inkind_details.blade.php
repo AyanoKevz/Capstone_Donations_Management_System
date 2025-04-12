@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Admin | All Request</title>
+  <title>Admin | In-Kind Donation Details</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -191,7 +191,7 @@
                   </div>
                   <span>Received Donations</span>
                 </a>
-                <a class="nav-link" href="" title="Distributed Resources">
+                <a class="nav-link " href="{{ route('admin.distributed_donation') }}" title="Distributed Resources">
                   <div class="sb-nav-link-icon">
                     <i class="far fa-circle nav-icon"></i>
                   </div>
@@ -341,9 +341,22 @@
                     <span class="badge bg-{{ 
                         strtolower($inKindDonation->status) == 'pending' ? 'secondary' :
                         (strtolower($inKindDonation->status) == 'received' ? 'success' :
-                        (strtolower($inKindDonation->status) == 'ongoing' ? 'warning text-dark' : 'danger')) }}">
+                        (strtolower($inKindDonation->status) == 'ongoing' ? 'warning text-dark' : 'success')) }}">
                       {{ ucfirst($inKindDonation->status) }}
                     </span>
+                  </td>
+                </tr>
+                <tr>
+                  <th class="bg-light-custom">Donated At</th>
+                  <td>:</td>
+                  <td>
+                    @if($inKindDonation->donationRequest)
+                    <a href="{{ route('request_details', ['id' => $inKindDonation->donationRequest->id, 'type' => 'in-kind']) }}">
+                      Request
+                    </a>
+                    @else
+                    Quick
+                    @endif
                   </td>
                 </tr>
                 <tr>

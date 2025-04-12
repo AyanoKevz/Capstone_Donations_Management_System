@@ -388,16 +388,8 @@
                                                 </span>
                                             </td>
                                             <td>
-                                                @php
-                                                $isFromRequest = false;
-                                                if (($donation->donation_type ?? '') === 'cash' && isset($donation->fund_request_id)) {
-                                                $isFromRequest = true;
-                                                } elseif (isset($donation->donation_request_id)) {
-                                                $isFromRequest = true;
-                                                }
-                                                @endphp
-                                                <span class="badge bg-{{ $isFromRequest ? 'info text-dark' : 'warning text-dark' }}">
-                                                    {{ $isFromRequest ? 'From Request' : 'Quick Donation' }}
+                                                <span class="badge bg-{{ $donation->source === 'From Request' ? 'info text-dark' : 'warning text-dark' }}">
+                                                    {{ $donation->source }}
                                                 </span>
                                             </td>
                                             <td>{{ $donation->transaction_id ?? $donation->tracking_number ?? 'N/A' }}</td>

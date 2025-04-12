@@ -147,8 +147,8 @@ Route::middleware(['admin', 'prevent-back-button'])->prefix('admin')->group(func
     Route::post('/donations/{id}/received', [AdminController::class, 'receivedInKindDonation'])->name('admin.donations.mark-received');
     Route::post('/cash-donations/{id}/mark-received', [AdminController::class, 'markCashReceived'])->name('admin.cash.mark-received');
 
-
-
+    Route::put('/requests/{id}/distribute', [AdminController::class, 'markAsDistributed'])->name('mark_as_distributed');
+    Route::get('/distributed-donations', [AdminController::class, 'distributedDonations'])->name('admin.distributed_donation');
 
     Route::post('/inkind-donation/verify/{id}', [AdminController::class, 'verifyInKindDonation'])
         ->name('inkind.donation.verify');

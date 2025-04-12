@@ -16,7 +16,7 @@ class FundRequest extends Model
         'location_id',
         'cause',
         'urgency',
-        'casualty_cost', //Only Description 
+        'casualty_cost',
         'description',
         'proof_photo_1',
         'proof_photo_2',

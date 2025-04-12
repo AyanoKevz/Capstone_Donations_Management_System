@@ -331,7 +331,7 @@
                                         <span class="badge bg-{{ 
                         strtolower($inKindDonation->status) == 'pending' ? 'secondary' :
                         (strtolower($inKindDonation->status) == 'received' ? 'success' :
-                        (strtolower($inKindDonation->status) == 'ongoing' ? 'warning text-dark' : 'danger')) }}">
+                        (strtolower($inKindDonation->status) == 'ongoing' ? 'warning text-dark' : 'success')) }}">
                                             {{ ucfirst($inKindDonation->status) }}
                                         </span>
                                     </td>
@@ -379,10 +379,10 @@
                                         class="img-fluid donation-proof-image">
                                 </div>
                             </div>
-                            @if($inKindDonation->donation_method === 'pickup' && $inKindDonation->status === 'ongoing' || $inKindDonation->status === 'received')
+                            @if($inKindDonation->donation_method === 'pickup')
                             <div class="mt-4">
                                 <div class="card-header custom-subheader text-white">
-                                    <h3 class="mb-0"><i class="fa-solid fa-boxes-stacked"></i> Pickup Status</h3>
+                                    <h3 class="mb-0"><i class="fa-solid fa-boxes-stacked"></i> Pickup Details</h3>
                                 </div>
 
                                 @php
@@ -394,9 +394,10 @@
                                     <thead>
                                         <tr>
                                             <th>Image</th>
-                                            <th>Full Name</th>
+                                            <th>Volunteer Name</th>
                                             <th>Contact No.</th>
                                             <th>Pickup Schedule</th>
+                                            <th>Status</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -417,6 +418,12 @@
                                             </td>
                                             <td class="align-middle">
                                                 {{ \Carbon\Carbon::parse($volunteer->activity_date)->format('M d, Y h:i A') }}
+                                            </td>
+                                            <td class="align-middle">
+                                                <span class="badge 
+        {{ $volunteer->status == 'accepted' || $volunteer->status == 'completed' ? 'bg-success' : ($volunteer->status == 'ongoing' ? 'bg-secondary' : '') }}">
+                                                    {{ ucfirst($volunteer->status) }}
+                                                </span>
                                             </td>
                                         </tr>
                                     </tbody>

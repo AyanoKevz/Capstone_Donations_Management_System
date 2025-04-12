@@ -34,7 +34,7 @@ class VolunteerController extends Controller
             $title = $task->donation_id ? 'Donation Pickup' : 'Donation Distribution';
 
             // Add status to the title or styling if you want
-            $displayTitle = $title . ($task->status === 'ongoing' ? ' (In Progress)' : '');
+            $displayTitle = $title . ($task->status === 'ongoing' ? ' (Active)' : '');
 
             $calendarEvents[] = [
                 'id' => $task->id,

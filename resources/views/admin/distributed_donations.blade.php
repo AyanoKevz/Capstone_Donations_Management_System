@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Admin | Appointments</title>
+  <title>Admin | Distributed Donations</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -174,7 +174,7 @@
             </div>
 
             <!-- Manage Resources -->
-            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#manage-resources"
+            <a class="nav-link collapsed active" href="#" data-bs-toggle="collapse" data-bs-target="#manage-resources"
               aria-expanded="false" aria-controls="manage-resources" title="Manage Resources">
               <div class="sb-nav-link-icon">
                 <i class="fas fa-box"></i>
@@ -188,11 +188,11 @@
               <nav class="sb-sidenav-menu-nested nav">
                 <a class="nav-link" href="{{ route('admin.received_donation') }}" title="Received Donations">
                   <div class="sb-nav-link-icon">
-                    <i class="far fa-circle nav-icon"></i>
+                    <i class="fas fa-circle-arrow-right  nav-icon"></i>
                   </div>
                   <span>Received Donations</span>
                 </a>
-                <a class="nav-link " href="{{ route('admin.distributed_donation') }}" title="Distributed Resources">
+                <a class="nav-link active" href="{{ route('admin.distributed_donation') }}" title="Distributed Resources">
                   <div class="sb-nav-link-icon">
                     <i class="far fa-circle nav-icon"></i>
                   </div>
@@ -237,7 +237,7 @@
             </a>
 
             <!-- Volunteer Appointments -->
-            <a class="nav-link active" href="{{ route('admin.appointments') }}" title="Volunteer Appointments">
+            <a class="nav-link" href="{{ route('admin.appointments') }}" title="Volunteer Appointments">
               <div class="sb-nav-link-icon">
                 <i class="fas fa-calendar-alt"></i>
               </div>
@@ -245,7 +245,7 @@
             </a>
 
             <!-- Chapters -->
-            <a class="nav-link" href="{{ route('admin.chapters') }}" title="Chapters">
+            <a class="nav-link " href="{{ route('admin.chapters') }}" title="Chapters">
               <div class="sb-nav-link-icon">
                 <i class="fas fa-map-marker-alt"></i>
               </div>
@@ -299,66 +299,83 @@
           <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item active"></li>
           </ol>
-          <h1 class="my-2">Appointments</h1>
+          <h1 class="my-3">Distributed Donations from {{ $Admin->chapter->chapter_name }} Chapter</h1>
+          <div class="d-flex justify-content-end">
+            <strong class="me-2">Type:</strong>
+            <!-- Filter for Donation Type -->
+            <a href="{{ route('admin.distributed_donation', ['typeFilter' => 'all']) }}"
+              class="btn table-btn btn-sm {{ $typeFilter === 'all' ? 'custom-active' : '' }}">All</a>
+            <a href="{{ route('admin.distributed_donation', ['typeFilter' => 'cash']) }}"
+              class="btn table-btn btn-sm {{ $typeFilter === 'cash' ? 'custom-active' : '' }}">Cash</a>
+            <a href="{{ route('admin.distributed_donation', ['typeFilter' => 'in-kind']) }}"
+              class="btn table-btn btn-sm {{ $typeFilter === 'in-kind' ? 'custom-active' : '' }}">In-Kind</a>
+          </div>
+
           <div class="card card-primary card-outline">
             <div class="card-header">
-              <h3 class="card-title">Appointments for Orientation</h3>
+              <h3 class="card-title">Received Donations</h3>
             </div>
             <div class="card-body">
               <table id="example1" class="table table-bordered table-hover table-striped">
                 <thead>
                   <tr>
-                    <th>Volunteer Name</th>
-                    <th>Date</th>
-                    <th>Time</th>
-                    <th>Chapter</th>
+                    <th>Donor Name</th>
+                    <th>Cause</th>
+                    <th>Method</th>
+                    <th>Transaction No</th>
+                    <th>Type</th>
+                    <th>Location</th>
                     <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  @forelse($appointments as $appointment)
+                  @php
+                  $donations = collect();
+                  if ($typeFilter === 'cash' || $typeFilter === 'all') {
+                  $donations = $donations->merge($cashDonations->map(fn($d) => ['type' => 'cash', 'data' => $d]));
+                  }
+                  if ($typeFilter === 'in-kind' || $typeFilter === 'all') {
+                  $donations = $donations->merge($inKindDonations->map(fn($d) => ['type' => 'in-kind', 'data' => $d]));
+                  }
+                  @endphp
+
+                  @if($donations->isEmpty())
                   <tr>
-                    <td>{{ $appointment->volunteer->first_name }} {{ $appointment->volunteer->last_name }}</td>
-                    <td>{{ \Carbon\Carbon::parse($appointment->appointment_date)->format('F j, Y') }}</td>
-                    <td>{{ \Carbon\Carbon::parse($appointment->appointment_time)->format('g:i A') }}</td>
-                    <td>{{ $appointment->volunteer->chapter->chapter_name ?? 'N/A' }}</td>
+                    <td colspan="7" class="text-center">No Donations Available</td>
+                  </tr>
+                  @else
+                  @foreach($donations as $donation)
+                  @php
+                  $data = $donation['data'];
+                  $isCash = $donation['type'] === 'cash';
+
+                  // Get location data
+                  $request = $isCash ? $data->fundRequest : $data->donationRequest;
+                  $location = $request->location ?? null;
+
+                  // Format location
+                  $formattedLocation = '';
+                  if ($location) {
+                  $formattedLocation = $location->region === "NCR"
+                  ? "{$location->barangay}, {$location->city_municipality}, Metro Manila, Philippines"
+                  : "{$location->barangay}, {$location->city_municipality}, {$location->province}, {$location->region}, Philippines";
+                  }
+                  @endphp
+                  <tr>
+                    <td>{{ $data->donor_name }}</td>
+                    <td>{{ $data->cause }}</td>
+                    <td>{{ $data->donation_method }}</td>
+                    <td>{{ $isCash ? $data->transaction_id : $data->tracking_number }}</td>
+                    <td><span class="badge {{ $isCash ? 'bg-primary' : 'bg-warning text-dark' }}">{{ $isCash ? 'Cash' : 'In-Kind' }}</span></td>
+                    <td>{{ $formattedLocation }}</td>
                     <td>
-                      <!-- Action Buttons -->
-                      <button type="button" class="btn btn-success btn-sm" title="Verify">
-                        <a href="{{ route('view_details', $appointment->volunteer->user_id) }}" style="color: white; text-decoration:none;">Verify</a>
-                      </button>
-                      <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $appointment->id }}" title="Delete">
-                        Delete
-                      </button>
+                      <a href="{{ route($isCash ? 'cash.donation.details' : 'inkind.donation.details', $data->id) }}" class="btn btn-sm btn-success">
+                        <i class="fa-solid fa-eye"></i> View
+                      </a>
                     </td>
                   </tr>
-
-                  <!-- Delete Modal -->
-                  <div class="modal fade" id="deleteModal{{ $appointment->id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
-                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                      <div class="modal-content">
-                        <form action="{{ route('appointments.delete', $appointment->id) }}" method="POST">
-                          @csrf
-                          <div class="modal-header">
-                            <h5 class="modal-title">Delete Appointment</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                          </div>
-                          <div class="modal-body">
-                            Are you sure you want to delete this appointment?
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-danger">Delete</button>
-                          </div>
-                        </form>
-                      </div>
-                    </div>
-                  </div>
-                  @empty
-                  <tr>
-                    <td colspan="5" class="text-center">No Appointments Available</td>
-                  </tr>
-                  @endforelse
+                  @endforeach
+                  @endif
                 </tbody>
               </table>
             </div>

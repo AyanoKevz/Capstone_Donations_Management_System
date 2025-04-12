@@ -1220,4 +1220,57 @@ class AdminController extends Controller
             'statusFilter' => $request->statusFilter ?? '',
         ]);
     }
+
+
+    public function markAsDistributed(Request $request, $requestId)
+    {
+        $requestType = $request->input('request_type');
+
+        if ($requestType === 'cash') {
+            $updated = CashDonation::where('fund_request_id', $requestId)
+                ->where('status', 'received')
+                ->update(['status' => 'distributed']);
+
+            Log::info("Cash Updated Rows: $updated");
+        } elseif ($requestType === 'in_kind') {
+            $updated = Donation::where('donation_request_id', $requestId)
+                ->where('status', 'received')
+                ->update(['status' => 'distributed']);
+
+            Log::info("In-Kind Updated Rows: $updated");
+        }
+
+        return redirect()->back()->with('success', 'Donations marked as distributed.');
+    }
+
+
+    public function distributedDonations(Request $request)
+    {
+        $admin = Auth::guard('admin')->user();
+        $chapterId = $admin->chapter_id;
+
+        // Cash donations with relationships
+        $cashDonations = CashDonation::with(['fundRequest.location'])
+            ->where('chapter_id', $chapterId)
+            ->where('status', 'Distributed')
+            ->when($request->typeFilter === 'cash' || $request->typeFilter === 'all', function ($query) {
+                return $query;
+            })
+            ->get();
+
+        // In-kind donations with relationships
+        $inKindDonations = Donation::with(['donationRequest.location'])
+            ->where('chapter_id', $chapterId)
+            ->where('status', 'Distributed')
+            ->when($request->typeFilter === 'in-kind' || $request->typeFilter === 'all', function ($query) {
+                return $query;
+            })
+            ->get();
+
+        return view('admin.distributed_donations', [
+            'cashDonations' => $cashDonations,
+            'inKindDonations' => $inKindDonations,
+            'typeFilter' => $request->typeFilter ?? 'all',
+        ]);
+    }
 }

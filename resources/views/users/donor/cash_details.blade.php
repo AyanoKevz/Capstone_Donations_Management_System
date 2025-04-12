@@ -336,7 +336,7 @@
                                         <span class="badge bg-{{ 
                         $cashDonation->status == 'pending' ? 'secondary' : 
                         ($cashDonation->status == 'received' ? 'success' : 
-                        ($cashDonation->status == 'ongoing' ? 'warning' : 'danger')) }}">
+                        ($cashDonation->status == 'ongoing' ? 'warning' : 'success')) }}">
                                             {{ ucfirst($cashDonation->status) }}
                                         </span>
                                     </td>

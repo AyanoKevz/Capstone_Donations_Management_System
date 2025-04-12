@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Admin | All Request</title>
+  <title>Admin | Request Details</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -192,7 +192,7 @@
                   </div>
                   <span>Received Donations</span>
                 </a>
-                <a class="nav-link" href="" title="Distributed Resources">
+                <a class="nav-link " href="{{ route('admin.distributed_donation') }}" title="Distributed Resources">
                   <div class="sb-nav-link-icon">
                     <i class="far fa-circle nav-icon"></i>
                   </div>
@@ -303,7 +303,7 @@
           <div class="container mb-3">
             <div class="row">
               <!-- Request Information Card -->
-              <div class="col-md-6">
+              <div class="col-md-6 my-2">
                 <div class="card shadow-sm">
                   <div class="card-header bg-transparent border-0">
                     <h3 class="mb-0"><i class="far fa-clone pr-1"></i> Request Information</h3>
@@ -333,7 +333,7 @@
                         <th width="30%">Status</th>
                         <td width="2%">:</td>
                         <td>
-                          <span class="badge bg-{{ $request->status == 'Pending' ? 'success' : ($request->status == 'Unfulfilled' ? 'danger' : 'secondary') }}">
+                          <span class="badge bg-{{ $request->status == 'Pending' ? 'warning text-dark' : ($request->status == 'Unfulfilled' ? 'danger' : 'success') }}">
                             {{ ucfirst($request->status) }}
                           </span>
                         </td>
@@ -403,7 +403,7 @@
               </div>
 
               <!-- Proof Media Card -->
-              <div class="col-md-6">
+              <div class="col-md-6 my-2">
                 <div class="card shadow-sm">
                   <div class="card-header bg-transparent border-0">
                     <h3 class="mb-0"><i class="far fa-clone pr-1"></i> Proof Media</h3>
@@ -423,39 +423,41 @@
                       </div>
                     </div>
                   </div>
-                  @if($request->status === 'Fulfilled' &&
-                  ($isCashRequest ? $cashDonations->every->status === 'received' : $inKindDonations->every->status === 'received'))
-                  <div class="text-center mt-3">
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#distributionModal">
-                      <i class="fa-solid fa-truck"></i> Distribute Donations
-                    </button>
-                  </div>
-
-                  <!-- Distribution Modal -->
-                  <div class="modal fade" id="distributionModal" tabindex="-1" aria-labelledby="distributionModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h5 class="modal-title" id="distributionModalLabel">Confirm Distribution</h5>
-                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                          Are you sure you want to mark this request as **distributed**?
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                          <form action="{{ route('mark_as_distributed', $request->id) }}" method="POST">
-                            @csrf
-                            @method('PUT')
-                            <button type="submit" class="btn btn-success">Distribute</button>
-                          </form>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  @endif
                 </div>
               </div>
+              @if($request->status === 'Fulfilled' &&
+              ($isCashRequest ? $cashDonations->every(fn($donation) => $donation->status === 'received'): $inKindDonations->every(fn($donation) => $donation->status === 'received')))
+              <div class="text-center mt-3">
+                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#distributionModal">
+                  <i class="fa-solid fa-truck"></i> Distribute Donations
+                </button>
+              </div>
+
+              <!-- Distribution Modal -->
+              <div class="modal fade" id="distributionModal" tabindex="-1" aria-labelledby="distributionModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="distributionModalLabel">Confirm Distribution</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-center">
+                      <strong class="text-success"> Do you want to distribute the donations for this request?</strong>
+                      <p class="mb-0 mt-1"><strong>Note:</strong> <span class="text-danger">This action cannot be undone.</span></p>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                      <form action="{{ route('mark_as_distributed', $request->id) }}" method="POST">
+                        @csrf
+                        @method('PUT')
+                        <input type="hidden" name="request_type" value="{{ $isCashRequest ? 'cash' : 'in_kind' }}">
+                        <button type="submit" class="btn btn-success">Distribute</button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              @endif
             </div>
           </div>
 
@@ -482,6 +484,10 @@
                 <a href="{{ route('request_details', ['id' => $id, 'type' => $isCashRequest ? 'cash' : 'in-kind']) }}?status=ongoing"
                   class="btn table-btn btn-sm {{ $status === 'ongoing' ? 'custom-active' : '' }}">
                   Ongoing
+                </a>
+                <a href="{{ route('request_details', ['id' => $id, 'type' => $isCashRequest ? 'cash' : 'in-kind']) }}?status=distributed"
+                  class="btn table-btn btn-sm {{ $status === 'distributed' ? 'custom-active' : '' }}">
+                  Distributed
                 </a>
               </div>
 
@@ -530,7 +536,7 @@
                           <span class="badge bg-{{
                                             $cashDonation->status === 'received' ? 'success' :
                                             ($cashDonation->status === 'pending' ? 'secondary' :
-                                            ($cashDonation->status === 'ongoing' ? 'warning text-dark' : 'danger'))
+                                            ($cashDonation->status === 'ongoing' ? 'warning text-dark' : 'success'))
                                         }}">
                             {{ ucfirst($cashDonation->status) }}
                           </span>
@@ -551,7 +557,7 @@
                           <span class="badge bg-{{
                                 $inKindDonation->status === 'received' ? 'success' :
                                 ($inKindDonation->status === 'pending' ? 'secondary' :
-                                ($inKindDonation->status === 'ongoing' ? 'warning text-dark' : 'danger'))
+                                ($inKindDonation->status === 'ongoing' ? 'warning text-dark' : 'success'))
                             }}">
                             {{ ucfirst($inKindDonation->status) }}
                           </span>

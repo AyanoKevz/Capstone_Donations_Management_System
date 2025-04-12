@@ -192,7 +192,7 @@
                   </div>
                   <span>Received Donations</span>
                 </a>
-                <a class="nav-link" href="" title="Distributed Resources">
+                <a class="nav-link " href="{{ route('admin.distributed_donation') }}" title="Distributed Resources">
                   <div class="sb-nav-link-icon">
                     <i class="far fa-circle nav-icon"></i>
                   </div>

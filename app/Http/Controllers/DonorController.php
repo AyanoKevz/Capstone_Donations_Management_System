@@ -267,57 +267,56 @@ class DonorController extends Controller
         $user = Auth::user();
         $donor = $user->donor;
 
-        // Common status filter
         $status = $request->query('status', 'all');
+        $type = $request->query('type', 'all');
+        $donationType = $request->query('donation_type', 'all');
 
         // Query In-Kind Donations
         $queryInKind = Donation::with(['chapter', 'donationRequest'])
             ->where('donor_id', $donor->id)
             ->whereIn('status', ['received', 'distributed', 'unverified']);
 
-        // Query Cash Donations
+        // Query Cash Donations - explicitly select fund_request_id
         $queryCash = CashDonation::with(['chapter', 'fundRequest'])
             ->where('donor_id', $donor->id)
             ->whereIn('status', ['received', 'distributed', 'unverified']);
 
         // Filter by Source
-        $type = $request->query('type', 'all');
         if ($type === 'request') {
-            $queryInKind->whereNotNull('donation_request_id');
-            $queryCash->whereNotNull('fund_request_id');
+            $queryInKind->whereHas('donationRequest');
+            $queryCash->whereHas('fundRequest');
         } elseif ($type === 'quick') {
-            $queryInKind->whereNull('donation_request_id');
-            $queryCash->whereNull('fund_request_id');
+            $queryInKind->whereDoesntHave('donationRequest');
+            $queryCash->whereDoesntHave('fundRequest');
         }
 
-        // Apply status BEFORE merging
+        // Apply status filter
         if ($status !== 'all') {
             $queryInKind->where('status', $status);
             $queryCash->where('status', $status);
         }
 
-        // Determine donation type
-        $donationType = $request->query('donation_type', 'all');
-
+        // Get results based on donation type
         if ($donationType === 'in-kind') {
             $donations = $queryInKind->get();
+            $donations->each(fn($d) => $d->donation_type = 'in-kind');
         } elseif ($donationType === 'cash') {
             $donations = $queryCash->get();
+            $donations->each(fn($d) => $d->donation_type = 'cash');
         } else {
-            // For 'all' type, we need to mark each donation with its type
-            $inKindDonations = $queryInKind->get()->map(function ($donation) {
-                $donation->donation_type = 'in-kind';
-                return $donation;
-            });
-
-            $cashDonations = $queryCash->get()->map(function ($donation) {
-                $donation->donation_type = 'cash';
-                return $donation;
-            });
-
-            // Now merge them
+            $inKindDonations = $queryInKind->get()->each(fn($d) => $d->donation_type = 'in-kind');
+            $cashDonations = $queryCash->get()->each(fn($d) => $d->donation_type = 'cash');
             $donations = $inKindDonations->concat($cashDonations);
         }
+
+        // Add source information to each donation
+        $donations->each(function ($donation) {
+            if ($donation->donation_type === 'cash') {
+                $donation->source = $donation->fundRequest ? 'From Request' : 'Quick Donation';
+            } else {
+                $donation->source = $donation->donationRequest ? 'From Request' : 'Quick Donation';
+            }
+        });
 
         return view('users.donor.complete', compact('donations'));
     }
