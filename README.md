@@ -1,3 +1,84 @@
+# UniAid - Donation Management System
+
+A web-based **Donation and Volunteer Management System** developed for our capstone project. It aims to ease the processes of donation tracking (both in-kind and monetary), request fulfillment, volunteer activity, and resource distribution across various Red Cross chapters in the Philippines.
+---
+
+## 📌 Features
+
+### 🔐 User Registration & Verification
+- Users register as **Donors** or **Volunteers**.
+- **Live photo capture** using **Face API** for identity verification.
+- Donors also take a **live photo with their donations** for authenticity.
+
+### 💸 Cash Donation Module
+- Donate directly to **fund requests** or make **quick donations**.
+- Choose **cause**, **chapter**, and **payment method** (Gcash, PayPal, Credit Card, Bank Transfer).
+- Upload **proof of payment** and enter **transaction reference** (mock payment gateway, no real deductions).
+- Track donations by status: `pending`, `received`, `ongoing`, `distributed`.
+
+### 📦 In-Kind Donation Module
+- Donate based on **specific requests** or **quick causes**.
+- Track items by **category**, **cause**, and **expiration status** (`good`, `near_expired`, `expired`, `no_expiration`).
+- Admins can create donation requests with **location**, **urgency**, **proof images/video**, and **validity date**.
+
+### 👨‍⚕️ Volunteer Management
+- Volunteers register with availability and preferred services.
+- Can be assigned to tasks.
+- If a volunteer declines a task, it’s automatically posted as a **public event**.
+- Volunteers can view and opt in to these events.
+- Logged in `volunteer_activity` table and tied to `event` if applicable.
+
+### 📍 Geomapping
+- Locations (user, chapter, request) are stored with **latitude/longitude**.
+- Map UI (Leaflet) can visualize:
+  - Request locations
+  - Pin point based on the cause of request
+  - Chapter offices
+  - Volunteer or pickup addresses
+
+### 📊 Admin Dashboard
+- Manage:
+  - Requests (in-kind & cash) with **validity date**
+  - Donor and volunteer accounts (with active/inactive status)
+  - Donation tracking and verification
+  - Inventory in **Pooled Resources** and **Pooled Funds**
+  - Distribution records
+  - Chapters and news updates
+
+
+### 📱 SMS Notifications
+- Donors receive SMS alerts for:
+  - Thank you message upon registration
+  - Account is activated after verification
+  - Successful donation submission
+  - Admin approval or status update (e.g., received, distributed)
+  - Reminders for pickup/drop-off schedule
+
+### 📧 Email Notifications
+- Donors receive email confirmations and updates:
+  - Welcome email upon registration
+  - Account is activated after verification
+  - Proof and tracking number confirmation
+  - Summary of donation (items/cash, chapter, cause)
+- Admins are notified of:
+  - New donation submissions
+  - Volunteer sign-ups and confirmations
+
+---
+
+## 🗂️ Technologies Used
+- Blade
+- PHP (Laravel) 
+- MySQL (Database)
+- JavaScript (jQuery, AJAX)
+- HTML5/CSS3 (Bootstrap 5)
+- Face API (for live photo verification)
+- Leaflet.js (for geomapping)
+- API SMS
+- Other Javascript Libraries
+
+---
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
